@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.productABG {
+  background: radial-gradient(79.02% 79.01% at 50% 50%, rgba(40, 93, 189, 0.82) 0%, rgba(40, 93, 189, 0.57) 0%, rgba(40, 93, 189, 0.00) 100%);
+}
+.productBBG {
+  background: radial-gradient(102.8% 102.83% at 50% 0%, rgba(209, 110, 90, 0) 0%, #FFC9BF 0%, rgba(255, 211, 202, 0.31) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+.productCBG {
+  background: radial-gradient(79% 79% at 50% 50%, #52A4AA 0%, rgba(84, 167, 171, 0) 0%, rgba(83, 166, 170, 0.31) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+.productDBG {
+  background: radial-gradient(308.03% 308.06% at 50% -179.06%, rgba(40, 93, 189, 0.31) 0%, rgba(40, 93, 189, 0.57) 0%, rgba(40, 93, 189, 0) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+
+.z-menu {
+  @apply z-[9999]
+}
+
+.z-body {
+  @apply z-[9998]
+}
+
+.z-botton {
+  @apply z-[0]
+}
+
+.nav {
+  @apply select-none cursor-pointer
+}
+
+.btn {
+  @apply select-none cursor-pointer
+}
+
+.mx-detail {
+  @apply mx-[95px]
+}
+
+html {
+  font-family: hiragino-kaku-gothic-pron; 
+  font-style: normal;
+  font-weight: 400;
+}
+
+.bg-dashed{
+  background-image: repeating-linear-gradient(90deg, transparent, transparent 5px, black 5px, black 10px);
+}
+

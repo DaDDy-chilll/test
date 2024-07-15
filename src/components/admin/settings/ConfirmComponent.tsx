@@ -1,0 +1,71 @@
+import DialogBox from "@/components/DialogBox";
+import { Button } from "@mui/material";
+import SizeBox from "@/components/SizeBox";
+import { Dispatch, SetStateAction } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { memo } from "react";
+
+interface ConfirmProps {
+  confirmText: string;
+  openConfirmDialog: boolean;
+  setOpenConfirmDialog: Dispatch<SetStateAction<boolean>>;
+  statusChange?: number;
+  changeStatusAction?: (userId: number) => void;
+  onConfirm?: () => void;
+  changeApproveStatusAction ?: (productReviewId: number) => void;
+  pReviewId ?:number;
+}
+
+const ConfirmComponent = ({
+  confirmText,
+  openConfirmDialog,
+  setOpenConfirmDialog,
+  changeStatusAction,
+  statusChange,
+  onConfirm,
+  changeApproveStatusAction,
+  pReviewId,
+}: ConfirmProps) => {
+  return (
+    <DialogBox open={openConfirmDialog} setOpen={setOpenConfirmDialog}>
+      <div className="">
+        {/* Title */}
+        <div className="h-[60px] flex flex-row justify-center items-center relative">
+          <div
+            onClick={() => setOpenConfirmDialog(false)}
+            className="absolute right-[26px] btn text-black"
+          >
+            <CloseIcon />
+          </div>
+        </div>
+        <div className="px-[50px] py-[20px] flex flex-col items-center">
+          <div className="text-center font-bold space-y-2 text-black">
+            <p>{confirmText}</p>
+            <p>よろしいでしょうか？</p>
+          </div>
+
+          <SizeBox h={50} />
+          {/* Button */}
+          <Button
+            onClick={() => {
+              onConfirm && onConfirm();
+              if (statusChange) {
+                changeStatusAction && changeStatusAction(statusChange);
+              }
+              if (pReviewId){
+                changeApproveStatusAction && changeApproveStatusAction(pReviewId);
+              }
+             
+            }}
+            variant="contained"
+            className="w-2/3"
+          >
+            OK
+          </Button>
+        </div>
+      </div>
+    </DialogBox>
+  );
+};
+
+export default memo(ConfirmComponent);
