@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { OrderCancelRes } from "@/types/order/order-decline/order_decline";
+import { OrderCancelRes } from "@/store/types/order/order-decline/order_decline";
 
 type GetOrderCancelRes = {
     status: string;

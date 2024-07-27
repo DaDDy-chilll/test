@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { Product } from "@/types/product/product";
+import { Product } from "@/store/types/product/product";
 
 type GetProductRes = {
   status: string;

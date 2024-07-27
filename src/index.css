@@ -49,3 +49,6 @@ html {
   background-image: repeating-linear-gradient(90deg, transparent, transparent 5px, black 5px, black 10px);
 }
 
+.active{
+  background-color: #383c3c;
+}

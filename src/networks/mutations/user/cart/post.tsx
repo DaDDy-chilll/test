@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { Cart } from "@/types/cart/cart";
+import { Cart } from "@/store/types/cart/cart";
 
 type cartCreateRes = {
   status: string;

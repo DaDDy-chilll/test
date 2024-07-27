@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { MasterDetail } from "@/types/master_detail/master_detail";
+import { MasterDetail } from "@/store/types/master_detail/master_detail";
 
 type GetMasterDetailRes = {
     status: string;

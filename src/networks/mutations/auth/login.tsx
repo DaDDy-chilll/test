@@ -1,8 +1,8 @@
 import ApiService from "@/networks/services";
-import { User } from "@/types/user/user";
+import { User } from "@/store/types/user/user";
 
 export interface LoginRequest {
-    mail: string;
+    email: string;
     password: string;
 }
 

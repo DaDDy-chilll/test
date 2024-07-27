@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { productReview } from "@/types/product/productReview";
+import { productReview } from "@/store/types/product/productReview";
 
 type ProductReviewCreateRes = {
     status: string;

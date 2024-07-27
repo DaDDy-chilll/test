@@ -1,11 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
-import { Provider } from 'react-redux';
+import {
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
 
 import { createTheme } from '@mui/material/styles';
-import {store} from "@/store";
+import App from './App';
+export const queryClient = new QueryClient();
 
 export const theme = createTheme({
   palette: {
@@ -25,9 +28,9 @@ export const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  <QueryClientProvider client={queryClient}>
+    {/* <React.StrictMode> */}
+      <App/>
+    {/* </React.StrictMode> */}
+ </QueryClientProvider>
 )

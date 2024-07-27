@@ -1,9 +1,10 @@
 import ApiService from "@/networks/services";
-import { User } from "@/types/user/user";
+import { User } from "@/types/user";
+
 
 export interface registerRequest {
     user_name?:string;
-    mail: string;
+    email: string;
     password: string;
 }
 
@@ -23,14 +24,16 @@ export type registerErrResponse = {
 
 type registerError = {
     user_name?:string;
-    mail?: string;
+    email?: string;
     password?: string;
 }
 
 const register = (registerRequest: registerRequest): Promise<registerResponse>=>{
     return new Promise((resolve,reject)=>{
-        ApiService.auth.post("/pub/register",registerRequest)
+        ApiService.auth.post("/auth/register",registerRequest)
         .then(({data}: {data:registerResponse})=>{
+            console.log(data);
+            
             resolve(data);
         })
         .catch((err)=>{

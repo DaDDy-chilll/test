@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { Address } from "@/types/address/address";
+import { Address } from "@/store/types/address/address";
 
 type AddressCreateRes = {
     status: string;

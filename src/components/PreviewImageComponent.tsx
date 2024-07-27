@@ -148,7 +148,7 @@ const PreviewImageComponent = ({ setFiles,files }: PreviewImageComponentProps) =
         id="previewImage"
         onChange={handleChange}
         multiple
-        accept=".png, .jpg, .jpeg"
+        accept=", .jpg, .jpeg"
       />
     </label>
   );

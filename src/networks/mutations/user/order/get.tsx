@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { OrderForCustomerRes } from "@/types/order/order"
+import { OrderForCustomerRes } from "@/store/types/order/order"
 
 type GetOrderRes = {
     status: string;

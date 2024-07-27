@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { DeliveryAddressList } from "@/types/delivery_address/delivery_address_list";
+import { DeliveryAddressList } from "@/store/types/delivery_address/delivery_address_list";
 
 type GetDeliveryAddressRes = {
   status: string;

@@ -1,5 +1,5 @@
 import ApiService from "@/networks/services";
-import { Prefecture } from "@/types/prefecture/Prefecture";
+import { Prefecture } from "@/store/types/prefecture/Prefecture";
 type GetProductRes = {
   status: string;
   message: string;
