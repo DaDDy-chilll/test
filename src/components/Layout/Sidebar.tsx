@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Routenames from "@/navigations/routes";
-import logo from '@/assets/navbar/logo.jpg';
+import logo from '@/assets/fix/logo.png';
 
 interface setTitle{
  setTitle: React.Dispatch<React.SetStateAction<string>>
@@ -12,10 +12,10 @@ const Sidebar = ({ setTitle } : setTitle) => {
   return (
     <aside
       id="logo-sidebar"
-      className="fixed top-0 text-white left-0 z-40 w-64 h-screen pt-10 transition-transform -translate-x-full  border-r border-gray-900 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+      className="fixed top-0 text-white left-0 z-40 w-64 h-screen pt-10 transition-transform -translate-x-full  border-r border-gray-900 sm:translate-x-0 bg-foreground"
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-950">
+      <div className="h-full px-3 pb-4 overflow-y-auto bg-foreground">
         <ul className="space-y-2 font-medium">
           <li className="w-full flex justify-center mb-10 items-center">
             <img src={logo} className="w-32" alt="Japan job logo" />

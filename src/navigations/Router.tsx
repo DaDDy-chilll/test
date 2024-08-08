@@ -9,6 +9,8 @@ import MessageScreen from "@/screens/MessageScreen";
 import CalendarScreen from "@/screens/CalendarScreen";
 import RegisterScreen from "@/screens/Auth/RegisterScreen";
 import { events } from "@/const";
+import LoginScreen from "@/screens/Auth/LoginScreen";
+import UserFormScreen from "@/screens/UserForm/UserFormScreen";
 
 
 const Router = () => {
@@ -17,21 +19,18 @@ const Router = () => {
       <Routes>
         {/* auth route */}
         <Route
+          path={Routenames.USER.USER_FORM}
+          Component={() => <UserFormScreen />}
+        />
+        <Route
           path={Routenames.USER.REGISTER}
           Component={() => <RegisterScreen />}
         />
-        {/* <Route
-     path={Routenames.USER.REGISTER}
+        /* <Route
+     path={Routenames.USER.LOGIN}
      Component={()=> <LoginScreen/>}
      />
-     <Route
-     path={Routenames.USER.FORGOT_PASSWORD}
-     Component={()=> <LoginScreen/>}
-     />
-     <Route
-     path={Routenames.USER.RESET_PASSWORD}
-     Component={()=> <LoginScreen/>}
-     /> */}
+ 
         {/* end auth route */}
 
         {/* Dashboard routes */}
