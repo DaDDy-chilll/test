@@ -4,7 +4,7 @@ import login, { LoginResponse } from "@/networks/mutations/auth/login";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/fix/logo.png";
-import RedirectComponent from "@/components/Auth/RedirectComponent";
+import { motion } from "framer-motion";
 
 const LoginScreen = () => {
   const queryClient = useQueryClient();
@@ -32,8 +32,8 @@ const LoginScreen = () => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-foreground">
-      <div className="flex w-3/5 h-3/4 shadow-md rounded-3xl overflow-hidden">
+    <div className="flex h-screen items-center justify-center bg-gray-200">
+      <div className="flex w-1/3 h-5/6 shadow-md ">
         <div className="w-full h-full px-20 space-y-8 flex flex-col justify-center items-center bg-white relative">
           <div className="absolute left-7 top-10 flex items-center gap-3">
             <div className="w-12">
@@ -41,10 +41,10 @@ const LoginScreen = () => {
             </div>
             <h1 className="font-medium">JAPAN JOB</h1>
           </div>
-          <div className="text-center">
-            <h1 className="main-title text-lg text-black mb-20">Login</h1>
-          </div>
-          <form className="space-y-12 w-full" onSubmit={handleSubmit}>
+          <motion.div className="text-center" variants={headerVariants} initial='hidden' animate="visible">
+            <h1 className="main-title text-lg text-black mb-10">Login</h1>
+          </motion.div>
+          <motion.form className="space-y-12 w-full" onSubmit={handleSubmit} variants={formVariants} initial='hidden' animate='visible'>
             <div>
               <Input
                 name="email"
@@ -70,12 +70,22 @@ const LoginScreen = () => {
                 {mutation.isPending ? "Logging in..." : "Login"}
               </Button>
             </div>
-          </form>
+          </motion.form>
         </div>
-        <RedirectComponent title="Lorem ipsum dolor sit amet consectetur. Molestie amet molestie." description="Lorem ipsum dolor sit amet consectetur. Tincidunt adipiscing turpis viverra feugiat pellentesque hac egestas lacus turpis. Amet adipiscing non nulla ut. Vulputate maecenas nunc" register />
       </div>
     </div>
   );
 };
+
+
+const headerVariants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: { opacity: 1, scale: 1 },
+};
+
+const formVariants = {
+  hidden:{opacity:0},
+  visible:{opacity:1,transition:{delay:.2}}
+}
 
 export default LoginScreen;

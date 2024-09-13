@@ -11,51 +11,48 @@ import { events } from "@/constants";
 import LoginScreen from "@/screens/Auth/LoginScreen";
 import UserFormScreen from "@/screens/UserForm/UserFormScreen";
 import initialLanding from "@/screens/initialLanding";
-
+import ProtectRoute from "./ProtectRoute";
+import ShareLayout from "@/components/Layout/ShareLayout";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* initial landing route */}
-        <Route
-          path={Routenames.INITIAL_LANDING}
-          Component={initialLanding}
-        />
+        <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
         {/* auth route */}
-        <Route
-          path={Routenames.USER_FORM}
-          Component={UserFormScreen}
-        />
-        <Route
-          path={Routenames.REGISTER}
-          Component={RegisterScreen}
-        />
-        /*{" "}
+        <Route path={Routenames.REGISTER} Component={RegisterScreen} />
+
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
         {/* end auth route */}
-        {/* Dashboard routes */}
+
+
+        {/* Protected routes */}
         <Route
-          path={Routenames.DASHBOARD}
-          Component={DashboardScreen}
-        />
-        {/* Applicants routes */}
-        <Route
-          path={Routenames.APPLICANTS}
-          Component={ApplicantScreen}
-        />
-        {/* jobs routes */}
-        <Route path={Routenames.JOBS} Component={JobScreen} />
-        {/* message routes */}
-        <Route
-          path={Routenames.MESSAGES}
-          Component={MessageScreen}
-        />
-        {/* calendar routes */}
-        <Route
-          path={Routenames.CALENDAR}
-          Component={() => <CalendarScreen events={events} />}
-        />
+          element={
+            <ProtectRoute>
+              <ShareLayout />
+            </ProtectRoute>
+          }
+        >
+          <Route
+            path={Routenames.USER_FORM}
+            Component={() => <UserFormScreen />}
+          />
+          {/* Dashboard routes */}
+          <Route path={Routenames.DASHBOARD} Component={DashboardScreen} />
+          {/* Applicants routes */}
+          <Route path={Routenames.APPLICANTS} Component={ApplicantScreen} />
+          {/* jobs routes */}
+          <Route path={Routenames.JOBS} Component={JobScreen} />
+          {/* message routes */}
+          <Route path={Routenames.MESSAGES} Component={MessageScreen} />
+          {/* calendar routes */}
+          <Route
+            path={Routenames.CALENDAR}
+            Component={() => <CalendarScreen events={events} />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

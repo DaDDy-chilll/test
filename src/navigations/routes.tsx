@@ -10,7 +10,7 @@ enum USER {
   APPLICANTS = "/applicants",
   JOBS = "/jobs",
   MESSAGES = "/messages",
-  USER_FORM ='/user_form'
+  USER_FORM ='/form'
 }
 
 export default USER;

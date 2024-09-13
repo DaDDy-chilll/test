@@ -12,7 +12,7 @@ const initialLanding = () => {
   const navigate = useNavigate();
 
   const login = () => navigate("/login");
-  const signup = () => navigate("/signup");
+  const signup = () => navigate("/register");
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -27,7 +27,7 @@ const initialLanding = () => {
           <LOGO />
         </motion.div>
         <div className="text-2xl my-10 font-semibold">
-          <div className="mb-4">
+          <div className="mb-1">
             {textOne.split("").map((element, index) => (
               <motion.span
                 className="whitespace-nowrap overflow-hidden roboto-sans"
