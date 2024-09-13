@@ -4,7 +4,8 @@ enum USER {
   FORGOT_PASSWORD = "/forgot_password",
   RESET_PASSWORD = "/reset_password",
   REGISTER = "/register",
-  DASHBOARD = "/",
+  INITIAL_LANDING = "/",
+  DASHBOARD = "/dashboard",
   CALENDAR = "/calendar",
   APPLICANTS = "/applicants",
   JOBS = "/jobs",
@@ -12,4 +13,4 @@ enum USER {
   USER_FORM ='/user_form'
 }
 
-export default { USER };
+export default USER;

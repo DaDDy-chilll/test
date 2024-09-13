@@ -22,7 +22,7 @@ const Sidebar = ({ setTitle } : setTitle) => {
           </li>
           <li>
             <NavLink
-              to={Routenames.USER.DASHBOARD}
+              to={Routenames.DASHBOARD}
               className="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-900 dark:hover:bg-gray-700 group"
               onClick={() => setTitle("Dashboard")}
             >
@@ -41,7 +41,7 @@ const Sidebar = ({ setTitle } : setTitle) => {
           </li>
           <li>
             <NavLink
-              to={Routenames.USER.APPLICANTS}
+              to={Routenames.APPLICANTS}
               className="flex items-center p-2 text-white rounded-lg  hover:bg-gray-900 dark:hover:bg-gray-700 group"
               onClick={() => setTitle("Applicants")}
             >
@@ -62,7 +62,7 @@ const Sidebar = ({ setTitle } : setTitle) => {
           </li>
           <li>
             <NavLink
-              to={Routenames.USER.JOBS}
+              to={Routenames.JOBS}
               className="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-900 dark:hover:bg-gray-700 group"
               onClick={() => setTitle("Jobs")}
             >
@@ -83,7 +83,7 @@ const Sidebar = ({ setTitle } : setTitle) => {
           </li>
           <li>
             <NavLink
-              to={Routenames.USER.CALENDAR}
+              to={Routenames.CALENDAR}
               className="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-900 dark:hover:bg-gray-700 group"
               onClick={() => setTitle("Calendar")}
             >
@@ -104,7 +104,7 @@ const Sidebar = ({ setTitle } : setTitle) => {
           </li>
           <li>
             <NavLink
-              to={Routenames.USER.MESSAGES}
+              to={Routenames.MESSAGES}
               className="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-900 dark:hover:bg-gray-700 group"
               onClick={() => setTitle("Messages")}
             >
