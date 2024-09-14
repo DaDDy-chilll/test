@@ -1,13 +1,16 @@
 // import { useMutation } from "@tanstack/react-query";
-// import { FormEvent } from "react";
+import { FormEvent } from "react";
 // import registerUser, { RegisterResponse } from "@/networks/mutations/auth/register";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/fix/logo.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterScreen = () => {
+const navigate = useNavigate()
+
   // const mutation = useMutation<RegisterResponse, Error, FormData>({
   //   mutationFn: async (formData) => {
   //     const email = formData.get("email") as string;
@@ -29,11 +32,12 @@ const RegisterScreen = () => {
   //   },
   // });
 
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget);
-  //   mutation.mutate(formData);
-  // };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    navigate("/form")
+    // const formData = new FormData(e.currentTarget);
+    // mutation.mutate(formData);
+  };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200">
@@ -48,13 +52,14 @@ const RegisterScreen = () => {
           <motion.div className="text-center" variants={headerVariants} initial='hidden' animate='visible'>
             <h1 className="main-title text-lg text-black my-10">Register</h1>
           </motion.div>
-          <motion.form className="space-y-10 w-full" onSubmit={() => {}} variants={formVariants} initial='hidden' animate='visible'>
+          <motion.form className="space-y-10 w-full" onSubmit={handleSubmit} variants={formVariants} initial='hidden' animate='visible'>
             <div>
               <Input
                 name="email"
                 type="email"
                 label="Email"
                 className="mt-1 block w-full"
+                required={false}
               />
             </div>
             <div>
@@ -63,6 +68,7 @@ const RegisterScreen = () => {
                 type="password"
                 label="Password"
                 className="mt-1 block w-full"
+                required={false}
               />
             </div>
             <div>
@@ -71,6 +77,7 @@ const RegisterScreen = () => {
                 type="password"
                 label="Confirm Password"
                 className="mt-1 block w-full"
+                required={false}
               />
             </div>
             <div>

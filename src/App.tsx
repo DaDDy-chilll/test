@@ -6,6 +6,9 @@ const App = () => {
     init();
   });
 
+
+
+
   const init = async () => {};
   return <Router />;
 };

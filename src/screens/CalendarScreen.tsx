@@ -1,5 +1,6 @@
 import Layout from "@/layouts/Layout";
 import clsx from "clsx";
+import { motion } from 'framer-motion';
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -46,8 +47,14 @@ const CalendarScreen = ({ events }: EventCalendarProps) => {
 
   return (
     <Layout>
-      <div className="container mx-auto p-4 text-white">
-        <div className="mb-4">
+      <motion.div
+      variants={calendarVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="bg-gray-500 w-full min-h-screen">
+        CalendarScreen
+        {/* <div className="mb-4">
           <h2 className="text-center text-xl">{format(currentDate, "MMMM yyyy")}</h2>
         </div>
         <div className="grid grid-cols-7 gap-1">
@@ -96,10 +103,15 @@ const CalendarScreen = ({ events }: EventCalendarProps) => {
               </div>
             );
           })}
-        </div>
-      </div>
+        </div> */}
+      </motion.div>
     </Layout>
   );
 };
 
+const calendarVariants = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -100 },
+};
 export default CalendarScreen;

@@ -9,8 +9,12 @@ enum USER {
   CALENDAR = "/calendar",
   APPLICANTS = "/applicants",
   JOBS = "/jobs",
+  ADDJOB = "/addjob",
   MESSAGES = "/messages",
-  USER_FORM ='/form'
+  MATCHES = "/matches",
+  USER_FORM ='/form',
+  CHAT = '/chat',
+  PROFILE = '/profile'
 }
 
 export default USER;

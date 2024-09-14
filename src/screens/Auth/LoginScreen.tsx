@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/fix/logo.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import Routenames from "@/navigations/routes";
 
 const LoginScreen = () => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const mutation = useMutation<LoginResponse, Error, FormData>({
     mutationFn: async (formData) => {
       const email = formData.get("email") as string;
@@ -27,8 +29,9 @@ const LoginScreen = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    mutation.mutate(formData);
+    navigate(Routenames.DASHBOARD);
+    // const formData = new FormData(e.currentTarget);
+    // mutation.mutate(formData);
   };
 
   return (
@@ -51,6 +54,7 @@ const LoginScreen = () => {
                 type="email"
                 label="Email"
                 className="mt-1 block w-full"
+                required={false}
               />
             </div>
             <div>
@@ -59,6 +63,7 @@ const LoginScreen = () => {
                 type="password"
                 label="Password"
                 className="mt-1 block w-full"
+                required={false}
               />
             </div>
             <div>

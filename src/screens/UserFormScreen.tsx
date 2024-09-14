@@ -5,8 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/fix/logo.png";
 import { jp } from "@/lang/jp";
 import DatePicker from "@/components/ui/DatePicker";
-import { motion } from "framer-motion";
+import { motion,AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import DiplayFormData from "@/components/ui/DiplayFormData";
+import { useNavigate } from "react-router-dom";
 export interface UserFormData {
   name: string;
   salary: string;
@@ -19,6 +21,7 @@ export interface UserFormData {
 }
 const UserFormScreen = () => {
   const [complete, setComplete] = useState(false);
+  const navigate = useNavigate();
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },
@@ -49,13 +52,18 @@ const UserFormScreen = () => {
   //   additionalInfo: "",
   //   description: "",
   // });
+
+  const handleNavigate = () => {
+    navigate("/dashboard");
+  };
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200 overflow-hidden">
-      <div className="flex w-2/3 shadow-md ">
+      <div className="flex w-2/3 shadow-md bg-white">
+      <AnimatePresence mode="wait">
         {!complete && (
           <motion.div
             key="form"
-            className="w-full h-full p-8 pt-29 space-y-2 flex flex-col justify-center items-center bg-white relative"
+            className="w-full h-full p-8 pt-29 space-y-2 flex flex-col justify-center items-center relative"
             variants={formVariants}
             initial="hidden"
             animate="visible"
@@ -136,14 +144,6 @@ const UserFormScreen = () => {
                   className="mt-1 block w-ful"
                 />
                 <div></div>
-                {/* <div className="col-span-2">
-         <textarea
-           name="description"
-           className="mt-1 block w-full"
-           rows={1}
-           placeholder="Description"
-         ></textarea>
-       </div> */}
                 <span className="col-span-2">
                   <Input
                     name="description"
@@ -169,26 +169,18 @@ const UserFormScreen = () => {
         )}
 
         {complete && (
-          <motion.div
-            key="complete"
-            className="w-full h-full p-8 pt-29 space-y-2 flex flex-col justify-center items-center bg-white relative"
-            variants={formVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <h1>Complete</h1>
-          </motion.div>
+          <DiplayFormData setComplete={setComplete} navigator={handleNavigate} />
         )}
+        </AnimatePresence>
       </div>
     </div>
   );
 };
 
 const formVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { delay: 0.5, duration: 0.5 } },
-  exit: { opacity: 0, y: -100, transition: { delay: 0.5, duration: 0.5 } },
+  hidden: { opacity: 0 ,x:-100},
+  visible: { opacity: 1,x:0, transition: { delay: 0.2, duration: 0.3 } },
+  exit: { opacity: 0, x: -100, transition: { delay: 0.2, duration: 0.3 } },
 };
 
 export default UserFormScreen;
