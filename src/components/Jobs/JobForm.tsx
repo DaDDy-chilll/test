@@ -51,7 +51,7 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
   return (
     <motion.div
       key="form"
-      className="w-full h-full shadow-md bg-gray-100 px-8 pt-5  flex flex-col justify-center items-center relative"
+      className="w-full h-full shadow-md bg-gray-100 px-8 pt-3 flex flex-col justify-center items-center relative"
       variants={formVariants}
       initial="hidden"
       animate="visible"
@@ -163,7 +163,7 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
           </span>
         </div>
 
-        <div className="flex justify-between w-full px-10 mr-10">
+        <div className="flex justify-between w-full pb-3 px-10 mr-10">
         <button className="underline font-medium" onClick={onBack}>Back</button>
           <Button
             variant="destructive"

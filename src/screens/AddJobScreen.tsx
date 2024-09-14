@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from '@/layouts/Layout';
 import { motion } from 'framer-motion';
+import JobForm from '@/components/Jobs/JobForm';
 
 const AddJobScreen = () => {
   return (
@@ -10,15 +11,17 @@ const AddJobScreen = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className='bg-red-500 w-full min-h-screen'>AddJobScreen</motion.div>
+      className='w-full h-full flex justify-center items-center px-10'>
+          <JobForm onBack={()=>{}}  />
+      </motion.div>
     </Layout>
   )
 }
 
 const addJobVariants = {
   initial: { opacity: 0, y: 100 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -100 },
+  animate: { opacity: 1, y: 0,transition: { duration: 0.2 } },
+  exit: { opacity: 0, y: -100,transition: { duration: 0.2 } },
 };
 
 export default AddJobScreen;
