@@ -26,7 +26,6 @@ const Select: React.FC<SelectProps> = ({
   className = "",
   defaultOption = "Choose an option",
 }) => {
-  console.log(label);
   return (
     <div className={cn("relative z-0 w-full mb-5 group", className)}>
       <label

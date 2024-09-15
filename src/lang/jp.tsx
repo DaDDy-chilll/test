@@ -30,5 +30,16 @@ export const jp = {
   "jobType":"အလုပ်အမျိုးအစား",
   "jobLocation":"အလုပ်နေရာ",
   "workHour":"အလုပ်အချိန်",
-
+  "jobPreferences":"Jobs Preferences",
+  "education":"Education",
+  "passport":"パスポート",
+  "yes":"はい",
+  "no":"いいえ",
+  "salary":"年収",
+  "hourRate":"勤務時間",
+  "dormitory":"寮完備",
+  "rent":"家賃補助",
+  "jobTypeAndLocation":"希望職種と希望エリア",
+  "language":"Language",
+  "workExperience":"Work Experience",
 };

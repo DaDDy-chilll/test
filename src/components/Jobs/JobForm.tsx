@@ -9,7 +9,7 @@ import DefaultLogo from "@/assets/images/default.png";
 
 type JobFormProps = { 
   onBack?: () => void;
-  onFinish?: (value: boolean) => void;
+  onFinish?: () => void;
 };
 
 const JobForm = ({ onBack, onFinish }: JobFormProps) => {
@@ -168,7 +168,7 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
           <Button
             variant="destructive"
             className="font-medium w-44"
-            onClick={() => {}}
+            onClick={onFinish}
           >
             Finish
           </Button>
