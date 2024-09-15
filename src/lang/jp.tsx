@@ -42,4 +42,5 @@ export const jp = {
   "jobTypeAndLocation":"希望職種と希望エリア",
   "language":"Language",
   "workExperience":"Work Experience",
+  "meetings":"အစည်းအဝေးဇယား"
 };

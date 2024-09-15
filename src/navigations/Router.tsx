@@ -7,7 +7,6 @@ import Routenames from "./routes";
 // import MessageScreen from "@/screens/MessageScreen";
 // import CalendarScreen from "@/screens/CalendarScreen";
 // import RegisterScreen from "@/screens/Auth/RegisterScreen";
-import { events } from "@/constants";
 // import LoginScreen from "@/screens/Auth/LoginScreen";
 // import UserFormScreen from "@/screens/UserFormScreen";
 // import initialLanding from "@/screens/initialLanding";
@@ -75,7 +74,7 @@ const AnimatedRoutes = () => {
           {/* calendar routes */}
           <Route
             path={Routenames.CALENDAR}
-            Component={() => <CalendarScreen events={events} />}
+            Component={CalendarScreen}
           />
           {/* jobs routes */}
           <Route path={Routenames.PROFILE} Component={Profile} />

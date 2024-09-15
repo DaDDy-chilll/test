@@ -10,9 +10,10 @@ import DefaultLogo from "@/assets/images/default.png";
 type JobFormProps = { 
   onBack?: () => void;
   onFinish?: () => void;
+  formVariant?: any;
 };
 
-const JobForm = ({ onBack, onFinish }: JobFormProps) => {
+const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
   const jobTypes = [
     { value: "IT", label: "IT" },
     { value: "Sales", label: "Sales" },
@@ -52,7 +53,7 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
     <motion.div
       key="form"
       className="w-full h-full shadow-md bg-gray-100 px-8 pt-3 flex flex-col justify-center items-center relative"
-      variants={formVariants}
+      variants={formVariant}
       initial="hidden"
       animate="visible"
       exit="exit"
@@ -182,10 +183,6 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
   );
 };
 
-const formVariants = {
-  hidden: { opacity: 0, y: 100 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
-};
+
 
 export default JobForm;

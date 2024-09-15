@@ -12,16 +12,16 @@ const AddJobScreen = () => {
       animate="animate"
       exit="exit"
       className='w-full h-full flex justify-center items-center px-10'>
-          <JobForm onBack={()=>{}}  />
+          <JobForm onBack={()=>{}} formVariant={addJobVariants} />
       </motion.div>
     </Layout>
   )
 }
 
 const addJobVariants = {
-  initial: { opacity: 0, y: 100 },
-  animate: { opacity: 1, y: 0,transition: { duration: 0.2 } },
-  exit: { opacity: 0, y: -100,transition: { duration: 0.2 } },
+  initial: { opacity: 0},
+  animate: { opacity: 1,transition: { duration: 0.2 } },
+  exit: { opacity: 0,transition: { duration: 0.2 } },
 };
 
 export default AddJobScreen;

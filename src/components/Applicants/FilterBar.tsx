@@ -1,8 +1,10 @@
+type FilterBarProps = {
+    className?: string;
+};
 
-
-const FilterBar = () => {
+const FilterBar = ({ className }: FilterBarProps) => {
     return (
-        <div className="bg-white text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className={`bg-white text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}>
             <div className="flex gap-2 items-center">
                 <input type="checkbox" id="livesInJapan" className="accent-primaryColor" />
                 <label htmlFor="livesInJapan" className="text-sm">Lives in Japan</label>

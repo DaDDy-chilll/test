@@ -154,10 +154,9 @@ const JobScreen = () => {
 
   return (
     <Layout>
-      <AnimatePresence mode="wait">
       {(!showDetails && !isAdd && !isEdit) && (
         <motion.div
-        key="job-list"
+          key="job-list"
           variants={jobVariants}
           initial="initial"
           animate="animate"
@@ -197,7 +196,7 @@ const JobScreen = () => {
               <p className="text-lg mr-3">Sort by</p>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <div className="flex items-center gap-2 bg-gray-900 text-white px-10 py-1.5 rounded-lg">
+                  <div className="flex items-center justify-between w-40 gap-2 bg-gray-900 text-white px-3 py-1.5 rounded-lg">
                     <p className="text-sm mr-3">{jobType}</p>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -249,10 +248,9 @@ const JobScreen = () => {
       )}
       {(isAdd || isEdit) && (
         <div className="w-full h-full flex justify-center items-center px-10">
-          <JobForm onBack={backHandler}  />
+          <JobForm onBack={backHandler} formVariant={formVariants} />
         </div>
       )}
-      </AnimatePresence>
     </Layout>
   );
 };
@@ -261,6 +259,12 @@ const jobVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1,transition: { duration: 0.2 } },
   exit: { opacity: 0,transition: { duration: 0.2 }},
+};
+
+const formVariants = {
+  hidden: { opacity: 0, y: 100 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
+  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
 };
 
 export default JobScreen;

@@ -1,4 +1,3 @@
-import React from "react";
 import { UserProfile } from "@/types/user";
 import DefaultLogo from "@/assets/images/default.png";
 import { jp } from "@/lang/jp";

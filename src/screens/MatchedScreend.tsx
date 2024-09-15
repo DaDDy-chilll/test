@@ -95,12 +95,12 @@ const MatchedScreend = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full "
+        className="w-full py-3"
       >
         <div className="text-end px-3">
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <div className="flex items-center gap-2 bg-primaryColor text-white px-5 py-1.5 rounded-md">
+              <div className="flex w-40 justify-between items-center gap-2 bg-primaryColor text-white px-5 py-1.5 rounded-md">
                 <p className="text-sm mr-3">{jobType}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ const MatchedScreend = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {defaultJobType.map((item) => (
-                <DropdownMenuItem key={item.id} onClick={handleJobType}>
+                <DropdownMenuItem key={item.id} onClick={() => handleJobType(item)}>
                   <p>{item.name}</p>
                 </DropdownMenuItem>
               ))}
@@ -205,9 +205,9 @@ const MatchedScreend = () => {
 };
 
 const matchedVariants = {
-  initial: { opacity: 0, y: 100 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -100 },
+  initial: { opacity: 0},
+  animate: { opacity: 1,transition: { duration: 0.2 } },
+  exit: { opacity: 0,transition: { duration: 0.2 } },
 };
 
 export default MatchedScreend;
