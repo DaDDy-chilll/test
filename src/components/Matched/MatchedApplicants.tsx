@@ -9,16 +9,16 @@ type MatchProps = {
 
 const MatchedApplicants = ({ applicant }: MatchProps) => {
   return (
-    <div>
-      <div className="flex items-center gap-x-10">
+    <div className="bg-gray-100 pt-2 pb-5 px-14 shadow-md">
+      <div className="flex items-center gap-x-10 my-3 ">
         <img
           src={applicant.profileImage ? applicant.profileImage : DefaultLogo}
           alt="profile"
           className="w-16 h-16 rounded-full"
         />
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-2">
           <h1 className="font-semibold text-lg">{applicant.id}</h1>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-10">
             <div className="flex items-center gap-2">
               <svg
                 width="16"
@@ -95,9 +95,9 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
           </div>
         </div>
       </div>
-      <div  className="grid grid-cols-5">
-        <div className="col-span-2">
-          <h1 className="underline font-semibold">{jp.jobPreferences}</h1>
+      <div  className="grid grid-cols-5 ">
+        <div className="col-span-2 flex flex-col gap-y-3 border-r-2 border-gray-500">
+          <h1 className="underline font-sm font-semibold ">{jp.jobPreferences}</h1>
           <div className="grid grid-cols-2">
             <div className="flex items-center gap-x-3 text-xs">
               <svg
@@ -116,7 +116,7 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               <p>{jp.passport}</p>
             </div>
 
-            <p>
+            <p className="text-sm text-end px-10">
               {applicant.jobsPreference.passport.toLowerCase() === "yes"
                 ? "Yes"
                 : "No"}
@@ -138,10 +138,10 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
                 />
               </svg>
 
-              <p>{jp.salary}</p>
+              <p className="text-sm ">{jp.salary}</p>
             </div>
 
-            <p>{applicant.jobsPreference.salary}</p>
+            <p className="text-sm text-end px-10">{applicant.jobsPreference.salary}</p>
           </div>
 
           <div className="grid grid-cols-2">
@@ -162,7 +162,7 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               <p>{jp.hourRate}</p>
             </div>
 
-            <p>{applicant.jobsPreference.workingHours}</p>
+            <p className="text-sm text-end px-10">{applicant.jobsPreference.workingHours}</p>
           </div>
 
           <div className="grid grid-cols-2">
@@ -183,7 +183,7 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               <p>{jp.dormitory}</p>
             </div>
 
-            <p>
+            <p className="text-sm text-end px-10">
               {applicant.jobsPreference.accommodationProvided.toLowerCase() ===
               "yes"
                 ? "Yes"
@@ -209,14 +209,15 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               <p>{jp.rent}</p>
             </div>
 
-            <p>
+            <p className="text-sm text-end px-10">
               {applicant.jobsPreference.rentSupport.toLowerCase() === "yes"
                 ? "Yes"
                 : "No"}
             </p>
           </div>
+
           <div className="flex flex-col gap-y-3">
-            <h1 className="underline">{jp.jobTypeAndLocation}</h1>
+            <h1 className="underline font-semibold text-sm mt-3">{jp.jobTypeAndLocation}</h1>
             <div className="flex flex-wrap items-center gap-x-2">
               {applicant.jobsPreference.preferredJobAndArea.jobTypes.map(
                 (jobType) => (
@@ -233,8 +234,9 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               )}
             </div>
           </div>
+
           <div>
-            <h1 className="font-semibold">{jp.language}</h1>
+            <h1 className="font-semibold my-3">{jp.language}</h1>
               <div className="flex items-center gap-x-3">
               {applicant.languages.map((language) => (
               <p className="text-sm">{language.level}</p>
@@ -242,18 +244,20 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
               </div>
           </div>
         </div>
-        <div className="col-span-3">
-          <h1 className=" font-semibold">{jp.education}</h1>
-          <div>
+
+        <div className="col-span-3 pl-4">
+          <h1 className=" font-sm font-semibold mb-2 ">{jp.education}</h1>
+          <div className="flex flex-col gap-y-3 mb-2">
             {applicant.education.map((edu) => (
-              <div>
+              <div className="flex items-center justify-between gap-x-3">
+                <div className="flex items-center justify-between gap-x-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-6"
+                  className="size-6 text-primaryColor"
                 >
                   <path
                     strokeLinecap="round"
@@ -263,24 +267,25 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
                 </svg>
 
                 <div>
-                  <h1>{edu.schoolLevel}</h1>
-                  <p>{edu.schoolName}</p>
+                  <h1 className="text-sm font-semibold">{edu.schoolLevel}</h1>
+                  <p className="text-xs text-gray-500">{edu.schoolName}</p>
                 </div>
-                <p>{edu.year}</p>
+                </div>
+                <p className="text-sm ">{edu.year}</p>
               </div>
             ))}
           </div>
-          <h1 className=" font-semibold">{jp.workExperience}</h1>
+          <h1 className=" font-sm font-semibold">{jp.workExperience}</h1>
           <div>
             {applicant.workExperience.map((exp) => (
-              <div>
+              <div className="flex items-start gap-x-2 my-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-6"
+                  className="size-10 text-primaryColor"
                 >
                   <path
                     strokeLinecap="round"
@@ -290,15 +295,15 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
                 </svg>
 
                 <div>
-                  <div>
-                    <div>
-                      <h1>{exp.position}</h1>
-                      <p>{exp.companyName}</p>
+                  <div className="flex items-start justify-between">
+                    <div className=" mb-1">
+                      <h1 className="text-sm font-semibold">{exp.position}</h1>
+                      <p className="text-sm text-gray-500">{exp.companyName}</p>
                     </div>
-                    <p>{exp.year}</p>
+                    <p  className="text-sm font-semibold">{exp.year}</p>
                   </div>
                   <div>
-                    <p>{exp.description}</p>
+                    <p className="text-xs font-light">{exp.description}</p>
                   </div>
                 </div>
               </div>

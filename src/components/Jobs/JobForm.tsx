@@ -137,14 +137,18 @@ const JobForm = ({ onBack, onFinish }: JobFormProps) => {
             <p className="text-xs text-gray-500 mb-3">{jp.benefits}</p>
             <div className="flex flex-row gap-x-10">
               {benefits.map((benefit) => (
-                <div className="flex flex-row gap-x-3">
-                  <input
-                    type="checkbox"
-                    id={benefit.value}
-                    name={benefit.value}
-                  />
-                  <label htmlFor={benefit.value}>{benefit.label}</label>
-                </div>
+              <div className="flex gap-x-3 items-center">
+              <input type="checkbox" id={benefit.value} name={benefit.value} className="accent-primaryColor" />
+              <label htmlFor={benefit.value} className="text-sm">{benefit.label}</label>
+          </div>
+                // <div className="flex flex-row gap-x-3">
+                //   <input
+                //     type="checkbox"
+                //     id={benefit.value}
+                //     name={benefit.value}
+                //   />
+                //   <label htmlFor={benefit.value}>{benefit.label}</label>
+                // </div>
               ))}
             </div>
           </div>

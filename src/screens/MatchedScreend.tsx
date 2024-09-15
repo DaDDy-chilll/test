@@ -127,7 +127,7 @@ const MatchedScreend = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div>
+        <div className="py-2 px-7">
           <MatchedApplicants applicant={userProfile} />
         </div>
         <div className="flex items-center justify-center gap-4">

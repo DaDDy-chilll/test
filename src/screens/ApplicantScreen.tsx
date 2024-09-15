@@ -1,6 +1,6 @@
 import Layout from "@/layouts/Layout"
 import { motion } from 'framer-motion';
-// import FilterBar from "@/components/Applicants/FilterBar";
+import FilterBar from "@/components/Applicants/FilterBar";
 // import ApplicantCard from "@/components/Applicants/ApplicantCard";
 const ApplicantScreen = () => {
 //   const applicants = Array(10).fill(0);
@@ -11,10 +11,9 @@ const ApplicantScreen = () => {
     initial="initial"
     animate="animate"
     exit="exit"
-    className="min-h-screen bg-green-500 w-full">
-        ApplicantScreen
-            {/* <FilterBar />
-            <div className="p-4">
+    className="min-h-screen w-full">
+            <FilterBar />
+            {/* <div className="p-4">
                 <div className="text-3xl mb-4">ユーザー一覧</div>
                 <p className="text-lg mb-8">Find your suitable applicants</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
