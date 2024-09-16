@@ -5,6 +5,47 @@ import { motion } from "framer-motion";
 // import CalendarCard from '@/components/Dashboard/CalendarCard';
 // import RecentActivityCard from '@/components/Dashboard/RecentActivityCard';
 const DashboardScreen = () => {
+
+  const data = [
+    {
+      name: 'July',
+      matched: 3,
+    },
+    {
+      name: 'August',
+      matched: 3,
+      },
+    {
+      name: 'September',
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: 'Page D',
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: 'Page E',
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: 'Page F',
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: 'Page G',
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
   return (
     <Layout>
       <motion.div
@@ -14,11 +55,20 @@ const DashboardScreen = () => {
         exit="exit"
         className=" w-full h-[calc(100vh-65px)] grid grid-cols-6 grid-rows-4 gap-2 p-2"
       >
-        <div className="bg-red-500 col-span-4 row-span-2">1</div>
-        <div className="bg-orange-500 col-start-5 col-end-7 row-start-2 row-end-3">2</div>
-        <div className="bg-green-500 col-start-5 col-end-7 row-start-1 row-end-2">3</div>
-        <div className="bg-blue-500 col-span-4 col-start-1 row-start-3 row-end-5">4</div>
-        <div className="bg-yellow-500 col-start-5 col-end-7 row-start-3 row-end-5">5</div>
+        <div className="bg-gray-300 col-span-4 row-span-2">
+          <div>
+            <h1>Matched List</h1>
+            <div>
+              <button></button>
+              <p>July</p>
+              <button></button>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-300 col-start-5 col-end-7 row-start-2 row-end-3">2</div>
+        <div className="bg-gray-300 col-start-5 col-end-7 row-start-1 row-end-2">3</div>
+        <div className="bg-gray-300 col-span-4 col-start-1 row-start-3 row-end-5">4</div>
+        <div className="bg-gray-300 col-start-5 col-end-7 row-start-3 row-end-5">5</div>
       </motion.div>
     </Layout>
   );
