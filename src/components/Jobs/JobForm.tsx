@@ -7,7 +7,7 @@ import Select from "@/components/ui/Select";
 import { jp } from "@/lang/jp";
 import DefaultLogo from "@/assets/images/default.png";
 
-type JobFormProps = { 
+type JobFormProps = {
   onBack?: () => void;
   onFinish?: () => void;
   formVariant?: any;
@@ -89,6 +89,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             options={jobTypes}
             className=""
             defaultOption="Choose your job type"
+            value=""
           />
 
           <Select
@@ -137,11 +138,18 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           <div className="col-span-2 w-full ">
             <p className="text-xs text-gray-500 mb-3">{jp.benefits}</p>
             <div className="flex flex-row gap-x-10">
-              {benefits.map((benefit) => (
-              <div className="flex gap-x-3 items-center">
-              <input type="checkbox" id={benefit.value} name={benefit.value} className="accent-primaryColor" />
-              <label htmlFor={benefit.value} className="text-sm">{benefit.label}</label>
-          </div>
+              {benefits.map((benefit, index) => (
+                <div className="flex gap-x-3 items-center" key={index}>
+                  <input
+                    type="checkbox"
+                    id={benefit.value}
+                    name={benefit.value}
+                    className="accent-primaryColor"
+                  />
+                  <label htmlFor={benefit.value} className="text-sm">
+                    {benefit.label}
+                  </label>
+                </div>
                 // <div className="flex flex-row gap-x-3">
                 //   <input
                 //     type="checkbox"
@@ -169,7 +177,9 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
         </div>
 
         <div className="flex justify-between w-full pb-3 px-10 mr-10">
-        <button className="underline font-medium" onClick={onBack}>Back</button>
+          <button className="underline font-medium" onClick={onBack}>
+            Back
+          </button>
           <Button
             variant="destructive"
             className="font-medium w-44"
@@ -182,7 +192,5 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
     </motion.div>
   );
 };
-
-
 
 export default JobForm;

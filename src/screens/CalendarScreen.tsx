@@ -172,8 +172,8 @@ const CalendarScreen = () => {
             </div>
             <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
               {
-                events.map((event) => {
-                  return <EventListItem key={event.title} event={event} />
+                events.map((event,index) => {
+                  return <EventListItem key={index} event={event} />
                 })
               }
             </div>

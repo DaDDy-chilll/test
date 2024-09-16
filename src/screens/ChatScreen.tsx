@@ -35,8 +35,8 @@ const ChatScreen = () => {
 
         {/* User Lists View */}
         <div className='bg-gray-100 col-span-2 row-span-9 '>
-          {users.map((user) => (
-            <UserItem key={user.name} user={user} />
+          {users.map((user,index) => (
+            <UserItem key={index} user={user} />
           ))}
         </div>
 

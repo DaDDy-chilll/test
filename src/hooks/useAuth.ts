@@ -14,10 +14,11 @@ const useAuth = () => {
     const { mutate: onLogin, isPending: isLoginPending } = useMutation({
         mutationFn: (data: LoginProps) => {
             if (!data.email || !data.password) return Promise.reject("Email and Password is required");
-            return fetchServer({ url: apiRoutes.LOGIN, method: "POST", body: data });
+            return fetchServer({ endpoint: apiRoutes.LOGIN, method: "POST", body: data });
         },
         onSuccess: (data) => {
             dispatch(setToken(data.token));
+            localStorage.setItem("token", data.token);
             navigate(User.DASHBOARD);
         },
         onError: (error) => {
@@ -28,16 +29,20 @@ const useAuth = () => {
     const { mutate: onRegister, isPending: isRegisterPending } = useMutation({
         mutationFn: (data: RegisterProps) => {
             if (!data.name || !data.email || !data.password || !data.confirmPassword) return Promise.reject("All fields are required");
-            return fetchServer({ url: apiRoutes.REGISTER, method: "POST", body: data });
+            return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
         },
         onSuccess: (data) => {
             dispatch(setToken(data.token));
+            localStorage.setItem("token", data.token);
             navigate(User.DASHBOARD);
         },
         onError: (error) => {
             console.log(error);
         },
     })
+
+
+
 
     return { onLogin, isLoginPending, onRegister, isRegisterPending }
 };

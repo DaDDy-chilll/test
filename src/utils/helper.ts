@@ -1,22 +1,16 @@
 import axios from "axios";
 import { FetchServerType } from "../types/helperTypes";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 let result: any;
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
-api.interceptors.request.use((config) => {
-    const token = useSelector((state: RootState) => state.auth.token);
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
 
-export const fetchServer  = async ( {url, method, body, file, endpoint}:FetchServerType ) => {
-    const {token} = useSelector((state: RootState) => state.auth);
-    let urlEndPoint = endpoint + url;
+
+export const fetchServer  = async ( {endpoint, method, body, file, token=null}:FetchServerType ) => {
+    let urlEndPoint = endpoint || "";
+    console.log('urlEndPoint',api.defaults.baseURL,urlEndPoint);
     try {
      
     if(method === "GET") {
@@ -26,6 +20,11 @@ export const fetchServer  = async ( {url, method, body, file, endpoint}:FetchSer
             }
         });
         result = data;
+    }else if(method === "POST" && !file && !token) {
+        console.log('body',body);
+        const {data} = await api.post(urlEndPoint, body);
+        console.log('data',data);
+            result = data;
     }else if(method === "POST" && !file) {
         const {data} = await api.post(urlEndPoint, body, {
             headers: {

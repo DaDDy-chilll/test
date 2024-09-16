@@ -1,37 +1,21 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
-import login, { LoginResponse } from "@/networks/mutations/auth/login";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/fix/logo.png";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import Routenames from "@/navigations/routes";
-
+import { LoginProps } from "@/types/helperTypes";
+import useAuth  from "@/hooks/useAuth";
 const LoginScreen = () => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const mutation = useMutation<LoginResponse, Error, FormData>({
-    mutationFn: async (formData) => {
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
-      return login({ email, password });
-    },
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      queryClient.setQueryData(["user"], data.user);
-      console.log("Login successful:", data);
-    },
-    onError: (error) => {
-      console.error("Login failed:", error);
-    },
-  });
+  const { onLogin, isLoginPending } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate(Routenames.DASHBOARD);
-    // const formData = new FormData(e.currentTarget);
-    // mutation.mutate(formData);
+    const formData = new FormData(e.currentTarget);
+    const loginProps: LoginProps = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string
+    };
+    onLogin(loginProps);
   };
 
   return (
@@ -69,10 +53,10 @@ const LoginScreen = () => {
             <div>
               <Button
                 type="submit"
-                disabled={mutation.isPending}
+                disabled={isLoginPending}
                 className="w-full medium font-medium"
               >
-                {mutation.isPending ? "Logging in..." : "Login"}
+                {isLoginPending ? "Logging in..." : "Login"}
               </Button>
             </div>
           </motion.form>

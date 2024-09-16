@@ -44,8 +44,8 @@ const ApplicantTable = ({applicants}: ApplicantTableProps) => {
             </tr>
         </thead>
         <tbody className="overflow-y-auto ">
-            {applicants.map((applicant) => (
-            <tr className="bg-white dark:bg-gray-800">
+            {applicants.map((applicant,index) => (
+            <tr className="bg-white dark:bg-gray-800" key={index}>
                 <td className=" py-2 text-center">
                     {applicant.id}
                 </td>
@@ -54,8 +54,8 @@ const ApplicantTable = ({applicants}: ApplicantTableProps) => {
                     <p className="text-xs font-normal text-gray-500">{applicant.userId}</p>
                 </th>
                 <td className=" py-2 flex flex-col items-center justify-center gap-1">
-                    {applicant.preferJob.map((job) => (
-                        <p className="text-xs text-white font-normal bg-primaryColor rounded-full px-2 py-1">{job}</p>
+                    {applicant.preferJob.map((job,index) => (
+                        <p className="text-xs text-white font-normal bg-primaryColor rounded-full px-2 py-1" key={index}>{job}</p>
                     ))}
                 </td>
                 <td className="py-2 text-center text-secondaryColor">

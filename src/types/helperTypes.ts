@@ -1,9 +1,9 @@
 export type FetchServerType =  {
-  url: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: any;
-  file?: boolean;
+  file?: boolean | null;
   endpoint?: string;
+  token?: string | null;
 };
 
 export type LoginProps = {

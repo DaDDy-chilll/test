@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 type LineChartProps = { 
-  data: any;
+  data?: any[];
 };
-const LineCharts = ({data}: LineChartProps) => {
+const LineCharts = ({data=[]}: LineChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
     <LineChart

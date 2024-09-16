@@ -219,16 +219,16 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
             <h1 className="underline font-semibold text-sm mt-3">{jp.jobTypeAndLocation}</h1>
             <div className="flex flex-wrap items-center gap-x-2">
               {applicant.jobsPreference.preferredJobAndArea.jobTypes.map(
-                (jobType) => (
-                  <p className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full">{jobType}</p>
+                (jobType,index) => (
+                  <p key={index} className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full">{jobType}</p>
                 )
               )}
             </div>
             <hr className="mx-4 border rounded-md  border-gray-400" />
             <div className="flex flex-wrap items-center gap-x-2">
               {applicant.jobsPreference.preferredJobAndArea.areas.map(
-                (area) => (
-                  <p className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full">{area}</p>
+                (area,index) => (
+                  <p key={index} className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full">{area}</p>
                 )
               )}
             </div>
@@ -237,8 +237,8 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
           <div>
             <h1 className="font-semibold my-3">{jp.language}</h1>
               <div className="flex items-center gap-x-3">
-              {applicant.languages.map((language) => (
-              <p className="text-sm">{language.level}</p>
+              {applicant.languages.map((language,index) => (
+              <p key={index} className="text-sm">{language.level}</p>
             ))}
               </div>
           </div>
@@ -247,8 +247,8 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
         <div className="col-span-3 pl-4">
           <h1 className=" font-sm font-semibold mb-2 ">{jp.education}</h1>
           <div className="flex flex-col gap-y-3 mb-2">
-            {applicant.education.map((edu) => (
-              <div className="flex items-center justify-between gap-x-3">
+            {applicant.education.map((edu,index) => (
+              <div key={index} className="flex items-center justify-between gap-x-3">
                 <div className="flex items-center justify-between gap-x-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -276,8 +276,8 @@ const MatchedApplicants = ({ applicant }: MatchProps) => {
           </div>
           <h1 className=" font-sm font-semibold">{jp.workExperience}</h1>
           <div>
-            {applicant.workExperience.map((exp) => (
-              <div className="flex items-start gap-x-2 my-4">
+            {applicant.workExperience.map((exp,index) => (
+              <div key={index} className="flex items-start gap-x-2 my-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

@@ -42,9 +42,9 @@ const Select: React.FC<SelectProps> = ({
         name={name}
         className="relative block font-normal py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
       >
-        <option selected>{defaultOption} </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
+        <option defaultValue={defaultOption} value={defaultOption} >{defaultOption} </option>
+        {options.map((option,index) => (
+          <option key={index} value={option.value}>
             {option.label}
           </option>
         ))}
