@@ -28,8 +28,8 @@ const renderCustomizedLabel = ({
 
 const Pichart = ({ data = [], colors = [] }: any) => {
   return (
-    <ResponsiveContainer width={300} height="100%">
-      <PieChart >
+    <ResponsiveContainer width={100} height={100}>
+      <PieChart width={100} height={100}>
         <Pie
           data={data}
           cx="30%"
@@ -37,7 +37,6 @@ const Pichart = ({ data = [], colors = [] }: any) => {
           labelLine={false}
           label={renderCustomizedLabel}
           outerRadius={80}
-          fill="#8884d8"
           dataKey="value"
         >
           <Tooltip />

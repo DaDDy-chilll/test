@@ -122,8 +122,11 @@ const DashboardScreen = () => {
           </div>
         </div>
 
-        <div className="bg-gray-300 col-start-5 col-end-7 row-start-1 row-end-2">
-        <div className="flex justify-between items-center mx-3 mt-3">
+        {/* User Pie Chart */}
+        <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
+          <div className="relative w-full h-full">
+
+          <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-sm font-semibold">Matched List</h1>
             <div className="flex items-center gap-x-5">
               <button className="p-2 rounded-md bg-primaryColor text-white">
@@ -161,18 +164,27 @@ const DashboardScreen = () => {
               </button>
             </div>
           </div>
-         <div className="w-full h-full flex items-center justify-start">
-         <Pichart data={genderData} colors={["#8B78B8", "#5E3FBE"]} />
-          <div className="">
+
+       <div className="w-40 h-52">
+       <Pichart data={genderData} colors={["#8B78B8", "#5E3FBE"]} />
+       </div>
+
+         <div className="absoute top-10 left-0">
             <h1>male</h1>
           </div>
-         </div>
+          </div>
+
         </div>
+
+         {/* Laungauge Pie Chart */}
         <div className="bg-gray-300 col-start-5 col-end-7 row-start-2 row-end-3">
           <Pichart
             data={languageData}
             colors={["#EAF6ED", "#C9EAD4", "#A9DEBA", "#67C587"]}
           />
+            <div className="absoute top-0 right-0">
+            <h1>female</h1>
+          </div>
         </div>
         <div className="bg-gray-300 col-span-4 col-start-1 row-start-3 row-end-5">
           4
