@@ -44,5 +44,6 @@ export const jp = {
   "workExperience":"Work Experience",
   "meetings":"အစည်းအဝေးဇယား",
   "aiChat":"Ai ဘာသာပြန်",
-  "adminHelp":"အဒ်မင်အကူအညီ"
+  "adminHelp":"အဒ်မင်အကူအညီ",
+  "newMessages":"မက်ဆေ့အသစ်များ"
 };
