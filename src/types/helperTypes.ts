@@ -12,8 +12,13 @@ export type LoginProps = {
 };
 
 export type RegisterProps = {
-  name: string;
   email: string;
   password: string;
   confirmPassword: string;
 };
+
+export type ErrorType = {
+  error: boolean;
+  message: string ;
+  status: number ;
+}

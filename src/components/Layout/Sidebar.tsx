@@ -4,9 +4,12 @@ import logo from "@/assets/fix/logo.png";
 import { jp } from "@/lang/jp";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store/";
+import useAuth from "@/hooks/useAuth";
+
 
 const Sidebar = () => {
   const dispatch = useDispatch();
+  const {onLogout} = useAuth();
 
   const handleClick = (title: string) => {
     dispatch(setTitle(title));
@@ -194,7 +197,7 @@ const Sidebar = () => {
           <NavLink
             to={Routenames.LOGIN}
             className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white  hover:text-primaryColor dark:hover:bg-gray-700 group"
-            onClick={() => handleClick(jp.dashboard)}
+            onClick={onLogout}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

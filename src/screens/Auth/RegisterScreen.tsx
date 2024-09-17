@@ -5,38 +5,22 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/fix/logo.png";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-
+import useAuth from "@/hooks/useAuth";
+import { RegisterProps } from "@/types/helperTypes";
+import { BeatLoader } from "react-spinners";
 
 const RegisterScreen = () => {
-const navigate = useNavigate()
-
-  // const mutation = useMutation<RegisterResponse, Error, FormData>({
-  //   mutationFn: async (formData) => {
-  //     const email = formData.get("email") as string;
-  //     const password = formData.get("password") as string;
-  //     const confirmPassword = formData.get("confirmPassword") as string;
-
-  //     if (password !== confirmPassword) {
-  //       throw new Error("Passwords do not match");
-  //     }
-
-  //     return registerUser({ email, password });
-  //   },
-  //   onSuccess: (data) => {
-  //     console.log("Registration successful:", data);
-  //     // Handle successful registration (e.g., redirect to login or show a success message)
-  //   },
-  //   onError: (error) => {
-  //     console.error("Registration failed:", error);
-  //   },
-  // });
+const {onRegister,isRegisterPending,error} = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/form")
-    // const formData = new FormData(e.currentTarget);
-    // mutation.mutate(formData);
+    const formData = new FormData(e.currentTarget);
+    const registerProps: RegisterProps = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      confirmPassword: formData.get("confirmPassword") as string,
+    };
+    onRegister(registerProps);
   };
 
   return (
@@ -78,6 +62,7 @@ const navigate = useNavigate()
                 label="Confirm Password"
                 className="mt-1 block w-full"
                 required={false}
+                error={error.toast && error.message || ''}
               />
             </div>
             <div>
@@ -86,7 +71,7 @@ const navigate = useNavigate()
                 disabled={false}
                 className="w-full medium font-medium"
               >
-                {false ? "Registering..." : "Register"}
+                {isRegisterPending ? <BeatLoader loading={isRegisterPending} size={8} color={"#fff"} />: "Register"}
               </Button>
             </div>
           </motion.form>

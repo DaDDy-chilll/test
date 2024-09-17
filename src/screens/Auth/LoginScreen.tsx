@@ -5,8 +5,10 @@ import logo from "@/assets/fix/logo.png";
 import { motion } from "framer-motion";
 import { LoginProps } from "@/types/helperTypes";
 import useAuth  from "@/hooks/useAuth";
+import { BeatLoader } from "react-spinners";
+
 const LoginScreen = () => {
-  const { onLogin, isLoginPending } = useAuth();
+  const { onLogin, isLoginPending, error } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,6 +41,7 @@ const LoginScreen = () => {
                 label="Email"
                 className="mt-1 block w-full"
                 required={false}
+                error={error.toast && error.message || ''}
               />
             </div>
             <div>
@@ -56,7 +59,7 @@ const LoginScreen = () => {
                 disabled={isLoginPending}
                 className="w-full medium font-medium"
               >
-                {isLoginPending ? "Logging in..." : "Login"}
+                {isLoginPending ? <BeatLoader loading={isLoginPending} size={8} color={"#fff"} /> : "Login"}
               </Button>
             </div>
           </motion.form>

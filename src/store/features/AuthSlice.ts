@@ -3,13 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 interface AuthState {
-  user: string | null;
+  user: {
+    email: string;
+    password: string;
+  } | null;
   token: string | null;
 }
+const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
 const initialState: AuthState = {
-  user: null,
-  token: null,
+  user,
+  token,
 };
 
 const getT = () => {
@@ -23,13 +28,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
     },
     getToken: (state) => {
       state.token = getT();
     },
     removeToken: (state) => {
       state.token = null;
+      state.user = null;
     },
   },
 });

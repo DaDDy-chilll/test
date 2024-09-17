@@ -46,6 +46,12 @@ export const fetchServer  = async ( {endpoint, method, body, file, token=null}:F
         if(error.response?.status === 401) {
             localStorage.removeItem("token");
             return {error:true,message:error.response?.data?.message,status:error.response?.status}
+        }else if(error.response?.status === 400) {
+            return {error:true,message:error.response?.data?.message,status:error.response?.status}
+        }else if(error.response?.status === 404) {
+            return {error:true,message:error.response?.data?.message,status:error.response?.status}
+        }else if(error.response?.status === 500) {
+            return {error:true,message:error.response?.data?.message,status:error.response?.status}
         }
     }
 };
