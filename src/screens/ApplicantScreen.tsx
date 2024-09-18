@@ -4,9 +4,23 @@ import FilterBar from "@/components/Applicants/FilterBar";
 import ApplicantTable from "@/components/Applicants/ApplicantTable";
 import { useState } from "react";
 import Pagination from "@/components/Applicants/Pagination";
-// import ApplicantCard from "@/components/Applicants/ApplicantCard";
+import { FilterType } from "@/types/helperTypes";
+
+
+const FilterState: FilterType = {
+  livesInJapan: false,
+  livesInMyanmar: false,
+  gender: "",
+  language: "",
+  education: "",
+  jobType: "",
+}
+
+
+
 const ApplicantScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState(FilterState);
   const itemsPerPage = 5;
   const defaultApplicants = [
     {
@@ -81,8 +95,33 @@ const ApplicantScreen = () => {
     },
   ];
 
-  // Get current page's data
-  const currentData = defaultApplicants.slice(
+  // Filter function based on filter state
+  const filteredApplicants = defaultApplicants.filter((applicant) => {
+    console.log(applicant.address,!filter.livesInMyanmar || applicant.address === "Myanmar",filter.livesInMyanmar);
+    return (
+      // Filter by location
+      (!filter.livesInJapan || applicant.address === "Japan") &&
+      (!filter.livesInMyanmar || applicant.address === "Myanmar") &&
+      
+      // Filter by gender
+      (filter.gender === "" || applicant.gender.toLowerCase() === filter.gender.toLowerCase()) &&
+      
+      // Filter by language
+      (filter.language === "" || 
+        (filter.language === "Japanese") ||
+        (applicant.japaneseLevel.match(filter.language) !== null)
+      ) &&
+      
+      // Filter by education
+      (filter.education === "" || applicant.education.toLowerCase().includes(filter.education.toLowerCase())) &&
+      
+      // Filter by job type (assuming preferJob is an array of job types)
+      (filter.jobType === 'Job Type' || applicant.preferJob.some(job => job.toLowerCase().includes(filter.jobType.toLowerCase())))
+    );
+  });
+
+  // Update currentData to use filteredApplicants instead of defaultApplicants
+  const currentData = filteredApplicants.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -96,15 +135,15 @@ const ApplicantScreen = () => {
         exit="exit"
         className="w-full overflow-hidden pb-4 relative"
       >
-        <FilterBar />
+        <FilterBar filter={filter} setFilter={setFilter} />
         <div className="flex justify-start items-center px-4 py-2">
           <p className="text-gray-500 text-sm">
-            Search Result <span className="text-secondaryColor">(100)</span>
+            Search Result <span className="text-secondaryColor">({filteredApplicants.length})</span>
           </p>
         </div>
         <ApplicantTable applicants={currentData} />
         <Pagination
-          data={defaultApplicants}
+          data={filteredApplicants}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}

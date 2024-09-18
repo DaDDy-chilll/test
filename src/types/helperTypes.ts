@@ -22,3 +22,12 @@ export type ErrorType = {
   message: string ;
   status: number ;
 }
+
+export type FilterType = {
+  livesInJapan: boolean;
+  livesInMyanmar: boolean;
+  gender: string;
+  language: string;
+  education: string;
+  jobType: string;
+}

@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import JobListItem from "@/components/Jobs/JobListItem";
 import { Button } from "@/components/ui/button";
 import JobDetails from "@/components/ui/JobDetails";
@@ -135,6 +135,14 @@ const JobScreen = () => {
     setSearch(e.target.value);
   };
 
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) =>
+      job.position.toLowerCase().includes(search.toLowerCase()) ||
+      job.location.toLowerCase().includes(search.toLowerCase()) ||
+      (Number(job.applied) === Number(search)) 
+    );
+  }, [jobs, search]);
+
   const handleJobType = (e: React.MouseEvent<HTMLDivElement>) => {
     setJobType((e.target as HTMLDivElement).innerText);
   };
@@ -225,7 +233,7 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {jobs.map((item) => (
+            {filteredJobs.map((item) => (
               <JobListItem
                 key={item.id}
                 item={item}

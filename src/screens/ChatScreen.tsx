@@ -16,7 +16,8 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
+import { userRef, db } from "@/firebaseConfig";
+import { getRoomId } from "@/utils/common";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 
@@ -37,7 +38,7 @@ interface ChatInfo {
 const ChatScreen = () => {
   const {token,user} = useSelector((state: RootState) => state.auth);
 const [userId,setUserId] = useState<number | null>(null);
-const [messages, setMessages] = useState<Message[]>([]);
+const [messages, setMessages] = useState<any>([]);
 const [newMessage, setNewMessage] = useState("");
 const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
 const [hasMore, setHasMore] = useState(true);
@@ -78,27 +79,25 @@ const chatRef = useRef<HTMLDivElement>(null);
 
  // Fetch messages from Firestore
  useEffect(() => {
-  if (!chatInfo) return;
+  if (!userId) {
+    return;
+  }
+  // createRoomIfNotExists();
 
-  const q = query(
-    collection(db, "messages"),
-    where("chat_id", "==", chatInfo.userId),
-    orderBy("timestamp", "asc")
-  );
+  const roomId = getRoomId(user?.email, userId);
+  // const docRef = doc(db, "rooms", roomId);
+  const messageRef = collection(db, "messages");
+  const q = query(messageRef,where("chat_id", "==", roomId), orderBy("createdAt", "desc"));
 
-  const unsubscribe = onSnapshot(q, (snapshot) => {
-    const messagesData: Message[] = [];
-    snapshot.forEach((doc) => {
-      messagesData.push({ messageId: doc.id, ...doc.data() } as Message);
-    });
-    setMessages(messagesData);
-
-    // Scroll to bottom when messages update
-    chatRef.current?.scrollTo(0, chatRef.current.scrollHeight);
+  const unsub = onSnapshot(q, (snapshot) => {
+    const allMessages = snapshot.docs.map((doc) => doc.data());
+    setMessages([...allMessages]);
   });
 
-  return () => unsubscribe();
-}, [chatInfo]);
+  return () => unsub();
+}, [userId]);
+
+
 
 
  // Send a new message
@@ -122,6 +121,8 @@ const chatRef = useRef<HTMLDivElement>(null);
     console.error("Error sending message: ", error);
   }
 };
+
+console.log(messages);
 
   return (
     <Layout>
@@ -150,7 +151,7 @@ const chatRef = useRef<HTMLDivElement>(null);
         {/* Chat View */}
         <div className='bg-gray-100 col-start-3 col-end-9 row-start-2 row-end-9 relative'>
           <div className="bg-red-100 w-full h-full flex flex-col-reverse gap-2 justify-start">
-          {messages.sort((a:any,b:any) => a.timestamp - b.timestamp).map((message, index) => (
+          {messages.sort((a:any,b:any) => a.timestamp - b.timestamp).map((message:any, index:any) => (
               <MessageItem key={index} message={message.content} currentUser={user} />
             ))}
           </div>

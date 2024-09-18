@@ -23,6 +23,7 @@ const {onRegister,isRegisterPending,error} = useAuth();
     onRegister(registerProps);
   };
 
+  console.log(error);
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200">
       <div className="flex  w-1/3 h-5/6 shadow-md">
@@ -62,7 +63,7 @@ const {onRegister,isRegisterPending,error} = useAuth();
                 label="Confirm Password"
                 className="mt-1 block w-full"
                 required={false}
-                error={error.toast && error.message || ''}
+                error={!error.toast && error.message || ''}
               />
             </div>
             <div>
