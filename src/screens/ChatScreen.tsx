@@ -149,8 +149,8 @@ const chatRef = useRef<HTMLDivElement>(null);
 
         {/* Chat View */}
         <div className='bg-gray-100 col-start-3 col-end-9 row-start-2 row-end-9 relative'>
-          <div className="bg-red-500 w-full h-full flex flex-col-reverse gap-2 justify-start">
-          {messages.map((message, index) => (
+          <div className="bg-red-100 w-full h-full flex flex-col-reverse gap-2 justify-start">
+          {messages.sort((a:any,b:any) => a.timestamp - b.timestamp).map((message, index) => (
               <MessageItem key={index} message={message.content} currentUser={user} />
             ))}
           </div>
