@@ -1,4 +1,3 @@
-import Layout from "@/layouts/Layout";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -9,6 +8,7 @@ import {
 import { useState } from "react";
 import MatchedApplicants from "@/components/Matched/MatchedApplicants";
 import { UserProfile } from '@/types/user';
+import Loading from "@/components/ui/Loading";
 ;
 
 
@@ -89,7 +89,8 @@ const MatchedScreend = () => {
   
 
   return (
-    <Layout>
+    <>
+    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
       <motion.div
         variants={matchedVariants}
         initial="initial"
@@ -200,7 +201,8 @@ const MatchedScreend = () => {
           </button>
         </div>
       </motion.div>
-    </Layout>
+    </>
+
   );
 };
 

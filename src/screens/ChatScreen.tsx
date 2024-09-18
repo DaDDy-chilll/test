@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import Layout from '@/layouts/Layout';
 import { motion } from 'framer-motion';
 import UserItem from '@/components/Chat/UserItem';
 import { jp } from '@/lang/jp';
@@ -20,6 +19,7 @@ import { userRef, db } from "@/firebaseConfig";
 import { getRoomId } from "@/utils/common";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import Loading from "@/components/ui/Loading";
 
 interface Message {
   messageId: string;
@@ -125,7 +125,8 @@ const chatRef = useRef<HTMLDivElement>(null);
 console.log(messages);
 
   return (
-    <Layout>
+    <>
+    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
       <motion.div
       variants={chatVariants}
       initial="initial"
@@ -170,7 +171,8 @@ console.log(messages);
           </div>
         </div>
       </motion.div>
-    </Layout>
+    </>
+
   )
 }
 

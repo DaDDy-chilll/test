@@ -1,17 +1,7 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Routenames from "./routes";
-
-// import DashboardScreen from "@/screens/DashboardScreen";
-// import ApplicantScreen from "@/screens/ApplicantScreen";
-// import JobScreen from "@/screens/JobScreen";
-// import MessageScreen from "@/screens/MessageScreen";
-// import CalendarScreen from "@/screens/CalendarScreen";
-// import RegisterScreen from "@/screens/Auth/RegisterScreen";
-// import LoginScreen from "@/screens/Auth/LoginScreen";
-// import UserFormScreen from "@/screens/UserFormScreen";
-// import initialLanding from "@/screens/initialLanding";
 import ProtectRoute from "./ProtectRoute";
-import ShareLayout from "@/components/Layout/ShareLayout";
+import ShareLayout from "@/layouts/ShareLayout";
 import {
   AddJobScreen,
   ApplicantScreen,
@@ -27,7 +17,11 @@ import {
 import DashboardScreen from "@/screens/DashboardScreen";
 import Profile from "@/screens/Profile";
 import { AnimatePresence } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { useEffect } from "react";
+import NotFound from "@/components/Auth/NotFound";
 
 const Router = () => {
   return (
@@ -37,9 +31,16 @@ const Router = () => {
   );
 };
 
-
 const AnimatedRoutes = () => {
   const location = useLocation(); // useLocation should be used here, inside BrowserRouter
+  const navigate = useNavigate();
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -48,7 +49,8 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
-        {/* end auth route */}
+        {/* Not found route */}
+        <Route path="*" Component={NotFound} />
 
         {/* Protected routes */}
         <Route
@@ -58,6 +60,7 @@ const AnimatedRoutes = () => {
             </ProtectRoute>
           }
         >
+          {/* User form route */}
           <Route path={Routenames.USER_FORM} Component={UserFormScreen} />
           {/* Dashboard routes */}
           <Route path={Routenames.DASHBOARD} Component={DashboardScreen} />
@@ -72,10 +75,7 @@ const AnimatedRoutes = () => {
           {/* jobs routes */}
           <Route path={Routenames.ADDJOB} Component={AddJobScreen} />
           {/* calendar routes */}
-          <Route
-            path={Routenames.CALENDAR}
-            Component={CalendarScreen}
-          />
+          <Route path={Routenames.CALENDAR} Component={CalendarScreen} />
           {/* jobs routes */}
           <Route path={Routenames.PROFILE} Component={Profile} />
         </Route>

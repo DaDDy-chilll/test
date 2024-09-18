@@ -31,3 +31,9 @@ export type FilterType = {
   education: string;
   jobType: string;
 }
+
+export type Event = {
+  title: string;
+  date: string;
+  description: string;
+}

@@ -1,6 +1,5 @@
-import Layout from "@/layouts/Layout";
-import clsx from "clsx";
-import { events } from "@/constants";
+
+
 import { motion } from "framer-motion";
 import {
   eachDayOfInterval,
@@ -16,13 +15,13 @@ import { useMemo, useState } from "react";
 import CalendarCell from "@/components/CalendarScreen/CalendarCell";
 import { jp } from "@/lang/jp";
 import EventListItem from "@/components/CalendarScreen/EventListItem";
-
+import Loading from "@/components/ui/Loading";
+import useFetch from "@/hooks/useFetch";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { Event } from "@/types/helperTypes";
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-interface Event {
-  date: string;
-  title: string;
-}
+
 
 // interface EventCalendarProps {
 //   events: Event[];
@@ -33,6 +32,8 @@ const CalendarScreen = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
+  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.EVENTS)
+  const events:Event[] = data || [];
 
   const goToNextMonth = () => {
     setCurrentDate(addMonths(currentDate, 1));
@@ -54,7 +55,7 @@ const CalendarScreen = () => {
     getDay(lastDayOfMonth) === 0 ? 0 : 7 - getDay(lastDayOfMonth);
 
   const eventsByDate = useMemo(() => {
-    return events.reduce((acc: { [key: string]: Event[] }, event) => {
+    return events.reduce((acc: { [key: string]: Event[] }, event:Event) => {
       const dateKey = format(new Date(event.date), "yyyy-MM-dd");
       if (!acc[dateKey]) {
         acc[dateKey] = [];
@@ -65,7 +66,8 @@ const CalendarScreen = () => {
   }, [events]);
 
   return (
-    <Layout>
+    <>
+    {isLoading && <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={calendarVariants}
         initial="initial"
@@ -179,7 +181,8 @@ const CalendarScreen = () => {
             </div>
         </div>
       </motion.div>
-    </Layout>
+    </>
+
   );
 };
 

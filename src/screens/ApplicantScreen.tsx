@@ -1,11 +1,12 @@
-import Layout from "@/layouts/Layout";
 import { motion } from "framer-motion";
 import FilterBar from "@/components/Applicants/FilterBar";
 import ApplicantTable from "@/components/Applicants/ApplicantTable";
 import { useState } from "react";
 import Pagination from "@/components/Applicants/Pagination";
 import { FilterType } from "@/types/helperTypes";
-
+import useFetch from "@/hooks/useFetch";
+import Loading from "@/components/ui/Loading";
+import { apiRoutes } from "@/utils/apiRoutes";
 
 const FilterState: FilterType = {
   livesInJapan: false,
@@ -16,88 +17,15 @@ const FilterState: FilterType = {
   jobType: "",
 }
 
-
-
 const ApplicantScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(FilterState);
+  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.APPLICANTS)
   const itemsPerPage = 5;
-  const defaultApplicants = [
-    {
-      id: 1,
-      name: "Zar Ni Win Lwin",
-      userId: "U_2012112",
-      preferJob: ["Accommodation", "Agriculture", "Aviation"],
-      address: "Myanmar",
-      education: "High School",
-      japaneseLevel: "JLPT N4",
-      gender: "Male",
-    },
-    {
-      id: 2,
-      name: "Aung Kyaw Moe",
-      userId: "U_2013113",
-      preferJob: ["IT", "Healthcare", "Construction"],
-      address: "Thailand",
-      education: "Bachelor's Degree",
-      japaneseLevel: "JLPT N5",
-      gender: "Male",
-    },
-    {
-      id: 3,
-      name: "Soe Thiri Aung",
-      userId: "U_2014114",
-      preferJob: ["Education", "Finance", "Marketing"],
-      address: "Vietnam",
-      education: "Master's Degree",
-      japaneseLevel: "JLPT N3",
-      gender: "Female",
-    },
-    {
-      id: 4,
-      name: "Kyaw Zeya",
-      userId: "U_2015115",
-      preferJob: ["Tourism", "Sales", "Engineering"],
-      address: "Myanmar",
-      education: "Diploma",
-      japaneseLevel: "JLPT N2",
-      gender: "Male",
-    },
-    {
-      id: 5,
-      name: "Hnin Wai Phyo",
-      userId: "U_2016116",
-      preferJob: ["Design", "Architecture", "Logistics"],
-      address: "Cambodia",
-      education: "High School",
-      japaneseLevel: "JLPT N4",
-      gender: "Female",
-    },
-    {
-      id: 6,
-      name: "Thiri Nwe Aye",
-      userId: "U_2017117",
-      preferJob: ["Accounting", "Management", "Law"],
-      address: "Laos",
-      education: "Bachelor's Degree",
-      japaneseLevel: "JLPT N1",
-      gender: "Female",
-    },
-    {
-      id: 7,
-      name: "Myat Thura",
-      userId: "U_2018118",
-      preferJob: ["Construction", "IT", "Agriculture"],
-      address: "Myanmar",
-      education: "Diploma",
-      japaneseLevel: "JLPT N5",
-      gender: "Male",
-    },
-  ];
+  const applicants = data || [];
 
   // Filter function based on filter state
-  const filteredApplicants = defaultApplicants.filter((applicant) => {
-    console.log(applicant.address,!filter.livesInMyanmar || applicant.address === "Myanmar",filter.livesInMyanmar);
+  const filteredApplicants = applicants.filter((applicant:any) => {
     return (
       // Filter by location
       (!filter.livesInJapan || applicant.address === "Japan") &&
@@ -116,7 +44,7 @@ const ApplicantScreen = () => {
       (filter.education === "" || applicant.education.toLowerCase().includes(filter.education.toLowerCase())) &&
       
       // Filter by job type (assuming preferJob is an array of job types)
-      (filter.jobType === 'Job Type' || applicant.preferJob.some(job => job.toLowerCase().includes(filter.jobType.toLowerCase())))
+      (filter.jobType === 'Job Type' || applicant.preferJob.some((job:any) => job.toLowerCase().includes(filter.jobType.toLowerCase())))
     );
   });
 
@@ -126,15 +54,19 @@ const ApplicantScreen = () => {
     currentPage * itemsPerPage
   );
 
+
+
   return (
-    <Layout>
+ <>
+    {isLoading && <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={applicantVariants}
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full overflow-hidden pb-4 relative"
+        className="w-full overflow-hidden relative"
       >
+      
         <FilterBar filter={filter} setFilter={setFilter} />
         <div className="flex justify-start items-center px-4 py-2">
           <p className="text-gray-500 text-sm">
@@ -149,7 +81,7 @@ const ApplicantScreen = () => {
           setCurrentPage={setCurrentPage}
         />
       </motion.div>
-    </Layout>
+    </>
   );
 };
 

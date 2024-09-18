@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Routenames from "@/navigations/routes";
-import logo from "@/assets/fix/logo.png";
+import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store/";

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 
 type PaginationProps = {
   data: any[];
@@ -13,6 +12,7 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
+  
   // Calculate total pages
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -23,7 +23,7 @@ const Pagination = ({
     }
   };
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-2 mt-3">
       <button
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}

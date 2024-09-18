@@ -1,12 +1,12 @@
 import LineCharts from "@/components/Dashboard/LineChart";
 import Pichart from "@/components/Dashboard/Pichart";
 import { jp } from "@/lang/jp";
-import Layout from "@/layouts/Layout";
 import { motion } from "framer-motion";
 import Calendar from "@/components/ui/calendar";
 import { useState } from "react";
 import EventListItem from "@/components/CalendarScreen/EventListItem";
 import { events } from "@/constants";
+import Loading from "@/components/ui/Loading";
 // import OverviewCard from '@/components/Dashboard/OverviewCard';
 // import UpcomingMeetingsCard from '@/components/Dashboard/UpcomingMeetingsCard';
 // import CalendarCard from '@/components/Dashboard/CalendarCard';
@@ -75,7 +75,8 @@ const DashboardScreen = () => {
   ];
 
   return (
-    <Layout>
+    <>
+      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={dashboardVariants}
         initial="initial"
@@ -143,7 +144,7 @@ const DashboardScreen = () => {
             </div>
           </div>
 
-          <div className="w-full h-full flex justify-start items-center pb-10">
+          <div className="w-full h-full flex justify-start items-center pl-2 pb-12">
             <Pichart data={genderData} colors={["#8B78B8", "#5E3FBE"]} />
 
             <div className="flex flex-col items-start justify-center ml-10 gap-y-4">
@@ -176,7 +177,7 @@ const DashboardScreen = () => {
               </select>
             </div>
           </div>
-          <div className="w-full h-full flex justify-start items-center pb-10">
+          <div className="w-full h-full flex justify-start items-center pl-2 pb-12">
             <Pichart
               data={languageData}
               colors={["#EAF6ED", "#C9EAD4", "#A9DEBA", "#67C587"]}
@@ -247,7 +248,8 @@ const DashboardScreen = () => {
                 </div>
         </div>
       </motion.div>
-    </Layout>
+    </>
+
   );
 };
 

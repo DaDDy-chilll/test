@@ -1,5 +1,4 @@
-import Select from "@/components/ui/Select";
-import Layout from "@/layouts/Layout";
+
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -12,7 +11,9 @@ import JobListItem from "@/components/Jobs/JobListItem";
 import { Button } from "@/components/ui/button";
 import JobDetails from "@/components/ui/JobDetails";
 import JobForm from "@/components/Jobs/JobForm";
-import { AnimatePresence } from "framer-motion";
+import Loading from "@/components/ui/Loading";
+import { apiRoutes } from "@/utils/apiRoutes";
+import useFetch from "@/hooks/useFetch";
 
 const JobScreen = () => {
   const [search, setSearch] = useState("");
@@ -20,7 +21,7 @@ const JobScreen = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-
+  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.JOBS)
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },
@@ -29,114 +30,14 @@ const JobScreen = () => {
     { id: 4, name: "Internship" },
   ];
 
-  const jobs = [
-    {
-      id: 0,
-      img: "https://via.placeholder.com/150",
-      position: "Software Engineer",
-      location: "Remote",
-      applied: 10,
-      salary: 100000,
-      date: "2024-01-01",
-    },
-    {
-      id: 1,
-      img: "https://via.placeholder.com/150",
-      position: "Data Scientist",
-      location: "New York, NY",
-      applied: 15,
-      salary: 120000,
-      date: "2024-02-01",
-    },
-    {
-      id: 2,
-      img: "https://via.placeholder.com/150",
-      position: "Product Manager",
-      location: "San Francisco, CA",
-      applied: 8,
-      salary: 130000,
-      date: "2024-03-01",
-    },
-    {
-      id: 3,
-      img: "https://via.placeholder.com/150",
-      position: "UX Designer",
-      location: "Austin, TX",
-      applied: 12,
-      salary: 90000,
-      date: "2024-04-01",
-    },
-    {
-      id: 4,
-      img: "https://via.placeholder.com/150",
-      position: "Marketing Specialist",
-      location: "Remote",
-      applied: 20,
-      salary: 70000,
-      date: "2024-05-01",
-    },
-    {
-      id: 5,
-      img: "https://via.placeholder.com/150",
-      position: "Sales Manager",
-      location: "Chicago, IL",
-      applied: 5,
-      salary: 110000,
-      date: "2024-06-01",
-    },
-    {
-      id: 6,
-      img: "https://via.placeholder.com/150",
-      position: "HR Coordinator",
-      location: "Boston, MA",
-      applied: 18,
-      salary: 60000,
-      date: "2024-07-01",
-    },
-    {
-      id: 7,
-      img: "https://via.placeholder.com/150",
-      position: "DevOps Engineer",
-      location: "Seattle, WA",
-      applied: 25,
-      salary: 115000,
-      date: "2024-08-01",
-    },
-    {
-      id: 8,
-      img: "https://via.placeholder.com/150",
-      position: "Graphic Designer",
-      location: "Los Angeles, CA",
-      applied: 10,
-      salary: 80000,
-      date: "2024-09-01",
-    },
-    {
-      id: 9,
-      img: "https://via.placeholder.com/150",
-      position: "Content Writer",
-      location: "Remote",
-      applied: 22,
-      salary: 50000,
-      date: "2024-10-01",
-    },
-    {
-      id: 10,
-      img: "https://via.placeholder.com/150",
-      position: "IT Support Specialist",
-      location: "Denver, CO",
-      applied: 7,
-      salary: 65000,
-      date: "2024-11-01",
-    },
-  ];
+  const jobs = data || []
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const filteredJobs = useMemo(() => {
-    return jobs.filter((job) =>
+    return jobs.filter((job:any) =>
       job.position.toLowerCase().includes(search.toLowerCase()) ||
       job.location.toLowerCase().includes(search.toLowerCase()) ||
       (Number(job.applied) === Number(search)) 
@@ -161,7 +62,8 @@ const JobScreen = () => {
   }
 
   return (
-    <Layout>
+    <>
+    {isLoading && <Loading isLoading={isLoading} className='h-[calc(100vh-68px)]' />}
       {(!showDetails && !isAdd && !isEdit) && (
         <motion.div
           key="job-list"
@@ -233,7 +135,7 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {filteredJobs.map((item) => (
+            {filteredJobs.map((item:any) => (
               <JobListItem
                 key={item.id}
                 item={item}
@@ -259,7 +161,7 @@ const JobScreen = () => {
           <JobForm onBack={backHandler} formVariant={formVariants} />
         </div>
       )}
-    </Layout>
+    </>
   );
 };
 

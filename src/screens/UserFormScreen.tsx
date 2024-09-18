@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import logo from "@/assets/fix/logo.png";
+import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import DatePicker from "@/components/ui/DatePicker";
 import { motion,AnimatePresence } from "framer-motion";

@@ -1,9 +1,4 @@
-
-type Event =     {
-    title : string,
-    date : string,
-    description : string
-}
+import { Event } from "@/types/helperTypes";
 
 type EventListItemProps = {
   event : Event

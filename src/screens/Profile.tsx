@@ -1,6 +1,4 @@
-import DiplayFormData from "@/components/ui/DiplayFormData";
 import JobDetails from "@/components/ui/JobDetails";
-import Layout from "@/layouts/Layout";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -8,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import logo from "@/assets/fix/logo.png";
+import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import DatePicker from "@/components/ui/DatePicker";
+import Loading from "@/components/ui/Loading";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -41,7 +40,8 @@ const Profile = () => {
   };
 
   return (
-    <Layout>
+    <>
+    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
       <motion.div
         variants={profileVariants}
         initial="initial"
@@ -165,7 +165,8 @@ const Profile = () => {
           )}
         </AnimatePresence>
       </motion.div>
-    </Layout>
+    </>
+
   );
 };
 

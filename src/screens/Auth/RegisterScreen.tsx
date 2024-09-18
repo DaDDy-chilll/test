@@ -1,9 +1,8 @@
 // import { useMutation } from "@tanstack/react-query";
 import { FormEvent } from "react";
-// import registerUser, { RegisterResponse } from "@/networks/mutations/auth/register";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
-import logo from "@/assets/fix/logo.png";
+import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
 import { RegisterProps } from "@/types/helperTypes";

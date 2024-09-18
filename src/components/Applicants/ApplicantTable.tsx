@@ -16,9 +16,9 @@ type ApplicantTableProps = {
 
 const ApplicantTable = ({applicants}: ApplicantTableProps) => {
   return (
-<div className="relative overflow-y-auto h-[calc(100vh-120px)]">
+<div className="relative overflow-y-auto h-[calc(100vh-225px)] ">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400">
+        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white">
             <tr>
             <th scope="col" className="px-6 py-3 text-center">
                     #
