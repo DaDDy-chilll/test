@@ -1,15 +1,18 @@
 
 type UserItemProps = {
   user: {
+    id: number;
     avatar: string;
     name: string;
     message: string;
   }
+  handleClick: (id: number) => void;
 }
 
-const UserItem = ({user}: UserItemProps) => {
+const UserItem = ({user, handleClick}: UserItemProps) => {
+
   return (
-    <div className='flex items-center gap-3 mx-2 py-5 border-b border-gray-300'>
+    <div className='flex items-center gap-3 mx-2 py-5 border-b border-gray-300 cursor-pointer' onClick={() => handleClick(user.id)}>
       <div className='w-10 h-10 rounded-full overflow-hidden'>
         <img src={user.avatar} alt={user.name} />
       </div>

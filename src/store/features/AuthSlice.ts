@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
   user: {
+    id: number;
     email: string;
     password: string;
   } | null;

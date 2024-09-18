@@ -10,7 +10,6 @@ type ProtectedPageProps = {
 
 const ProtectedPage = ({ children }: ProtectedPageProps) => {
   const { user, token } = useSelector((state: RootState) => state.auth);
-  console.log(user, token);
   if (!user || !token) {
     return <Navigate to={Routenames.LOGIN} />;
   }
