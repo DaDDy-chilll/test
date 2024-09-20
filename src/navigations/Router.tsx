@@ -17,10 +17,6 @@ import {
 import DashboardScreen from "@/screens/DashboardScreen";
 import Profile from "@/screens/Profile";
 import { AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { useEffect } from "react";
 import NotFound from "@/components/Auth/NotFound";
 
 const Router = () => {
@@ -32,20 +28,12 @@ const Router = () => {
 };
 
 const AnimatedRoutes = () => {
-  const location = useLocation(); // useLocation should be used here, inside BrowserRouter
-  const navigate = useNavigate();
-  const { token } = useSelector((state: RootState) => state.auth);
-
-  useEffect(() => {
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, [token]);
+  const location = useLocation(); 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* initial landing route */}
-        <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
+         {/* initial landing route */}
+         <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />

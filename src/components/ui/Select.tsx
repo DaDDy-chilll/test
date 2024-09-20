@@ -16,6 +16,7 @@ interface SelectProps {
   name?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
+  style?: number;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -25,9 +26,15 @@ const Select: React.FC<SelectProps> = ({
   id = "custom_select",
   className = "",
   defaultOption = "Choose an option",
+  style = 0,
 }) => {
   return (
-    <div className={cn("relative z-0 w-full mb-5 group", className)}>
+    <div
+      className={cn(
+        "relative z-0 w-full mb-5 group flex items-center",
+        className
+      )}
+    >
       <label
         htmlFor={id}
         className={cn(
@@ -40,17 +47,23 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         name={name}
-        className="relative block font-normal py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-400 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+        className={`relative block font-normal  w-full text-sm text-black ${
+          style === 0
+            ? "border-0 border-b-2 py-2.5 px-0"
+            : "border-none bg-gray-300  px-1 py-1.5 rounded-md"
+        } appearance-none  peer`}
       >
-        <option defaultValue={defaultOption} value={defaultOption} >{defaultOption} </option>
-        {options.map((option,index) => (
+        <option defaultValue={defaultOption} value={defaultOption}>
+          {defaultOption}{" "}
+        </option>
+        {options.map((option, index) => (
           <option key={index} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
 
-      <div className="absolute right-2 top-2">
+      <div className={`absolute right-2  ${style === 0 ? "top-2" : "top-1"}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

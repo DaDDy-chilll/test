@@ -1,4 +1,4 @@
-enum USER {
+enum RouteName {
   // Auth
   LOGIN = "/login",
   FORGOT_PASSWORD = "/forgot_password",
@@ -17,4 +17,4 @@ enum USER {
   PROFILE = '/profile'
 }
 
-export default USER;
+export default RouteName;

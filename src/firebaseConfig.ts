@@ -8,13 +8,12 @@ import { getFirestore, collection } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCQoXE8FA1yfbSzBn8McFCaAiqpaKgzJhQ",
-  authDomain: "japan-job-8a6a9.firebaseapp.com",
-  projectId: "japan-job-8a6a9",
-  storageBucket: "japan-job-8a6a9.appspot.com",
-  messagingSenderId: "679603811274",
-  appId: "1:679603811274:web:dac851f48b03c4ce329533",
-  measurementId: "G-FXXFD86QWL"
+  apiKey: "AIzaSyD4VAOKsD6Q_nQ6TSf1ksBN4WUwP7IndYo",
+  authDomain: "japan-job-d6cfc.firebaseapp.com",
+  projectId: "japan-job-d6cfc",
+  storageBucket: "japan-job-d6cfc.appspot.com",
+  messagingSenderId: "476799589480",
+  appId: "1:476799589480:android:c5266ef6a24a904efcefdd",
 };
 
 // Initialize Firebase
@@ -30,7 +29,7 @@ const auth = initializeAuth(app, {
 
 const db = getFirestore(app);
 
-const userRef = collection(db, "users");
+const chatRef = collection(db, "chats");
 const roomRef = collection(db, "rooms");
 
-export { auth, db, userRef, roomRef };
+export { auth, db, chatRef, roomRef };

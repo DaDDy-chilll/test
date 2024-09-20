@@ -2,17 +2,23 @@ import LOGO from "@/assets/icons/LOGO";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import  RouteName  from "@/navigations/routes";
 
 const textOne = "良いミャンマー人と、";
 const textTwo = "優良な日本企業のマッチングサイト";
-
 const textOneDuration = textOne.length * 0.1;
 
 const initialLanding = () => {
   const navigate = useNavigate();
+  const { user,token } = useSelector((state: RootState) => state.auth);
+  const login = () => navigate(RouteName.LOGIN);
+  const signup = () => navigate(RouteName.REGISTER);
 
-  const login = () => navigate("/login");
-  const signup = () => navigate("/register");
+  if(user && token){
+    navigate(RouteName.DASHBOARD);
+  }
 
   return (
     <div className="h-screen flex items-center justify-center">

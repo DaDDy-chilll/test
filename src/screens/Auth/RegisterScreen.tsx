@@ -7,9 +7,19 @@ import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
 import { RegisterProps } from "@/types/helperTypes";
 import { BeatLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes"; 
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const RegisterScreen = () => {
 const {onRegister,isRegisterPending,error} = useAuth();
+const { user, token } = useSelector((state: RootState) => state.auth);
+const navigate = useNavigate();
+
+if(user && token){
+  navigate(RouteName.DASHBOARD);
+}
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

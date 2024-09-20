@@ -1,184 +1,324 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { motion } from 'framer-motion';
-import UserItem from '@/components/Chat/UserItem';
-import { jp } from '@/lang/jp';
-import MessageItem from '@/components/Chat/MessageItem';
+import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  getDocs,
   query,
   where,
   addDoc,
   collection,
-  doc,
-  onSnapshot,
   orderBy,
-  setDoc,
   Timestamp,
+  doc,
+  setDoc,
+  onSnapshot,
 } from "firebase/firestore";
-import { userRef, db } from "@/firebaseConfig";
-import { getRoomId } from "@/utils/common";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import { db } from "../firebaseConfig";
+import ChatList from "../components/Chat/ChatList";
+import MessageItem from "../components/Chat/MessageItem";
 import Loading from "@/components/ui/Loading";
-
-interface Message {
-  messageId: string;
-  chat_id: string;
-  content: string;
-  read: boolean;
-  sender_id: number;
-  timestamp: Date;
+import { jp } from "@/lang/jp";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import Select from "@/components/ui/Select";
+import Calendar from "@/components/ui/calendar";
+import TimeSelect from "@/components/ui/SelectTime";
+import { Button } from "@/components/ui/button";
+import AppointmentModel from "@/components/Chat/AppointmentModel";
+import { Chat, Message, User } from "@/types/helperTypes";
+import ChatHeader from "@/components/Chat/ChatHeader";
+import ChatView from "@/components/Chat/ChatView";
+import ChatInput from "@/components/Chat/ChatInput";
+import { AnimatePresence } from "framer-motion";
+interface Job {
+  id: number;
+  job_title: string;
+  company_id: string;
 }
 
 interface ChatInfo {
-  userId: number;
+  jobId: number;
+  companyId: number;
+  jobfinderId: number;
+  jobTitle: string;
+  companyName: string;
+  jobfinderName: string;
+  companyLogo: string;
 }
 
+// company id
+// const currentUser = {
+//   id: 1,
+// };
+// const parsedUser = {
+//   id: 21,
+// };
 
-const ChatScreen = () => {
-  const {token,user} = useSelector((state: RootState) => state.auth);
-const [userId,setUserId] = useState<number | null>(null);
-const [messages, setMessages] = useState<any>([]);
-const [newMessage, setNewMessage] = useState("");
-const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
-const [hasMore, setHasMore] = useState(true);
-const [isLoading, setIsLoading] = useState(false);
-const [oldestMessageTimestamp, setOldestMessageTimestamp] = useState<string>(
-  new Date().toISOString()
-);
-const chatRef = useRef<HTMLDivElement>(null);
+// const parsedId = parsedUser.id;
 
-  const users = [
-    {
-      id:1,
-      avatar: 'https://via.placeholder.com/150',
-      name: 'John Doe',
-      message: 'Hello, how are you?',
-    },
-    {
-      id:2,
-      avatar: 'https://via.placeholder.com/150',
-      name: 'John Doe',
-      message: 'Hello, how are you?',
-    },
-    {
-      id:3,
-      avatar: 'https://via.placeholder.com/150',
-      name: 'John Doe',
-      message: 'Hello, how are you?',
-    },
-  ];
+const Home = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [adminTime, setAdminTime] = useState<moment.Moment | null>(null);
+  const [meetingTime, setMeetingTime] = useState<moment.Moment | null>(null);
+  const [isAppointmentModelOpen, setIsAppointmentModelOpen] = useState(false);
+  // const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
+  // const [newJobTitle, setNewJobTitle] = useState("");
+  // const queryClient = useQueryClient();
+  // const [chatId, setChatId] = useState();
+  // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
 
-  const handleUserClick = (id: number) => {
-    console.log('User clicked', id);
-    setUserId(id);
-    setChatInfo({
-      userId: id,
-    });
-  }
+  // fetch chat room
+  useEffect(() => {
+    setIsLoading(true);
+    const chatsRef = collection(db, "chats");
+    const q = query(
+      chatsRef,
+      where("company_id", "==", user?.id), //company id
+      orderBy("last_message_timestamp", "desc")
+    );
 
- // Fetch messages from Firestore
- useEffect(() => {
-  if (!userId) {
-    return;
-  }
-  // createRoomIfNotExists();
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const fetchedChats: Chat[] = [];
+        querySnapshot.forEach((doc) => {
+          fetchedChats.push({ id: doc.id, ...doc.data() } as Chat);
+        });
+        setChats(fetchedChats);
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching chats:", error);
+        setError("Failed to fetch chats. Please try again.");
+      }
+    );
 
-  const roomId = getRoomId(user?.email, userId);
-  // const docRef = doc(db, "rooms", roomId);
-  const messageRef = collection(db, "messages");
-  const q = query(messageRef,where("chat_id", "==", roomId), orderBy("createdAt", "desc"));
+    return () => unsubscribe();
+  }, []);
 
-  const unsub = onSnapshot(q, (snapshot) => {
-    const allMessages = snapshot.docs.map((doc) => doc.data());
-    setMessages([...allMessages]);
-  });
-
-  return () => unsub();
-}, [userId]);
-
-
-
-
- // Send a new message
- const sendMessage = async () => {
-  if (newMessage.trim() === "") return;
-  const newMsg = {
-    chat_id: chatInfo?.userId || "",
-    content: newMessage,
-    sender_id: user?.email,
-    timestamp: Timestamp.now(),
-    read: false,
+  //Handle Chat Select
+  const handleChatSelect = (chat: Chat) => {
+    setSelectedChat(chat);
+    const unsubscribe = fetchMessages(chat.id);
+    return () => unsubscribe();
   };
 
+  //fetch Messages
+  const fetchMessages = (chatId: string) => {
+    setError(null);
+    const messagesRef = collection(db, "messages");
+    const q = query(
+      messagesRef,
+      where("chat_id", "==", chatId),
+      orderBy("timestamp", "asc")
+    );
 
-  try {
-    await addDoc(collection(db, "messages"), newMsg);
-    setNewMessage("");
-    console.log('success');
-  } catch (error) {
-    console.log('error');
-    console.error("Error sending message: ", error);
-  }
-};
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const fetchedMessages: Message[] = [];
+        querySnapshot.forEach((doc) => {
+          fetchedMessages.push({ id: doc.id, ...doc.data() } as Message);
+        });
+        setMessages(fetchedMessages);
+      },
+      (error) => {
+        console.error("Error fetching messages:", error);
+        setError("Failed to fetch messages. Please try again.");
+      }
+    );
 
-console.log(messages);
+    // Return the unsubscribe function
+    return unsubscribe;
+  };
 
+  //send message
+  // Modify the handleSendMessage function:
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedChat) return;
+    setError(null);
+
+    const messageData = {
+      chat_id: selectedChat.id,
+      sender_id: 21,
+      content: newMessage.trim(),
+      timestamp: Timestamp.now(),
+      read: false,
+    };
+
+    try {
+      await addDoc(collection(db, "messages"), messageData);
+      await setDoc(
+        doc(db, "chats", selectedChat.id),
+        {
+          last_message: newMessage.trim(),
+          last_message_timestamp: Timestamp.now(),
+        },
+        { merge: true }
+      );
+      setNewMessage("");
+      // Remove this line as it's no longer needed:
+      fetchMessages(selectedChat.id);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setError("Failed to send message. Please try again.");
+    }
+  };
+
+  //fetch jobs
+  // const { data: jobs, error: jobsError } = useQuery({
+  //   queryKey: ["jobs"],
+  //   queryFn: async () => {
+  //     const response = await fetch(
+  //       `https://api.japanjob.exbrainedu.com/v1/job`
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch jobs");
+  //     }
+  //     return response.json();
+  //   },
+  // });
+
+  // console.log(jobs);
+
+  //fetch users
+  // const {
+  //   data: users,
+
+  //   error: usersError,
+  // } = useQuery({
+  //   queryKey: ["users"],
+  //   queryFn: async () => {
+  //     const response = await fetch(
+  //       `https://api.japanjob.exbrainedu.com/v1/user/all`
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch users");
+  //     }
+  //     return response.json();
+  //   },
+  // });
+
+  // Fetch chat information
+  // useEffect(() => {
+  //   const fetchChatInfo = async () => {
+  //     const chatDocRef = doc(db, "chats", chatId);
+  //     const unsubscribe = onSnapshot(chatDocRef, (docSnapshot) => {
+  //       if (docSnapshot.exists()) {
+  //         const chatData = docSnapshot.data();
+  //         setChatInfo({
+  //           jobId: chatData.job_id,
+  //           companyId: chatData.company_id?.toString() || "",
+  //           jobfinderId: chatData.jobfinder_id,
+  //           jobTitle: chatData.job_title || "Unknown Job",
+  //           companyName: chatData.company_name || "Unknown Company",
+  //           companyLogo: chatData.company_logo || null,
+  //           jobfinderName: chatData.jobfinder_name || "Unknown Jobfinder",
+  //         });
+  //       }
+  //     });
+
+  //     return () => unsubscribe();
+  //   };
+  //   fetchChatInfo();
+  // }, [chatId]);
+
+  // if (error || usersError) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <p className="text-red-500 text-xl">
+  //         {error ||
+  //           usersError?.message ||
+  //           "An error occurred. Please try again."}
+  //       </p>
+  //     </div>
+  //   );
+  // }
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   return (
     <>
-    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
+      {isLoading && (
+        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
+      )}
       <motion.div
-      variants={chatVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className=' w-full h-[calc(100vh-65px)] grid grid-cols-8 grid-rows-9 gap-0.5 p-3'>
-
+        variants={chatVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className=" w-full h-[calc(100vh-65px)] grid grid-cols-8 grid-rows-9 gap-0.5 p-3 relative"
+      >
         {/* User Lists View */}
-        <div className='bg-gray-100 col-span-2 row-span-9 '>
-          {users.map((user,index) => (
-            <UserItem key={index} user={user} handleClick={handleUserClick} />
-          ))}
+        <div className="bg-gray-100 col-span-2 row-span-9 overflow-hidden">
+          <ChatList
+            chats={chats}
+            onSelectChat={handleChatSelect}
+            selectedChat={selectedChat}
+          />
         </div>
 
         {/* Header View */}
-        <div className='bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2'>
-          <div className='flex items-center justify-between w-full h-full px-4 py-3'>
-            <h1 className='text-normal font-bold'>Name</h1>
-            <button className='bg-gray-500 text-sm text-white px-3 py-2 rounded-md'>Interview Schedule</button>
-          </div>
+        <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2">
+          <ChatHeader selectedChat={selectedChat} setIsAppointmentModelOpen={setIsAppointmentModelOpen} />
         </div>
 
         {/* Chat View */}
-        <div className='bg-gray-100 col-start-3 col-end-9 row-start-2 row-end-9 relative'>
-          <div className="bg-red-100 w-full h-full flex flex-col-reverse gap-2 justify-start">
-          {messages.sort((a:any,b:any) => a.timestamp - b.timestamp).map((message:any, index:any) => (
-              <MessageItem key={index} message={message.content} currentUser={user} />
-            ))}
-          </div>
-          <div className='absolute top-2 right-2 flex items-center gap-2'>
-            <button className='bg-secondaryColor text-sm text-white px-3 py-2 rounded-md'>{jp.aiChat}</button>
-            <button className='bg-secondaryColor text-sm text-white px-3 py-2 rounded-md'>{jp.adminHelp}</button>
-          </div>
+        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden">
+          {selectedChat ? ( 
+            <ChatView
+              messages={messages}
+            user={user}
+            messagesEndRef={messagesEndRef}
+          />
+          ):(
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500 text-xl">Select a chat to start messaging</p>
+            </div>
+          )}
         </div>
 
         {/* Input View */}
-        <div className='bg-gray-100 col-start-3 col-end-9 row-start-9 row-end-10'>
-          <div className='flex items-center gap-2 w-full h-full px-4 py-3'>
-            <input type="text" placeholder='Write a message...' className='w-full p-2 rounded-md bg-gray-300 text-sm' value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}/>
-            <button className='bg-primaryColor text-sm text-white px-10 py-2 rounded-md' onClick={sendMessage}>Send</button>
-          </div>
+        <div className="bg-gray-100 col-start-3 col-end-9 row-start-9 row-end-10">
+          {selectedChat && (
+               <ChatInput
+               newMessage={newMessage}
+               setNewMessage={setNewMessage}
+               handleSendMessage={handleSendMessage}
+             />
+          )}
+       
         </div>
+
+        {/* Appointment Model */}
+        <AnimatePresence mode="wait">
+          {
+            isAppointmentModelOpen && (
+              <AppointmentModel key='isAppointmentModelOpen' setAdminTime={setAdminTime} setMeetingTime={setMeetingTime} setIsAppointmentModelOpen={setIsAppointmentModelOpen} />
+          )
+        }
+        </AnimatePresence>
       </motion.div>
     </>
-
-  )
-}
+  );
+};
 
 const chatVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
-export default ChatScreen;
+
+export default Home;

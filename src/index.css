@@ -73,6 +73,9 @@ html {
   font-family: "Noto Sans", sans-serif;
 
 }
+html, body {
+  overflow-x: hidden;
+}
 
 .roboto-sans  {
   font-family: "Roboto", sans-serif;
