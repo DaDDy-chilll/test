@@ -13,14 +13,16 @@ import { RootState } from "@/store/store";
 
 const LoginScreen = () => {
   const { onLogin, isLoginPending, error } = useAuth();
-  const { user, token } = useSelector((state: RootState) => state.auth);
+  const { user, token, verified } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(user && token){
+    if(verified){
+      navigate(RouteName.USER_FORM);
+    }else if(user && token){
       navigate(RouteName.DASHBOARD);
     }
-  },[user,token])
+  },[user,token,verified])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

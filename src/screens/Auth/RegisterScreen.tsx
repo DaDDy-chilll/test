@@ -14,14 +14,18 @@ import { RootState } from "@/store/store";
 
 const RegisterScreen = () => {
 const {onRegister,isRegisterPending,error} = useAuth();
-const { user, token } = useSelector((state: RootState) => state.auth);
+const { user, token, verified } = useSelector((state: RootState) => state.auth);
 const navigate = useNavigate();
 
 useEffect(() => {
-  if(user && token){
+  console.log("verified",verified);
+  if(verified){
+    navigate(RouteName.USER_FORM);
+  }else if(user && token){
+    console.log("user and token");
     navigate(RouteName.DASHBOARD);
   }
-},[user,token])
+},[user,token,navigate,verified])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

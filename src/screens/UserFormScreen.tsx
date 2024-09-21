@@ -9,6 +9,8 @@ import { motion,AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import DiplayFormData from "@/components/ui/DiplayFormData";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setVerified } from "@/store";
 export interface UserFormData {
   name: string;
   salary: string;
@@ -22,6 +24,7 @@ export interface UserFormData {
 const UserFormScreen = () => {
   const [complete, setComplete] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },
@@ -54,6 +57,7 @@ const UserFormScreen = () => {
   // });
 
   const handleNavigate = () => {
+    dispatch(setVerified(false));
     navigate("/dashboard");
   };
   return (

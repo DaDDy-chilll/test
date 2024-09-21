@@ -2,7 +2,7 @@ import { fetchServer } from "@/utils/helper";
 import { useMutation } from "@tanstack/react-query";
 import { LoginProps, RegisterProps } from "@/types/helperTypes";
 import { useDispatch } from "react-redux";
-import { setToken, removeToken } from "@/store/features/AuthSlice";
+import { setToken, removeToken, setVerified } from "@/store";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useNavigate } from "react-router-dom";
 import User from "@/navigations/routes";
@@ -35,8 +35,6 @@ const useAuth = () => {
         },
         onSuccess: (data) => {
             dispatch(setToken(data));
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
             navigate(User.DASHBOARD);
         },
         onError: (error: ErrorType) => {
@@ -57,10 +55,8 @@ const useAuth = () => {
             return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
         },
         onSuccess: (data) => {
+            dispatch(setVerified(true));
             dispatch(setToken(data));
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            navigate(User.USER_FORM);
         },
         onError: (error: ErrorType) => {
             setError({ toast: false, message: error.message })
@@ -71,6 +67,7 @@ const useAuth = () => {
         dispatch(removeToken());
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("verified");
         setError({ toast: false, message: null })
         navigate(User.LOGIN);
     }
