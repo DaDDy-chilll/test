@@ -28,17 +28,26 @@ const Router = () => {
 };
 
 const AnimatedRoutes = () => {
-  const location = useLocation(); 
+  const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-         {/* initial landing route */}
-         <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
+        {/* initial landing route */}
+        <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
+        {/* User form route */}
         {/* Not found route */}
         <Route path="*" Component={NotFound} />
+        <Route
+          path={Routenames.USER_FORM}
+          element={
+            <ProtectRoute>
+              <UserFormScreen />
+            </ProtectRoute>
+          }
+        />
 
         {/* Protected routes */}
         <Route
@@ -48,8 +57,6 @@ const AnimatedRoutes = () => {
             </ProtectRoute>
           }
         >
-          {/* User form route */}
-          <Route path={Routenames.USER_FORM} Component={UserFormScreen} />
           {/* Dashboard routes */}
           <Route path={Routenames.DASHBOARD} Component={DashboardScreen} />
           {/* Applicants routes */}

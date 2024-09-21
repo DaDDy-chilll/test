@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/icons/logo.svg";
@@ -15,9 +15,12 @@ const LoginScreen = () => {
   const { onLogin, isLoginPending, error } = useAuth();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
-  if(user && token){
-    navigate(RouteName.DASHBOARD);
-  }
+
+  useEffect(() => {
+    if(user && token){
+      navigate(RouteName.DASHBOARD);
+    }
+  },[user,token])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

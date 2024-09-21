@@ -30,7 +30,7 @@ const useAuth = () => {
             if (!data.email || !data.password) {
                 setError({ toast: true, message: errorMessage.all_fields_required })
                 return Promise.reject()
-            };
+            }
             return fetchServer({ endpoint: apiRoutes.LOGIN, method: "POST", body: data });
         },
         onSuccess: (data) => {
@@ -49,18 +49,18 @@ const useAuth = () => {
             if (!data.email || !data.password || !data.confirmPassword) {
                 setError({ toast: true, message: errorMessage.all_fields_required })
                 return Promise.reject()
-            };
+            }
             if (data.password !== data.confirmPassword) {
                 setError({ toast: false, message: errorMessage.passwords_match })
                 return Promise.reject()
-            };
+            }
             return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
         },
         onSuccess: (data) => {
             dispatch(setToken(data));
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
-            navigate(User.DASHBOARD);
+            navigate(User.USER_FORM);
         },
         onError: (error: ErrorType) => {
             setError({ toast: false, message: error.message })

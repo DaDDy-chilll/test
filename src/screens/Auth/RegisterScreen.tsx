@@ -1,5 +1,5 @@
 // import { useMutation } from "@tanstack/react-query";
-import { FormEvent } from "react";
+import { FormEvent,useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/icons/logo.svg";
@@ -17,9 +17,11 @@ const {onRegister,isRegisterPending,error} = useAuth();
 const { user, token } = useSelector((state: RootState) => state.auth);
 const navigate = useNavigate();
 
-if(user && token){
-  navigate(RouteName.DASHBOARD);
-}
+useEffect(() => {
+  if(user && token){
+    navigate(RouteName.DASHBOARD);
+  }
+},[user,token])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +34,6 @@ if(user && token){
     onRegister(registerProps);
   };
 
-  console.log(error);
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200">
       <div className="flex  w-1/3 h-5/6 shadow-md">
