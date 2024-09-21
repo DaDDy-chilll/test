@@ -21,7 +21,7 @@ const LineCharts = ({data=[]}: LineChartProps) => {
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-      <Legend />
+      {/* <Legend /> */}
       <Line type="monotone" dataKey="matched" stroke="#8884d8" activeDot={{ r: 8 }} />
     </LineChart>
   </ResponsiveContainer>

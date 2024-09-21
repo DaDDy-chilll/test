@@ -6,5 +6,4 @@ export const errorMessage = {
     invalid_email: "Invalid email",
     invalid_password: "Invalid password",
     all_fields_required: "All fields are required"
-
 }

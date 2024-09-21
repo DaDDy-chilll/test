@@ -55,16 +55,15 @@ const ApplicantScreen = () => {
   );
 
 
-
   return (
  <>
     {isLoading && <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />}
       <motion.div
-        variants={applicantVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="w-full overflow-hidden relative"
+          variants={applicantVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="w-full overflow-hidden relative"
       >
       
         <FilterBar filter={filter} setFilter={setFilter} />

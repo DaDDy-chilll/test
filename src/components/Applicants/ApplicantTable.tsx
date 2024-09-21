@@ -40,7 +40,8 @@ const ApplicantTable = ({applicants}: ApplicantTableProps) => {
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
                     Gender
-                </th>
+                </th>                
+                <th scope="col" className="px-6 py-3 text-center"></th>
             </tr>
         </thead>
         <tbody className="overflow-y-auto ">
@@ -69,6 +70,9 @@ const ApplicantTable = ({applicants}: ApplicantTableProps) => {
                 </td>
                 <td className=" py-2 text-center text-secondaryColor">
                     {applicant.gender}
+                </td>
+                <td className=" py-2 text-center text-secondaryColor">
+                    view
                 </td>
             </tr>
             ))}

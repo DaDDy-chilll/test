@@ -85,43 +85,8 @@ const DashboardScreen = () => {
         <div className="bg-gray-100 col-span-4 row-span-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-lg font-semibold">Matched List</h1>
-            <div className="flex items-center gap-x-5">
-              <button className="p-2 rounded-md bg-primaryColor text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 19.5 8.25 12l7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <p>July</p>
-              <button className="p-2 rounded-md bg-primaryColor text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </button>
-            </div>
           </div>
-          <div className="w-full h-full pt-2 pb-10">
+          <div className="w-full h-full pt-2 pb-16">
             <LineCharts data={data} />
           </div>
         </div>
@@ -208,10 +173,7 @@ const DashboardScreen = () => {
               {jp.calendar}
             </h1>
             <div className="flex items-start justify-between p-3">
-              <div className=" col-span-3 w-full">
-                <Calendar />
-              </div>
-              <div className="col-span-2 w-full pb-4 border-l-2 border-gray-500">
+              <div className="col-span-2 w-full pb-4">
                 <h1 className="text-base font-semibold text-center my-2">
                   {jp.meetings}
                 </h1>

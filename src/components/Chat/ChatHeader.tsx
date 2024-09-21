@@ -1,5 +1,4 @@
 import { Chat } from '@/types/helperTypes'
-import React from 'react'
 
 type ChatHeaderProps = {
     selectedChat: Chat | null
