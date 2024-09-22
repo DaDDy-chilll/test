@@ -14,17 +14,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ChatList from "../components/Chat/ChatList";
-import MessageItem from "../components/Chat/MessageItem";
 import Loading from "@/components/ui/Loading";
-import { jp } from "@/lang/jp";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import Select from "@/components/ui/Select";
-import Calendar from "@/components/ui/calendar";
-import TimeSelect from "@/components/ui/SelectTime";
-import { Button } from "@/components/ui/button";
 import AppointmentModel from "@/components/Chat/AppointmentModel";
-import { Chat, Message, User } from "@/types/helperTypes";
+import { Chat, Message, } from "@/types/helperTypes";
 import ChatHeader from "@/components/Chat/ChatHeader";
 import ChatView from "@/components/Chat/ChatView";
 import ChatInput from "@/components/Chat/ChatInput";

@@ -1,15 +1,14 @@
+// import { useState } from "react";
 import LineCharts from "@/components/Dashboard/LineChart";
 import Pichart from "@/components/Dashboard/Pichart";
 import { jp } from "@/lang/jp";
 import { motion } from "framer-motion";
-import Calendar from "@/components/ui/calendar";
-import { useState } from "react";
 import EventListItem from "@/components/CalendarScreen/EventListItem";
 import { events } from "@/constants";
 import Loading from "@/components/ui/Loading";
 
 const DashboardScreen = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  // const [date, setDate] = useState<Date | undefined>(new Date());
   const data = [
     {
       name: "January",
@@ -104,7 +103,7 @@ const DashboardScreen = () => {
         {/* Line Chart */}
         <div className="bg-gray-100 col-span-4 row-span-2">
           <div className="flex justify-between items-center mx-3 mt-3">
-            <h1 className="text-lg font-semibold">Matched List</h1>
+            <h1 className="text-lg font-semibold">{jp.matchList}</h1>
           </div>
           <div className="w-full h-full pr-10 pt-2 pb-16">
             <LineCharts data={data} />
@@ -125,10 +124,8 @@ const DashboardScreen = () => {
               </select>
             </div>
           </div>
-
           <div className="w-full h-full flex justify-start items-center pl-2 pb-12">
             <Pichart data={genderData} colors={["#8B78B8", "#5E3FBE"]} />
-
             <div className="flex flex-col items-start justify-center ml-10 gap-y-4">
               <div className="flex items-center gap-x-2">
                 <div className="w-5 h-5 bg-[#8B78B8]"></div>
@@ -164,7 +161,6 @@ const DashboardScreen = () => {
               data={languageData}
               colors={["#EAF6ED", "#C9EAD4", "#A9DEBA", "#67C587"]}
             />
-
             <div className="grid grid-cols-2 grid-flow-row ml-10 gap-4">
               <div className="flex items-center gap-x-2">
                 <div className="w-5 h-5 bg-[#EAF6ED]"></div>
