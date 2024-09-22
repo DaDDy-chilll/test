@@ -76,7 +76,7 @@ const initialLanding = () => {
           transition={{ duration: 0.5 }}
         >
           <Button variant="destructive" className="w-44" onClick={login}>
-            Login
+            Updated
           </Button>
           <Button variant="outline" className="w-44" onClick={signup}>
             Sign Up
