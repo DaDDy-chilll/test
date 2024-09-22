@@ -125,11 +125,15 @@ const AppointmentModel = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center mt-3 ">
+      <div className="flex justify-between items-center mt-10 ">
+      <Button
+          variant="outline"
+          onClick={handleCloseModel}
+        >
+          Cancel
+        </Button>
         <Button
           variant="destructive"
-          className="w-44"
-          onClick={handleCloseModel}
         >
           Make Appointment
         </Button>

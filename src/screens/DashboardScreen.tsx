@@ -6,8 +6,14 @@ import { motion } from "framer-motion";
 import EventListItem from "@/components/CalendarScreen/EventListItem";
 import { events } from "@/constants";
 import Loading from "@/components/ui/Loading";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import useChat from "@/hooks/useChat";
+import moment from "moment";
 
 const DashboardScreen = () => {
+  const {user} = useSelector((state: RootState) => state.auth);
+  const { chats, isLoading, } = useChat({id:user?.id});
   // const [date, setDate] = useState<Date | undefined>(new Date());
   const data = [
     {
@@ -184,16 +190,14 @@ const DashboardScreen = () => {
 
         {/* Meeting */}
         <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5">
-          <div className="w-full ">
-            <h1 className="text-lg font-semibold mx-3 px-5 pt-5">
-              {jp.calendar}
-            </h1>
+          <div className="w-full h-full">
+       
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-full pb-4">
                 <h1 className="text-base font-semibold text-center my-2">
                   {jp.meetings}
                 </h1>
-                <div className="w-full h-[calc(100vh-360px)] overflow-y-auto ">
+                <div className="w-full h-[calc(100vh-300px)] overflow-y-auto ">
                   {events.map((event, index) => {
                     return <EventListItem key={index} event={event} />;
                   })}
@@ -214,20 +218,19 @@ const DashboardScreen = () => {
             {jp.newMessages}
           </h1>
           <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="flex items-center gap-x-2 border-b-2 border-gray-400">
+            {chats.map((chat, index) => (
+              <div key={index} className="flex items-center py-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden">
                 <img src="https://via.placeholder.com/150" alt="profile" width={50} height={50} className="rounded-full"/>
               <div
                 key={index}
-                className="flex items-start flex-col gap-x-2 w-full py-2 "
+                className="flex items-start flex-col gap-x-2 w-full"
               >
-                <div className="flex items-center justify-between w-full mb-3">
-                  <h1 className="text-sm font-semibold">Mr Random Guy</h1>
-                  <p className="text-sm text-gray-500">Date/Time</p>
+                <div className="flex items-center justify-between w-full mb-2">
+                  <h1 className="text-sm font-semibold">{chat.jobfinder_name}</h1>
+                  <p className="text-xs text-gray-500">{moment(chat.last_message_timestamp.toDate()).calendar()}</p>
                 </div>
-                <p className="text-sm text-gray-500">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Quisquam, quos.
+                <p className="text-xs text-gray-500">
+                  {chat.last_message}
                 </p>
               </div>
               </div>

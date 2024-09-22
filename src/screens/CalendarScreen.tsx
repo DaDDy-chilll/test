@@ -19,21 +19,18 @@ import Loading from "@/components/ui/Loading";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { Event } from "@/types/helperTypes";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 
-
-// interface EventCalendarProps {
-//   events: Event[];
-// }
-
 const CalendarScreen = () => {
-  // const currentDate = new Date();
-
+  const {token} = useSelector((state: RootState) => state.auth);
   const [currentDate, setCurrentDate] = useState(new Date());
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-  const {data,isLoading,isError,isSuccess,error} = useFetch({url:apiRoutes.EVENTS,token:null})
+  const {data,isLoading,isError,isSuccess,error} = useFetch({endpoint:apiRoutes.EVENTS,token:token as string,key:'events'})
   const events:Event[] = data || [];
 
   const goToNextMonth = () => {

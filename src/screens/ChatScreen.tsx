@@ -18,11 +18,13 @@ import Loading from "@/components/ui/Loading";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import AppointmentModel from "@/components/Chat/AppointmentModel";
-import { Chat, Message, } from "@/types/helperTypes";
+import { Chat, Message } from "@/types/helperTypes";
 import ChatHeader from "@/components/Chat/ChatHeader";
 import ChatView from "@/components/Chat/ChatView";
 import ChatInput from "@/components/Chat/ChatInput";
 import { AnimatePresence } from "framer-motion";
+import { jp } from "@/lang/jp";
+import useChat from "@/hooks/useChat";
 interface Job {
   id: number;
   job_title: string;
@@ -51,11 +53,11 @@ interface ChatInfo {
 
 const Home = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  const [chats, setChats] = useState<Chat[]>([]);
+  // const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [adminTime, setAdminTime] = useState<moment.Moment | null>(null);
   const [meetingTime, setMeetingTime] = useState<moment.Moment | null>(null);
@@ -65,37 +67,45 @@ const Home = () => {
   // const queryClient = useQueryClient();
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
+  const { chats, isLoading, } = useChat({id:user?.id});
 
+
+
+
+
+  
   // fetch chat room
-  useEffect(() => {
-    setIsLoading(true);
-    const chatsRef = collection(db, "chats");
-    const q = query(
-      chatsRef,
-      where("company_id", "==", user?.id), //company id
-      orderBy("last_message_timestamp", "desc")
-    );
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const chatsRef = collection(db, "chats");
+  //   const q = query(
+  //     chatsRef,
+  //     where("company_id", "==", user?.id), //company id
+  //     orderBy("last_message_timestamp", "desc")
+  //   );
 
-    const unsubscribe = onSnapshot(
-      q,
-      (querySnapshot) => {
-        const fetchedChats: Chat[] = [];
-        querySnapshot.forEach((doc) => {
-          fetchedChats.push({ id: doc.id, ...doc.data() } as Chat);
-        });
-        setChats(fetchedChats);
-        setIsLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching chats:", error);
-        setError("Failed to fetch chats. Please try again.");
-      }
-    );
+  //   const unsubscribe = onSnapshot(
+  //     q,
+  //     (querySnapshot) => {
+  //       const fetchedChats: Chat[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         fetchedChats.push({ id: doc.id, ...doc.data() } as Chat);
+  //       });
+  //       setChats(fetchedChats);
+  //       setIsLoading(false);
+  //     },
+  //     (error) => {
+  //       console.error("Error fetching chats:", error);
+  //       setError("Failed to fetch chats. Please try again.");
+  //     }
+  //   );
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   //Handle Chat Select
+  
+  
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
@@ -139,7 +149,7 @@ const Home = () => {
 
     const messageData = {
       chat_id: selectedChat.id,
-      sender_id: user?.id ,
+      sender_id: user?.id,
       content: newMessage.trim(),
       timestamp: Timestamp.now(),
       read: false,
@@ -266,20 +276,25 @@ const Home = () => {
 
         {/* Header View */}
         <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2">
-          <ChatHeader selectedChat={selectedChat} setIsAppointmentModelOpen={setIsAppointmentModelOpen} />
+          {selectedChat && (
+            <ChatHeader
+              selectedChat={selectedChat}
+              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+            />
+          )}
         </div>
 
         {/* Chat View */}
         <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden">
-          {selectedChat ? ( 
+          {selectedChat ? (
             <ChatView
               messages={messages}
-            user={user}
-            messagesEndRef={messagesEndRef}
-          />
-          ):(
+              user={user}
+              messagesEndRef={messagesEndRef}
+            />
+          ) : (
             <div className="flex items-center justify-center h-full">
-              <p className="text-gray-500 text-xl">Select a chat to start messaging</p>
+              <p className="text-gray-500 text-xl">{jp.startMessage}</p>
             </div>
           )}
         </div>
@@ -287,22 +302,24 @@ const Home = () => {
         {/* Input View */}
         <div className="bg-gray-100 col-start-3 col-end-9 row-start-9 row-end-10">
           {selectedChat && (
-               <ChatInput
-               newMessage={newMessage}
-               setNewMessage={setNewMessage}
-               handleSendMessage={handleSendMessage}
-             />
+            <ChatInput
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              handleSendMessage={handleSendMessage}
+            />
           )}
-       
         </div>
 
         {/* Appointment Model */}
         <AnimatePresence mode="wait">
-          {
-            isAppointmentModelOpen && (
-              <AppointmentModel key='isAppointmentModelOpen' setAdminTime={setAdminTime} setMeetingTime={setMeetingTime} setIsAppointmentModelOpen={setIsAppointmentModelOpen} />
-          )
-        }
+          {isAppointmentModelOpen && (
+            <AppointmentModel
+              key="isAppointmentModelOpen"
+              setAdminTime={setAdminTime}
+              setMeetingTime={setMeetingTime}
+              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+            />
+          )}
         </AnimatePresence>
       </motion.div>
     </>

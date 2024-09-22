@@ -46,5 +46,11 @@ export const jp = {
   "aiChat":"Ai翻訳",
   "adminHelp":"Ai翻訳",
   "newMessages":"新しいメッセージ",
-  "matchList":"一致リスト"
+  "matchList":"一致リスト",
+  "startMessage":"チャットを選択してメッセージを開始してください",
+  "profileShow":"これはあなたの会社の公開写真になります",
+  "chooseIndustry":"業界を選択してください",
+  "location":"場所",
+  "chooseLocation":"場所を選択してください",
+  "chooseEmployee":"従業員数を選択してください"
 };

@@ -82,7 +82,7 @@ const UserFormScreen = () => {
             <div className="flex justify-between w-5/6 p-5 pl-10">
               <div className="space-y-1">
                 <h1 className="sub-title text-black">Profile Photo</h1>
-                <p>This will be your public photo for your company</p>
+                <p>{jp.profileShow}</p>
               </div>
               <Avatar className="w-20 h-20">
                 <AvatarImage src="https://github.com/shadcn.png" />
@@ -107,7 +107,7 @@ const UserFormScreen = () => {
                   id={jp.jobArea}
                   options={jobTypes}
                   className=""
-                  defaultOption="Choose Industry"
+                  defaultOption={jp.chooseIndustry}
                 />
                 {/* <Input
          name="companyType"
@@ -134,12 +134,14 @@ const UserFormScreen = () => {
                   id={jp.employeeNumber}
                   options={employeeNumber}
                   className=""
+                  defaultOption={jp.chooseEmployee}
                 />
                 <Select
-                  label="Location"
+                  label={jp.location}
                   id="location"
                   options={countries}
                   className=""
+                  defaultOption={jp.chooseLocation}
                 />
                 <DatePicker
                   name="jobTitle"
@@ -154,7 +156,7 @@ const UserFormScreen = () => {
                     type="text"
                     label={jp.companyDescription}
                     className="mt-1 block w-full "
-                    placeholder="100000 $"
+                    
                   />
                 </span>
               </div>

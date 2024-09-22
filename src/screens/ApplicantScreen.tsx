@@ -35,6 +35,7 @@ const ApplicantScreen = () => {
   const { data, isLoading, isError, isSuccess, error } = useFetch({
     endpoint: apiRoutes.APPLICANTS,
     key: "applicants",
+    token: token as string,
   });
   const itemsPerPage = 5;
   const applicants = data || [];
@@ -88,15 +89,16 @@ const ApplicantScreen = () => {
     setIsDetail(true);
   };
 
+  console.log('isLoading',isLoading)
   return (
     <>
-      {isLoading ||
-        (isDetailLoading && (
+      {(isLoading ||
+        isDetailLoading )&& (
           <Loading
             isLoading={isLoading || isDetailLoading}
             className="h-[calc(100vh-68px)]"
           />
-        ))}
+        )}
       <motion.div
         variants={applicantVariants}
         initial="initial"
@@ -114,18 +116,20 @@ const ApplicantScreen = () => {
           </p>
         </div>
         <ApplicantTable applicants={currentData} handleDetail={handleDetail} />
+        { filteredApplicants.length > 5 && (
         <Pagination
           data={filteredApplicants}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
+        )}
         {isDetail && applicantDetail && (
-          <div className="absolute top-0 left-0 bg-secondaryColor/50 w-full h-full p-4 flex justify-center items-center">
+          <div className="absolute top-0 left-0 bg-secondaryColor/50 w-full h-full p-2 flex justify-center items-center">
             <MatchedApplicants applicant={applicantDetail} />
             <button
               onClick={() => setIsDetail(false)}
-              className="absolute top-1 right-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
+              className="absolute top-3 right-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

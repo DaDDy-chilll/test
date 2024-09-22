@@ -14,14 +14,17 @@ import JobForm from "@/components/Jobs/JobForm";
 import Loading from "@/components/ui/Loading";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const JobScreen = () => {
+  const {token} = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("Job Type");
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.JOBS)
+  const {data,isLoading,isError,isSuccess,error} = useFetch({endpoint:apiRoutes.JOBS,token:token as string,key:'jobs'})
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },
