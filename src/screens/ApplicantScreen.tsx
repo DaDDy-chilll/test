@@ -1,12 +1,18 @@
 import { motion } from "framer-motion";
 import FilterBar from "@/components/Applicants/FilterBar";
 import ApplicantTable from "@/components/Applicants/ApplicantTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "@/components/Applicants/Pagination";
 import { FilterType } from "@/types/helperTypes";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/components/ui/Loading";
 import { apiRoutes } from "@/utils/apiRoutes";
+import MatchedApplicants from "@/components/Matched/MatchedApplicants";
+import { UserProfile } from "@/types/user";
+import { useQuery } from "@tanstack/react-query";
+import { fetchServer } from "@/utils/helper";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const FilterState: FilterType = {
   livesInJapan: false,
@@ -15,36 +21,47 @@ const FilterState: FilterType = {
   language: "",
   education: "",
   jobType: "",
-}
+};
 
 const ApplicantScreen = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const { token } = useSelector((state: RootState) => state.auth);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isDetail, setIsDetail] = useState<boolean>(false);
+  // const [applicantDetail,setApplicantDetail] = useState<UserProfile>()
+  const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
+    null
+  );
   const [filter, setFilter] = useState(FilterState);
-  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.APPLICANTS)
+  const { data, isLoading, isError, isSuccess, error } = useFetch({
+    endpoint: apiRoutes.APPLICANTS,
+    key: "applicants",
+  });
   const itemsPerPage = 5;
   const applicants = data || [];
 
   // Filter function based on filter state
-  const filteredApplicants = applicants.filter((applicant:any) => {
+  const filteredApplicants = applicants.filter((applicant: any) => {
     return (
       // Filter by location
       (!filter.livesInJapan || applicant.address === "Japan") &&
       (!filter.livesInMyanmar || applicant.address === "Myanmar") &&
-      
       // Filter by gender
-      (filter.gender === "" || applicant.gender.toLowerCase() === filter.gender.toLowerCase()) &&
-      
+      (filter.gender === "" ||
+        applicant.gender.toLowerCase() === filter.gender.toLowerCase()) &&
       // Filter by language
-      (filter.language === "" || 
-        (filter.language === "Japanese") ||
-        (applicant.japaneseLevel.match(filter.language) !== null)
-      ) &&
-      
+      (filter.language === "" ||
+        filter.language === "Japanese" ||
+        applicant.japaneseLevel.match(filter.language) !== null) &&
       // Filter by education
-      (filter.education === "" || applicant.education.toLowerCase().includes(filter.education.toLowerCase())) &&
-      
+      (filter.education === "" ||
+        applicant.education
+          .toLowerCase()
+          .includes(filter.education.toLowerCase())) &&
       // Filter by job type (assuming preferJob is an array of job types)
-      (filter.jobType === 'Job Type' || applicant.preferJob.some((job:any) => job.toLowerCase().includes(filter.jobType.toLowerCase())))
+      (filter.jobType === "Job Type" ||
+        applicant.preferJob.some((job: any) =>
+          job.toLowerCase().includes(filter.jobType.toLowerCase())
+        ))
     );
   });
 
@@ -54,40 +71,88 @@ const ApplicantScreen = () => {
     currentPage * itemsPerPage
   );
 
+  const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
+    queryKey: ["applicantDetail", selectedApplicantId],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.APPLICANTS}/${selectedApplicantId}`,
+        method: "GET",
+        token: token,
+      });
+    },
+    enabled: !!selectedApplicantId && isDetail,
+  });
+
+  const handleDetail = (id: number) => {
+    setSelectedApplicantId(id);
+    setIsDetail(true);
+  };
 
   return (
- <>
-    {isLoading && <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />}
+    <>
+      {isLoading ||
+        (isDetailLoading && (
+          <Loading
+            isLoading={isLoading || isDetailLoading}
+            className="h-[calc(100vh-68px)]"
+          />
+        ))}
       <motion.div
-          variants={applicantVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="w-full overflow-hidden relative"
+        variants={applicantVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="w-full overflow-hidden relative"
       >
-      
         <FilterBar filter={filter} setFilter={setFilter} />
         <div className="flex justify-start items-center px-4 py-2">
           <p className="text-gray-500 text-sm">
-            Search Result <span className="text-secondaryColor">({filteredApplicants.length})</span>
+            Search Result{" "}
+            <span className="text-secondaryColor">
+              ({filteredApplicants.length})
+            </span>
           </p>
         </div>
-        <ApplicantTable applicants={currentData} />
+        <ApplicantTable applicants={currentData} handleDetail={handleDetail} />
         <Pagination
           data={filteredApplicants}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
+        {isDetail && applicantDetail && (
+          <div className="absolute top-0 left-0 bg-secondaryColor/50 w-full h-full p-4 flex justify-center items-center">
+            <MatchedApplicants applicant={applicantDetail} />
+            <button
+              onClick={() => setIsDetail(false)}
+              className="absolute top-1 right-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
       </motion.div>
     </>
   );
 };
 
 const applicantVariants = {
-  initial: { opacity: 0},
-  animate: { opacity: 1,transition: { duration: 0.2 } },
-  exit: { opacity: 0,transition: { duration: 0.2 } },
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 export default ApplicantScreen;

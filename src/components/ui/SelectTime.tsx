@@ -14,8 +14,8 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
   // Create a list of times in 30-minute intervals using moment
   const generateTimes = () => {
     const times = [];
-    let startTime = moment('09:00', 'HH:mm');
-    const endTime = moment('17:00', 'HH:mm');
+    let startTime = moment('01:00', 'HH:mm');
+    const endTime = moment('23:00', 'HH:mm');
 
     while (startTime <= endTime) {
       times.push(startTime.format('HH:mm'));
@@ -44,7 +44,7 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
       </div>
 
       {isOpen && (
-        <ul className={`${dropStyle === 1? 'h-20':"h-32"} absolute top-full left-0 w-full overflow-y-auto bg-gray-300 text-black mt-1 rounded-lg shadow-lg z-10`}>
+        <ul className={`${dropStyle === 1? 'h-40  z-10':"h-60 z-20"} absolute top-full left-0 w-full overflow-y-auto bg-gray-300 text-black mt-1 rounded-lg shadow-lg z-10`}>
           {times.map((time) => (
             <li
               key={time}

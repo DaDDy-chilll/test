@@ -139,7 +139,7 @@ const Home = () => {
 
     const messageData = {
       chat_id: selectedChat.id,
-      sender_id: 21,
+      sender_id: user?.id ,
       content: newMessage.trim(),
       timestamp: Timestamp.now(),
       read: false,

@@ -67,7 +67,7 @@ const AppointmentModel = ({
         </div>
 
         <div className="flex items-center justify-between mt-6">
-          <h1 className="text-xs font-bold flex items-center  ">
+          <h1 className="text-xs font-bold flex items-center gap-3 ">
             <svg
               width="18"
               height="18"

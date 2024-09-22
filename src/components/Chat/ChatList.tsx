@@ -1,5 +1,6 @@
 import React from 'react';
-import { Chat } from '@/screens/ChatScreen';
+import { Chat } from '@/types/helperTypes';
+
 import ChatItem from './ChatItem';
 
 interface ChatListProps {

@@ -11,6 +11,8 @@ type ChatViewProps = {
 }
 
 const ChatView = ({messages, user, messagesEndRef}: ChatViewProps) => {
+  
+
   return (
     <>
      <div className="overflow-y-auto px-3">
@@ -18,19 +20,19 @@ const ChatView = ({messages, user, messagesEndRef}: ChatViewProps) => {
               <MessageItem
                 key={message.id}
                 message={message}
-                currentUser={{ id: !!user?.id ? user?.id : 0 }}
+                currentUser={{ id: !!user?.id ? user?.id : null }}
                 messagesEndRef={messagesEndRef}
               />
             ))}
           </div>
-          <div className="absolute top-2 right-2 flex items-center gap-2">
+          {/* <div className="absolute top-2 right-2 flex items-center gap-2">
             <button className="bg-secondaryColor text-sm text-white px-3 py-2 rounded-md">
               {jp.aiChat}
             </button>
             <button className="bg-secondaryColor text-sm text-white px-3 py-2 rounded-md">
               {jp.adminHelp}
             </button>
-          </div>
+          </div> */}
     </>
   )
 }

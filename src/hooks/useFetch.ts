@@ -1,14 +1,22 @@
 import { fetchServer } from "@/utils/helper";
 import {useQuery } from "@tanstack/react-query";
 
-const useFetch = (endpoint:string,token?:string) => {
+
+type UseFetchType = {
+    endpoint:string | null,
+    token?:string,
+    key?:string
+}
+
+const useFetch = ({endpoint,token,key}:UseFetchType) => {
 
    const {data,isLoading,isError,isSuccess,error} = useQuery({
-    queryKey:[endpoint],
+    queryKey:[key || endpoint],
     queryFn:()=>{
-        if(!token && !endpoint) throw new Error("Token and endpoint are required")
-        return fetchServer({endpoint,method:"GET",token})
-    }
+        if (!token && !endpoint) throw new Error("Token and endpoint are required")
+        return fetchServer({endpoint, method: "GET", token: token || undefined})
+    },
+    enabled:!!endpoint
    })
 
    return {data,isLoading,isError,isSuccess,error}  

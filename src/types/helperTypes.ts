@@ -5,7 +5,7 @@ export type FetchServerType =  {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: any;
   file?: boolean | null;
-  endpoint?: string;
+  endpoint?: string | null;
   token?: string | null;
 };
 

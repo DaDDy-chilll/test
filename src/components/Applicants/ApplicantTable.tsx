@@ -12,9 +12,11 @@ type Applicant =     {
 
 type ApplicantTableProps = {
     applicants: Applicant[]
+    handleDetail: (id:number) => void
 }
 
-const ApplicantTable = ({applicants}: ApplicantTableProps) => {
+const ApplicantTable = ({applicants,handleDetail}: ApplicantTableProps) => {
+
   return (
 <div className="relative overflow-y-auto h-[calc(100vh-225px)] ">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -72,7 +74,7 @@ const ApplicantTable = ({applicants}: ApplicantTableProps) => {
                     {applicant.gender}
                 </td>
                 <td className=" py-2 text-center text-secondaryColor">
-                    view
+                    <button onClick={() => handleDetail(applicant.id)} className="text-xs text-white bg-primaryColor rounded-full px-2 py-1 hover:bg-secondaryColor">Detail</button>
                 </td>
             </tr>
             ))}
