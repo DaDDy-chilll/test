@@ -10,15 +10,10 @@ const LineCharts = ({data=[]}: LineChartProps) => {
       width={500}
       height={300}
       data={data}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
+
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="name" interval={0} tick={{ fontSize: 10,  textAnchor: 'end' }}/>
       <YAxis />
       <Tooltip />
       {/* <Legend /> */}

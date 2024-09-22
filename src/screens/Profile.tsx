@@ -95,13 +95,6 @@ const Profile = () => {
                     className=""
                     defaultOption="Choose Industry"
                   />
-                  {/* <Input
-                   name="companyType"
-                   type="text"
-                 
-                   label="Company Type"
-                   className="mt-1 block w-ful"
-                 /> */}
                   <Input
                     name="salary"
                     type="text"

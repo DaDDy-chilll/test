@@ -152,12 +152,9 @@ if(pathname === Routenames.PROFILE) title = jp.profile
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
-        <NavLink to={Routenames.PROFILE} className="w-10 h-10 rounded-full overflow-hidden cursor-pointer" >
-        <Avatar >
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        </NavLink>
+        <div>
+              <h1>Profile</h1>
+        </div>
       </div>
     </nav>
   );

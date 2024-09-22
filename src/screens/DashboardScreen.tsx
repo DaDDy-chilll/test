@@ -39,6 +39,26 @@ const DashboardScreen = () => {
       name: "July",
       matched: 1,
     },
+    {
+      name: "August",
+      matched: 3,
+    },
+    {
+      name: "September",
+      matched: 5,
+    },
+    {
+      name: "October",
+      matched: 2,
+    },
+    {
+      name: "November",
+      matched: 4,
+    },
+    {
+      name: "December",
+      matched: 6,
+    },
   ];
 
   const genderData = [
@@ -86,7 +106,7 @@ const DashboardScreen = () => {
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-lg font-semibold">Matched List</h1>
           </div>
-          <div className="w-full h-full pt-2 pb-16">
+          <div className="w-full h-full pr-10 pt-2 pb-16">
             <LineCharts data={data} />
           </div>
         </div>
@@ -166,8 +186,8 @@ const DashboardScreen = () => {
           </div>
         </div>
 
-        {/* Calendar */}
-        <div className="bg-gray-100 col-span-4 col-start-1 row-start-3 row-end-5">
+        {/* Meeting */}
+        <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5">
           <div className="w-full ">
             <h1 className="text-lg font-semibold mx-3 px-5 pt-5">
               {jp.calendar}
@@ -193,15 +213,17 @@ const DashboardScreen = () => {
         </div>
 
         {/* New Messages */}
-        <div className="bg-gray-100 col-start-5 col-end-7 row-start-3 row-end-5">
+        <div className="bg-gray-100 col-start-4 col-end-7 row-start-3 row-end-5">
           <h1 className="text-lg font-semibold mx-3 px-5 pt-5">
             {jp.newMessages}
           </h1>
           <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
             {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-x-2 border-b-2 border-gray-400">
+                <img src="https://via.placeholder.com/150" alt="profile" width={50} height={50} className="rounded-full"/>
               <div
                 key={index}
-                className="flex items-start flex-col gap-x-2 w-full py-2 border-b-2 border-gray-500"
+                className="flex items-start flex-col gap-x-2 w-full py-2 "
               >
                 <div className="flex items-center justify-between w-full mb-3">
                   <h1 className="text-sm font-semibold">Mr Random Guy</h1>
@@ -211,6 +233,7 @@ const DashboardScreen = () => {
                   lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Quisquam, quos.
                 </p>
+              </div>
               </div>
             ))}
           </div>

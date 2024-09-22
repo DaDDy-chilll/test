@@ -6,10 +6,9 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store/";
 import useAuth from "@/hooks/useAuth";
 
-
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const {onLogout} = useAuth();
+  const { onLogout } = useAuth();
 
   const handleClick = (title: string) => {
     dispatch(setTitle(title));
@@ -125,28 +124,6 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to={Routenames.ADDJOB}
-              className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.addjob)}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 18V4H4V0H14V8H18V18H10V14H8V18H0ZM2 16H4V14H2V16ZM2 12H4V10H2V12ZM2 8H4V6H2V8ZM6 12H8V10H6V12ZM6 8H8V6H6V8ZM6 4H8V2H6V4ZM10 12H12V10H10V12ZM10 8H12V6H10V8ZM10 4H12V2H10V4ZM14 16H16V14H14V16ZM14 12H16V10H14V12Z"
-                  fillOpacity="0.8"
-                />
-              </svg>
-              <span className="flex-1 ms-3 whitespace-nowrap">{jp.addjob}</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
               to={Routenames.JOBS}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
               onClick={() => handleClick(jp.joblists)}
@@ -189,6 +166,34 @@ const Sidebar = () => {
               </svg>
               <span className="flex-1 ms-3 whitespace-nowrap">
                 {jp.calendar}
+              </span>
+            </NavLink>
+          </li>
+
+          <li className="border-b border-gray-300"></li>
+          <li>
+            <NavLink
+              to={Routenames.PROFILE}
+              className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
+              onClick={() => handleClick(jp.addjob)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+
+              <span className="flex-1 ms-3 whitespace-nowrap">
+                {jp.profile}
               </span>
             </NavLink>
           </li>
