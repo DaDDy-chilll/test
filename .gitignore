@@ -10,6 +10,7 @@ lerna-debug.log*
 .metadata
 node_modules
 dist-ssr
+.github
 .env
 *.local
 

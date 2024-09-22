@@ -29,10 +29,11 @@ const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const CalendarScreen = () => {
   // const currentDate = new Date();
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-  const {data,isLoading,isError,isSuccess,error} = useFetch(apiRoutes.EVENTS)
+  const {data,isLoading,isError,isSuccess,error} = useFetch({url:apiRoutes.EVENTS,token:null})
   const events:Event[] = data || [];
 
   const goToNextMonth = () => {
