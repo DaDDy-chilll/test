@@ -9,9 +9,10 @@ interface Event {
 type CalendarCellProps = {
   day: Date;
   todaysEvents: Event[];
+  handleClick: (todaysEvents: Event[]) => void;
 };
 
-const CalendarCell = ({ day, todaysEvents }: CalendarCellProps) => {
+const CalendarCell = ({ day, todaysEvents, handleClick }: CalendarCellProps) => {
   return (
     <div
       className={clsx(
@@ -21,6 +22,7 @@ const CalendarCell = ({ day, todaysEvents }: CalendarCellProps) => {
           "bg-[#E5D5D9]": !isToday(day),
         }
       )}
+      onClick={() => handleClick(todaysEvents)}
     >
       <div className={clsx("w-8 h-8 flex items-center justify-center mx-auto")}>
         {format(day, "d")}

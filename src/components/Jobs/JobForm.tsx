@@ -6,6 +6,8 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { jp } from "@/lang/jp";
 import DefaultLogo from "@/assets/images/default.png";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 type JobFormProps = {
   onBack?: () => void;
@@ -166,12 +168,20 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             <input type="text" name="other" className="bg-gray-200" />
           </div>
           <span className="col-span-2 mt-3">
-            <Input
-              name="description"
-              type="text"
-              label={jp.companyDescription}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder="lorem ipsum dolor sit amet"
+            <ReactQuill
+              theme="snow"
+              className="h-36 mb-16"
+              placeholder={jp.companyDescription}
+              modules={{
+                toolbar: [
+                  [{ 'header': [1, 2, false] }],
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{ 'align': [] }],
+                  ['clean'],
+                ],
+              }}
             />
           </span>
         </div>
