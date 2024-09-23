@@ -62,6 +62,7 @@ export interface Message {
   sender_id: number;
   content: string;
   timestamp: Timestamp;
+  read: boolean;
 }
 
 export interface User {

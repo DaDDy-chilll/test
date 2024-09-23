@@ -16,7 +16,7 @@ const CalendarCell = ({ day, todaysEvents, handleClick }: CalendarCellProps) => 
   return (
     <div
       className={clsx(
-        "h-20 flex flex-col rounded-md items-center justify-center active:scale-90 transition-all duration-100 cursor-pointer",
+        "h-20 flex flex-col rounded-md items-center justify-center active:scale-90 transition-all duration-100 cursor-pointer ",
         {
           "border border-red-400 bg-[#E5D5D9]": isToday(day),
           "bg-[#E5D5D9]": !isToday(day),

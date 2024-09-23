@@ -299,6 +299,7 @@ useEffect(() => {
               messages={messages}
               user={user}
               messagesEndRef={messagesEndRef}
+              selectedChat={selectedChat}
             />
           ) : (
             <div className="flex items-center justify-center h-full">

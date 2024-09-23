@@ -19,7 +19,7 @@ const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
 
 const Router = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading isLoading={true} />}>
       <BrowserRouter>
         <AnimatedRoutes />
       </BrowserRouter>

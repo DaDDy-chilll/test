@@ -176,7 +176,13 @@ const CalendarScreen = () => {
         </div>
         <div className="col-span-1 px-4 rounded-lg bg-[#F0F0F0] h-full">
           <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
-          <div className="text-end">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-gray-500">
+              {selectedEvents.length > 0
+                ? format(selectedEvents[0].date, "yyyy-MM-dd")
+                : dayEvents.length > 0 &&
+                  format(dayEvents[0].date, "yyyy-MM-dd")}
+            </p>
             <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
               <option value="all">All</option>
               <option value="JLPT N4">JLPT N4</option>
