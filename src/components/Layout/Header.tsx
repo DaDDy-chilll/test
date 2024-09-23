@@ -103,10 +103,11 @@ const Header = () => {
           <DropdownMenuTrigger className=" z-50">
             <div>
               <svg
+                className="cursor-pointer hover:text-red-500"
                 width="18"
-                height="24"
+                height="18"
                 viewBox="0 0 24 30"
-                fill="none"
+                fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -116,7 +117,7 @@ const Header = () => {
               </svg>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[500px]">
+          <DropdownMenuContent className="w-[500px] mr-2">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {defaultNoti

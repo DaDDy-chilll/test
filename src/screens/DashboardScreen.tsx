@@ -278,7 +278,7 @@ const DashboardScreen = () => {
             {chats.map((chat, index) => (
               <div
                 key={index}
-                className="flex items-center py-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-white"
+                className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
                 onClick={() => handleChatClick(chat)}
               >
                 <img

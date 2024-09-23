@@ -52,7 +52,7 @@ interface ChatInfo {
 
 // const parsedId = parsedUser.id;
 
-const Home = () => {
+const ChatScreen = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
   const navChat = location.state;
@@ -114,7 +114,6 @@ useEffect(() => {
   
   
   const handleChatSelect = (chat: Chat) => {
-    console.log("chat",chat);
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
     return () => unsubscribe();
@@ -341,4 +340,4 @@ const chatVariants = {
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
-export default Home;
+export default ChatScreen;

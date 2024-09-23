@@ -65,6 +65,9 @@ const CalendarScreen = () => {
     }, {});
   }, [events]);
 
+  const today = format(new Date(), "yyyy-MM-dd");
+  const dayEvents = eventsByDate[today] || [];
+
   const handleCellClick = (todaysEvents: Event[]) => {
     setSelectedEvents(todaysEvents);
   };
@@ -184,8 +187,12 @@ const CalendarScreen = () => {
               selectedEvents.map((event, index) => (
                 <EventListItem key={index} event={event} />
               ))
+            ) : dayEvents.length > 0 ? (
+              dayEvents.map((event, index) => (
+                <EventListItem key={index} event={event} />
+              ))
             ) : (
-              <p className="text-center text-gray-500">
+              <p className="text-center text-gray-500 pt-10">
                 No events for this day
               </p>
             )}
