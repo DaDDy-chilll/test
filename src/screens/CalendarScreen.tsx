@@ -1,5 +1,3 @@
-
-
 import { motion } from "framer-motion";
 import {
   eachDayOfInterval,
@@ -24,14 +22,17 @@ import { RootState } from "@/store/store";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-
 const CalendarScreen = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-  const { data, isLoading, isError, isSuccess, error } = useFetch({ endpoint: apiRoutes.EVENTS, token: token as string, key: 'events' })
+  const { data, isLoading, isError, isSuccess, error } = useFetch({
+    endpoint: apiRoutes.EVENTS,
+    token: token as string,
+    key: "events",
+  });
   const events: Event[] = data || [];
 
   const goToNextMonth = () => {
@@ -64,14 +65,15 @@ const CalendarScreen = () => {
     }, {});
   }, [events]);
 
-
   const handleCellClick = (todaysEvents: Event[]) => {
     setSelectedEvents(todaysEvents);
   };
 
   return (
     <>
-      {isLoading && <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />}
+      {isLoading && (
+        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
+      )}
       <motion.div
         variants={calendarVariants}
         initial="initial"
@@ -173,8 +175,8 @@ const CalendarScreen = () => {
           <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
           <div className="text-end">
             <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
-              <option value="all" >All</option>
-              <option value="JLPT N4" >JLPT N4</option>
+              <option value="all">All</option>
+              <option value="JLPT N4">JLPT N4</option>
             </select>
           </div>
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
@@ -183,13 +185,14 @@ const CalendarScreen = () => {
                 <EventListItem key={index} event={event} />
               ))
             ) : (
-              <p className="text-center text-gray-500">No events for this day</p>
+              <p className="text-center text-gray-500">
+                No events for this day
+              </p>
             )}
           </div>
         </div>
       </motion.div>
     </>
-
   );
 };
 

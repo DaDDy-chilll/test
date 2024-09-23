@@ -25,6 +25,7 @@ import ChatInput from "@/components/Chat/ChatInput";
 import { AnimatePresence } from "framer-motion";
 import { jp } from "@/lang/jp";
 import useChat from "@/hooks/useChat";
+import { useLocation } from "react-router-dom";
 interface Job {
   id: number;
   job_title: string;
@@ -53,6 +54,8 @@ interface ChatInfo {
 
 const Home = () => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const location = useLocation();
+  const navChat = location.state;
   // const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -71,7 +74,11 @@ const Home = () => {
 
 
 
-
+useEffect(() => {
+  if (navChat) {
+    handleChatSelect(navChat)
+  }
+}, [navChat]);
 
   
   // fetch chat room
@@ -107,6 +114,7 @@ const Home = () => {
   
   
   const handleChatSelect = (chat: Chat) => {
+    console.log("chat",chat);
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
     return () => unsubscribe();
@@ -253,6 +261,7 @@ const Home = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   return (
     <>
       {isLoading && (

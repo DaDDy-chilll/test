@@ -18,6 +18,7 @@ const initialLanding = () => {
   const signup = () => navigate(RouteName.REGISTER);
 
   useEffect(() => {
+    console.log(verified,user,token);
     if(verified){
       navigate(RouteName.USER_FORM);
     }else if (user && token) {

@@ -1,29 +1,29 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Routenames from "./routes";
 import ProtectRoute from "./ProtectRoute";
 import ShareLayout from "@/layouts/ShareLayout";
-import {
-  AddJobScreen,
-  ApplicantScreen,
-  CalendarScreen,
-  ChatScreen,
-  initialLanding,
-  JobScreen,
-  LoginScreen,
-  MatchedScreend,
-  RegisterScreen,
-  UserFormScreen,
-} from "@/screens";
-import DashboardScreen from "@/screens/DashboardScreen";
-import Profile from "@/screens/Profile";
 import { AnimatePresence } from "framer-motion";
-import NotFound from "@/components/Auth/NotFound";
+import { initialLanding, LoginScreen, RegisterScreen } from "@/screens";
+import Loading from "@/components/ui/Loading";
+const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
+const Profile = lazy(() => import("@/screens/Profile"));
+const NotFound = lazy(() => import("@/components/Auth/NotFound"));
+const ApplicantScreen = lazy(() => import("@/screens/ApplicantScreen"));
+const MatchedScreend = lazy(() => import("@/screens/MatchedScreend"));
+const ChatScreen = lazy(() => import("@/screens/ChatScreen"));
+const JobScreen = lazy(() => import("@/screens/JobScreen"));
+const AddJobScreen = lazy(() => import("@/screens/AddJobScreen"));
+const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
+const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <AnimatedRoutes />
-    </BrowserRouter>
+    <Suspense fallback={<Loading />}>
+      <BrowserRouter>
+        <AnimatedRoutes />
+      </BrowserRouter>
+    </Suspense>
   );
 };
 

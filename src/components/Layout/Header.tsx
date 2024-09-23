@@ -11,13 +11,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import NotiItem from "../ui/NotiItem";
 import { jp } from "@/lang/jp";
-import { NavLink, } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
-import  Routenames  from "@/navigations/routes";
-
+import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Routenames from "@/navigations/routes";
 
 const Header = () => {
   let title = useSelector((state: RootState) => state.navigation.title);
+  const { user } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
   const pathname = location.pathname;
   const defaultNoti = [
@@ -93,8 +93,7 @@ const Header = () => {
     },
   ];
 
-if(pathname === Routenames.PROFILE) title = jp.profile
-
+  if (pathname === Routenames.PROFILE) title = jp.profile;
 
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-16 z-50 bg-white">
@@ -131,21 +130,21 @@ if(pathname === Routenames.PROFILE) title = jp.profile
             <div className="flex justify-end">
               <button className="text-sm text-blue-500 flex items-center gap-2 m-2">
                 See More
-                    <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="size-6"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
-                  clipRule="evenodd"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
-                  clipRule="evenodd"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                    clipRule="evenodd"
+                  />
+                  <path
+                    fillRule="evenodd"
+                    d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                    clipRule="evenodd"
                   />
                 </svg>
               </button>
@@ -153,7 +152,7 @@ if(pathname === Routenames.PROFILE) title = jp.profile
           </DropdownMenuContent>
         </DropdownMenu>
         <div>
-              <h1>Profile</h1>
+          <h1>{user?.name}</h1>
         </div>
       </div>
     </nav>
