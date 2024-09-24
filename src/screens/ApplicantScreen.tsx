@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { QueryKey } from "@/utils/queryKey";
 
 const FilterState: FilterType = {
   livesInJapan: false,
@@ -34,7 +35,7 @@ const ApplicantScreen = () => {
   const [filter, setFilter] = useState(FilterState);
   const { data, isLoading, isError, isSuccess, error } = useFetch({
     endpoint: apiRoutes.APPLICANTS,
-    key: "applicants",
+    key: QueryKey.APPLICANTS,
     token: token as string,
   });
   const itemsPerPage = 5;
@@ -72,30 +73,28 @@ const ApplicantScreen = () => {
     currentPage * itemsPerPage
   );
 
-  const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
-    queryKey: ["applicantDetail", selectedApplicantId],
-    queryFn: () => {
-      return fetchServer({
-        endpoint: `${apiRoutes.APPLICANTS}/${selectedApplicantId}`,
-        method: "GET",
-        token: token,
-      });
-    },
-    enabled: !!selectedApplicantId && isDetail,
-  });
+  // const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
+  //   queryKey: [QueryKey.APPLICANT_DETAIL],
+  //   queryFn: () => {
+  //     return fetchServer({
+  //       endpoint: `${apiRoutes.APPLICANTS}/${selectedApplicantId}`,
+  //       method: "GET",
+  //       token: token,
+  //     });
+  //   },
+  //   enabled: !!selectedApplicantId && isDetail,
+  // });
 
   const handleDetail = (id: number) => {
     setSelectedApplicantId(id);
     setIsDetail(true);
   };
 
-  console.log('isLoading',isLoading)
   return (
     <>
-      {(isLoading ||
-        isDetailLoading )&& (
+      {(isLoading )&& (
           <Loading
-            isLoading={isLoading || isDetailLoading}
+            isLoading={isLoading }
             className="h-[calc(100vh-68px)]"
           />
         )}
@@ -124,9 +123,9 @@ const ApplicantScreen = () => {
           setCurrentPage={setCurrentPage}
         />
         )}
-        {isDetail && applicantDetail && (
+        {isDetail  && (
           <div className="absolute top-0 left-0 bg-secondaryColor/50 w-full h-full p-2 flex justify-center items-center">
-            <MatchedApplicants applicant={applicantDetail} />
+            <MatchedApplicants selectedApplicantId={selectedApplicantId} />
             <button
               onClick={() => setIsDetail(false)}
               className="absolute top-3 right-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"

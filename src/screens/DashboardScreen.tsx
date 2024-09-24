@@ -16,7 +16,7 @@ import { useMemo, useState } from "react";
 import { format } from "date-fns";
 import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
-
+import { QueryKey } from "@/utils/queryKey";
 const DashboardScreen = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -30,7 +30,7 @@ const DashboardScreen = () => {
   } = useFetch({
     endpoint: apiRoutes.EVENTS,
     token: token as string,
-    key: "events",
+    key: QueryKey.EVENTS,
   });
   const today = format(new Date(), "yyyy-MM-dd");
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);

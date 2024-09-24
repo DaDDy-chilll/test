@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -16,15 +15,20 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { QueryKey } from "@/utils/queryKey";
 
 const JobScreen = () => {
-  const {token} = useSelector((state: RootState) => state.auth);
+  const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("Job Type");
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const {data,isLoading,isError,isSuccess,error} = useFetch({endpoint:apiRoutes.JOBS,token:token as string,key:'jobs'})
+  const { data, isLoading, isError, isSuccess, error } = useFetch({
+    endpoint: apiRoutes.JOBS,
+    token: token as string,
+    key: QueryKey.JOBS,
+  });
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },
@@ -33,17 +37,18 @@ const JobScreen = () => {
     { id: 4, name: "Internship" },
   ];
 
-  const jobs = data || []
+  const jobs = data || [];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const filteredJobs = useMemo(() => {
-    return jobs.filter((job:any) =>
-      job.position.toLowerCase().includes(search.toLowerCase()) ||
-      job.location.toLowerCase().includes(search.toLowerCase()) ||
-      (Number(job.applied) === Number(search)) 
+    return jobs.filter(
+      (job: any) =>
+        job.position.toLowerCase().includes(search.toLowerCase()) ||
+        job.location.toLowerCase().includes(search.toLowerCase()) ||
+        Number(job.applied) === Number(search)
     );
   }, [jobs, search]);
 
@@ -53,21 +58,23 @@ const JobScreen = () => {
 
   const editHandler = () => {
     setIsEdit(true);
-  }
+  };
 
   const addHandler = () => {
     setIsAdd(true);
-  }
+  };
 
   const backHandler = () => {
     setIsAdd(false);
     setIsEdit(false);
-  }
+  };
 
   return (
     <>
-    {isLoading && <Loading isLoading={isLoading} className='h-[calc(100vh-68px)]' />}
-      {(!showDetails && !isAdd && !isEdit) && (
+      {isLoading && (
+        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
+      )}
+      {!showDetails && !isAdd && !isEdit && (
         <motion.div
           key="job-list"
           variants={jobVariants}
@@ -138,7 +145,7 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {filteredJobs.map((item:any) => (
+            {filteredJobs.map((item: any) => (
               <JobListItem
                 key={item.id}
                 item={item}
@@ -147,16 +154,27 @@ const JobScreen = () => {
             ))}
           </div>
           <div className="flex justify-end items-center mt-4 ">
-            <Button variant="destructive" className="px-10" onClick={addHandler}>
+            <Button
+              variant="destructive"
+              className="px-10"
+              onClick={addHandler}
+            >
               Make New Job Post
             </Button>
           </div>
         </motion.div>
-      ) } 
+      )}
 
-      { (showDetails && !isEdit) &&(
-        <motion.div key="job-details" className="w-full h-full flex justify-center items-center px-10">
-          <JobDetails backHandler={setShowDetails} isDetails={true} editHandler={editHandler}  />
+      {showDetails && !isEdit && (
+        <motion.div
+          key="job-details"
+          className="w-full h-full flex justify-center items-center px-10"
+        >
+          <JobDetails
+            backHandler={setShowDetails}
+            isDetails={true}
+            editHandler={editHandler}
+          />
         </motion.div>
       )}
       {(isAdd || isEdit) && (
@@ -170,8 +188,8 @@ const JobScreen = () => {
 
 const jobVariants = {
   initial: { opacity: 0 },
-  animate: { opacity: 1,transition: { duration: 0.2 } },
-  exit: { opacity: 0,transition: { duration: 0.2 }},
+  animate: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 const formVariants = {

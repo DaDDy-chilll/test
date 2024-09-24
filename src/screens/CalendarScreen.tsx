@@ -19,6 +19,7 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import { Event } from "@/types/helperTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { QueryKey } from "@/utils/queryKey";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -31,7 +32,7 @@ const CalendarScreen = () => {
   const { data, isLoading, isError, isSuccess, error } = useFetch({
     endpoint: apiRoutes.EVENTS,
     token: token as string,
-    key: "events",
+    key: QueryKey.EVENTS,
   });
   const events: Event[] = data || [];
 

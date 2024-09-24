@@ -72,3 +72,49 @@ export interface User {
     profile_path: string;
   };
 }
+
+export interface Education {
+  schoolLevel: string;
+  schoolName: string;
+  year: string;
+}
+
+export interface WorkExperience {
+  position: string;
+  companyName: string;
+  year: string;
+  description: string;
+}
+
+export interface Language {
+  level: string;
+}
+
+export interface JobPreference {
+  passport: string;
+  salary: string;
+  workingHours: string;
+  accommodationProvided: string;
+  rentSupport: string;
+  preferredJobAndArea: {
+    jobTypes: string[];
+    areas: string[];
+}
+}
+
+export interface PersonalInfo {
+  location: string;
+  birthdate: string;
+  gender: string;
+}
+
+export type UserProfile = {
+  id: string;
+  profileImage: string;
+  personalInfo: PersonalInfo,
+  jobsPreference: JobPreference,
+  languages: Language[],
+  education: Education[],
+  workExperience: WorkExperience[],
+
+}
