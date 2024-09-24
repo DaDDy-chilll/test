@@ -12,7 +12,7 @@ interface ChatListProps {
 const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, selectedChat }) => {
   return (
     <div className="flex-1 " >
-      <div className="flex flex-col h-[90vh] gap-2 p-6 overflow-y-auto">
+      <div className="flex flex-col h-[90vh] gap-2 p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
         {chats.map((chat, index) => (
        <div key={index} onClick={() => onSelectChat(chat)} className={`${selectedChat?.id === chat.id ? 'bg-primaryColor text-white' : ''} hover:bg-red-300 transition-all duration-100 active:scale-90`}>
         <ChatItem chat={chat} onSelect={onSelectChat} isActive={selectedChat?.id === chat.id} />

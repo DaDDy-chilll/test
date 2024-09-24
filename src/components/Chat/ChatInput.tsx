@@ -7,7 +7,7 @@ type ChatInputProps = {
 
 const ChatInput = ({newMessage, setNewMessage, handleSendMessage}: ChatInputProps) => {
   return (
-    <div className="flex items-center gap-2 w-full h-full px-4 py-3">
+    <div className="flex items-center gap-2 w-full h-full px-4 py-3 border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
     <input
       type="text"
       placeholder="Write a message..."

@@ -293,7 +293,7 @@ useEffect(() => {
         </div>
 
         {/* Chat View */}
-        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden">
+        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden border-l-2 border-gray-300 border-opacity-30 border-r-2 border-gray-300 border-opacity-30">
           {selectedChat ? (
             <ChatView
               messages={messages}
