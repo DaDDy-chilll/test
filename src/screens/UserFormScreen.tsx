@@ -4,6 +4,7 @@ import Select from "@/components/ui/Select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
+import defaultImage from '@/assets/images/default.png';
 import DatePicker from "@/components/ui/DatePicker";
 import { motion,AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -85,7 +86,7 @@ const UserFormScreen = () => {
                 <p>{jp.profileShow}</p>
               </div>
               <Avatar className="w-20 h-20">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={defaultImage} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>

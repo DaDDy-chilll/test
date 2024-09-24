@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { jp } from "@/lang/jp";
+import defaultImage from '@/assets/images/default.png';
 
 type formData = {
   name: string;
@@ -37,7 +38,7 @@ const JobDetails = ({
     >
       <div>
         <Avatar className="w-20 h-20">
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={defaultImage} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>

@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/icons/logo.svg";
+import defaultImage from '@/assets/images/default.png';
 import { jp } from "@/lang/jp";
 import DatePicker from "@/components/ui/DatePicker";
 import Loading from "@/components/ui/Loading";
@@ -74,7 +75,7 @@ const Profile = () => {
                   <p>This will be your public photo for your company</p>
                 </div>
                 <Avatar className="w-20 h-20">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={defaultImage} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </div>
