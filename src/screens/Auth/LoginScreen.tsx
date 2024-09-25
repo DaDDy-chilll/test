@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { toast } from "react-toastify";
+import useHandleError from "@/hooks/useHandleError";
 const LoginScreen = () => {
   const { onLogin, isLoginPending, error } = useAuth();
+  const { handleError } = useHandleError();
   const { user, token } = useSelector(
     (state: RootState) => state.auth
   );
@@ -32,18 +33,23 @@ const LoginScreen = () => {
     if (user && token) navigate(RouteName.DASHBOARD);
   }, [user, token]);
 
+
+  console.log("error-login", error);
   useEffect(() => {
-    if (error?.toast) {
-      toast.warning(error.message, { position: "top-center" });
-    } else if (typeof error?.message === "string") {
-      toast.error(error.message, { position: "top-center" });
-    }else if(error?.message?.validation){
-      toast.error(error?.message?.validation[0]?.password?.jp, { position: "top-center" });
-    }else if(error?.message?.password){
-      toast.error(error?.message?.password?.jp, { position: "top-center" });
-    }else if(error?.message?.email){
-      toast.error(error?.message?.email?.jp, { position: "top-center" });
-    }
+    // if (error?.error) {
+    //   handleError(error);
+    // }
+    // if (error?.toast) {
+    //   toast.warning(error.message, { position: "top-center" });
+    // } else if (typeof error?.message === "string") {
+    //   toast.error(error.message, { position: "top-center" });
+    // }else if(error?.message?.validation){
+    //   toast.error(error?.message?.validation[0]?.password?.jp, { position: "top-center" });
+    // }else if(error?.message?.password){
+    //   toast.error(error?.message?.password?.jp, { position: "top-center" });
+    // }else if(error?.message?.email){
+    //   toast.error(error?.message?.email?.jp, { position: "top-center" });
+    // }
   }, [error]);
 
   return (
@@ -78,7 +84,7 @@ const LoginScreen = () => {
                 label="Email"
                 className="mt-1 block w-full"
                 required={false}
-                error={(error?.toast && error.message) || ""}
+                error={(error && error.message) || ""}
               />
             </div>
             <div>

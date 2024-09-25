@@ -23,8 +23,7 @@ export type RegisterProps = {
 
 export type ErrorType = {
   error: boolean;
-  message: string;
-  status: number;
+  message: any;
 }
 
 export type FilterType = {

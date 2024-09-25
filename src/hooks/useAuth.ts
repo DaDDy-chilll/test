@@ -6,30 +6,26 @@ import { setToken, removeToken, setVerified } from "@/store";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useNavigate } from "react-router-dom";
 import User from "@/navigations/routes";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { ErrorType } from "@/types/helperTypes";
 import { errorMessage } from "@/constants/errorMessage";
 
 
-interface errorObjType {
-    toast: boolean,
-    message: string | null
-}
+// interface errorObjType {
+//     toast: boolean,
+//     message: string | null
+// }
 
-const errorObj: errorObjType = {
-    toast: false,
-    message: null
 
-}
 
 const useAuth = () => {
-    const [error, setError] = useState<errorObjType | null>(errorObj)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [error, setError] = useState<ErrorType | null>()
     const { mutate: onLogin, isPending: isLoginPending } = useMutation({
         mutationFn: (data: LoginProps) => {
             if (!data.email || !data.password) {
-                setError({ toast: true, message: errorMessage.all_fields_required })
+                setError({ error: true, message: errorMessage.all_fields_required })
                 return Promise.reject()
             }
             return fetchServer({ endpoint: apiRoutes.LOGIN, method: "POST", body: data });
@@ -40,19 +36,20 @@ const useAuth = () => {
             navigate(User.DASHBOARD);
         },
         onError: (error: ErrorType) => {
+            console.log("error auth",error)
             dispatch(removeToken());
-            setError({ toast: false, message: error.message })
+            // setError(error)
         },
     });
 
     const { mutate: onRegister, isPending: isRegisterPending } = useMutation({
         mutationFn: (data: RegisterProps) => {
             if (!data.email || !data.password || !data.confirmPassword) {
-                setError({ toast: true, message: errorMessage.all_fields_required })
+                setError({ error: true, message: errorMessage.all_fields_required })
                 return Promise.reject()
             }
             if (data.password !== data.confirmPassword) {
-                setError({ toast: false, message: errorMessage.passwords_match })
+                setError({ error: true, message: errorMessage.passwords_match })
                 return Promise.reject()
             }
             return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
@@ -64,7 +61,7 @@ const useAuth = () => {
         },
         onError: (error: ErrorType) => {
             dispatch(removeToken());
-            setError({ toast: false, message: error.message })
+            setError({ error: true, message: error.message })
         }
 
 
@@ -76,11 +73,11 @@ const useAuth = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("verified");
-        setError({ toast: false, message: null })
+        setError(null)
         navigate(User.LOGIN);
     }
 
-
+   
     return { onLogin, isLoginPending, onRegister, isRegisterPending, onLogout, error }
 };
 
