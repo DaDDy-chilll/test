@@ -3,7 +3,7 @@ import { Message, Chat } from "@/types/helperTypes";
 
 interface MessageItemProps {
   message: Message;
-  currentUser: { id: number | null };
+  currentUser: { id: number | string | null };
   messagesEndRef: React.RefObject<HTMLDivElement>;
   selectedChat: Chat;
 }

@@ -1,12 +1,12 @@
-import { Outlet } from 'react-router-dom'
-import Layout from './Layout'
+import { Outlet } from "react-router-dom";
+import Layout from "./Layout";
 
 const ShareLayout = () => {
   return (
     <Layout>
-        <Outlet />
+      <Outlet />
     </Layout>
-  )
-}
+  );
+};
 
-export default ShareLayout
+export default ShareLayout;

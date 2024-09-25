@@ -16,8 +16,11 @@ import useFetch from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
+import Maintenance from "@/components/ui/Maintenance";
+
 
 const JobScreen = () => {
+  if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("Job Type");
@@ -38,11 +41,6 @@ const JobScreen = () => {
   ];
 
   const jobs = data || [];
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
   const filteredJobs = useMemo(() => {
     return jobs.filter(
       (job: any) =>
@@ -52,18 +50,12 @@ const JobScreen = () => {
     );
   }, [jobs, search]);
 
-  const handleJobType = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearch(e.target.value);
+  const handleJobType = (e: React.MouseEvent<HTMLDivElement>) =>
     setJobType((e.target as HTMLDivElement).innerText);
-  };
-
-  const editHandler = () => {
-    setIsEdit(true);
-  };
-
-  const addHandler = () => {
-    setIsAdd(true);
-  };
-
+  const editHandler = () => setIsEdit(true);
+  const addHandler = () => setIsAdd(true);
   const backHandler = () => {
     setIsAdd(false);
     setIsEdit(false);

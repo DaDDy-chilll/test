@@ -12,7 +12,13 @@ type CalendarCellProps = {
   handleClick: (todaysEvents: Event[]) => void;
 };
 
-const CalendarCell = ({ day, todaysEvents, handleClick }: CalendarCellProps) => {
+const CalendarCell = ({
+  day,
+  todaysEvents,
+  handleClick,
+}: CalendarCellProps) => {
+  const clickEvent = () => handleClick(todaysEvents);
+
   return (
     <div
       className={clsx(
@@ -22,7 +28,7 @@ const CalendarCell = ({ day, todaysEvents, handleClick }: CalendarCellProps) => 
           "bg-[#E5D5D9]": !isToday(day),
         }
       )}
-      onClick={() => handleClick(todaysEvents)}
+      onClick={clickEvent}
     >
       <div className={clsx("w-8 h-8 flex items-center justify-center mx-auto")}>
         {format(day, "d")}

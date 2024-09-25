@@ -10,9 +10,7 @@ interface ChatItemProps {
 const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, isActive }) => {
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
 
-  const handleClick = () => {
-    onSelect(chat);
-  };
+  const handleClick = () => onSelect(chat);
 
   return (
     <div

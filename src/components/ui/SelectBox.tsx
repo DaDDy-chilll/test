@@ -22,8 +22,6 @@ const Select: React.FC<SelectProps> = ({
   name,
   options,
   id = "custom_select",
-
-
   className = "",
   defaultOption = "Choose an option",
 }) => {
@@ -44,12 +42,8 @@ const Select: React.FC<SelectProps> = ({
           </option>
         ))}
       </select>
-      
     </div>
   );
 };
 
 export default Select;
-
-
-

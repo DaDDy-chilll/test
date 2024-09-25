@@ -26,22 +26,6 @@ import { AnimatePresence } from "framer-motion";
 import { jp } from "@/lang/jp";
 import useChat from "@/hooks/useChat";
 import { useLocation } from "react-router-dom";
-interface Job {
-  id: number;
-  job_title: string;
-  company_id: string;
-}
-
-interface ChatInfo {
-  jobId: number;
-  companyId: number;
-  jobfinderId: number;
-  jobTitle: string;
-  companyName: string;
-  jobfinderName: string;
-  companyLogo: string;
-}
-
 // company id
 // const currentUser = {
 //   id: 1,
@@ -70,17 +54,8 @@ const ChatScreen = () => {
   // const queryClient = useQueryClient();
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
-  const { chats, isLoading, } = useChat({id:user?.id});
+  const { chats, isLoading } = useChat({ id: user?.id });
 
-
-
-useEffect(() => {
-  if (navChat) {
-    handleChatSelect(navChat)
-  }
-}, [navChat]);
-
-  
   // fetch chat room
   // useEffect(() => {
   //   setIsLoading(true);
@@ -111,8 +86,7 @@ useEffect(() => {
   // }, []);
 
   //Handle Chat Select
-  
-  
+
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
@@ -252,15 +226,10 @@ useEffect(() => {
   // }
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
+  const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
+  useEffect(() => scrollToBottom(), [messages]);
+  useEffect(() => {if(navChat) handleChatSelect(navChat)}, [navChat]);
   return (
     <>
       {isLoading && (

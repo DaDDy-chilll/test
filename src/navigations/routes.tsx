@@ -12,9 +12,9 @@ enum RouteName {
   ADDJOB = "/addjob",
   MESSAGES = "/messages",
   MATCHES = "/matches",
-  USER_FORM ='/form',
-  CHAT = '/chat',
-  PROFILE = '/profile'
+  USER_FORM = "/form",
+  CHAT = "/chat",
+  PROFILE = "/profile",
 }
 
 export default RouteName;

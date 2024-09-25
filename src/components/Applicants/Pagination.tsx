@@ -1,4 +1,3 @@
-
 type PaginationProps = {
   data: any[];
   itemsPerPage: number;
@@ -12,7 +11,6 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
-  
   // Calculate total pages
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -63,7 +61,7 @@ const Pagination = ({
       <button
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-       className="bg-secondaryColor rounded-md w-10 h-10 flex items-center justify-center text-white"
+        className="bg-secondaryColor rounded-md w-10 h-10 flex items-center justify-center text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

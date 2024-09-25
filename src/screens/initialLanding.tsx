@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import  RouteName  from "@/navigations/routes";
+import RouteName from "@/navigations/routes";
 import { useEffect } from "react";
 
 const textOne = "良いミャンマー人と、";
@@ -13,17 +13,16 @@ const textOneDuration = textOne.length * 0.1;
 
 const initialLanding = () => {
   const navigate = useNavigate();
-  const { user,token,verified } = useSelector((state: RootState) => state.auth);
+  const { user, token, verified } = useSelector(
+    (state: RootState) => state.auth
+  );
   const login = () => navigate(RouteName.LOGIN);
   const signup = () => navigate(RouteName.REGISTER);
 
   useEffect(() => {
-    console.log(verified,user,token);
-    if(verified){
-      navigate(RouteName.USER_FORM);
-    }else if (user && token) {
-      navigate(RouteName.DASHBOARD);
-    }
+    console.log(verified, user, token);
+    if (verified) navigate(RouteName.USER_FORM);
+    else if (user && token) navigate(RouteName.DASHBOARD);
   }, [user, token]);
 
   return (

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Chat } from '@/types/helperTypes';
+import React from "react";
+import { Chat } from "@/types/helperTypes";
 
-import ChatItem from './ChatItem';
+import ChatItem from "./ChatItem";
 
 interface ChatListProps {
   chats: Chat[];
@@ -9,8 +9,13 @@ interface ChatListProps {
   selectedChat: Chat | null;
 }
 
-const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, selectedChat }) => {
+const ChatList: React.FC<ChatListProps> = ({
+  chats,
+  onSelectChat,
+  selectedChat,
+}) => {
   return (
+<<<<<<< Updated upstream
     <div className="flex-1 " >
       <div className="flex flex-col h-[90vh] gap-2 p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
         {chats.map((chat, index) => (
@@ -18,6 +23,28 @@ const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, selectedChat }
         <ChatItem chat={chat} onSelect={onSelectChat} isActive={selectedChat?.id === chat.id} />
        </div>
         ))}
+=======
+    <div className="flex-1 ">
+      <div className="flex flex-col h-[90vh] gap-2 p-6 overflow-y-auto">
+        {chats.length === 0 ? (
+          <div className="text-center text-gray-500">No chats found</div>
+        ) : (
+          chats.map((chat, index) => (
+            <div
+            key={index}
+            onClick={() => onSelectChat(chat)}
+            className={`${
+              selectedChat?.id === chat.id ? "bg-primaryColor text-white" : ""
+            } hover:bg-red-300 transition-all duration-100 active:scale-90`}
+          >
+            <ChatItem
+              chat={chat}
+              onSelect={onSelectChat}
+              isActive={selectedChat?.id === chat.id}
+            />
+          </div>
+        )))}
+>>>>>>> Stashed changes
       </div>
     </div>
   );

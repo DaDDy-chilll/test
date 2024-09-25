@@ -24,10 +24,10 @@ export type UserProfile = {
       areas: string[];
     },
   },
-  languages: 
-    {
-      level: string;
-    }[],
+  languages:
+  {
+    level: string;
+  }[],
   education: [
     {
       schoolLevel: string;

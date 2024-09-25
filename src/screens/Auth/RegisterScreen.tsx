@@ -1,5 +1,5 @@
 // import { useMutation } from "@tanstack/react-query";
-import { FormEvent,useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/icons/logo.svg";
@@ -8,24 +8,22 @@ import useAuth from "@/hooks/useAuth";
 import { RegisterProps } from "@/types/helperTypes";
 import { BeatLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import RouteName from "@/navigations/routes"; 
+import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-
+import { toast } from "react-toastify";
 const RegisterScreen = () => {
-const {onRegister,isRegisterPending,error} = useAuth();
-const { user, token, verified } = useSelector((state: RootState) => state.auth);
-const navigate = useNavigate();
+  const { onRegister, isRegisterPending, error } = useAuth();
+  const { user, token, verified } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const navigate = useNavigate();
 
-useEffect(() => {
-  console.log("verified",verified);
-  if(verified){
-    navigate(RouteName.USER_FORM);
-  }else if(user && token){
-    console.log("user and token");
-    navigate(RouteName.DASHBOARD);
-  }
-},[user,token,navigate,verified])
+  useEffect(() => {
+    console.log("verified", verified);
+    if (verified) navigate(RouteName.USER_FORM);
+    else if (user && token) navigate(RouteName.DASHBOARD);
+  }, [user, token, navigate, verified]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +36,14 @@ useEffect(() => {
     onRegister(registerProps);
   };
 
+  useEffect(() => {
+    if (error?.toast) {
+      toast.warning(error.message, { position: "top-center" });
+    } else if (error?.message) {
+      toast.error(error.message, { position: "top-center" });
+    }
+  }, [error]);
+
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200">
       <div className="flex  w-1/3 h-5/6 shadow-md">
@@ -48,10 +54,21 @@ useEffect(() => {
             </div>
             <h1 className="font-medium">JAPAN JOB</h1>
           </div>
-          <motion.div className="text-center" variants={headerVariants} initial='hidden' animate='visible'>
+          <motion.div
+            className="text-center"
+            variants={headerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <h1 className="main-title text-lg text-black my-10">Register</h1>
           </motion.div>
-          <motion.form className="space-y-10 w-full" onSubmit={handleSubmit} variants={formVariants} initial='hidden' animate='visible'>
+          <motion.form
+            className="space-y-10 w-full"
+            onSubmit={handleSubmit}
+            variants={formVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div>
               <Input
                 name="email"
@@ -77,7 +94,7 @@ useEffect(() => {
                 label="Confirm Password"
                 className="mt-1 block w-full"
                 required={false}
-                error={!error.toast && error.message || ''}
+                error={(error?.toast && error?.message) || ""}
               />
             </div>
             <div>
@@ -86,7 +103,15 @@ useEffect(() => {
                 disabled={false}
                 className="w-full medium font-medium"
               >
-                {isRegisterPending ? <BeatLoader loading={isRegisterPending} size={8} color={"#fff"} />: "Register"}
+                {isRegisterPending ? (
+                  <BeatLoader
+                    loading={isRegisterPending}
+                    size={8}
+                    color={"#fff"}
+                  />
+                ) : (
+                  "Register"
+                )}
               </Button>
             </div>
           </motion.form>
@@ -96,16 +121,13 @@ useEffect(() => {
   );
 };
 
-
-
-
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
 const formVariants = {
-  hidden:{opacity:0},
-  visible:{opacity:1,transition:{delay:.2}}
-}
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { delay: 0.2 } },
+};
 export default RegisterScreen;
