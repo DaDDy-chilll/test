@@ -105,7 +105,12 @@ const DiplayFormData = ({ formData, setComplete, navigator }: Props) => {
       </div>
 
       <div className="flex justify-between w-full px-10 mr-10">
-        <button className="underline font-medium" onClick={() => setComplete && setComplete(false)}>Back</button>
+        <button
+          className="underline font-medium"
+          onClick={() => setComplete && setComplete(false)}
+        >
+          Back
+        </button>
 
         <Button
           variant="destructive"
@@ -119,11 +124,10 @@ const DiplayFormData = ({ formData, setComplete, navigator }: Props) => {
   );
 };
 
-
 const formVariants = {
-    hidden: { opacity: 0 ,x:100},
-    visible: { opacity: 1,x:0, transition: { delay: 0.2, duration: 0.3 } },
-    exit: { opacity: 0, x: 100, transition: { delay: 0.2, duration: 0.3 } },
-  };
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { delay: 0.2, duration: 0.3 } },
+  exit: { opacity: 0, x: 100, transition: { delay: 0.2, duration: 0.3 } },
+};
 
 export default DiplayFormData;

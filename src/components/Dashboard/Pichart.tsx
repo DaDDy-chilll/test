@@ -28,22 +28,22 @@ const renderCustomizedLabel = ({
 
 const Pichart = ({ data = [], colors = [] }: any) => {
   return (
-      <PieChart width={170} height={200}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={80}
-          dataKey="value"
-        >
-          <Tooltip />
-          {data.map((entry: any, index: number) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+    <PieChart width={170} height={200}>
+      <Pie
+        data={data}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={renderCustomizedLabel}
+        outerRadius={80}
+        dataKey="value"
+      >
+        <Tooltip />
+        {data.map((entry: any, index: number) => (
+          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+        ))}
+      </Pie>
+    </PieChart>
   );
 };
 

@@ -19,10 +19,11 @@ interface errorObjType {
 const errorObj: errorObjType = {
     toast: false,
     message: null
+
 }
 
 const useAuth = () => {
-    const [error, setError] = useState<errorObjType>(errorObj)
+    const [error, setError] = useState<errorObjType | null>(errorObj)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { mutate: onLogin, isPending: isLoginPending } = useMutation({
@@ -34,10 +35,12 @@ const useAuth = () => {
             return fetchServer({ endpoint: apiRoutes.LOGIN, method: "POST", body: data });
         },
         onSuccess: (data) => {
-            dispatch(setToken(data));
+            setError(null)
+            dispatch(setToken(data.data));
             navigate(User.DASHBOARD);
         },
         onError: (error: ErrorType) => {
+            dispatch(removeToken());
             setError({ toast: false, message: error.message })
         },
     });
@@ -55,12 +58,17 @@ const useAuth = () => {
             return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
         },
         onSuccess: (data) => {
+            setError(null)
             dispatch(setVerified(true));
             dispatch(setToken(data));
         },
         onError: (error: ErrorType) => {
+            dispatch(removeToken());
             setError({ toast: false, message: error.message })
-        },
+        }
+
+
+
     })
 
     const onLogout = () => {

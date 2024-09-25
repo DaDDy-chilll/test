@@ -4,11 +4,13 @@ import Router from "./navigations/Router";
 const App = () => {
   useEffect(() => {
     init();
-  
   });
-  
-  const init = async () => {};
+
+  const init = async () => {
+
+  };
   return <Router />;
+
 };
 
 export default App;

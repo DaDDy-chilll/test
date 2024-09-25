@@ -27,6 +27,9 @@ const JobDetails = ({
   deleteHandler,
   isDetails = false,
 }: Props) => {
+  const clickBackEvent = () => backHandler && backHandler(false);
+  const clickDeleteEvent = () => deleteHandler && deleteHandler();
+  const clickEditEvent = () => editHandler && editHandler(true);
   return (
     <motion.div
       key="complete"
@@ -231,10 +234,7 @@ const JobDetails = ({
 
       {isDetails && (
         <div className="flex justify-between w-full px-10 mr-10">
-          <button
-            className="underline font-medium"
-            onClick={() => backHandler && backHandler(false)}
-          >
+          <button className="underline font-medium" onClick={clickBackEvent}>
             Back
           </button>
         </div>
@@ -242,7 +242,7 @@ const JobDetails = ({
       <div className="flex items-center gap-4 absolute top-2 right-2">
         <button
           className="bg-gray-900 text-white px-3 py-1.5 rounded-lg flex items-center gap-3"
-          onClick={() => editHandler && editHandler(true)}
+          onClick={clickEditEvent}
         >
           <svg
             width="17"
@@ -259,7 +259,10 @@ const JobDetails = ({
           Edit
         </button>
         {isDetails && (
-          <button className="bg-primaryColor text-white px-2 py-1.5 rounded-lg flex items-center gap-3">
+          <button
+            className="bg-primaryColor text-white px-2 py-1.5 rounded-lg flex items-center gap-3"
+            onClick={clickDeleteEvent}
+          >
             <svg
               width="15"
               height="18"

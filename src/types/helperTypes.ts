@@ -1,7 +1,8 @@
 import {
   Timestamp,
 } from "firebase/firestore";
-export type FetchServerType =  {
+
+export type FetchServerType = {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: any;
   file?: boolean | null;
@@ -22,8 +23,8 @@ export type RegisterProps = {
 
 export type ErrorType = {
   error: boolean;
-  message: string ;
-  status: number ;
+  message: string;
+  status: number;
 }
 
 export type FilterType = {
@@ -65,6 +66,7 @@ export interface Message {
   read: boolean;
 }
 
+/*
 export interface User {
   id: string;
   m_basicinfos: {
@@ -72,7 +74,7 @@ export interface User {
     profile_path: string;
   };
 }
-
+*/
 export interface Education {
   schoolLevel: string;
   schoolName: string;
@@ -99,7 +101,7 @@ export interface JobPreference {
   preferredJobAndArea: {
     jobTypes: string[];
     areas: string[];
-}
+  }
 }
 
 export interface PersonalInfo {
@@ -116,5 +118,10 @@ export type UserProfile = {
   languages: Language[],
   education: Education[],
   workExperience: WorkExperience[],
+}
 
+export interface User {
+  id: string | number;
+  email: string;
+  // name: string;
 }

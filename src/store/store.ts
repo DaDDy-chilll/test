@@ -20,7 +20,7 @@ export const store = configureStore({
                 ignoredPaths: ['register'], // If there's a specific path you want to ignore
             },
         }),
-}); 
+});
 
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;

@@ -7,15 +7,12 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-
   return (
     <>
-      <Sidebar  />
+      <Sidebar />
       <div className="relative sm:ml-64">
-        <Header  />
-        <div>
-          {children}
-        </div>
+        <Header />
+        <div>{children}</div>
       </div>
     </>
   );

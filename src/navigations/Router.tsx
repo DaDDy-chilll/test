@@ -6,6 +6,7 @@ import ShareLayout from "@/layouts/ShareLayout";
 import { AnimatePresence } from "framer-motion";
 import { initialLanding, LoginScreen, RegisterScreen } from "@/screens";
 import Loading from "@/components/ui/Loading";
+import ToastAlert from "@/components/ui/toast";
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
 const NotFound = lazy(() => import("@/components/Auth/NotFound"));
@@ -22,6 +23,7 @@ const Router = () => {
     <Suspense fallback={<Loading isLoading={true} />}>
       <BrowserRouter>
         <AnimatedRoutes />
+        <ToastAlert />
       </BrowserRouter>
     </Suspense>
   );
@@ -37,9 +39,9 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
-        {/* User form route */}
         {/* Not found route */}
         <Route path="*" Component={NotFound} />
+        {/* User form route */}
         <Route
           path={Routenames.USER_FORM}
           element={

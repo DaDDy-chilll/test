@@ -10,9 +10,8 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const { onLogout } = useAuth();
 
-  const handleClick = (title: string) => {
-    dispatch(setTitle(title));
-  };
+  const handleClick = (title: string) => dispatch(setTitle(title));
+
   return (
     <aside
       id="logo-sidebar"

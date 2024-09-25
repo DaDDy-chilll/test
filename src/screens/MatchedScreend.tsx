@@ -7,11 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import MatchedApplicants from "@/components/Matched/MatchedApplicants";
-import { UserProfile } from '@/types/user';
+import { UserProfile } from "@/types/user";
 import Loading from "@/components/ui/Loading";
-;
-
-
 const MatchedScreend = () => {
   const [jobType, setJobType] = useState("Job Name");
 
@@ -23,14 +20,11 @@ const MatchedScreend = () => {
     { id: 4, name: "Internship" },
   ];
 
-  const handleJobType = (item: any) => {
-    setJobType(item.name);
-  };
-
+  const handleJobType = (item: any) => setJobType(item.name);
 
   const userProfile: UserProfile = {
     id: "U20231254",
-    profileImage: '',
+    profileImage: "",
     personalInfo: {
       location: "Lives in Japan (Tokyo)",
       birthdate: "11.10.2000",
@@ -48,9 +42,9 @@ const MatchedScreend = () => {
       },
     },
     languages: [
-      {level: "Tokutei Level"},
-      {level: "English Level"},
-      {level: "Japanese Level"},
+      { level: "Tokutei Level" },
+      { level: "English Level" },
+      { level: "Japanese Level" },
     ],
     education: [
       {
@@ -86,11 +80,10 @@ const MatchedScreend = () => {
       },
     ],
   };
-  
 
   return (
     <>
-    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
+      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={matchedVariants}
         initial="initial"
@@ -121,7 +114,10 @@ const MatchedScreend = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {defaultJobType.map((item) => (
-                <DropdownMenuItem key={item.id} onClick={() => handleJobType(item)}>
+                <DropdownMenuItem
+                  key={item.id}
+                  onClick={() => handleJobType(item)}
+                >
                   <p>{item.name}</p>
                 </DropdownMenuItem>
               ))}
@@ -202,14 +198,13 @@ const MatchedScreend = () => {
         </div>
       </motion.div>
     </>
-
   );
 };
 
 const matchedVariants = {
-  initial: { opacity: 0},
-  animate: { opacity: 1,transition: { duration: 0.2 } },
-  exit: { opacity: 0,transition: { duration: 0.2 } },
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 export default MatchedScreend;

@@ -12,7 +12,7 @@ import useChat from "@/hooks/useChat";
 import moment from "moment";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { format } from "date-fns";
 import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  /*
   const {
     data: events,
     isLoading: isEventLoading,
@@ -33,7 +34,6 @@ const DashboardScreen = () => {
     key: QueryKey.EVENTS,
   });
   const today = format(new Date(), "yyyy-MM-dd");
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const { todayEvents, otherEvents } = useMemo(() => {
     if (isEventLoading) return { todayEvents: [], otherEvents: {} };
     return events.reduce(
@@ -55,7 +55,11 @@ const DashboardScreen = () => {
       { todayEvents: [], otherEvents: {} }
     );
   }, [events]);
-
+  
+*/
+  // TODO: remove this
+const todayEvents: any = [];
+const today = format(new Date(), "yyyy-MM-dd");
   const data = [
     {
       name: "January",
@@ -137,18 +141,16 @@ const DashboardScreen = () => {
     },
   ];
 
-  const handleChatClick = (chat: Chat) => {
-    setSelectedChat(chat);
-    navigate("/chat", { state:  chat });
-  }
+  const handleChatClick = (chat: Chat) => navigate("/chat", { state: chat });
+
   return (
     <>
-      {(isEventLoading || isChatLoading) && (
+      {/* {(isEventLoading || isChatLoading) && (
         <Loading
           isLoading={isEventLoading || isChatLoading}
           className="h-[calc(100vh-68px)]"
         />
-      )}
+      )} */}
       <motion.div
         variants={dashboardVariants}
         initial="initial"
@@ -275,39 +277,49 @@ const DashboardScreen = () => {
             {jp.newMessages}
           </h1>
           <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
-            {chats.map((chat, index) => (
-              <div
-                key={index}
-                className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
-                onClick={() => handleChatClick(chat)}
-              >
-                <img
-                  src="https://via.placeholder.com/150"
-                  alt="profile"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
+            {chats.length > 0 ? (
+              chats.map((chat, index) => (
                 <div
                   key={index}
-                  className="flex items-start flex-col gap-x-2 w-full"
+                  className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
+                  onClick={() => handleChatClick(chat)}
                 >
-                  <div className="flex items-center justify-between w-full mb-2">
-                    <h1 className="text-sm font-semibold">
-                      {chat.jobfinder_name}
-                    </h1>
-                    <p className="text-xs text-gray-500">
-                      {moment(chat.last_message_timestamp.toDate()).calendar()}
-                    </p>
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt="profile"
+                    width={50}
+                    height={50}
+                    className="rounded-full"
+                  />
+                  <div
+                    key={index}
+                    className="flex items-start flex-col gap-x-2 w-full"
+                  >
+                    <div className="flex items-center justify-between w-full mb-2">
+                      <h1 className="text-sm font-semibold">
+                        {chat.jobfinder_name}
+                      </h1>
+                      <p className="text-xs text-gray-500">
+                        {moment(
+                          chat.last_message_timestamp.toDate()
+                        ).calendar()}
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-500">{chat.last_message}</p>
                   </div>
-                  <p className="text-xs text-gray-500">{chat.last_message}</p>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center text-gray-500 mt-10">No messages</p>
+            )}
           </div>
-          <div className="text-end pt-2">
-            <button className="text-sm text-gray-500">See More &gt;&gt;</button>
-          </div>
+          {chats.length > 0 && (
+            <div className="text-end pt-2">
+              <button className="text-sm text-gray-500">
+                See More &gt;&gt;
+              </button>
+            </div>
+          )}
         </div>
       </motion.div>
     </>

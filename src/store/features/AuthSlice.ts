@@ -1,12 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { User } from "@/types/helperTypes";
 interface AuthState {
-  user: {
-    id: number;
-    email: string;
-    password: string;
-    name: string;
-  } | null;
+  user: User | null;
   token: string | null;
   verified: boolean;
 }
@@ -37,8 +32,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      state.token = action.payload.token;
-      state.user = action.payload.user;
+      const { token, email, id } = action.payload;
+      console.log(token, email);
+      state.token = token;
+      state.user = { email, id };
     },
     setVerified: (state, action) => {
       state.verified = action.payload;

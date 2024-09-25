@@ -10,14 +10,9 @@ type LoadingProps = {
 
 const Loading = ({ className, isLoading }: LoadingProps) => {
   useEffect(() => {
-    if (isLoading) {
-      document.body.style.overflow = "hidden"; // Disable scrolling
-    } else {
-      document.body.style.overflow = ""; // Enable scrolling
-    }
-
+    if (isLoading) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
     return () => {
-      // Cleanup to avoid side effects
       document.body.style.overflow = "";
     };
   }, [isLoading]);

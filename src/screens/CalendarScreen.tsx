@@ -35,26 +35,7 @@ const CalendarScreen = () => {
     key: QueryKey.EVENTS,
   });
   const events: Event[] = data || [];
-
-  const goToNextMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1));
-  };
-
-  // Function to move to the previous month
-  const goToPreviousMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1));
-  };
-
-  const daysInMonth = eachDayOfInterval({
-    start: firstDayOfMonth,
-    end: lastDayOfMonth,
-  });
-
-  const startingDayIndex =
-    getDay(firstDayOfMonth) === 0 ? 6 : getDay(firstDayOfMonth) - 1; // Adjusting the starting index
-  const endingDayIndex =
-    getDay(lastDayOfMonth) === 0 ? 0 : 7 - getDay(lastDayOfMonth);
-
+  const today = format(new Date(), "yyyy-MM-dd");
   const eventsByDate = useMemo(() => {
     return events.reduce((acc: { [key: string]: Event[] }, event: Event) => {
       const dateKey = format(new Date(event.date), "yyyy-MM-dd");
@@ -65,13 +46,21 @@ const CalendarScreen = () => {
       return acc;
     }, {});
   }, [events]);
-
-  const today = format(new Date(), "yyyy-MM-dd");
   const dayEvents = eventsByDate[today] || [];
 
-  const handleCellClick = (todaysEvents: Event[]) => {
+  const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+  const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const daysInMonth = eachDayOfInterval({
+    start: firstDayOfMonth,
+    end: lastDayOfMonth,
+  });
+  const startingDayIndex =
+    getDay(firstDayOfMonth) === 0 ? 6 : getDay(firstDayOfMonth) - 1; // Adjusting the starting index
+  const endingDayIndex =
+    getDay(lastDayOfMonth) === 0 ? 0 : 7 - getDay(lastDayOfMonth);
+
+  const handleCellClick = (todaysEvents: Event[]) =>
     setSelectedEvents(todaysEvents);
-  };
 
   return (
     <>

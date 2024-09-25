@@ -15,16 +15,15 @@ const AppointmentModel = ({
   setMeetingTime,
   setIsAppointmentModelOpen,
 }: AppointmentModelProps) => {
-  const handleCloseModel = () => {
-    setIsAppointmentModelOpen(false);
-  };
+  const handleCloseModel = () => setIsAppointmentModelOpen(false);
 
   return (
-    <motion.div className="bg-white absolute w-80 top-0 right-0 h-[calc(100vh-65px)] overflow-y-auto p-3 shadow-[-10px_0px_20px_-10px_rgba(0,0,0,0.3)] rounded-l-md"
-    variants={modalVariants}
-    initial="initial"
-    animate="animate"
-    exit="exit"
+    <motion.div
+      className="bg-white absolute w-80 top-0 right-0 h-[calc(100vh-65px)] overflow-y-auto p-3 shadow-[-10px_0px_20px_-10px_rgba(0,0,0,0.3)] rounded-l-md"
+      variants={modalVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -126,17 +125,10 @@ const AppointmentModel = ({
         </div>
       </div>
       <div className="flex justify-between items-center mt-10 ">
-      <Button
-          variant="outline"
-          onClick={handleCloseModel}
-        >
+        <Button variant="outline" onClick={handleCloseModel}>
           Cancel
         </Button>
-        <Button
-          variant="destructive"
-        >
-          Make Appointment
-        </Button>
+        <Button variant="destructive">Make Appointment</Button>
       </div>
     </motion.div>
   );

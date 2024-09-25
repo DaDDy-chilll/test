@@ -15,16 +15,12 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
     const times = [];
     let startTime = moment("01:00", "HH:mm");
     const endTime = moment("23:00", "HH:mm");
-
     while (startTime <= endTime) {
       times.push(startTime.format("HH:mm"));
       startTime = startTime.add(30, "minutes");
     }
-
     return times;
   };
-
-  const times = generateTimes();
 
   const handleTimeChange = (time: string) => {
     setSelectedTime(moment(time, "HH:mm"));
@@ -63,7 +59,7 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
             dropStyle === 1 ? "h-40  z-10" : "h-60 z-20"
           } absolute top-full left-0 w-full overflow-y-auto bg-gray-300 text-black mt-1 rounded-lg shadow-lg z-10`}
         >
-          {times.map((time) => (
+          {generateTimes().map((time) => (
             <li
               key={time}
               className="px-4 py-2 hover:bg-gray-400 cursor-pointer"

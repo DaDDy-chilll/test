@@ -67,12 +67,14 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
           setFilter({ ...filter, language: e.target.value });
         }}
       >
-        <option value="Japanese" defaultValue="Japanese">Japanese</option>
-        <option value="N5" >N5</option>
-        <option value="N4" >N4</option>
-        <option value="N3" >N3</option>
-        <option value="N2" >N2</option>
-        <option value="N1" >N1</option>
+        <option value="Japanese" defaultValue="Japanese">
+          Japanese
+        </option>
+        <option value="N5">N5</option>
+        <option value="N4">N4</option>
+        <option value="N3">N3</option>
+        <option value="N2">N2</option>
+        <option value="N1">N1</option>
       </select>
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
@@ -80,7 +82,9 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
           setFilter({ ...filter, education: e.target.value });
         }}
       >
-        <option value="" defaultValue="">Education</option>
+        <option value="" defaultValue="">
+          Education
+        </option>
         <option value="Bachelor">Bachelor</option>
         <option value="Master">Master</option>
         <option value="Diploma">Diploma</option>
@@ -92,7 +96,7 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
           setFilter({ ...filter, jobType: e.target.value });
         }}
       >
-        <option defaultValue={"Job Type"} >Job Type</option>
+        <option defaultValue={"Job Type"}>Job Type</option>
         <option value="IT">IT</option>
         <option value="Sales">Sales</option>
         <option value="Marketing">Marketing</option>

@@ -36,13 +36,11 @@ const Profile = () => {
     { value: "31-40", label: "31-40" },
   ];
 
-  const editHandler = () => {
-    setIsEdit(true);
-  };
+  const editHandler = () => setIsEdit(true);
 
   return (
     <>
-    {false && <Loading isLoading={false} className='h-[calc(100vh-68px)]' />}
+      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={profileVariants}
         initial="initial"
@@ -160,7 +158,6 @@ const Profile = () => {
         </AnimatePresence>
       </motion.div>
     </>
-
   );
 };
 
