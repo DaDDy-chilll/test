@@ -35,8 +35,14 @@ const LoginScreen = () => {
   useEffect(() => {
     if (error?.toast) {
       toast.warning(error.message, { position: "top-center" });
-    } else if (error?.message) {
+    } else if (typeof error?.message === "string") {
       toast.error(error.message, { position: "top-center" });
+    }else if(error?.message?.validation){
+      toast.error(error?.message?.validation[0]?.password?.jp, { position: "top-center" });
+    }else if(error?.message?.password){
+      toast.error(error?.message?.password?.jp, { position: "top-center" });
+    }else if(error?.message?.email){
+      toast.error(error?.message?.email?.jp, { position: "top-center" });
     }
   }, [error]);
 

@@ -12,7 +12,9 @@ import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { toast } from "react-toastify";
+import Maintenance from "@/components/ui/Maintenance";
 const RegisterScreen = () => {
+  if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { onRegister, isRegisterPending, error } = useAuth();
   const { user, token, verified } = useSelector(
     (state: RootState) => state.auth

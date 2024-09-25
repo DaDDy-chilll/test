@@ -4,7 +4,7 @@ import Select from "@/components/ui/Select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
-import defaultImage from '@/assets/images/default.png';
+import defaultImage from "@/assets/images/default.png";
 import DatePicker from "@/components/ui/DatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -64,37 +64,6 @@ const UserFormScreen = () => {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200 overflow-hidden">
       <div className="flex w-2/3 shadow-md bg-white">
-<<<<<<< Updated upstream
-      <AnimatePresence mode="wait">
-        {!complete && (
-          <motion.div
-            key="form"
-            className="w-full h-full p-8 pt-29 space-y-2 flex flex-col justify-center items-center relative"
-            variants={formVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <div className="absolute left-7 top-5 flex items-center gap-3">
-              <div className="w-12">
-                <img src={logo} className="w-full" alt="Japan job logo" />
-              </div>
-              <h1 className="font-medium">JAPAN JOB</h1>
-            </div>
-            <div className="flex justify-between w-5/6 p-5 pl-10">
-              <div className="space-y-1">
-                <h1 className="sub-title text-black">Profile Photo</h1>
-                <p>{jp.profileShow}</p>
-              </div>
-              <Avatar className="w-20 h-20">
-                <AvatarImage src={defaultImage} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-            <form
-              className="space-y-5 w-full"
-              onSubmit={(e) => e.preventDefault()}
-=======
         <AnimatePresence mode="wait">
           {!complete && (
             <motion.div
@@ -104,7 +73,6 @@ const UserFormScreen = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
->>>>>>> Stashed changes
             >
               <div className="absolute left-7 top-5 flex items-center gap-3">
                 <div className="w-12">
@@ -118,7 +86,7 @@ const UserFormScreen = () => {
                   <p>{jp.profileShow}</p>
                 </div>
                 <Avatar className="w-20 h-20">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={defaultImage} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </div>
@@ -126,6 +94,22 @@ const UserFormScreen = () => {
                 className="space-y-5 w-full"
                 onSubmit={(e) => e.preventDefault()}
               >
+                <div className="absolute left-7 top-5 flex items-center gap-3">
+                  <div className="w-12">
+                    <img src={logo} className="w-full" alt="Japan job logo" />
+                  </div>
+                  <h1 className="font-medium">JAPAN JOB</h1>
+                </div>
+                <div className="flex justify-between w-5/6 p-5 pl-10">
+                  <div className="space-y-1">
+                    <h1 className="sub-title text-black">Profile Photo</h1>
+                    <p>{jp.profileShow}</p>
+                  </div>
+                  <Avatar className="w-20 h-20">
+                    <AvatarImage src={defaultImage} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </div>
                 <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">
                   <Input
                     name="name"
@@ -142,13 +126,6 @@ const UserFormScreen = () => {
                     className=""
                     defaultOption={jp.chooseIndustry}
                   />
-                  {/* <Input
-         name="companyType"
-         type="text"
-       
-         label="Company Type"
-         className="mt-1 block w-ful"
-       /> */}
                   <Input
                     name="salary"
                     type="text"
@@ -205,7 +182,6 @@ const UserFormScreen = () => {
               </form>
             </motion.div>
           )}
-
           {complete && (
             <DiplayFormData
               setComplete={setComplete}
