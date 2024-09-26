@@ -1,1 +1,0 @@
-import{j as e}from"./react-Be8E2Nbg.js";const r=({event:s})=>e.jsxs("div",{className:"flex flex-col gap-1 border-b border-gray-400 pb-2 mx-5",children:[e.jsx("h1",{className:"text-base font-normal capitalize",children:s.title}),e.jsx("p",{className:"text-sm font-light",children:s.description})]});export{r as E};
