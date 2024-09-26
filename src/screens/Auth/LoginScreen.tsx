@@ -68,7 +68,7 @@ const LoginScreen = () => {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="main-title text-lg text-black mb-10">Login</h1>
+            <h1 className="main-title text-lg text-black mb-10">sadfasfdasfd</h1>
           </motion.div>
           <motion.form
             className="space-y-12 w-full"
