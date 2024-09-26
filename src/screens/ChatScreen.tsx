@@ -130,7 +130,7 @@ const ChatScreen = () => {
 
     const messageData = {
       chat_id: selectedChat.id,
-      sender_id: user?.id,
+      sender_id: Number("2" + user?.id),
       content: newMessage.trim(),
       timestamp: Timestamp.now(),
       read: false,
@@ -229,7 +229,9 @@ const ChatScreen = () => {
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => scrollToBottom(), [messages]);
-  useEffect(() => {if(navChat) handleChatSelect(navChat)}, [navChat]);
+  useEffect(() => {
+    if (navChat) handleChatSelect(navChat);
+  }, [navChat]);
   return (
     <>
       {isLoading && (
