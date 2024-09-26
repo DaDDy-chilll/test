@@ -20,6 +20,6 @@ jobs:
                 sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.DROPLET_IP }} << EOF
                 export PATH=$PATH:/usr/local/bin    
                 cd /var/www/japan_job_client/
-                git restore
+                git restore .
                 git pull
                 EOF
