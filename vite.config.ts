@@ -15,4 +15,10 @@ export default defineConfig({
   server: {
     host: true,
   },
- });
+  define: {
+    global: "window",
+  },
+  build: {
+  chunkSizeWarningLimit: 10000,
+  },
+});
