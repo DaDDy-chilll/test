@@ -9,28 +9,29 @@ export default defineConfig({
   plugins: [react(), svgr()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src/")
-    }
+      "@": path.resolve(__dirname, "./src/"),
+    },
   },
   server: {
-    host: true
+    host: true,
   },
   define: {
-    global: "window"
+    global: "window",
   },
   build: {
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules')) {
+          if (id.includes("node_modules")) {
             return id
               .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
+              .split("node_modules/")[1]
+              .split("/")[0]
               .toString();
           }
         },
       },
+      external: ["redux"],
     },
   },
 });
