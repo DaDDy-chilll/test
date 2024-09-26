@@ -34,11 +34,11 @@ const LoginScreen = () => {
   }, [user, token]);
 
 
-  console.log("error-login", error);
   useEffect(() => {
-    // if (error?.error) {
-    //   handleError(error);
-    // }
+    console.log("error-login", error);
+    if (error?.error) {
+      handleError(error);
+    }
     // if (error?.toast) {
     //   toast.warning(error.message, { position: "top-center" });
     // } else if (typeof error?.message === "string") {

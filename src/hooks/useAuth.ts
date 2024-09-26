@@ -24,10 +24,10 @@ const useAuth = () => {
     const [error, setError] = useState<ErrorType | null>()
     const { mutate: onLogin, isPending: isLoginPending } = useMutation({
         mutationFn: (data: LoginProps) => {
-            if (!data.email || !data.password) {
-                setError({ error: true, message: errorMessage.all_fields_required })
-                return Promise.reject()
-            }
+            // if (!data.email || !data.password) {
+            //     setError({ error: true, message: errorMessage.all_fields_required })
+            //     return Promise.reject()
+            // }
             return fetchServer({ endpoint: apiRoutes.LOGIN, method: "POST", body: data });
         },
         onSuccess: (data) => {
@@ -38,7 +38,7 @@ const useAuth = () => {
         onError: (error: ErrorType) => {
             console.log("error auth",error)
             dispatch(removeToken());
-            // setError(error)
+            setError(error.message)
         },
     });
 
@@ -77,7 +77,7 @@ const useAuth = () => {
         navigate(User.LOGIN);
     }
 
-   
+   console.log("error11111",error)
     return { onLogin, isLoginPending, onRegister, isRegisterPending, onLogout, error }
 };
 

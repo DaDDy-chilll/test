@@ -24,7 +24,7 @@ const FilterState: FilterType = {
 };
 const itemsPerPage = 5;
 const ApplicantScreen = () => {
-  if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
+  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { token } = useSelector((state: RootState) => state.auth);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
@@ -50,7 +50,10 @@ const ApplicantScreen = () => {
     enabled: !!selectedApplicantId && isDetail,
   });
 
-  const applicants = data || [];
+  // const applicants = data?.data || [];
+  const applicants:any[] = [];
+
+  console.log("applicants", applicants);
 
   // Filter function based on filter state
   const filteredApplicants = applicants.filter((applicant: any) => {
