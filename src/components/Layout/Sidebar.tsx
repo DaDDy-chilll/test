@@ -3,17 +3,20 @@ import Routenames from "@/navigations/routes";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import useAuth from "@/hooks/useAuth";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Sidebar = () => {
   const {onLogout} = useAuth();
-
+  const sideBar = useSelector((state: RootState) => state.navigation.sideBar);
+  console.log(sideBar);
   return (
     <aside
-      id="logo-sidebar"
-      className="fixed top-0 text-white left-0 z-40 w-64 h-screen pt-5 transition-transform -translate-x-full  border-r border-gray-300 md:translate-x-0 bg-gray-50"
-      aria-label="Sidebar"
-    >
+    id="logo-sidebar"
+    className={`fixed top-0 text-white left-0 z-40 w-64 h-screen pt-5 transition-transform duration-300 border-r border-gray-300 bg-gray-50 md:translate-x-0`}
+    style={{ transform: sideBar ? 'translateX(0)' : 'translateX(-100%)' }}
+    aria-label="Sidebar"
+  >
       <div className="h-full px-3 pb-4 overflow-y-auto flex flex-col justify-between">
         <ul className="space-y-4 font-medium ">
           <li className="w-full flex justify-center mb-10 items-center">

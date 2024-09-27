@@ -1,18 +1,21 @@
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import { ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface LayoutProps {
   children?: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const sideBar = useSelector((state: RootState) => state.navigation.sideBar);
   return (
     <>
       <Sidebar />
-      <div className="relative md:ml-64">
+      <div className={`flex flex-col flex-1 ${sideBar ? 'md:ml-64' : ''}`}>
         <Header />
-        <div>{children}</div>
+        <div >{children}</div>
       </div>
     </>
   );

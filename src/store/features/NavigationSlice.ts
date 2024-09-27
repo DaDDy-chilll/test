@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   title: jp.dashboard,
+  sideBar: false,
 };
 
 export const navigationSlice = createSlice({
@@ -14,8 +15,11 @@ export const navigationSlice = createSlice({
       console.log(action.payload);
       state.title = action.payload;
     },
+    setSideBar: (state) => {
+      state.sideBar = !state.sideBar;
+    },
   },
 });
 
-export const { setTitle } = navigationSlice.actions;
+export const { setTitle, setSideBar } = navigationSlice.actions;
 export default navigationSlice.reducer;
