@@ -17,7 +17,7 @@ import Maintenance from "@/components/ui/Maintenance";
 const RegisterScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { onRegister, isRegisterPending, error } = useAuth();
-  const { emailError, passwordError, confirmPasswordError, authHandleError,resetAuthError } = useHandleError();
+  const { emailError, passwordError, confirmPasswordError, authHandleError, resetAuthError } = useHandleError();
   const { user, token, verified } = useSelector(
     (state: RootState) => state.auth
   );
@@ -46,80 +46,82 @@ const RegisterScreen = () => {
   }, [error]);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-200">
-      <div className="flex  w-1/3 h-5/6 shadow-md">
-        <div className="w-full h-full px-20 flex flex-col justify-center items-center bg-white relative">
-          <div className="absolute left-7 top-10 flex items-center gap-3">
-            <div className="w-12">
-              <img src={logo} className="w-full" alt="Japan job logo" />
+    <div className="bg-gray-200">
+      <div className="h-screen flex justify-center items-center">
+        <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
+          <div className="bg-white rounded-xl p-8">
+            <div className="flex justify-start">
+              <div className="w-12">
+                <img src={logo} className="w-full" alt="Japan job logo" />
+              </div>
+              <h1 className="font-medium relative left-2 top-2.5">JAPAN JOB</h1>
             </div>
-            <h1 className="font-medium">JAPAN JOB</h1>
+            <motion.div
+              className="text-center"
+              variants={headerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <h1 className="main-title text-lg text-black my-10">
+                {jp.register}
+              </h1>
+            </motion.div>
+            <motion.form
+              className="space-y-10 w-full"
+              onSubmit={handleSubmit}
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div>
+                <Input
+                  name="email"
+                  type="email"
+                  label={jp.email}
+                  className="mt-1 block w-full"
+                  required={false}
+                  error={emailError ?? ""}
+                />
+              </div>
+              <div>
+                <Input
+                  name="password"
+                  type="password"
+                  label={jp.password}
+                  className="mt-1 block w-full"
+                  required={false}
+                  error={passwordError ?? ""}
+                />
+              </div>
+              <div>
+                <Input
+                  name="confirmPassword"
+                  type="password"
+                  label={jp.confirmPassword}
+                  className="mt-1 block w-full"
+                  required={false}
+                  error={confirmPasswordError ?? ""}
+                />
+              </div>
+              <div>
+                <Button
+                  type="submit"
+                  disabled={false}
+                  className="w-full medium font-medium"
+                >
+                  {isRegisterPending ? (
+                    <BeatLoader
+                      loading={isRegisterPending}
+                      size={8}
+                      color={"#fff"}
+                    />
+                  ) : (
+                    jp.register
+                  )}
+                </Button>
+              </div>
+            </motion.form>
           </div>
-          <motion.div
-            className="text-center"
-            variants={headerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h1 className="main-title text-lg text-black my-10">
-              {jp.register}
-            </h1>
-          </motion.div>
-          <motion.form
-            className="space-y-10 w-full"
-            onSubmit={handleSubmit}
-            variants={formVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div>
-              <Input
-                name="email"
-                type="email"
-                label={jp.email}
-                className="mt-1 block w-full"
-                required={false}
-                error={emailError ?? ""}
-              />
-            </div>
-            <div>
-              <Input
-                name="password"
-                type="password"
-                label={jp.password}
-                className="mt-1 block w-full"
-                required={false}
-                error={passwordError ?? ""}
-              />
-            </div>
-            <div>
-              <Input
-                name="confirmPassword"
-                type="password"
-                label={jp.confirmPassword}
-                className="mt-1 block w-full"
-                required={false}
-                error={confirmPasswordError ?? ""}
-              />
-            </div>
-            <div>
-              <Button
-                type="submit"
-                disabled={false}
-                className="w-full medium font-medium"
-              >
-                {isRegisterPending ? (
-                  <BeatLoader
-                    loading={isRegisterPending}
-                    size={8}
-                    color={"#fff"}
-                  />
-                ) : (
-                  jp.register
-                )}
-              </Button>
-            </div>
-          </motion.form>
         </div>
       </div>
     </div>
