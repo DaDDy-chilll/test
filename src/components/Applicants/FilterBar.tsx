@@ -4,20 +4,22 @@ type FilterBarProps = {
   className?: string;
   filter: FilterType;
   setFilter: (filter: FilterType) => void;
+  jobTypes:any
 };
 
-const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
+const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) => {
   return (
     <div
       className={`bg-white text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
     >
       <div className="flex gap-2 items-center">
         <input
-          type="checkbox"
+          type="radio"
+          name="live_in_japan"
           id="livesInJapan"
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, livesInJapan: !filter.livesInJapan });
+            setFilter({ ...filter, live_in_japan: '1' });
           }}
         />
         <label htmlFor="livesInJapan" className="text-sm">
@@ -26,11 +28,13 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
       </div>
       <div className="flex gap-2 items-center">
         <input
-          type="checkbox"
+          type="radio"
+          name="live_in_japan"
           id="livesInMyanmar"
+          checked={filter.live_in_japan === '0'}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, livesInMyanmar: !filter.livesInMyanmar });
+            setFilter({ ...filter, live_in_japan:'0' });
           }}
         />
         <label htmlFor="livesInMyanmar" className="text-sm">
@@ -42,9 +46,10 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
           type="radio"
           name="gender"
           id="male"
+          checked={filter.gender === '0'}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, gender: "male" });
+            setFilter({ ...filter, gender: '0' });
           }}
         />
         <label htmlFor="male">Male</label>
@@ -54,18 +59,19 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
           type="radio"
           name="gender"
           id="female"
+          checked={filter.gender === '1'}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, gender: "female" });
+            setFilter({ ...filter, gender: '1' });
           }}
         />
         <label htmlFor="female">Female</label>
       </div>
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        onChange={(e) => {
-          setFilter({ ...filter, language: e.target.value });
-        }}
+        // onChange={(e) => {
+        //   setFilter({ ...filter, language: e.target.value });
+        // }}
       >
         <option value="Japanese" defaultValue="Japanese">
           Japanese
@@ -78,9 +84,9 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
       </select>
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        onChange={(e) => {
-          setFilter({ ...filter, education: e.target.value });
-        }}
+        // onChange={(e) => {
+        //   setFilter({ ...filter, education: e.target.value });
+        // }}
       >
         <option value="" defaultValue="">
           Education
@@ -93,13 +99,14 @@ const FilterBar = ({ className, filter, setFilter }: FilterBarProps) => {
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-[36%]"
         onChange={(e) => {
-          setFilter({ ...filter, jobType: e.target.value });
+          setFilter({ ...filter, job_type: e.target.value });
         }}
       >
-        <option defaultValue={"Job Type"}>Job Type</option>
-        <option value="IT">IT</option>
-        <option value="Sales">Sales</option>
-        <option value="Marketing">Marketing</option>
+        <option value="">Job Type</option>
+        {jobTypes && jobTypes.data.length>0 &&
+        jobTypes.data.map((jobType:any)=>(
+          <option key={jobType.id} value={jobType.id}>{jobType.job_type_jp}</option>
+        ))}
       </select>
     </div>
   );

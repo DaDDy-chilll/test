@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion,AnimatePresence } from "framer-motion";
 import FilterBar from "@/components/Applicants/FilterBar";
 import ApplicantTable from "@/components/Applicants/ApplicantTable";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Pagination from "@/components/Applicants/Pagination";
 import { FilterType } from "@/types/helperTypes";
 import useFetch from "@/hooks/useFetch";
@@ -17,31 +17,64 @@ import Maintenance from "@/components/ui/Maintenance";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
-const FilterState: FilterType = {
-  livesInJapan: false,
-  livesInMyanmar: false,
-  gender: "",
-  language: "",
-  education: "",
-  jobType: "",
-};
+import { userProfile } from "@/constants/mock";
+
+
+
 const itemsPerPage = 5;
+const initialFilter: FilterType = {
+  live_in_japan: "0",
+  gender: "0",
+  job_type: "",
+};
 const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
+  const [filter, setFilter] = useState<FilterType>(initialFilter);
+  const isInitialRender = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
   // const [applicantDetail,setApplicantDetail] = useState<UserProfile>()
   const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
     null
   );
-  const [filter, setFilter] = useState(FilterState);
-  const { data, isLoading, isError, isSuccess, error } = useFetch({
-    endpoint: apiRoutes.APPLICANTS,
-    key: "applicants",
+  const buildQueryString = () => {
+    const params = new URLSearchParams();
+    if (filter.live_in_japan !== "")
+      params.append("live_in_japan", filter.live_in_japan);
+    if (filter.gender !== "") params.append("gender", filter.gender);
+    if (filter.job_type !== "") params.append("job_type", filter.job_type);
+    if (currentPage > 0) params.append("page", currentPage.toString());
+    return params.toString();
+  };
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["applicants", currentPage, filter],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.APPLICANTS}?${buildQueryString()}`,
+        method: "GET",
+        token: token,
+      });
+    },
+    enabled:
+      !!currentPage &&
+      !!filter.live_in_japan &&
+      !!filter.gender &&
+      !!filter.job_type,
+  });
+  const {
+    data: jobTypes,
+    isLoading: isJobTypesLoading,
+    isError: isJobTypesError,
+    isSuccess: isJobTypesSuccess,
+    error: jobTypesError,
+  } = useFetch({
+    endpoint: apiRoutes.JOB_TYPES,
+    key: "jobTypes",
     token: token as string,
   });
+
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: ["applicantDetail", selectedApplicantId],
     queryFn: () => {
@@ -53,56 +86,41 @@ const ApplicantScreen = () => {
     },
     enabled: !!selectedApplicantId && isDetail,
   });
-  dispatch(setTitle(jp.applicant));
-  // const applicants = data?.data || [];
-  const applicants:any[] = [];
 
-  console.log("applicants", applicants);
-
-  // Filter function based on filter state
-  const filteredApplicants = applicants.filter((applicant: any) => {
-    return (
-      // Filter by location
-      (!filter.livesInJapan || applicant.address === "Japan") &&
-      (!filter.livesInMyanmar || applicant.address === "Myanmar") &&
-      // Filter by gender
-      (filter.gender === "" ||
-        applicant.gender.toLowerCase() === filter.gender.toLowerCase()) &&
-      // Filter by language
-      (filter.language === "" ||
-        filter.language === "Japanese" ||
-        applicant.japaneseLevel.match(filter.language) !== null) &&
-      // Filter by education
-      (filter.education === "" ||
-        applicant.education
-          .toLowerCase()
-          .includes(filter.education.toLowerCase())) &&
-      // Filter by job type (assuming preferJob is an array of job types)
-      (filter.jobType === "Job Type" ||
-        applicant.preferJob.some((job: any) =>
-          job.toLowerCase().includes(filter.jobType.toLowerCase())
-        ))
-    );
-  });
-
-  // Update currentData to use filteredApplicants instead of defaultApplicants
-  const currentData = filteredApplicants.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const applicants = data?.data.users || [];
 
   const handleDetail = (id: number) => {
-    setSelectedApplicantId(id);
+    // setSelectedApplicantId(id);
     setIsDetail(true);
   };
 
+  useEffect(() => {
+    if (isInitialRender.current) {
+      // First run
+      if (
+        currentPage &&
+        filter.live_in_japan &&
+        filter.gender &&
+        filter.job_type
+      ) {
+        refetch();
+      }
+      isInitialRender.current = false;
+    } else {
+      // Subsequent runs
+      refetch();
+    }
+  }, [currentPage, filter, refetch]);
 
+  useEffect(() => {
+    dispatch(setTitle(jp.applicant));
+  }, [dispatch]);
 
   return (
     <>
-      {(isLoading || isDetailLoading) && (
+      {(isLoading || isDetailLoading || isJobTypesLoading) && (
         <Loading
-          isLoading={isLoading || isDetailLoading}
+          isLoading={isLoading || isDetailLoading || isJobTypesLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -113,48 +131,41 @@ const ApplicantScreen = () => {
         exit="exit"
         className="w-full overflow-hidden relative"
       >
-        <FilterBar filter={filter} setFilter={setFilter} />
-        <div className="flex justify-start items-center px-4 py-2">
+        <FilterBar filter={filter} setFilter={setFilter} jobTypes={jobTypes} />
+        <div className="flex justify-start items-center px-4 py-2 z-10">
           <p className="text-gray-500 text-sm">
             Search Result{" "}
             <span className="text-secondaryColor">
-              ({filteredApplicants.length})
+              ({data?.data.totalUsers})
             </span>
           </p>
         </div>
-        <ApplicantTable applicants={currentData} handleDetail={handleDetail} />
-        {filteredApplicants.length > 5 && (
-          <Pagination
-            data={filteredApplicants}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
-        {isDetail && applicantDetail && (
-          <div className="absolute top-0 left-0 bg-secondaryColor/50 w-full h-full p-2 flex justify-center items-center">
-            <MatchedApplicants applicant={applicantDetail} />
+        <ApplicantTable
+          applicants={applicants}
+          handleDetail={handleDetail}
+          jobTypes={jobTypes}
+        />
+        <Pagination
+          totalPages={data?.data.totalPages}
+          currentPage={data?.data.currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+        <AnimatePresence>
+        {isDetail  && (
+          <motion.div className="absolute top-0 left-0 bg-white w-full h-full z-50 flex justify-center items-center" variants={applicantDetailVariants} initial="initial" animate="animate" exit="exit">
+            <MatchedApplicants applicant={userProfile} className="h-full" />
             <button
               onClick={() => setIsDetail(false)}
-              className="absolute top-3 right-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
+              className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+</svg>
+
             </button>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
@@ -164,6 +175,12 @@ const applicantVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const applicantDetailVariants = {
+  initial: { opacity: 0,x:100 },
+  animate: { opacity: 1,x:0, transition: { duration: 0.2 } },
+  exit: { opacity: 0,x:100, transition: { duration: 0.2 } },
 };
 
 export default ApplicantScreen;

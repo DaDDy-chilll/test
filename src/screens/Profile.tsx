@@ -1,6 +1,6 @@
 import JobDetails from "@/components/ui/JobDetails";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
@@ -17,7 +17,9 @@ import { setTitle } from "@/store";
 const Profile = () => {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
-  dispatch(setTitle(jp.profile));
+  useEffect(() => {
+    dispatch(setTitle(jp.profile));
+  }, [dispatch]);
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },

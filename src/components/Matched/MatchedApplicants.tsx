@@ -4,11 +4,13 @@ import { jp } from "@/lang/jp";
 
 type MatchProps = {
   applicant: UserProfile;
+  className?: string;
 };
 
-const MatchedApplicants = ({ applicant }: MatchProps) => {
+const MatchedApplicants = ({ applicant, className }: MatchProps) => {
+ 
   return (
-    <div className="bg-gray-100 pt-2 pb-5 px-14 shadow-md">
+    <div className={`bg-gray-100 pt-2 pb-5 px-14 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
         <img
           src={applicant.profileImage ? applicant.profileImage : DefaultLogo}

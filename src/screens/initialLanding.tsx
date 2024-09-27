@@ -13,18 +13,14 @@ const textOneDuration = textOne.length * 0.1;
 
 const initialLanding = () => {
   const navigate = useNavigate();
-  const { user, token, verified } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { user, token } = useSelector((state: RootState) => state.auth);
   const login = () => navigate(RouteName.LOGIN);
   const signup = () => navigate(RouteName.REGISTER);
 
   useEffect(() => {
-    console.log("initialLanding", verified, user, token);
-    if (verified) navigate(RouteName.USER_FORM);
-    else if (user && token) navigate(RouteName.DASHBOARD);
+    if (user && token) navigate(RouteName.DASHBOARD);
     else navigate(RouteName.INITIAL_LANDING);
-  }, [user, token,navigate]);
+  }, [user, token, navigate]);
 
   return (
     <div className="h-screen flex items-center justify-center">

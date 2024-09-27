@@ -57,12 +57,9 @@ export type AuthErrorType = {
 }
 
 export type FilterType = {
-  livesInJapan: boolean;
-  livesInMyanmar: boolean;
+  live_in_japan: string;
   gender: string;
-  language: string;
-  education: string;
-  jobType: string;
+  job_type: string;
 }
 
 export type Event = {

@@ -2,7 +2,7 @@ import { fetchServer } from "@/utils/helper";
 import { useMutation } from "@tanstack/react-query";
 import { LoginProps, RegisterProps } from "@/types/helperTypes";
 import { useDispatch } from "react-redux";
-import { setToken, removeToken, setVerified } from "@/store";
+import { setToken, removeToken } from "@/store";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useNavigate } from "react-router-dom";
 import User from "@/navigations/routes";
@@ -22,13 +22,13 @@ const useAuth = () => {
         },
         onSuccess: (data) => {
             setError(null)
-            if(data.data){
+            if (data.data) {
                 dispatch(setToken(data.data));
                 navigate(User.DASHBOARD);
             }
         },
         onError: (error: ErrorType) => {
-            console.log("error login",error)
+            console.log("error login", error)
             dispatch(removeToken());
             setError(error.message)
         },
@@ -40,12 +40,13 @@ const useAuth = () => {
         },
         onSuccess: (data) => {
             setError(null)
-            dispatch(setVerified(true));
+            // dispatch(setVerified(true));
             dispatch(setToken(data));
+            navigate(User.LOGIN);
         },
         onError: (error: ErrorType) => {
             dispatch(removeToken());
-            console.log("error register",error)
+            console.log("error register", error)
             setError(error.message)
         }
     })

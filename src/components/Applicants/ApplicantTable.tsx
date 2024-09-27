@@ -1,86 +1,193 @@
 type Applicant = {
-  id: number;
-  name: string;
-  userId: string;
-  preferJob: string[];
-  address: string;
-  education: string;
-  japaneseLevel: string;
-  gender: string;
+  id: string;
+  profileImage: string;
+  m_basicinfos: {
+    name: string;
+    location: string;
+    birthdate: string;
+    gender: number;
+    user_id: number;
+    live_in_japan: number;
+    profile_path: string;
+  };
+  m_preferred_jobs: [
+    {
+      job_type: number;
+    }
+  ];
+  jobsPreference: {
+    passport: string;
+    salary: string;
+    workingHours: string;
+    accommodationProvided: string;
+    rentSupport: string;
+    preferredJobAndArea: {
+      jobTypes: string[];
+      areas: string[];
+    };
+  };
+
+  languages: {
+    level: string;
+  }[];
+  education: [
+    {
+      schoolLevel: string;
+      schoolName: string;
+      year: string;
+    },
+    {
+      schoolLevel: string;
+      schoolName: string;
+      year: string;
+    },
+    {
+      schoolLevel: string;
+      schoolName: string;
+      year: string;
+    }
+  ];
+  workExperience: [
+    {
+      position: string;
+      companyName: string;
+      year: string;
+      description: string;
+    },
+    {
+      position: string;
+      companyName: string;
+      year: string;
+      description: string;
+    }
+  ];
 };
 
 type ApplicantTableProps = {
   applicants: Applicant[];
   handleDetail: (id: number) => void;
+  jobTypes: any;
 };
 
-const ApplicantTable = ({ applicants, handleDetail }: ApplicantTableProps) => {
+const ApplicantTable = ({
+  applicants,
+  handleDetail,
+  jobTypes,
+}: ApplicantTableProps) => {
+  const getJobTypeJp = (jobTypeId: number) => {
+    const jobType = jobTypes?.data.find((job: any) => job.id === jobTypeId);
+    return jobType ? jobType.job_type_jp : "Unknown";
+  };
+
   return (
     <div className="relative overflow-y-auto h-[calc(100vh-225px)] ">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white">
+        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white z-40">
           <tr>
-            <th scope="col" className="px-6 py-3 text-center">
+            <th scope="col" className=" py-3 text-start">
               #
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
+            <th scope="col" className="py-3 text-start">
               Name
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
+            <th scope="col" className=" py-3 text-start">
               Prefer Job
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
+            <th scope="col" className=" py-3 text-start">
               Address
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
+            <th scope="col" className=" py-3 text-start">
               Education
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
-              Japanese
+            <th scope="col" className=" py-3 text-start">
+              Tokutei Exam
             </th>
-            <th scope="col" className="px-6 py-3 text-center">
+             <th scope="col" className=" py-3 text-start">
+              Language
+            </th>
+            <th scope="col" className="py-3 text-start">
               Gender
             </th>
-            <th scope="col" className="px-6 py-3 text-center"></th>
+            <th scope="col" className=" py-3 text-start"></th>
           </tr>
         </thead>
         <tbody className="overflow-y-auto ">
           {applicants.length > 0 ? (
             applicants.map((applicant, index) => (
               <tr className="bg-white dark:bg-gray-800" key={index}>
-                <td className=" py-2 text-center">{applicant.id}</td>
+                <td className=" py-2 text-start">
+                  <img
+                    src={`https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}`}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                </td>
                 <th
                   scope="row"
-                  className=" py-2 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className=" py-2 text-start font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <p>{applicant.name}</p>
+                  <p>{applicant.m_basicinfos.name}</p>
                   <p className="text-xs font-normal text-gray-500">
-                    {applicant.userId}
+                    {applicant.m_basicinfos.user_id}
                   </p>
                 </th>
-                <td className=" py-2 flex flex-col items-center justify-center gap-1">
-                  {applicant.preferJob.map((job, index) => (
-                    <p
-                      className="text-xs text-white font-normal bg-primaryColor rounded-full px-2 py-1"
-                      key={index}
-                    >
-                      {job}
-                    </p>
-                  ))}
+                <td
+                  data-tooltip-target="tooltip-default"
+                  className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+                >
+                  <div className="flex flex-col items-center  justify-center gap-1 cursor-pointer">
+                    {applicant.m_preferred_jobs.length > 0 ? (
+                      <>
+                        <div className="flex  items-center justify-center gap-1 cursor-pointer">
+                          <p className="text-xs  text-white font-normal bg-primaryColor rounded-full px-2 py-1 inline-block">
+                            {getJobTypeJp(
+                              applicant.m_preferred_jobs[0].job_type
+                            )}
+                          </p>
+                          {applicant.m_preferred_jobs.length > 1 && (
+                            <span className="text-xs text-gray-500 ml-1">
+                              +{applicant.m_preferred_jobs.length - 1}
+                            </span>
+                          )}
+                        </div>
+                        {applicant.m_preferred_jobs.length > 1 && (
+                          <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+                            {applicant.m_preferred_jobs
+                              .slice(1)
+                              .map((job, index) => (
+                                <p
+                                  key={index}
+                                  className="text-xs text-gray-700 whitespace-nowrap my-2"
+                                >
+                                  {getJobTypeJp(job.job_type)}
+                                </p>
+                              ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div>No preferred jobs</div>
+                    )}
+                  </div>
                 </td>
-                <td className="py-2 text-center text-secondaryColor">
-                  {applicant.address}
+                <td className="py-2 text-start text-secondaryColor">
+                  {applicant.m_basicinfos.live_in_japan === 1
+                    ? "Japan"
+                    : "Myanmar"}
                 </td>
-                <td className=" py-2 text-center text-secondaryColor">
+                <td className=" py-2 text-start text-secondaryColor">
                   {applicant.education}
                 </td>
-                <td className=" py-2 text-center text-secondaryColor">
+                <td className=" py-2 text-start text-secondaryColor">
                   {applicant.japaneseLevel}
                 </td>
-                <td className=" py-2 text-center text-secondaryColor">
-                  {applicant.gender}
+                      <td className=" py-2 text-start text-secondaryColor">
+                  {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
                 </td>
-                <td className=" py-2 text-center text-secondaryColor">
+                <td className=" py-2 text-start text-secondaryColor">
+                  {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
+                </td>
+                <td className=" py-2 text-start text-secondaryColor">
                   <button
                     onClick={() => handleDetail(applicant.id)}
                     className="text-xs text-white bg-primaryColor rounded-full px-2 py-1 hover:bg-secondaryColor"

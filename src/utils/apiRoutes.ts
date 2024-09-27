@@ -4,15 +4,21 @@ interface ApiRoutesType {
     REGISTER: string,
     LOGOUT: string,
     APPLICANTS: string,
+    APPLICANTS_DETAILS:string,
     JOBS: string,
-    EVENTS: string
+    EVENTS: string,
+    JOB_TYPES:string,
+    TOKUTEI_EXAM:string
 }
 
 export const apiRoutes: ApiRoutesType = {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    LOGOUT: "/auth/logout",
-    APPLICANTS: "/users",
-    JOBS: "/jobs",
-    EVENTS: "/events",
+    LOGIN: "/client/auth/login",
+    REGISTER: "/client/auth/register",
+    LOGOUT: "/client/auth/logout",
+    APPLICANTS: "/client/users",
+    APPLICANTS_DETAILS:"/client/users/details",
+    JOBS: "/client/jobs",
+    EVENTS: "/client/events",
+    JOB_TYPES:"/auth/occupations",
+    TOKUTEI_EXAM:"/auth/tokutei-exam"
 }

@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMemo, useState } from "react";
+import { useMemo, useState,useEffect } from "react";
 import JobListItem from "@/components/Jobs/JobListItem";
 import { Button } from "@/components/ui/button";
 import JobDetails from "@/components/ui/JobDetails";
@@ -35,7 +35,9 @@ const JobScreen = () => {
     token: token as string,
     key: QueryKey.JOBS,
   });
-  dispatch(setTitle(jp.jobs));
+  useEffect(() => {
+    dispatch(setTitle(jp.jobs));
+  }, [dispatch]);
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },

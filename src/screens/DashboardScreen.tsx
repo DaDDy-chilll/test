@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useEffect } from "react";
 import LineCharts from "@/components/Dashboard/LineChart";
 import Pichart from "@/components/Dashboard/Pichart";
 import { jp } from "@/lang/jp";
@@ -24,7 +24,9 @@ const DashboardScreen = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const dispatch = useDispatch();
-  dispatch(setTitle(jp.dashboard));
+  useEffect(() => {
+    dispatch(setTitle(jp.dashboard));
+  }, [dispatch]);
   /*
   const {
     data: events,
@@ -163,7 +165,7 @@ const today = format(new Date(), "yyyy-MM-dd");
         className=" w-full h-[calc(100vh+40vh)] grid grid-cols-6 grid-rows-4 gap-2 p-2 overflow-hidden"
       >
         {/* Line Chart */}
-        <div className="bg-gray-100 col-span-4 row-span-2">
+        <div className="bg-gray-100 col-span-6 row-span-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-lg font-semibold">{jp.matchList}</h1>
           </div>
@@ -173,7 +175,7 @@ const today = format(new Date(), "yyyy-MM-dd");
         </div>
 
         {/* User Pie Chart */}
-        <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
+        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-sm font-semibold">Matched List</h1>
             <div className="flex items-center gap-x-5">
@@ -199,10 +201,10 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Laungauge Pie Chart */}
-        <div className="bg-gray-100 col-start-5 col-end-7 row-start-2 row-end-3">
+        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-2 row-end-3">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-sm font-semibold">Matched List</h1>
             <div className="flex items-center gap-x-5">
@@ -242,7 +244,7 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Meeting */}
         <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5">

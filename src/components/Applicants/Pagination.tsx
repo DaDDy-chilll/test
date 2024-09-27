@@ -1,18 +1,17 @@
 type PaginationProps = {
-  data: any[];
-  itemsPerPage: number;
+  totalPages: any;
+  // itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
 };
 
 const Pagination = ({
-  data,
-  itemsPerPage,
+  totalPages,
+  // itemsPerPage,
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
   // Calculate total pages
-  const totalPages = Math.ceil(data.length / itemsPerPage);
 
   // Change page
   const goToPage = (page: number) => {
@@ -44,8 +43,8 @@ const Pagination = ({
       </button>
 
       {/* Dynamically create page numbers */}
-      {[...Array(totalPages)].map((_, index) => (
-        <button
+      {Array.from({ length: totalPages }, (_, index) => (
+          <button
           key={index}
           onClick={() => goToPage(index + 1)}
           className={

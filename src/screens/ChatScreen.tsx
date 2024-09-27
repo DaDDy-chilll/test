@@ -59,7 +59,9 @@ const ChatScreen = () => {
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
   const { chats, isLoading } = useChat({ id: user?.id });
-  dispatch(setTitle(jp.chat));
+  useEffect(() => {
+    dispatch(setTitle(jp.chat));
+  }, [dispatch]);
   // fetch chat room
   // useEffect(() => {
   //   setIsLoading(true);

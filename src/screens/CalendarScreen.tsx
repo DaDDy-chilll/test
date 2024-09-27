@@ -9,7 +9,7 @@ import {
   subMonths,
   addMonths,
 } from "date-fns";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import CalendarCell from "@/components/CalendarScreen/CalendarCell";
 import { jp } from "@/lang/jp";
 import EventListItem from "@/components/CalendarScreen/EventListItem";
@@ -39,7 +39,9 @@ const CalendarScreen = () => {
   });
   const events: Event[] = data || [];
   const today = format(new Date(), "yyyy-MM-dd");
-  dispatch(setTitle(jp.calendar));
+  useEffect(() => {
+    dispatch(setTitle(jp.calendar));
+  }, [dispatch]);
   const eventsByDate = useMemo(() => {
     return events.reduce((acc: { [key: string]: Event[] }, event: Event) => {
       const dateKey = format(new Date(event.date), "yyyy-MM-dd");

@@ -18,16 +18,14 @@ const RegisterScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { onRegister, isRegisterPending, error } = useAuth();
   const { emailError, passwordError, confirmPasswordError, authHandleError,resetAuthError } = useHandleError();
-  const { user, token, verified } = useSelector(
+  const { user, token } = useSelector(
     (state: RootState) => state.auth
   );
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("verified", verified);
-    if (verified) navigate(RouteName.USER_FORM);
-    else if (user && token) navigate(RouteName.DASHBOARD);
-  }, [user, token, navigate, verified]);
+    if (user && token) navigate(RouteName.DASHBOARD);
+  }, [user, token, navigate]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,9 +44,9 @@ const RegisterScreen = () => {
   }, [error]);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-200">
-      <div className="flex  w-1/3 h-5/6 shadow-md">
-        <div className="w-full h-full px-20 flex flex-col justify-center items-center bg-white relative">
+    <div className=" bg-gray-200">
+      <div className="h-screen flex justify-center items-center">
+        <div className="w-full sm:max-w-md bg-white rounded-xl p-8 relative">
           <div className="absolute left-7 top-10 flex items-center gap-3">
             <div className="w-12">
               <img src={logo} className="w-full" alt="Japan job logo" />
@@ -66,7 +64,7 @@ const RegisterScreen = () => {
             </h1>
           </motion.div>
           <motion.form
-            className="space-y-10 w-full"
+            className="space-y-10 w-full px-10"
             onSubmit={handleSubmit}
             variants={formVariants}
             initial="hidden"
