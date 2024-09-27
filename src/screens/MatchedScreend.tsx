@@ -39,8 +39,8 @@ const MatchedScreend = () => {
   };
 
   const handleCloseDetail = () => {
-    document.body.style.overflow = "auto";
     setShowDetail((prev) => !prev);
+    document.body.style.overflowY = "auto";
   };
 
   return (
@@ -99,7 +99,7 @@ const MatchedScreend = () => {
             <DropdownMenuContent>
               {defaultJobType.map((item) => (
                 <DropdownMenuItem
-                  key={item.id}
+                  key={"z"+item.id}
                   onClick={() => handleJobType(item)}
                 >
                   <p>{item.name}</p>
@@ -115,7 +115,7 @@ const MatchedScreend = () => {
               ? Array.from({ length: 10 }).map((_, index) => (
                   <motion.div
                     onClick={handleShowDetail}
-                    key={index}
+                    key={100+index}
                     variants={cardVariants}
                     initial="initial"
                     animate="animate"
@@ -134,7 +134,7 @@ const MatchedScreend = () => {
                       <div className="flex gap-2 flex-row flex-wrap">
                         {Array.from({ length: 3 }).map((_, index) => (
                           <span
-                            key={index}
+                            key={"a"+index}
                             className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full"
                           >
                             Prefer Job
@@ -291,7 +291,7 @@ const MatchedScreend = () => {
                 ))}
         </div>
         {showDetail && (
-          <motion.div className="absolute top-0 left-0 w-full h-full bg-black/50 z-50" variants={detailVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key='matchDetail' className="absolute top-0 left-0 w-full h-full bg-black/50 z-50" variants={detailVariants} initial="initial" animate="animate" exit="exit">
           <span className="w-full h-full relative">
           <button
               onClick={handleCloseDetail}

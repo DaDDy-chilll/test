@@ -120,71 +120,7 @@ const RegisterScreen = () => {
               </div>
             </motion.form>
           </div>
-          <motion.div
-            className="text-center"
-            variants={headerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h1 className="main-title text-lg text-black my-10">
-              {jp.register}
-            </h1>
-          </motion.div>
-          <motion.form
-            className="space-y-10 w-full px-10"
-            onSubmit={handleSubmit}
-            variants={formVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div>
-              <Input
-                name="email"
-                type="email"
-                label={jp.email}
-                className="mt-1 block w-full"
-                required={false}
-                error={emailError ?? ""}
-              />
-            </div>
-            <div>
-              <Input
-                name="password"
-                type="password"
-                label={jp.password}
-                className="mt-1 block w-full"
-                required={false}
-                error={passwordError ?? ""}
-              />
-            </div>
-            <div>
-              <Input
-                name="confirmPassword"
-                type="password"
-                label={jp.confirmPassword}
-                className="mt-1 block w-full"
-                required={false}
-                error={confirmPasswordError ?? ""}
-              />
-            </div>
-            <div>
-              <Button
-                type="submit"
-                disabled={false}
-                className="w-full medium font-medium"
-              >
-                {isRegisterPending ? (
-                  <BeatLoader
-                    loading={isRegisterPending}
-                    size={8}
-                    color={"#fff"}
-                  />
-                ) : (
-                  jp.register
-                )}
-              </Button>
-            </div>
-          </motion.form>
+        
         </div>
       </div>
     </div>
