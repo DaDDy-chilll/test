@@ -36,81 +36,83 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
-    
+
   }, [error]);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-200">
-      <div className="flex w-1/3 h-5/6 shadow-md ">
-        <div className="w-full h-full px-20 space-y-8 flex flex-col justify-center items-center bg-white relative">
-          <div className="absolute left-7 top-10 flex items-center gap-3">
-            <div className="w-12">
-              <img src={logo} className="w-full" alt="Japan job logo" />
-            </div>
-            <h1 className="font-medium">JAPAN JOB</h1>
-          </div>
-          <motion.div
-            className="text-center"
-            variants={headerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h1 className="main-title text-lg text-black mb-10">{jp.login}</h1>
-          </motion.div>
-          <motion.form
-            className="space-y-8 w-full"
-            onSubmit={handleSubmit}
-            variants={formVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div>
-              <Input
-                name="email"
-                type="email"
-                label={jp.email}
-                className="mt-1 block w-full"
-                required={false}
-                error={!!emailError ? emailError : ""}
-              />
-            </div>
-            <div>
-              <Input
-                name="password"
-                type="password"
-                label={jp.password}
-                className="mt-1 block w-full"
-                required={false}
-                error={!!passwordError ? passwordError : ""}
-              />
-              <div className="flex justify-end">
-                <NavLink
-                  to={RouteName.FORGOT_PASSWORD}
-                  className="text-xs text-end  text-gray-500"
-                >
-                  {jp.forgotPassword}
-                </NavLink>
+    <div className="bg-gray-200">
+      <div className="h-screen flex justify-center items-center">
+        <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
+          <div className="bg-white rounded-xl p-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12">
+                <img src={logo} className="w-full" alt="Japan job logo" />
               </div>
+              <h1 className="font-medium">JAPAN JOB</h1>
             </div>
+            <motion.div
+              className="text-center"
+              variants={headerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <h4 className="text-center text-2xl font-bold text-black my-10">{jp.login}</h4>
+            </motion.div>
+            <motion.form
+              className="space-y-8 w-full"
+              onSubmit={handleSubmit}
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div >
+                <Input
+                  name="email"
+                  type="email"
+                  label={jp.email}
+                  className="mt-1 block w-full"
+                  required={false}
+                  error={!!emailError ? emailError : ""}
+                />
+              </div>
+              <div >
+                <Input
+                  name="password"
+                  type="password"
+                  label={jp.password} 
+                  className="mt-1 block w-full"
+                  required={false}
+                  error={!!passwordError ? passwordError : ""}
+                />
+                <div className="flex justify-end">
+                  <NavLink
+                    to={RouteName.FORGOT_PASSWORD}
+                    className="text-xs text-end  text-gray-500"
+                  >
+                    {jp.forgotPassword}
+                  </NavLink>
+                </div>
+              </div>
 
-            <div>
-              <Button
-                type="submit"
-                disabled={isLoginPending}
-                className="w-full medium font-medium"
-              >
-                {isLoginPending ? (
-                  <BeatLoader
-                    loading={isLoginPending}
-                    size={8}
-                    color={"#fff"}
-                  />
-                ) : (
-                  jp.login
-                )}
-              </Button>
-            </div>
-          </motion.form>
+              <div>
+                <Button
+                  type="submit"
+                  disabled={isLoginPending}
+                  className="w-full medium font-medium"
+                >
+                  {isLoginPending ? (
+                    <BeatLoader
+                      loading={isLoginPending}
+                      size={8}
+                      color={"#fff"}
+                    />
+                  ) : (
+                    jp.login
+                  )}
+                </Button>
+              </div>
+            </motion.form>
+          </div>
         </div>
       </div>
     </div>
