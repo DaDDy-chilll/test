@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Sidebar />
-      <div className="relative sm:ml-64">
+      <div className="relative md:ml-64">
         <Header />
         <div>{children}</div>
       </div>
