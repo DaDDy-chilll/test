@@ -163,7 +163,7 @@ const today = format(new Date(), "yyyy-MM-dd");
         className=" w-full h-[calc(100vh+40vh)] grid grid-cols-6 grid-rows-4 gap-2 p-2 overflow-hidden"
       >
         {/* Line Chart */}
-        <div className="bg-gray-100 col-span-4 row-span-2">
+        <div className="bg-gray-100 col-span-6 row-span-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-lg font-semibold">{jp.matchList}</h1>
           </div>
@@ -173,7 +173,7 @@ const today = format(new Date(), "yyyy-MM-dd");
         </div>
 
         {/* User Pie Chart */}
-        <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
+        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-sm font-semibold">Matched List</h1>
             <div className="flex items-center gap-x-5">
@@ -199,10 +199,10 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Laungauge Pie Chart */}
-        <div className="bg-gray-100 col-start-5 col-end-7 row-start-2 row-end-3">
+        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-2 row-end-3">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-sm font-semibold">Matched List</h1>
             <div className="flex items-center gap-x-5">
@@ -242,17 +242,17 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Meeting */}
         <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5">
-          <div className="w-full h-full">
+          <div className="w-full">
             <div className="flex items-start justify-between p-3">
-              <div className="col-span-2 w-full pb-4">
+              <div className="col-span-2 w-2/3 pb-4">
                 <h1 className="text-base font-semibold text-center my-2">
                   {today} {jp.meetings}
                 </h1>
-                <div className="w-full h-[calc(100vh-300px)] overflow-y-auto ">
+                <div className="w-full h-[62vh] overflow-y-auto border-r-2 border-gray-200">
                   {todayEvents.length > 0 ? (
                     todayEvents.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
@@ -270,6 +270,25 @@ const today = format(new Date(), "yyyy-MM-dd");
                     </button>
                   </div>
                 )}
+              </div>
+              <div className="w-1/3 pl-3 h-[67vh]">
+                  <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
+                  <div className="overflow-y-auto h-[62vh]">
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-01</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-02</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-06</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-07</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-08</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-09</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-10</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-11</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-12</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-13</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-14</div>
+                  </div>
               </div>
             </div>
           </div>
