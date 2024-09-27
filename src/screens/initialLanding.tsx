@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import RouteName from "@/navigations/routes";
 import { useEffect } from "react";
-
+import { jp } from "@/lang/jp";
 const textOne = "良いミャンマー人と、";
 const textTwo = "優良な日本企業のマッチングサイト";
 const textOneDuration = textOne.length * 0.1;
@@ -20,10 +20,11 @@ const initialLanding = () => {
   const signup = () => navigate(RouteName.REGISTER);
 
   useEffect(() => {
-    console.log(verified, user, token);
+    console.log("initialLanding", verified, user, token);
     if (verified) navigate(RouteName.USER_FORM);
     else if (user && token) navigate(RouteName.DASHBOARD);
-  }, [user, token]);
+    else navigate(RouteName.INITIAL_LANDING);
+  }, [user, token,navigate]);
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -76,10 +77,10 @@ const initialLanding = () => {
           transition={{ duration: 0.5 }}
         >
           <Button variant="destructive" className="w-44" onClick={login}>
-            Login
+            {jp.login}
           </Button>
           <Button variant="outline" className="w-44" onClick={signup}>
-            Sign Up
+            {jp.register}
           </Button>
         </motion.div>
       </div>

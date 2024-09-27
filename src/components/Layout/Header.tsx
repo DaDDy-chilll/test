@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,15 +11,12 @@ import { RootState } from "@/store/store";
 import NotiItem from "../ui/NotiItem";
 import { jp } from "@/lang/jp";
 import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import Routenames from "@/navigations/routes";
+
+
 
 const Header = () => {
   let title = useSelector((state: RootState) => state.navigation.title);
   const { user } = useSelector((state: RootState) => state.auth);
-  const location = useLocation();
-  const pathname = location.pathname;
-  if (pathname === Routenames.PROFILE) title = jp.profile;
   const defaultNoti = [
     {
       id: 1,
@@ -94,6 +90,9 @@ const Header = () => {
     },
   ];
 
+
+
+
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-16 z-50 bg-white">
       <h1 className="text-xl text-gray-900 font-semibold">{title}</h1>
@@ -152,7 +151,7 @@ const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <div>
-          <h1>{user?.email}</h1>
+          <h1>{user?.name}</h1>
         </div>
       </div>
     </nav>

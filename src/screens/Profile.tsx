@@ -11,10 +11,13 @@ import defaultImage from '@/assets/images/default.png';
 import { jp } from "@/lang/jp";
 import DatePicker from "@/components/ui/DatePicker";
 import Loading from "@/components/ui/Loading";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
-
+  dispatch(setTitle(jp.profile));
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },

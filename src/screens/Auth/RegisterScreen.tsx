@@ -5,17 +5,19 @@ import Input from "@/components/ui/Input";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
-import { RegisterProps } from "@/types/helperTypes";
+import { RegisterProps, AuthErrorType } from "@/types/helperTypes";
 import { BeatLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { toast } from "react-toastify";
+import { jp } from "@/lang/jp";
+import useHandleError from "@/hooks/useHandleError";
 import Maintenance from "@/components/ui/Maintenance";
 const RegisterScreen = () => {
-  if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
+  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { onRegister, isRegisterPending, error } = useAuth();
+  const { emailError, passwordError, confirmPasswordError, authHandleError,resetAuthError } = useHandleError();
   const { user, token, verified } = useSelector(
     (state: RootState) => state.auth
   );
@@ -29,21 +31,18 @@ const RegisterScreen = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetAuthError()
     const formData = new FormData(e.currentTarget);
     const registerProps: RegisterProps = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
-      confirmPassword: formData.get("confirmPassword") as string,
+      confirm_password: formData.get("confirmPassword") as string,
     };
     onRegister(registerProps);
   };
 
   useEffect(() => {
-    if (error?.toast) {
-      toast.warning(error.message, { position: "top-center" });
-    } else if (error?.message) {
-      toast.error(error.message, { position: "top-center" });
-    }
+    if (error) authHandleError(error as AuthErrorType);
   }, [error]);
 
   return (
@@ -62,7 +61,9 @@ const RegisterScreen = () => {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="main-title text-lg text-black my-10">Register</h1>
+            <h1 className="main-title text-lg text-black my-10">
+              {jp.register}
+            </h1>
           </motion.div>
           <motion.form
             className="space-y-10 w-full"
@@ -75,28 +76,30 @@ const RegisterScreen = () => {
               <Input
                 name="email"
                 type="email"
-                label="Email"
+                label={jp.email}
                 className="mt-1 block w-full"
                 required={false}
+                error={emailError ?? ""}
               />
             </div>
             <div>
               <Input
                 name="password"
                 type="password"
-                label="Password"
+                label={jp.password}
                 className="mt-1 block w-full"
                 required={false}
+                error={passwordError ?? ""}
               />
             </div>
             <div>
               <Input
                 name="confirmPassword"
                 type="password"
-                label="Confirm Password"
+                label={jp.confirmPassword}
                 className="mt-1 block w-full"
                 required={false}
-                error={(error?.toast && error?.message) || ""}
+                error={confirmPasswordError ?? ""}
               />
             </div>
             <div>
@@ -112,7 +115,7 @@ const RegisterScreen = () => {
                     color={"#fff"}
                   />
                 ) : (
-                  "Register"
+                  jp.register
                 )}
               </Button>
             </div>

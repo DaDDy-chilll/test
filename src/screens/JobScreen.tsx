@@ -17,10 +17,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import Maintenance from "@/components/ui/Maintenance";
-
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
+import { jp } from "@/lang/jp";
 
 const JobScreen = () => {
   if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
+  const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("Job Type");
@@ -32,6 +35,7 @@ const JobScreen = () => {
     token: token as string,
     key: QueryKey.JOBS,
   });
+  dispatch(setTitle(jp.jobs));
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },

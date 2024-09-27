@@ -1,10 +1,10 @@
 enum RouteName {
   // Auth
+  INITIAL_LANDING = "/",
   LOGIN = "/login",
   FORGOT_PASSWORD = "/forgot_password",
   RESET_PASSWORD = "/reset_password",
   REGISTER = "/register",
-  INITIAL_LANDING = "/",
   DASHBOARD = "/dashboard",
   CALENDAR = "/calendar",
   APPLICANTS = "/applicants",

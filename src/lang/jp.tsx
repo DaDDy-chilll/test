@@ -1,4 +1,10 @@
 export const jp = {
+  login: "ログイン",
+  register: "登録",
+  email: "メールアドレス",
+  password: "パスワード",
+  confirmPassword: "確認パスワード",
+  forgotPassword: "パスワードを忘れた方はこちら",
   title: "ユーザー情報",
   companyName: "会社名",
   jobArea: "業界",

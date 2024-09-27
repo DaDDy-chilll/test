@@ -9,9 +9,15 @@ import { useState } from "react";
 import MatchedApplicants from "@/components/Matched/MatchedApplicants";
 import { UserProfile } from "@/types/user";
 import Loading from "@/components/ui/Loading";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
+import { jp } from "@/lang/jp";
+
 const MatchedScreend = () => {
   const [jobType, setJobType] = useState("Job Name");
+  const dispatch = useDispatch();
 
+  dispatch(setTitle(jp.matches));
   const defaultJobType = [
     { id: 0, name: "All" },
     { id: 1, name: "Full Time" },

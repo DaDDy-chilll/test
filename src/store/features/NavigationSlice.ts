@@ -10,7 +10,10 @@ export const navigationSlice = createSlice({
   name: "navigation",
   initialState,
   reducers: {
-    setTitle: (state, action) => state.title = action.payload,
+    setTitle: (state, action) => {
+      console.log(action.payload);
+      state.title = action.payload;
+    },
   },
 });
 

@@ -3,24 +3,25 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
-import { LoginProps } from "@/types/helperTypes";
+import { LoginProps, AuthErrorType } from "@/types/helperTypes";
 import useAuth from "@/hooks/useAuth";
 import { BeatLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import useHandleError from "@/hooks/useHandleError";
+import { jp } from "@/lang/jp";
 const LoginScreen = () => {
   const { onLogin, isLoginPending, error } = useAuth();
-  const { handleError } = useHandleError();
-  const { user, token } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { authHandleError, emailError, passwordError, resetAuthError } =
+    useHandleError();
+  const { user, token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetAuthError();
     const formData = new FormData(e.currentTarget);
     const loginProps: LoginProps = {
       email: formData.get("email") as string,
@@ -33,23 +34,9 @@ const LoginScreen = () => {
     if (user && token) navigate(RouteName.DASHBOARD);
   }, [user, token]);
 
-
   useEffect(() => {
-    console.log("error-login", error);
-    if (error?.error) {
-      handleError(error);
-    }
-    // if (error?.toast) {
-    //   toast.warning(error.message, { position: "top-center" });
-    // } else if (typeof error?.message === "string") {
-    //   toast.error(error.message, { position: "top-center" });
-    // }else if(error?.message?.validation){
-    //   toast.error(error?.message?.validation[0]?.password?.jp, { position: "top-center" });
-    // }else if(error?.message?.password){
-    //   toast.error(error?.message?.password?.jp, { position: "top-center" });
-    // }else if(error?.message?.email){
-    //   toast.error(error?.message?.email?.jp, { position: "top-center" });
-    // }
+    if (error) authHandleError(error as AuthErrorType);
+    
   }, [error]);
 
   return (
@@ -68,10 +55,10 @@ const LoginScreen = () => {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="main-title text-lg text-black mb-10">Login</h1>
+            <h1 className="main-title text-lg text-black mb-10">{jp.login}</h1>
           </motion.div>
           <motion.form
-            className="space-y-12 w-full"
+            className="space-y-8 w-full"
             onSubmit={handleSubmit}
             variants={formVariants}
             initial="hidden"
@@ -81,21 +68,31 @@ const LoginScreen = () => {
               <Input
                 name="email"
                 type="email"
-                label="Email"
+                label={jp.email}
                 className="mt-1 block w-full"
                 required={false}
-                error={(error && error.message) || ""}
+                error={!!emailError ? emailError : ""}
               />
             </div>
             <div>
               <Input
                 name="password"
                 type="password"
-                label="Password"
+                label={jp.password}
                 className="mt-1 block w-full"
                 required={false}
+                error={!!passwordError ? passwordError : ""}
               />
+              <div className="flex justify-end">
+                <NavLink
+                  to={RouteName.FORGOT_PASSWORD}
+                  className="text-xs text-end  text-gray-500"
+                >
+                  {jp.forgotPassword}
+                </NavLink>
+              </div>
             </div>
+
             <div>
               <Button
                 type="submit"
@@ -109,7 +106,7 @@ const LoginScreen = () => {
                     color={"#fff"}
                   />
                 ) : (
-                  "Login"
+                  jp.login
                 )}
               </Button>
             </div>

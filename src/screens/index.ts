@@ -9,7 +9,7 @@ import RegisterScreen from "./Auth/RegisterScreen";
 import ChatScreen from "./ChatScreen";
 // import ProfileScreen from "./ProfileScreen";
 import AddJobScreen from "./AddJobScreen";
-
+import ForgotPassword from "./Auth/ForgotPassword";
 export {
   ApplicantScreen,
   MatchedScreend,
@@ -21,4 +21,5 @@ export {
   RegisterScreen,
   ChatScreen,
   AddJobScreen,
+  ForgotPassword
 };

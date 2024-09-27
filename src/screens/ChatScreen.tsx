@@ -26,6 +26,9 @@ import { AnimatePresence } from "framer-motion";
 import { jp } from "@/lang/jp";
 import useChat from "@/hooks/useChat";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
+
 // company id
 // const currentUser = {
 //   id: 1,
@@ -37,6 +40,7 @@ import { useLocation } from "react-router-dom";
 // const parsedId = parsedUser.id;
 
 const ChatScreen = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
   const navChat = location.state;
@@ -55,7 +59,7 @@ const ChatScreen = () => {
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
   const { chats, isLoading } = useChat({ id: user?.id });
-
+  dispatch(setTitle(jp.chat));
   // fetch chat room
   // useEffect(() => {
   //   setIsLoading(true);

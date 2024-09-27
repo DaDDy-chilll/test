@@ -20,11 +20,14 @@ import { Event } from "@/types/helperTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const CalendarScreen = () => {
   const { token } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const firstDayOfMonth = startOfMonth(currentDate);
@@ -36,6 +39,7 @@ const CalendarScreen = () => {
   });
   const events: Event[] = data || [];
   const today = format(new Date(), "yyyy-MM-dd");
+  dispatch(setTitle(jp.calendar));
   const eventsByDate = useMemo(() => {
     return events.reduce((acc: { [key: string]: Event[] }, event: Event) => {
       const dateKey = format(new Date(event.date), "yyyy-MM-dd");

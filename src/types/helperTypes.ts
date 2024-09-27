@@ -18,12 +18,42 @@ export type LoginProps = {
 export type RegisterProps = {
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
 };
 
 export type ErrorType = {
   error: boolean;
   message: any;
+}
+
+export type AuthErrorType = {
+  email?: {
+    jp: string;
+    mm: string;
+  } ;
+  password?: {
+    jp: string;
+    mm: string;
+  } ;
+  confirm_password?: {
+    jp: string;
+    mm: string;
+  } ;
+  validation?:[ 
+    email?: {
+      jp: string;
+      mm: string;
+    } ,
+    password?: {
+      jp: string;
+      mm: string;
+    } ,
+    confirm_password?: {
+      jp: string;
+      mm: string;
+    } ,
+  ]
+  
 }
 
 export type FilterType = {
@@ -122,5 +152,5 @@ export type UserProfile = {
 export interface User {
   id: string | number;
   email: string;
-  // name: string;
+  name: string;
 }

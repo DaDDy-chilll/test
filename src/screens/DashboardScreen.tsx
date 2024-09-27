@@ -17,10 +17,14 @@ import { format } from "date-fns";
 import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
 const DashboardScreen = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  const dispatch = useDispatch();
+  dispatch(setTitle(jp.dashboard));
   /*
   const {
     data: events,

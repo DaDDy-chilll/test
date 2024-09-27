@@ -80,16 +80,6 @@ const UserFormScreen = () => {
                 </div>
                 <h1 className="font-medium">JAPAN JOB</h1>
               </div>
-              <div className="flex justify-between w-5/6 p-5 pl-10">
-                <div className="space-y-1">
-                  <h1 className="sub-title text-black">Profile Photo</h1>
-                  <p>{jp.profileShow}</p>
-                </div>
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src={defaultImage} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </div>
               <form
                 className="space-y-5 w-full"
                 onSubmit={(e) => e.preventDefault()}
@@ -107,7 +97,6 @@ const UserFormScreen = () => {
                   </div>
                   <Avatar className="w-20 h-20">
                     <AvatarImage src={defaultImage} />
-                    <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">

@@ -2,15 +2,11 @@ import { NavLink } from "react-router-dom";
 import Routenames from "@/navigations/routes";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
-import { useDispatch } from "react-redux";
-import { setTitle } from "@/store/";
 import useAuth from "@/hooks/useAuth";
 
-const Sidebar = () => {
-  const dispatch = useDispatch();
-  const { onLogout } = useAuth();
 
-  const handleClick = (title: string) => dispatch(setTitle(title));
+const Sidebar = () => {
+  const {onLogout} = useAuth();
 
   return (
     <aside
@@ -27,7 +23,6 @@ const Sidebar = () => {
             <NavLink
               to={Routenames.DASHBOARD}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white  hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.dashboard)}
             >
               <svg
                 width="18"
@@ -46,7 +41,6 @@ const Sidebar = () => {
             <NavLink
               to={Routenames.APPLICANTS}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg   hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.applicant)}
             >
               <svg
                 width="20"
@@ -73,7 +67,6 @@ const Sidebar = () => {
             <NavLink
               to={Routenames.MATCHES}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900  rounded-lg dark:text-white hover:text-white  dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.matches)}
             >
               <svg
                 width="22"
@@ -100,7 +93,6 @@ const Sidebar = () => {
             <NavLink
               to={Routenames.CHAT}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.chat)}
             >
               <svg
                 width="20"
@@ -121,11 +113,11 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
+
           <li>
             <NavLink
               to={Routenames.JOBS}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.joblists)}
             >
               <svg
                 width="20"
@@ -149,7 +141,6 @@ const Sidebar = () => {
             <NavLink
               to={Routenames.CALENDAR}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.calendar)}
             >
               <svg
                 width="18"
@@ -168,13 +159,11 @@ const Sidebar = () => {
               </span>
             </NavLink>
           </li>
-
           <li className="border-b border-gray-300"></li>
           <li>
             <NavLink
               to={Routenames.PROFILE}
               className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white hover:text-white dark:hover:bg-gray-700 group"
-              onClick={() => handleClick(jp.addjob)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -198,10 +187,9 @@ const Sidebar = () => {
           </li>
         </ul>
         <div>
-          <NavLink
-            to={Routenames.LOGIN}
-            className="flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white  hover:text-primaryColor dark:hover:bg-gray-700 group"
+          <div
             onClick={onLogout}
+            className="cursor-pointer flex items-center p-2 pl-10 bg-gray-300  text-gray-900 rounded-lg dark:text-white  hover:text-primaryColor dark:hover:bg-gray-700 group"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +207,7 @@ const Sidebar = () => {
             </svg>
 
             <span className="ms-3">{jp.logout}</span>
-          </NavLink>
+          </div>
         </div>
       </div>
     </aside>

@@ -14,6 +14,9 @@ import { fetchServer } from "@/utils/helper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Maintenance from "@/components/ui/Maintenance";
+import { useDispatch } from "react-redux";
+import { setTitle } from "@/store";
+import { jp } from "@/lang/jp";
 const FilterState: FilterType = {
   livesInJapan: false,
   livesInMyanmar: false,
@@ -25,6 +28,7 @@ const FilterState: FilterType = {
 const itemsPerPage = 5;
 const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
+  const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
@@ -49,7 +53,7 @@ const ApplicantScreen = () => {
     },
     enabled: !!selectedApplicantId && isDetail,
   });
-
+  dispatch(setTitle(jp.applicant));
   // const applicants = data?.data || [];
   const applicants:any[] = [];
 
