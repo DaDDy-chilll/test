@@ -47,7 +47,7 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         name={name}
-        className={`relative block font-normal  w-full text-sm text-black ${
+        className={`relative block font-normal outline-none  w-full text-sm text-black bg-transparent ${
           style === 0
             ? "border-0 border-b-2 py-2.5 px-0"
             : "border-none bg-gray-300  px-1 py-1.5 rounded-md"

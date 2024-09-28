@@ -45,10 +45,8 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
   ];
 
   const benefits = [
-    { value: "health", label: "Health Insurance" },
-    { value: "life", label: "Life Insurance" },
-    { value: "retirement", label: "Retirement Pension" },
-    { value: "transportation", label: "Transportation Allowance" },
+    { value: "support_home", label: jp.supportHouse },
+    { value: "support_home_rent", label: jp.supportHouseRent },
   ];
 
   return (
@@ -80,7 +78,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           <Input
             name="name"
             type="text"
-            placeholder="Type Name"
+            placeholder={jp.jobName}
             label={jp.jobName}
             className="mt-1 block w-full bg-gray-100"
           />
@@ -90,7 +88,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             id={jp.jobType}
             options={jobTypes}
             className=""
-            defaultOption="Choose your job type"
+            defaultOption={jp.chooseJobType}
             value=""
           />
 
@@ -99,7 +97,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             id={jp.jobLocation}
             options={countries}
             className=""
-            defaultOption="Choose your job location"
+            defaultOption={jp.chooseLocation}
           />
 
           <Select
@@ -107,7 +105,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             id={jp.annualSalary}
             options={annualSalary}
             className=""
-            defaultOption="Choose your annual salary"
+            defaultOption={jp.chooseSalary}
           />
 
           <Select
@@ -115,7 +113,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             id={jp.annualHoliday}
             options={workHour}
             className=""
-            defaultOption="Days"
+            defaultOption={jp.chooseDays}
           />
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">
