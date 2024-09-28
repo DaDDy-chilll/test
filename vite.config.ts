@@ -19,6 +19,9 @@ export default defineConfig({
     global: "window",
   },
   build: {
+    rollupOptions: {
+      external: ['redux-logger'],
+  },
   chunkSizeWarningLimit: 10000,
   },
 });
