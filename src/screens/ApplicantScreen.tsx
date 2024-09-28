@@ -57,6 +57,7 @@ const ApplicantScreen = () => {
       });
     },
     enabled:
+      !!token &&
       !!currentPage &&
       !!filter.live_in_japan &&
       !!filter.gender &&
@@ -97,6 +98,7 @@ const ApplicantScreen = () => {
     if (isInitialRender.current) {
       // First run
       if (
+        token ||
         currentPage &&
         filter.live_in_japan &&
         filter.gender &&
@@ -109,7 +111,7 @@ const ApplicantScreen = () => {
       // Subsequent runs
       refetch();
     }
-  }, [currentPage, filter, refetch]);
+  }, [currentPage, filter, refetch, token]);
 
   useEffect(() => {
     dispatch(setTitle(jp.applicant));
