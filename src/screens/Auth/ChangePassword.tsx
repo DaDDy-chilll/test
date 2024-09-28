@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import RouteName from "@/navigations/routes";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 const ChangePassword: React.FC = () => {
@@ -16,12 +16,12 @@ const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
 
   const successAlert = () => {
-    return Swal.fire({
-      title: "成功",
-      text: "パスワードが正常に変更されました",
-      icon: "success",
-      confirmButtonText: "オーケー",
-    });
+    // return Swal.fire({
+    //   title: "成功",
+    //   text: "パスワードが正常に変更されました",
+    //   icon: "success",
+    //   confirmButtonText: "オーケー",
+    // });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
