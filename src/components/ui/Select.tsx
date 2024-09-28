@@ -53,7 +53,7 @@ const Select: React.FC<SelectProps> = ({
             : "border-none bg-gray-300  px-1 py-1.5 rounded-md"
         } appearance-none  peer`}
       >
-        <option defaultValue={defaultOption} value={defaultOption}>
+        <option defaultValue={defaultOption} value={defaultOption} >
           {defaultOption}{" "}
         </option>
         {options.map((option, index) => (

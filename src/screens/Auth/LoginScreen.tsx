@@ -97,7 +97,7 @@ const LoginScreen = () => {
               <div>
                 <Button
                   type="submit"
-                  disabled={isLoginPending}
+                  disabled={false}
                   className="w-full medium font-medium"
                 >
                   {isLoginPending ? (

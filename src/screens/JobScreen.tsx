@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMemo, useState,useEffect } from "react";
+import { useMemo, useState,useEffect, FormEvent } from "react";
 import JobListItem from "@/components/Jobs/JobListItem";
 import { Button } from "@/components/ui/button";
 import JobDetails from "@/components/ui/JobDetails";
@@ -30,7 +30,8 @@ const JobScreen = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const { data, isLoading, isError, isSuccess, error } = useFetch({
+
+  const { data, isLoading, isError, isSuccess, error:fetchError } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
@@ -69,6 +70,13 @@ const JobScreen = () => {
     setIsAdd(false);
     setIsEdit(false);
   };
+
+
+  useEffect(() => {
+    if (fetchError) {
+      alert(fetchError.message);
+    }
+  }, [fetchError]);
 
   return (
     <>
@@ -182,7 +190,7 @@ const JobScreen = () => {
       )}
       {(isAdd || isEdit) && (
         <div className="w-full h-full flex justify-center items-center px-10">
-          <JobForm onBack={backHandler} formVariant={formVariants} />
+          <JobForm onBack={backHandler} formVariant={formVariants}  />
         </div>
       )}
     </>

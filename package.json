@@ -45,6 +45,7 @@
     "react-spinners": "^0.14.1",
     "recharts": "^2.13.0-alpha.5",
     "redux": "^5.0.0",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "removed": "^0.0.5",

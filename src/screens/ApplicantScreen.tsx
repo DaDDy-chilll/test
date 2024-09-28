@@ -1,4 +1,4 @@
-import { motion,AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import FilterBar from "@/components/Applicants/FilterBar";
 import ApplicantTable from "@/components/Applicants/ApplicantTable";
 import { useEffect, useState, useRef } from "react";
@@ -18,8 +18,7 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 import { userProfile } from "@/constants/mock";
-
-
+import { QueryKey } from "@/utils/queryKey";
 
 const itemsPerPage = 5;
 const initialFilter: FilterType = {
@@ -49,7 +48,7 @@ const ApplicantScreen = () => {
     return params.toString();
   };
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["applicants", currentPage, filter],
+    queryKey: [QueryKey.APPLICANTS, currentPage, filter],
     queryFn: () => {
       return fetchServer({
         endpoint: `${apiRoutes.APPLICANTS}?${buildQueryString()}`,
@@ -71,12 +70,12 @@ const ApplicantScreen = () => {
     error: jobTypesError,
   } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
-    key: "jobTypes",
+    key: QueryKey.JOB_TYPES,
     token: token as string,
   });
 
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
-    queryKey: ["applicantDetail", selectedApplicantId],
+    queryKey: [QueryKey.APPLICANT_DETAIL, selectedApplicantId],
     queryFn: () => {
       return fetchServer({
         endpoint: `${apiRoutes.APPLICANTS}/${selectedApplicantId}`,
@@ -151,20 +150,36 @@ const ApplicantScreen = () => {
           setCurrentPage={setCurrentPage}
         />
         <AnimatePresence>
-        {isDetail  && (
-          <motion.div className="absolute top-0 left-0 bg-white w-full h-full z-50 flex justify-center items-center" variants={applicantDetailVariants} initial="initial" animate="animate" exit="exit">
-            <MatchedApplicants applicant={userProfile} className="h-full" />
-            <button
-              onClick={() => setIsDetail(false)}
-              className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
+          {isDetail && (
+            <motion.div
+              className="absolute top-0 left-0 bg-white w-full h-full z-50 flex justify-center items-center"
+              variants={applicantDetailVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-</svg>
-
-            </button>
-          </motion.div>
-        )}
+              <MatchedApplicants applicant={userProfile} className="h-full" />
+              <button
+                onClick={() => setIsDetail(false)}
+                className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 19.5 8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
+            </motion.div>
+          )}
         </AnimatePresence>
       </motion.div>
     </>
@@ -178,9 +193,9 @@ const applicantVariants = {
 };
 
 const applicantDetailVariants = {
-  initial: { opacity: 0,x:100 },
-  animate: { opacity: 1,x:0, transition: { duration: 0.2 } },
-  exit: { opacity: 0,x:100, transition: { duration: 0.2 } },
+  initial: { opacity: 0, x: 100 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.2 } },
+  exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
 };
 
 export default ApplicantScreen;

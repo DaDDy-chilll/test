@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent, useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,14 +8,20 @@ import { jp } from "@/lang/jp";
 import DefaultLogo from "@/assets/images/default.png";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import usePost from "@/hooks/usePost";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { QueryKey } from "@/utils/queryKey";
 
 type JobFormProps = {
   onBack?: () => void;
-  onFinish?: () => void;
   formVariant?: any;
 };
 
-const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
+const JobForm = ({ onBack, formVariant }: JobFormProps) => {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const {mutate,isPending,error} = usePost({token,queryKey:QueryKey.JOBS})
+  const [jobDescription, setJobDescription] = useState<string>('');
   const jobTypes = [
     { value: "IT", label: "IT" },
     { value: "Sales", label: "Sales" },
@@ -45,9 +51,37 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
   ];
 
   const benefits = [
-    { value: "support_home", label: jp.supportHouse },
-    { value: "support_home_rent", label: jp.supportHouseRent },
+    { value: "1", label: jp.supportHouse },
+    { value: "1", label: jp.supportHouseRent },
   ];
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const jobData = {
+      job_title: formData.get("job_title") as string,
+      job_types: formData.get("job_types") as string,
+      job_des: jobDescription,
+      prefecture_id: formData.get("prefecture_id") as string,
+      annual_salary: formData.get("annual_salary") as string,
+      working_time: formData.get("working_time") as string,
+      start_time: formData.get("start_time") as string,
+      end_time: formData.get("end_time") as string,
+      holiday_in_year: formData.get("holiday_in_year") as string,
+      support_home: formData.get("support_home") as string || 0,
+      support_home_rent: formData.get("support_home_rent") as string || 0,
+    };
+    console.log('jobData', jobData);
+  };
+
+
+  useEffect(() => {
+    if (error) {
+      alert(error.message);
+    }
+  }, [error]);
 
   return (
     <motion.div
@@ -73,10 +107,10 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
-      <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+      <form className="w-full" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-y-2 gap-x-20 px-10">
           <Input
-            name="name"
+            name="job_title"
             type="text"
             placeholder={jp.jobName}
             label={jp.jobName}
@@ -84,6 +118,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           />
 
           <Select
+            name="job_types"
             label={jp.jobType}
             id={jp.jobType}
             options={jobTypes}
@@ -93,6 +128,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           />
 
           <Select
+            name="job_location"
             label={jp.jobLocation}
             id={jp.jobLocation}
             options={countries}
@@ -101,6 +137,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           />
 
           <Select
+            name="annual_salary"
             label={jp.annualSalary}
             id={jp.annualSalary}
             options={annualSalary}
@@ -109,6 +146,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           />
 
           <Select
+            name="working_time"
             label={jp.annualHoliday}
             id={jp.annualHoliday}
             options={workHour}
@@ -120,7 +158,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
               {jp.workHour}
             </p>
             <Input
-              name="workHourStart"
+              name="start_time"
               type="time"
               label=""
               className="mt-1 block w-auto bg-gray-200"
@@ -128,7 +166,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
             />
             <p> ~ </p>
             <Input
-              name="workHourEnd"
+              name="end_time"
               type="time"
               label=""
               className="mt-1 block w-auto bg-gray-200"
@@ -144,6 +182,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
                     type="checkbox"
                     id={benefit.value}
                     name={benefit.value}
+                    value={benefit.value}
                     className="accent-primaryColor"
                   />
                   <label htmlFor={benefit.value} className="text-sm">
@@ -167,6 +206,8 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           </div>
           <span className="col-span-2 mt-3">
             <ReactQuill
+              value={jobDescription}
+              onChange={setJobDescription}
               theme="snow"
               className="h-36 mb-16"
               placeholder={jp.companyDescription}
@@ -191,7 +232,7 @@ const JobForm = ({ onBack, onFinish, formVariant }: JobFormProps) => {
           <Button
             variant="destructive"
             className="font-medium w-44"
-            onClick={onFinish}
+            type="submit"
           >
             Finish
           </Button>

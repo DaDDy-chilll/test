@@ -17,7 +17,7 @@ export const apiRoutes: ApiRoutesType = {
     LOGOUT: "/client/auth/logout",
     APPLICANTS: "/client/users",
     APPLICANTS_DETAILS:"/client/users/details",
-    JOBS: "/client/jobs",
+    JOBS: "/client/job",
     EVENTS: "/client/events",
     JOB_TYPES:"/auth/occupations",
     TOKUTEI_EXAM:"/auth/tokutei-exam"

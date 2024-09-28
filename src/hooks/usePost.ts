@@ -1,13 +1,30 @@
-// import { fetchServer } from "@/utils/helper"
-// import { useMutation } from "@tanstack/react-query"
+import { fetchServer } from "@/utils/helper"
+import { useMutation,useQueryClient } from "@tanstack/react-query"
+import { QueryKey } from "@/utils/queryKey"
 
-// type usePost
+type usePostProps = {
+    token: string | null
+    queryKey: QueryKey
+}
 
-// const usePost = ({token}) => {
-    
-//     const {}  = useMutation({
-//         mutationFn:() => {
-//             return fetchServer({ endpoint, method: "GET", token: token || undefined })
-//         }
-//     })
-// }
+type parms = {
+    endpoint: string
+    body: any
+
+}
+
+const usePost = ({token,queryKey}:usePostProps) => {
+    const queryClient = useQueryClient()
+    const { mutate,isPending,error}  = useMutation({
+        mutationFn:({endpoint, body}:parms) => {
+            return fetchServer({ endpoint, method: "POST", body, token: token || undefined })
+        },
+        onSuccess:() => {
+            queryClient.invalidateQueries({queryKey:[queryKey]})
+        }
+    })
+
+    return {mutate,isPending,error}
+}
+
+export default usePost;

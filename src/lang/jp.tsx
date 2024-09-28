@@ -63,5 +63,6 @@ export const jp = {
   chooseSalary:"年収を選択してください",
   chooseDays:"日を選択してください",
   supportHouse:"サポートハウス",
-  supportHouseRent:"サポートハウス家賃"
+  supportHouseRent:"サポートハウス家賃",
+  noChatFound:"チャットが見つかりませんでした",
 };
