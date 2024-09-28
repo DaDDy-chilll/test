@@ -9,7 +9,6 @@ import { RootState } from "@/store/store";
 const Sidebar = () => {
   const {onLogout} = useAuth();
   const sideBar = useSelector((state: RootState) => state.navigation.sideBar);
-  console.log(sideBar);
   return (
     <aside
     id="logo-sidebar"
