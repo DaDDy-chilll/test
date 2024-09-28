@@ -22,7 +22,7 @@ import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 
 const JobScreen = () => {
-  if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
+  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
@@ -47,7 +47,10 @@ const JobScreen = () => {
   ];
 
   const jobs = data || [];
+
+  console.log(jobs)
   const filteredJobs = useMemo(() => {
+    if(jobs.lenght  === 0) return []
     return jobs.filter(
       (job: any) =>
         job.position.toLowerCase().includes(search.toLowerCase()) ||
@@ -69,9 +72,9 @@ const JobScreen = () => {
 
   return (
     <>
-      {isLoading && (
-        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
-      )}
+      {/* {isLoading && !error && (
+        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)] z-40" />
+      )} */}
       {!showDetails && !isAdd && !isEdit && (
         <motion.div
           key="job-list"
@@ -143,13 +146,15 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {filteredJobs.map((item: any) => (
+            {filteredJobs.length  > 0 ? (
+              filteredJobs.map((item: any) => (
               <JobListItem
                 key={item.id}
                 item={item}
                 setShowDetails={setShowDetails}
               />
-            ))}
+            ))):(
+            <p className="text-center text-lg">No matching jobs found</p>)}
           </div>
           <div className="flex justify-end items-center mt-4 ">
             <Button
@@ -166,7 +171,7 @@ const JobScreen = () => {
       {showDetails && !isEdit && (
         <motion.div
           key="job-details"
-          className="w-full h-full flex justify-center items-center px-10"
+          className="w-full h-full flex justify-center items-center px-10 z-50"
         >
           <JobDetails
             backHandler={setShowDetails}
