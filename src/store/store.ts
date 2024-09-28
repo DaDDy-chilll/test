@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./root";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import logger from 'redux-logger';
+
 
 const persistConfig = {
     key: 'root',
@@ -19,7 +19,7 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST'], // Ignore this action for the check
             },
-        }).concat(logger),
+        })
 });
 
 export const persistor = persistStore(store);
