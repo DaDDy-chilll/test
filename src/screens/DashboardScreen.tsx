@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import LineCharts from "@/components/Dashboard/LineChart";
 import Pichart from "@/components/Dashboard/Pichart";
 import { jp } from "@/lang/jp";
@@ -24,9 +24,26 @@ const DashboardScreen = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const dispatch = useDispatch();
+  const scrollableRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
+
+    const checkForScrollbar = () => {
+      if (scrollableRef.current) {
+        const hasScrollbar = scrollableRef.current.scrollHeight > scrollableRef.current.clientHeight;
+        scrollableRef.current.classList.toggle('pr-3', hasScrollbar);
+      }
+    };
+
+    checkForScrollbar();
+    window.addEventListener('resize', checkForScrollbar);
+
+    return () => {
+      window.removeEventListener('resize', checkForScrollbar);
+    };
   }, [dispatch]);
+
   /*
   const {
     data: events,
@@ -275,21 +292,25 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
               <div className="w-1/3 pl-3 h-[67vh]">
                   <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
-                  <div className="overflow-y-auto h-[62vh]">
+                  <div ref={scrollableRef} className="overflow-y-auto h-[62vh]">
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-01</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-02</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-06</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-07</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-08</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-09</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-10</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-11</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-12</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-13</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-14</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-01</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-02</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
+                    
                   </div>
               </div>
             </div>
