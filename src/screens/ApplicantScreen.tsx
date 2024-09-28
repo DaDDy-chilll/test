@@ -19,7 +19,7 @@ import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 import { userProfile } from "@/constants/mock";
 import { QueryKey } from "@/utils/queryKey";
-
+import { AppDispatch } from "@/store/store";
 const itemsPerPage = 5;
 const initialFilter: FilterType = {
   live_in_japan: "0",
@@ -28,7 +28,7 @@ const initialFilter: FilterType = {
 };
 const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { token } = useSelector((state: RootState) => state.auth);
   const [filter, setFilter] = useState<FilterType>(initialFilter);
   const isInitialRender = useRef(true);
@@ -75,6 +75,20 @@ const ApplicantScreen = () => {
     token: token as string,
   });
 
+  // const {
+  //   data: languages,
+  //   isLoading: isLanguagesLoading,
+  //   isError: isLanguagesError,
+  //   isSuccess: isLanguagesSuccess,
+  //   error: languagesError,
+  // } = useFetch({
+  //   endpoint: apiRoutes.LANGUAGE,
+  //   key: QueryKey.LANGUAGES,
+  //   token: token as string,
+  // });
+
+  // console.log(languages, "languages");
+
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.APPLICANT_DETAIL, selectedApplicantId],
     queryFn: () => {
@@ -89,7 +103,7 @@ const ApplicantScreen = () => {
 
   const applicants = data?.data.users || [];
 
-  const handleDetail = (id: number) => {
+  const handleDetail = (id: string) => {
     // setSelectedApplicantId(id);
     setIsDetail(true);
   };
@@ -97,18 +111,16 @@ const ApplicantScreen = () => {
   useEffect(() => {
     if (isInitialRender.current) {
       // First run
-      if (
-        token ||
-        currentPage &&
-        filter.live_in_japan &&
-        filter.gender &&
-        filter.job_type
-      ) {
-        refetch();
-      }
       isInitialRender.current = false;
-    } else {
-      // Subsequent runs
+    }
+
+    if (
+      token ||
+      currentPage ||
+      filter.live_in_japan ||
+      filter.gender ||
+      filter.job_type
+    ) {
       refetch();
     }
   }, [currentPage, filter, refetch, token]);
@@ -117,11 +129,13 @@ const ApplicantScreen = () => {
     dispatch(setTitle(jp.applicant));
   }, [dispatch]);
 
+  console.log(jobTypes, "jobTypes");
+
   return (
     <>
-      {(isLoading || isDetailLoading || isJobTypesLoading) && (
+      {(isLoading || isDetailLoading ) && (
         <Loading
-          isLoading={isLoading || isDetailLoading || isJobTypesLoading}
+          isLoading={isLoading || isDetailLoading }
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -132,7 +146,12 @@ const ApplicantScreen = () => {
         exit="exit"
         className="w-full overflow-hidden relative"
       >
-        <FilterBar filter={filter} setFilter={setFilter} jobTypes={jobTypes} />
+        <FilterBar
+          filter={filter}
+          setFilter={setFilter}
+          jobTypes={jobTypes}
+          setCurrentPage={setCurrentPage}
+        />
         <div className="flex justify-start items-center px-4 py-2 z-10">
           <p className="text-gray-500 text-sm">
             Search Result{" "}

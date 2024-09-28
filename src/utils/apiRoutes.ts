@@ -1,5 +1,5 @@
 
-interface ApiRoutesType {
+export interface ApiRoutesType {
     LOGIN: string,
     REGISTER: string,
     LOGOUT: string,
@@ -8,7 +8,9 @@ interface ApiRoutesType {
     JOBS: string,
     EVENTS: string,
     JOB_TYPES:string,
-    TOKUTEI_EXAM:string
+    TOKUTEI_EXAM:string,
+    LANGUAGE:string,
+    CITY:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -20,5 +22,7 @@ export const apiRoutes: ApiRoutesType = {
     JOBS: "/client/job",
     EVENTS: "/client/events",
     JOB_TYPES:"/auth/occupations",
-    TOKUTEI_EXAM:"/auth/tokutei-exam"
+    TOKUTEI_EXAM:"/auth/tokutei-exam",
+    LANGUAGE:"/auth/language-exam",
+    CITY:"/auth/areas"
 }

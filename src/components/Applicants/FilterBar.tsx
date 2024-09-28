@@ -4,13 +4,20 @@ type FilterBarProps = {
   className?: string;
   filter: FilterType;
   setFilter: (filter: FilterType) => void;
-  jobTypes:any
+  jobTypes: any;
+  setCurrentPage: (currentPage: number) => void;
 };
 
-const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) => {
+const FilterBar = ({
+  className,
+  filter,
+  setFilter,
+  jobTypes,
+  setCurrentPage,
+}: FilterBarProps) => {
   return (
     <div
-      className={`bg-white text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
+      className={`bg-white justify-start text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
     >
       <div className="flex gap-2 items-center">
         <input
@@ -19,7 +26,8 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
           id="livesInJapan"
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, live_in_japan: '1' });
+            setCurrentPage(1);
+            setFilter({ ...filter, live_in_japan: "1" });
           }}
         />
         <label htmlFor="livesInJapan" className="text-sm">
@@ -31,10 +39,11 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
           type="radio"
           name="live_in_japan"
           id="livesInMyanmar"
-          checked={filter.live_in_japan === '0'}
+          checked={filter.live_in_japan === "0"}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, live_in_japan:'0' });
+            setCurrentPage(1);
+            setFilter({ ...filter, live_in_japan: "0" });
           }}
         />
         <label htmlFor="livesInMyanmar" className="text-sm">
@@ -46,10 +55,11 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
           type="radio"
           name="gender"
           id="male"
-          checked={filter.gender === '0'}
+          checked={filter.gender === "0"}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, gender: '0' });
+            setCurrentPage(1);
+            setFilter({ ...filter, gender: "0" });
           }}
         />
         <label htmlFor="male">Male</label>
@@ -59,10 +69,11 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
           type="radio"
           name="gender"
           id="female"
-          checked={filter.gender === '1'}
+          checked={filter.gender === "1"}
           className="accent-primaryColor"
           onChange={() => {
-            setFilter({ ...filter, gender: '1' });
+            setCurrentPage(1);
+            setFilter({ ...filter, gender: "1" });
           }}
         />
         <label htmlFor="female">Female</label>
@@ -70,6 +81,7 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
         // onChange={(e) => {
+        //   setCurrentPage(1)
         //   setFilter({ ...filter, language: e.target.value });
         // }}
       >
@@ -85,6 +97,7 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
         // onChange={(e) => {
+        //   setCurrentPage(1)
         //   setFilter({ ...filter, education: e.target.value });
         // }}
       >
@@ -99,14 +112,18 @@ const FilterBar = ({ className, filter, setFilter, jobTypes }: FilterBarProps) =
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-[36%]"
         onChange={(e) => {
+          setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });
         }}
       >
         <option value="">Job Type</option>
-        {jobTypes && jobTypes.data.length>0 &&
-        jobTypes.data.map((jobType:any)=>(
-          <option key={jobType.id} value={jobType.id}>{jobType.job_type_jp}</option>
-        ))}
+        {jobTypes &&
+          jobTypes.data.length > 0 &&
+          jobTypes.data.map((jobType: any) => (
+            <option key={jobType.id} value={jobType.id}>
+              {jobType.job_type_jp}
+            </option>
+          ))}
       </select>
     </div>
   );

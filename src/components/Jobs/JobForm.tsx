@@ -12,6 +12,8 @@ import usePost from "@/hooks/usePost";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
+import useFetch from "@/hooks/useFetch";
+import { apiRoutes } from "@/utils/apiRoutes";
 
 type JobFormProps = {
   onBack?: () => void;
@@ -20,68 +22,98 @@ type JobFormProps = {
 
 const JobForm = ({ onBack, formVariant }: JobFormProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const {mutate,isPending,error} = usePost({token,queryKey:QueryKey.JOBS})
+  const {mutate,isPending,error,isSuccess} = usePost({token,queryKey:QueryKey.JOBS})
   const [jobDescription, setJobDescription] = useState<string>('');
-  const jobTypes = [
-    { value: "IT", label: "IT" },
-    { value: "Sales", label: "Sales" },
-    { value: "Marketing", label: "Marketing" },
-    { value: "Finance", label: "Finance" },
-  ];
+  const {
+    data: jobType,
+    isLoading: isJobTypesLoading,
+    isError: isJobTypesError,
+    isSuccess: isJobTypesSuccess,
+    error: jobTypesError,
+  } = useFetch({
+    endpoint: apiRoutes.JOB_TYPES,
+    key: QueryKey.JOB_TYPES,
+    token: token as string,
+  });
 
-  const countries = [
-    { value: "Tokyo", label: "Tokyo" },
-    { value: "Osaka", label: "Osaka" },
-    { value: "Kyoto", label: "Kyoto" },
-    { value: "Fukuoka", label: "Fukuoka" },
-  ];
+  const {
+    data: city,
+    isLoading: isCityLoading,
+    isError: isCityError,
+    isSuccess: isCitySuccess,
+    error: cityError,
+  } = useFetch({
+    endpoint: apiRoutes.CITY,
+    key: QueryKey.CITY,
+    token: token as string,
+  });
+
+
+  const jobTypes = jobType?.data.map((type: any) => ({
+    value: type.id.toString(),
+    label: type.job_type_jp,
+  })) || [];
+
+  
+
+  const countries = city?.data.map((type: any) => ({
+    value: type.id.toString(),
+    label: type.area,
+  })) || [];
 
   const annualSalary = [
-    { value: "0-100", label: "0-100" },
-    { value: "100-200", label: "100-200" },
-    { value: "200-300", label: "200-300" },
-    { value: "300-400", label: "300-400" },
+    { value: "100", label: "100" },
+    { value: "200", label: "200" },
+    { value: "300", label: "300" },
+    { value: "400", label: "400" },
+    { value: "500", label: "500" },
+    { value: "600", label: "600" },
   ];
 
   const workHour = [
-    { value: "1-2", label: "1-2" },
-    { value: "2-3", label: "2-3" },
-    { value: "3-4", label: "3-4" },
-    { value: "4-5", label: "4-5" },
+    { value: "7", label: "7" },
+    { value: "8", label: "8" },
+    { value: "9", label: "9" },
+    { value: "10", label: "10" },
   ];
 
   const benefits = [
-    { value: "1", label: jp.supportHouse },
-    { value: "1", label: jp.supportHouseRent },
+    { value: "support_home", label: jp.supportHouse },
+    { value: "support_home_rent", label: jp.supportHouseRent },
   ];
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-
+ 
     const jobData = {
       job_title: formData.get("job_title") as string,
-      job_types: formData.get("job_types") as string,
+      job_types: Number(formData.get("job_types") as string),
       job_des: jobDescription,
-      prefecture_id: formData.get("prefecture_id") as string,
-      annual_salary: formData.get("annual_salary") as string,
-      working_time: formData.get("working_time") as string,
+      prefecture_id: Number(formData.get("prefecture_id") as string),
+      annual_salary: Number(formData.get("annual_salary") as string),
+      working_time: Number(formData.get("working_time") as string),
       start_time: formData.get("start_time") as string,
       end_time: formData.get("end_time") as string,
-      holiday_in_year: formData.get("holiday_in_year") as string,
-      support_home: formData.get("support_home") as string || 0,
-      support_home_rent: formData.get("support_home_rent") as string || 0,
+      holiday_in_year: 0,
+      support_home: formData.get("support_home") as string ? 1 : 0,
+      support_home_rent: formData.get("support_home_rent") as string ? 1 : 0,
     };
     console.log('jobData', jobData);
+    mutate({endpoint:apiRoutes.JOBS,body:jobData})
   };
 
 
   useEffect(() => {
     if (error) {
+      console.log(error.message)
       alert(error.message);
     }
-  }, [error]);
+    if(isSuccess){
+      onBack?.()
+    }
+  }, [error,isSuccess]);
 
   return (
     <motion.div
@@ -128,7 +160,7 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
           />
 
           <Select
-            name="job_location"
+            name="prefecture_id"
             label={jp.jobLocation}
             id={jp.jobLocation}
             options={countries}

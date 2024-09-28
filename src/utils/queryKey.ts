@@ -5,4 +5,6 @@ export enum QueryKey {
   JOB_TYPES = "jobTypes",
   USERS = "users",
   EVENTS = "events",
+  LANGUAGES = "languages",
+  CITY = "city"
 }

@@ -15,6 +15,21 @@ type Applicant = {
       job_type: number;
     }
   ];
+  m_language_exams: [
+    {
+      m_exams: {
+        name_jp: string;
+      };
+      m_exam_levels: {
+        level: string;
+      };
+    }
+  ];
+  m_education: [
+    {
+      major: string;
+    }
+  ];
   jobsPreference: {
     passport: string;
     salary: string;
@@ -65,7 +80,7 @@ type Applicant = {
 
 type ApplicantTableProps = {
   applicants: Applicant[];
-  handleDetail: (id: number) => void;
+  handleDetail: (id: string) => void;
   jobTypes: any;
 };
 
@@ -80,8 +95,8 @@ const ApplicantTable = ({
   };
 
   return (
-    <div className="relative overflow-y-auto h-[calc(100vh-225px)] pl-8">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <div className="relative overflow-y-auto h-[calc(100vh-225px)] pl-8 pr-2">
+      <table className="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white z-40">
           <tr>
             <th scope="col" className=" py-3 text-start">
@@ -102,7 +117,7 @@ const ApplicantTable = ({
             <th scope="col" className=" py-3 text-start">
               Tokutei Exam
             </th>
-             <th scope="col" className=" py-3 text-start">
+            <th scope="col" className=" py-3 text-start">
               Language
             </th>
             <th scope="col" className="py-3 text-start">
@@ -115,6 +130,7 @@ const ApplicantTable = ({
           {applicants.length > 0 ? (
             applicants.map((applicant, index) => (
               <tr className="bg-white dark:bg-gray-800" key={index}>
+                {/* image column */}
                 <td className=" py-2 text-start">
                   <img
                     src={`https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}`}
@@ -122,6 +138,7 @@ const ApplicantTable = ({
                     className="w-10 h-10 rounded-full"
                   />
                 </td>
+                {/* name column */}
                 <th
                   scope="row"
                   className=" py-2 text-start font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -131,6 +148,8 @@ const ApplicantTable = ({
                     {applicant.m_basicinfos.user_id}
                   </p>
                 </th>
+
+                {/* job column */}
                 <td
                   data-tooltip-target="tooltip-default"
                   className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
@@ -138,7 +157,7 @@ const ApplicantTable = ({
                   <div className="flex flex-col items-center  justify-center gap-1 cursor-pointer">
                     {applicant.m_preferred_jobs.length > 0 ? (
                       <>
-                        <div className="flex  items-center justify-center gap-1 cursor-pointer">
+                        <div className="flex  items-center justify-start gap-1 cursor-pointer">
                           <p className="text-xs  text-white font-normal bg-primaryColor rounded-full px-2 py-1 inline-block">
                             {getJobTypeJp(
                               applicant.m_preferred_jobs[0].job_type
@@ -170,23 +189,131 @@ const ApplicantTable = ({
                     )}
                   </div>
                 </td>
+
+                {/* address column */}
                 <td className="py-2 text-start text-secondaryColor">
                   {applicant.m_basicinfos.live_in_japan === 1
                     ? "Japan"
                     : "Myanmar"}
                 </td>
-                <td className=" py-2 text-start text-secondaryColor">
-                  {applicant.education}
+
+                {/* education column */}
+                <td>
+                  <div
+                    data-tooltip-target="tooltip-default"
+                    className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+                  >
+                    {applicant.m_education.length > 0 ? (
+                      <>
+                        <div className="flex  items-center justify-start gap-1 cursor-pointer">
+                          <p>{applicant.m_education[0].major}</p>
+                          {applicant.m_education.length > 1 && (
+                            <span className="text-xs text-gray-500 ml-1">
+                              +{applicant.m_education.length - 1}
+                            </span>
+                          )}
+                        </div>
+                        {applicant.m_education.length > 1 && (
+                          <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+                            {applicant.m_education
+                              .slice(1)
+                              .map((edu, index) => (
+                                <p
+                                  key={index}
+                                  className="text-xs text-gray-700 whitespace-nowrap my-2"
+                                >
+                                  {edu.major}
+                                </p>
+                              ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div>No Education</div>
+                    )}
+                  </div>
                 </td>
-                <td className=" py-2 text-start text-secondaryColor">
-                  {applicant.japaneseLevel}
+
+                {/* Tokutei column */}
+                <td>
+                  <div
+                    data-tooltip-target="tooltip-default"
+                    className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+                  >
+                    {applicant.m_language_exams.length > 0 ? (
+                      <>
+                        <div className="flex  items-center justify-start gap-1 cursor-pointer">
+                          <p>{applicant.m_language_exams[0].m_exams.name_jp}</p>
+                          {applicant.m_language_exams.length > 1 && (
+                            <span className="text-xs text-gray-500 ml-1">
+                              +{applicant.m_language_exams.length - 1}
+                            </span>
+                          )}
+                        </div>
+                        {applicant.m_language_exams.length > 1 && (
+                          <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+                            {applicant.m_language_exams
+                              .slice(1)
+                              .map((lang, index) => (
+                                <p
+                                  key={index}
+                                  className="text-xs text-gray-700 whitespace-nowrap my-2"
+                                >
+                                  {lang.m_exams.name_jp}
+                                </p>
+                              ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div>No Tokutei</div>
+                    )}
+                  </div>
                 </td>
-                      <td className=" py-2 text-start text-secondaryColor">
+
+                {/* japanese column */}
+                <td>
+                  <div
+                    data-tooltip-target="tooltip-default"
+                    className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+                  >
+                    {applicant.m_language_exams.length > 0 ? (
+                      <>
+                        <div className="flex  items-center justify-start gap-1 cursor-pointer">
+                          <p>
+                            {applicant.m_language_exams[0].m_exam_levels.level}
+                          </p>
+                          {applicant.m_language_exams.length > 1 && (
+                            <span className="text-xs text-gray-500 ml-1">
+                              +{applicant.m_language_exams.length - 1}
+                            </span>
+                          )}
+                        </div>
+                        {applicant.m_language_exams.length > 1 && (
+                          <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+                            {applicant.m_language_exams
+                              .slice(1)
+                              .map((lang, index) => (
+                                <p
+                                  key={index}
+                                  className="text-xs text-gray-700 whitespace-nowrap my-2"
+                                >
+                                  {lang.m_exam_levels.level}
+                                </p>
+                              ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div>No Japanese</div>
+                    )}
+                  </div>
+                </td>
+
+                <td className=" py-2 text-start text-secondaryColor">
                   {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
                 </td>
-                <td className=" py-2 text-start text-secondaryColor">
-                  {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
-                </td>
+
                 <td className=" py-2 text-start text-secondaryColor">
                   <button
                     onClick={() => handleDetail(applicant.id)}
