@@ -20,7 +20,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['redux-logger'],
+      external: ['redux-logger', 'sweetalert2'],
   },
   chunkSizeWarningLimit: 10000,
   },
