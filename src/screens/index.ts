@@ -10,6 +10,10 @@ import ChatScreen from "./ChatScreen";
 // import ProfileScreen from "./ProfileScreen";
 import AddJobScreen from "./AddJobScreen";
 import ForgotPassword from "./Auth/ForgotPassword";
+import ChangePassword from "./Auth/ChangePassword";
+import Otp from "./Auth/Otp";
+
+
 export {
   ApplicantScreen,
   MatchedScreend,
@@ -21,5 +25,7 @@ export {
   RegisterScreen,
   ChatScreen,
   AddJobScreen,
-  ForgotPassword
+  ForgotPassword,
+  ChangePassword,
+  Otp,
 };

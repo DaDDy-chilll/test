@@ -4,12 +4,18 @@ import Routenames from "./routes";
 import ProtectRoute from "./ProtectRoute";
 import ShareLayout from "@/layouts/ShareLayout";
 import { AnimatePresence } from "framer-motion";
-import { initialLanding, LoginScreen, RegisterScreen, ForgotPassword } from "@/screens";
+import {
+  initialLanding,
+  LoginScreen,
+  RegisterScreen,
+  ForgotPassword,
+  ChangePassword,
+  Otp,
+} from "@/screens";
+import NotFound from "@/components/Auth/NotFound";
 import Loading from "@/components/ui/Loading";
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
-const NotFound = lazy(() => import("@/components/Auth/NotFound"));
-const Otp = lazy(() => import("@/screens/Auth/Otp"));
 const ApplicantScreen = lazy(() => import("@/screens/ApplicantScreen"));
 const MatchedScreend = lazy(() => import("@/screens/MatchedScreend"));
 const ChatScreen = lazy(() => import("@/screens/ChatScreen"));
@@ -17,14 +23,14 @@ const JobScreen = lazy(() => import("@/screens/JobScreen"));
 const AddJobScreen = lazy(() => import("@/screens/AddJobScreen"));
 const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
 const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
-const ChangePassword = lazy(() => import("@/screens/Auth/ChangePassword"));
+
 const Router = () => {
   return (
     <Suspense fallback={<Loading isLoading={true} />}>
       <BrowserRouter>
         <AnimatedRoutes />
       </BrowserRouter>
-     </Suspense>
+    </Suspense>
   );
 };
 
