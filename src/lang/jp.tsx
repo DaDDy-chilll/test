@@ -67,4 +67,9 @@ export const jp = {
   location: "場所",
   chooseLocation: "場所を選択してください",
   chooseEmployee: "従業員数を選択してください",
+  chooseJobType:'職種を選択してください',
+  chooseSalary:"年収を選択してください",
+  chooseDays:"日を選択してください",
+  supportHouse:"サポートハウス",
+  supportHouseRent:"サポートハウス家賃"
 };

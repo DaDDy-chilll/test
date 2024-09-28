@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   title: jp.dashboard,
-  sideBar: false,
+  sideBar: true,
 };
 
 export const navigationSlice = createSlice({
