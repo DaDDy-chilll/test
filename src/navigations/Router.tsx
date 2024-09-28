@@ -9,6 +9,7 @@ import Loading from "@/components/ui/Loading";
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
 const NotFound = lazy(() => import("@/components/Auth/NotFound"));
+const Otp = lazy(() => import("@/screens/Auth/Otp"));
 const ApplicantScreen = lazy(() => import("@/screens/ApplicantScreen"));
 const MatchedScreend = lazy(() => import("@/screens/MatchedScreend"));
 const ChatScreen = lazy(() => import("@/screens/ChatScreen"));
@@ -16,7 +17,7 @@ const JobScreen = lazy(() => import("@/screens/JobScreen"));
 const AddJobScreen = lazy(() => import("@/screens/AddJobScreen"));
 const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
 const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
-
+const ChangePassword = lazy(() => import("@/screens/Auth/ChangePassword"));
 const Router = () => {
   return (
     <Suspense fallback={<Loading isLoading={true} />}>
@@ -41,6 +42,10 @@ const AnimatedRoutes = () => {
         <Route path="*" Component={NotFound} />
         {/* Forgot password route */}
         <Route path={Routenames.FORGOT_PASSWORD} Component={ForgotPassword} />
+        {/* OTP route */}
+        <Route path={Routenames.OTP} Component={Otp} />
+        {/* Change password route */}
+        <Route path={Routenames.CHANGE_PASSWORD} Component={ChangePassword} />
         {/* User form route */}
         <Route
           path={Routenames.USER_FORM}

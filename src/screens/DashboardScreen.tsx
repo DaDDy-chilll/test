@@ -298,19 +298,18 @@ const today = format(new Date(), "yyyy-MM-dd");
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
                     <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-01</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-02</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-06</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-07</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-08</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-09</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-10</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-11</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-12</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-13</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-14</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-15</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-16</div>
+                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-17</div>
                   </div>
               </div>
             </div>
