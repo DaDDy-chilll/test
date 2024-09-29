@@ -50,7 +50,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "removed": "^0.0.5",
-    "sweetalert2": "^11.14.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "the": "^1.0.2"

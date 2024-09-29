@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMemo, useState,useEffect, FormEvent } from "react";
+import { useMemo, useState, useEffect, FormEvent } from "react";
 import JobListItem from "@/components/Jobs/JobListItem";
 import { Button } from "@/components/ui/button";
 import JobDetails from "@/components/ui/JobDetails";
@@ -31,7 +31,13 @@ const JobScreen = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
 
-  const { data, isLoading, isError, isSuccess, error:fetchError } = useFetch({
+  const {
+    data,
+    isLoading,
+    isError,
+    isSuccess,
+    error: fetchError,
+  } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
@@ -47,16 +53,15 @@ const JobScreen = () => {
     { id: 4, name: "Internship" },
   ];
 
-  // const jobs = data || [];
-  const jobs:any =  [];
+  console.log("data", data);
+  const jobs = data?.data || [];
+  // const jobs: any = [];
 
   const filteredJobs = useMemo(() => {
-    if(jobs.length  === 0) return []
-    return jobs.filter(
-      (job: any) =>
-        job.position.toLowerCase().includes(search.toLowerCase()) ||
-        job.location.toLowerCase().includes(search.toLowerCase()) ||
-        Number(job.applied) === Number(search)
+    if (jobs.length === 0) return [];
+    console.log(jobs)
+    return jobs.filter((job: any) =>
+      job.job_title.toLowerCase().includes(search.toLowerCase())
     );
   }, [jobs, search]);
 
@@ -70,7 +75,6 @@ const JobScreen = () => {
     setIsAdd(false);
     setIsEdit(false);
   };
-
 
   useEffect(() => {
     if (fetchError) {
@@ -154,15 +158,17 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {filteredJobs.length  > 0 ? (
+            {filteredJobs.length > 0 ? (
               filteredJobs.map((item: any) => (
-              <JobListItem
-                key={item.id}
-                item={item}
-                setShowDetails={setShowDetails}
-              />
-            ))):(
-            <p className="text-center text-lg">No matching jobs found</p>)}
+                <JobListItem
+                  key={item.id}
+                  item={item}
+                  setShowDetails={setShowDetails}
+                />
+              ))
+            ) : (
+              <p className="text-center text-lg">No matching jobs found</p>
+            )}
           </div>
           <div className="flex justify-end items-center mt-4 ">
             <Button
@@ -190,7 +196,7 @@ const JobScreen = () => {
       )}
       {(isAdd || isEdit) && (
         <div className="w-full h-full flex justify-center items-center px-10">
-          <JobForm onBack={backHandler} formVariant={formVariants}  />
+          <JobForm onBack={backHandler} formVariant={formVariants} />
         </div>
       )}
     </>
