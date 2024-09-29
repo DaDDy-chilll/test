@@ -1,4 +1,4 @@
-import JobDetails from "@/components/ui/JobDetails";
+import ProfileDetail from "@/components/ui/ProfileDetail";
 import { motion } from "framer-motion";
 import { useState, useEffect, FormEvent } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -121,7 +121,7 @@ const Profile = () => {
       >
         <AnimatePresence mode="wait">
           {!isEdit && (
-            <JobDetails isDetails={false} editHandler={editHandler} data={data?.data} />
+            <ProfileDetail  editHandler={editHandler} data={data?.data} />
           )}
           {isEdit && (
             <motion.div

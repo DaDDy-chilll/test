@@ -32,6 +32,7 @@ const JobDetails = ({
   const clickBackEvent = () => backHandler && backHandler(false);
   const clickDeleteEvent = () => deleteHandler && deleteHandler();
   const clickEditEvent = () => editHandler && editHandler(true);
+  console.log(data);
   return (
     <motion.div
       key="complete"
