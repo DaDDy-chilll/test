@@ -5,24 +5,25 @@ import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import RouteName from "@/navigations/routes";
 import { Link } from "react-router-dom";
-// import Swal from "sweetalert2";
 import logo from "@/assets/icons/logo.svg";
+import eyeOpen from "@/assets/icons/eye-open.svg";
+import eyeClose from "@/assets/icons/eye-close.svg";
 import { motion } from "framer-motion";
+import Alert from "@/components/ui/alert";
+
 const ChangePassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const navigate = useNavigate();
 
-  const successAlert = () => {
-    // return Swal.fire({
-    //   title: "成功",
-    //   text: "パスワードが正常に変更されました",
-    //   icon: "success",
-    //   confirmButtonText: "オーケー",
-    // });
-  };
+
+  const showSuccessAlert = () => (
+    <Alert type="success" title="Password changed successfully" description="You will be redirected to the login page" />
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +33,6 @@ const ChangePassword: React.FC = () => {
     }
     // Add logic to handle password change
     setSuccess(true);
-    successAlert();
     setTimeout(() => {
       navigate(RouteName.LOGIN);
     }, 2000);
@@ -66,28 +66,44 @@ const ChangePassword: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <div>
-            <Input
-              name="newPassword"
-              type="password"
-              label={jp.newPassword}
-              value={newPassword}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewPassword(e.target.value)
-              }
-              className="mt-1 block w-full"
-              required={false}
-            />
+            <div className="relative">
+              <Input
+                name="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                label={jp.newPassword}
+                value={newPassword}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewPassword(e.target.value)
+                }
+                className="mt-1 block w-full"
+                required={false}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                <img src={showNewPassword ? eyeOpen : eyeClose} className="w-5 h-5 opacity-50 hover:opacity-100" alt="Toggle password visibility" />
+              </button>
+            </div>
           </div>
-          <div>
+          <div className="relative">
             <Input
               name="confirmNewPassword"
-              type="password"
+              type={showConfirmNewPassword ? "text" : "password"}
               label={jp.confirmPassword}
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               className="mt-1 block w-full"
               required={false}
             />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+            >
+              <img src={showConfirmNewPassword ? eyeOpen : eyeClose} className="w-5 h-5 opacity-50 hover:opacity-100" alt="Toggle password visibility" />
+            </button>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="flex flex-col sm:flex-row justify-center gap-x-2 pb-2">
@@ -105,6 +121,7 @@ const ChangePassword: React.FC = () => {
             </div>
           </div>
         </motion.form>
+        {success && showSuccessAlert()}
       </div>
     </div>
   );
