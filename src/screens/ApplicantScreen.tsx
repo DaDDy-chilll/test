@@ -35,9 +35,9 @@ const ApplicantScreen = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
   // const [applicantDetail,setApplicantDetail] = useState<UserProfile>()
-  const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
-    null
-  );
+  const [selectedApplicantId, setSelectedApplicantId] = useState<
+    number | string | null
+  >(null);
   const buildQueryString = () => {
     const params = new URLSearchParams();
     if (filter.live_in_japan !== "")
@@ -87,13 +87,11 @@ const ApplicantScreen = () => {
   //   token: token as string,
   // });
 
-  // console.log(languages, "languages");
-
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.APPLICANT_DETAIL, selectedApplicantId],
     queryFn: () => {
       return fetchServer({
-        endpoint: `${apiRoutes.APPLICANTS}/${selectedApplicantId}`,
+        endpoint: `${apiRoutes.USER_DETAILS}/${selectedApplicantId}`,
         method: "GET",
         token: token,
       });
@@ -104,7 +102,7 @@ const ApplicantScreen = () => {
   const applicants = data?.data.users || [];
 
   const handleDetail = (id: string) => {
-    // setSelectedApplicantId(id);
+    setSelectedApplicantId(id);
     setIsDetail(true);
   };
 
@@ -129,13 +127,11 @@ const ApplicantScreen = () => {
     dispatch(setTitle(jp.applicant));
   }, [dispatch]);
 
-  console.log(jobTypes, "jobTypes");
-
   return (
     <>
-      {(isLoading || isDetailLoading ) && (
+      {(isLoading || isDetailLoading) && (
         <Loading
-          isLoading={isLoading || isDetailLoading }
+          isLoading={isLoading || isDetailLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -179,7 +175,10 @@ const ApplicantScreen = () => {
               animate="animate"
               exit="exit"
             >
-              <MatchedApplicants applicant={userProfile} className="h-full" />
+              <MatchedApplicants
+                applicantDetail={applicantDetail?.data}
+                className="h-full w-full overflow-y-auto"
+              />
               <button
                 onClick={() => setIsDetail(false)}
                 className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"

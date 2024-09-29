@@ -115,7 +115,7 @@ const ApplicantTable = ({
               Education
             </th>
             <th scope="col" className=" py-3 text-start">
-              Tokutei Exam
+               Exam
             </th>
             <th scope="col" className=" py-3 text-start">
               Language

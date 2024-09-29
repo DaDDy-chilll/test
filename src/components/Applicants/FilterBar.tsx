@@ -78,12 +78,12 @@ const FilterBar = ({
         />
         <label htmlFor="female">Female</label>
       </div>
-      <select
+      {/* <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        // onChange={(e) => {
-        //   setCurrentPage(1)
-        //   setFilter({ ...filter, language: e.target.value });
-        // }}
+        onChange={(e) => {
+          setCurrentPage(1)
+          setFilter({ ...filter, language: e.target.value });
+        }}
       >
         <option value="Japanese" defaultValue="Japanese">
           Japanese
@@ -93,13 +93,13 @@ const FilterBar = ({
         <option value="N3">N3</option>
         <option value="N2">N2</option>
         <option value="N1">N1</option>
-      </select>
-      <select
+      </select> */}
+      {/* <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        // onChange={(e) => {
-        //   setCurrentPage(1)
-        //   setFilter({ ...filter, education: e.target.value });
-        // }}
+        onChange={(e) => {
+          setCurrentPage(1)
+          setFilter({ ...filter, education: e.target.value });
+        }}
       >
         <option value="" defaultValue="">
           Education
@@ -107,10 +107,10 @@ const FilterBar = ({
         <option value="Bachelor">Bachelor</option>
         <option value="Master">Master</option>
         <option value="Diploma">Diploma</option>
-      </select>
+      </select> */}
 
       <select
-        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-[36%]"
+        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-96"
         onChange={(e) => {
           setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });

@@ -11,7 +11,8 @@ export interface ApiRoutesType {
     TOKUTEI_EXAM:string,
     LANGUAGE:string,
     CITY:string,
-    PROFILE:string
+    PROFILE:string,
+    USER_DETAILS:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -26,5 +27,6 @@ export const apiRoutes: ApiRoutesType = {
     TOKUTEI_EXAM:"/auth/tokutei-exam",
     LANGUAGE:"/auth/language-exam",
     CITY:"/auth/areas",
-    PROFILE:"/client/auth/company"
+    PROFILE:"/client/auth/company",
+    USER_DETAILS:"client/users/detail"
 }

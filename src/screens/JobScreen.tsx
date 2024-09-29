@@ -42,6 +42,20 @@ const JobScreen = () => {
     token: token as string,
     key: QueryKey.JOBS,
   });
+
+  const {
+    data: citys,
+    isLoading: isCityLoading,
+    isError: isCityError,
+    isSuccess: isCitySuccess,
+    error: cityError,
+  } = useFetch({
+    endpoint: apiRoutes.CITY,
+    key: QueryKey.CITY,
+    token: token as string,
+  });
+
+
   useEffect(() => {
     dispatch(setTitle(jp.jobs));
   }, [dispatch]);
@@ -55,7 +69,6 @@ const JobScreen = () => {
 
   console.log("data", data);
   const jobs = data?.data || [];
-  // const jobs: any = [];
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
@@ -159,13 +172,18 @@ const JobScreen = () => {
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
             {filteredJobs.length > 0 ? (
-              filteredJobs.map((item: any) => (
-                <JobListItem
+              filteredJobs.map((item: any) => {
+                const city = citys?.data.find((city: any) => city.id === item.prefecture_id);
+            
+                return (
+                  <JobListItem
                   key={item.id}
                   item={item}
                   setShowDetails={setShowDetails}
+                  city={city}
                 />
-              ))
+                )
+              })
             ) : (
               <p className="text-center text-lg">No matching jobs found</p>
             )}

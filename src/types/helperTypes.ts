@@ -1,6 +1,4 @@
-import {
-  Timestamp,
-} from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export type FetchServerType = {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -24,50 +22,48 @@ export type RegisterProps = {
 export type ErrorType = {
   error: boolean;
   message: any;
-}
+};
 
 export type AuthErrorType = {
   email?: {
     jp: string;
     mm: string;
-  } ;
+  };
   password?: {
     jp: string;
     mm: string;
-  } ;
+  };
   confirm_password?: {
     jp: string;
     mm: string;
-  } ;
-  validation?:[ 
+  };
+  validation?: [
     email?: {
       jp: string;
       mm: string;
-    } ,
+    },
     password?: {
       jp: string;
       mm: string;
-    } ,
+    },
     confirm_password?: {
       jp: string;
       mm: string;
-    } ,
-  ]
-  
-}
+    }
+  ];
+};
 
 export type FilterType = {
   live_in_japan: string;
   gender: string;
   job_type: string;
-}
+};
 
 export type Event = {
   title: string;
   date: string;
   description: string;
-}
-
+};
 
 export interface Chat {
   id: string;
@@ -127,7 +123,7 @@ export interface JobPreference {
   preferredJobAndArea: {
     jobTypes: string[];
     areas: string[];
-  }
+  };
 }
 
 export interface PersonalInfo {
@@ -136,18 +132,82 @@ export interface PersonalInfo {
   gender: string;
 }
 
+//TODO: delete this
 export type UserProfile = {
   id: string;
   profileImage: string;
-  personalInfo: PersonalInfo,
-  jobsPreference: JobPreference,
-  languages: Language[],
-  education: Education[],
-  workExperience: WorkExperience[],
-}
+  personalInfo: PersonalInfo;
+  jobsPreference: JobPreference;
+  languages: Language[];
+  education: Education[];
+  workExperience: WorkExperience[];
+};
 
 export interface User {
   id: string | number;
   email: string;
   name: string;
 }
+
+export type ApplicantDetail = {
+  id: string | number;
+  m_basicinfos: {
+    profile_path: string;
+    name: string;
+    live_in_japan: number;
+    dob: string;
+    gender: number;
+    has_passport: number;
+  };
+  m_prefer_areas: [
+    {
+      prefecture: {
+        area_id: number;
+        name: string;
+      };
+    }
+  ];
+  m_preferred_jobs: [
+    {
+      id: number;
+      job_type: number;
+    }
+  ];
+  m_prefer_other: {
+    start_salary: number;
+    end_salary: number;
+    working_time: number;
+    support_home: number;
+    support_home_rent: number;
+  };
+  m_language_exams: [
+    {
+      id: number;
+      m_exam_levels: {
+        level: number;
+      };
+      m_exams: {
+        name_jp: string;
+      };
+    }
+  ];
+  m_education: [
+    {
+      id: number;
+      academic_end_year: number;
+      academic_start_year: number;
+      major: string;
+      university_name: string;
+    }
+  ];
+  m_job_experiences: [
+    {
+      id: number;
+      job_name: string;
+      job_type: string;
+      description: string;
+      start_year: string;
+      end_year: string;
+    }
+  ];
+};
