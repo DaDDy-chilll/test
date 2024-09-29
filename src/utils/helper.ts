@@ -25,9 +25,7 @@ export const fetchServer = async ({
       });
       result = data;
     } else if (method === "POST" && !file && !token) {
-      console.log("body", body);
-      const { data } = await api.post(urlEndPoint, body);
-      console.log("data", data);
+      const { data } = await api.post(urlEndPoint, body);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
       result = data;
     } else if (method === "POST" && !file) {
       const { data } = await api.post(urlEndPoint, body, {
@@ -44,7 +42,14 @@ export const fetchServer = async ({
         },
       });
       result = data;
-    }
+    }else if (method === "PUT" && !file) {
+      const { data } = await api.put(urlEndPoint, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      result = data;
+    } 
     return result;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {

@@ -10,14 +10,15 @@ type usePostProps = {
 type parms = {
     endpoint: string
     body: any
-
+    method?: "POST" | "PUT" | "DELETE"
 }
 
 const usePost = ({token,queryKey}:usePostProps) => {
     const queryClient = useQueryClient()
     const { mutate,isPending,error,isSuccess}  = useMutation({
-        mutationFn:({endpoint, body}:parms) => {
-            return fetchServer({ endpoint, method: "POST", body, token: token || undefined })
+        mutationFn:({endpoint, body, method}:parms) => {
+            console.log("endpoint",endpoint,body,method)
+            return fetchServer({ endpoint, method: method || "POST", body, token: token || undefined })
         },
         onSuccess:(data) => {
             queryClient.invalidateQueries({queryKey:[queryKey]})

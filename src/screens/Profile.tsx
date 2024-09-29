@@ -1,6 +1,6 @@
 import JobDetails from "@/components/ui/JobDetails";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
@@ -13,35 +13,101 @@ import DatePicker from "@/components/ui/DatePicker";
 import Loading from "@/components/ui/Loading";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
-
+import  useFetch  from "@/hooks/useFetch";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { QueryKey } from "@/utils/queryKey";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import usePost  from "@/hooks/usePost";
+import moment from "moment";
 const Profile = () => {
   const dispatch = useDispatch();
+  const {token} = useSelector((state:RootState)=>state.auth)
   const [isEdit, setIsEdit] = useState(false);
+  const {data,isLoading} = useFetch({
+    endpoint: apiRoutes.PROFILE,
+    key: QueryKey.PROFILE,
+    token: token as string,
+  })
+  const {mutate,isPending,error,isSuccess} = usePost({token,queryKey:QueryKey.PROFILE})
+
+  const {
+    data: jobType,
+    isLoading: isJobTypesLoading,
+    isError: isJobTypesError,
+    isSuccess: isJobTypesSuccess,
+    error: jobTypesError,
+  } = useFetch({
+    endpoint: apiRoutes.JOB_TYPES,
+    key: QueryKey.JOB_TYPES,
+    token: token as string,
+  });
+
+
+  const {
+    data: city,
+    isLoading: isCityLoading,
+    isError: isCityError,
+    isSuccess: isCitySuccess,
+    error: cityError,
+  } = useFetch({
+    endpoint: apiRoutes.CITY,
+    key: QueryKey.CITY,
+    token: token as string,
+  });
+
+  const countries = city?.data.map((type: any) => ({
+    value: type.id.toString(),
+    label: type.area,
+  })) || [];
+
+  const jobTypes = jobType?.data.map((type: any) => ({
+    value: type.id.toString(),
+    label: type.job_type_jp,
+  })) || [];
+
+
   useEffect(() => {
     dispatch(setTitle(jp.profile));
   }, [dispatch]);
-  const countries = [
-    { value: "Tokyo", label: "Tokyo" },
-    { value: "Osaka", label: "Osaka" },
-    { value: "Kyoto", label: "Kyoto" },
-    { value: "Fukuoka", label: "Fukuoka" },
-  ];
 
-  const jobTypes = [
-    { value: "IT", label: "IT" },
-    { value: "Sales", label: "Sales" },
-    { value: "Marketing", label: "Marketing" },
-    { value: "Finance", label: "Finance" },
-  ];
+
+  useEffect(()=>{
+    if(isSuccess){
+      setIsEdit(false);
+    }
+  },[isSuccess])
+
+
 
   const employeeNumber = [
-    { value: "1-10", label: "1-10" },
-    { value: "11-20", label: "11-20" },
-    { value: "21-30", label: "21-30" },
-    { value: "31-40", label: "31-40" },
+    { value: "100", label: "100" },
+    { value: "200", label: "200" },
+    { value: "300", label: "300" },
+    { value: "400", label: "400" },
   ];
 
   const editHandler = () => setIsEdit(true);
+
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const jobData = {
+      name: formData.get("name") as string,
+      // industry_type_id: Number(formData.get("industry_type_id") as string),
+      industry_type_id: 1,
+      budget: Number(formData.get("budget") as string),
+      starting: moment(formData.get("starting") as string).format('DD/MM/YYYY'),
+      staff: Number(formData.get("staff") as string),
+      prefecture_id: Number(formData.get("prefecture_id") as string),
+      company_des: formData.get("company_des") as string,
+      address: formData.get("address") as string,
+    };
+    // console.log('jobData', jobData);
+    mutate({endpoint:apiRoutes.PROFILE,body:jobData,method:'PUT'})
+  };
 
   return (
     <>
@@ -55,7 +121,7 @@ const Profile = () => {
       >
         <AnimatePresence mode="wait">
           {!isEdit && (
-            <JobDetails isDetails={false} editHandler={editHandler} />
+            <JobDetails isDetails={false} editHandler={editHandler} data={data?.data} />
           )}
           {isEdit && (
             <motion.div
@@ -82,50 +148,55 @@ const Profile = () => {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </div>
-              <form className=" w-full" onSubmit={(e) => e.preventDefault()}>
+              <form className=" w-full" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">
                   <Input
                     name="name"
                     type="text"
-                    placeholder="Type name"
+                    placeholder={jp.companyName}
                     label={jp.companyName}
                     className="mt-1 block w-full bg-gray-100 "
                   />
 
                   <Select
+                  name="industry_type_id"
                     label={jp.jobArea}
                     id={jp.jobArea}
                     options={jobTypes}
                     className=""
-                    defaultOption="Choose Industry"
+                    defaultOption={jp.chooseIndustry}
                   />
                   <Input
-                    name="salary"
+                    name="budget"
                     type="text"
                     label={jp.investmentAmount}
                     className="mt-1 block w-full bg-gray-100 "
                     placeholder="100000 $"
                   />
                   <Input
-                    name="jobTitle"
+                    name="address"
                     type="text"
                     label={jp.undertake}
-                    className="mt-1 block w-full bg-gray-100 "
+                    className="mt-1 block w-full bg-red-100 "
                   />
                   <Select
+                  name="staff"
                     label={jp.employeeNumber}
                     id={jp.employeeNumber}
                     options={employeeNumber}
                     className=""
+                    defaultOption={jp.chooseEmployee}
                   />
                   <Select
+                  name="prefecture_id"
                     label="Location"
                     id="location"
                     options={countries}
                     className=""
+                    defaultOption={jp.chooseLocation}
                   />
                   <DatePicker
-                    name="jobTitle"
+                    name="starting"
                     type="text"
                     label={jp.establishment}
                     className="mt-1 block w-ful"
@@ -133,7 +204,7 @@ const Profile = () => {
                   <div></div>
                   <span className="col-span-2">
                     <Input
-                      name="description"
+                      name="company_des"
                       type="text"
                       label={jp.companyDescription}
                       className="mt-1 block w-full bg-gray-100 "

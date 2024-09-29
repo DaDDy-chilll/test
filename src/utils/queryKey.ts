@@ -6,5 +6,6 @@ export enum QueryKey {
   USERS = "users",
   EVENTS = "events",
   LANGUAGES = "languages",
-  CITY = "city"
+  CITY = "city",
+  PROFILE = "profile"
 }

@@ -47,11 +47,11 @@ const JobScreen = () => {
     { id: 4, name: "Internship" },
   ];
 
-  const jobs = data || [];
+  // const jobs = data || [];
+  const jobs:any =  [];
 
-  console.log(jobs)
   const filteredJobs = useMemo(() => {
-    if(jobs.lenght  === 0) return []
+    if(jobs.length  === 0) return []
     return jobs.filter(
       (job: any) =>
         job.position.toLowerCase().includes(search.toLowerCase()) ||

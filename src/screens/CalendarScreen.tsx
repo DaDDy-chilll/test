@@ -32,12 +32,13 @@ const CalendarScreen = () => {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-  const { data, isLoading, isError, isSuccess, error } = useFetch({
-    endpoint: apiRoutes.EVENTS,
-    token: token as string,
-    key: QueryKey.EVENTS,
-  });
-  const events: Event[] = data || [];
+  // const { data, isLoading, isError, isSuccess, error } = useFetch({
+  //   endpoint: apiRoutes.EVENTS,
+  //   token: token as string,
+  //   key: QueryKey.EVENTS,
+  // });
+  // const events: Event[] = data || [];
+  const events: Event[] =  [];
   const today = format(new Date(), "yyyy-MM-dd");
   useEffect(() => {
     dispatch(setTitle(jp.calendar));
@@ -70,8 +71,8 @@ const CalendarScreen = () => {
 
   return (
     <>
-      {isLoading && (
-        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
+      {false && (
+        <Loading isLoading={false} className="h-[calc(100vh-68px)]" />
       )}
       <motion.div
         variants={calendarVariants}
