@@ -249,7 +249,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
                   key={index}
                   className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full"
                 >
-                  {jobType.job_type}
+                  {jobType.m_job_types.job_type_jp}
                 </p>
               ))}
             </div>

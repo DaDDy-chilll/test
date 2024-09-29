@@ -7,5 +7,7 @@ export enum QueryKey {
   EVENTS = "events",
   LANGUAGES = "languages",
   CITY = "city",
-  PROFILE = "profile"
+  PROFILE = "profile",
+  JOB_DETAILS = "jobDetails",
+  MATCHED = "matched"
 }

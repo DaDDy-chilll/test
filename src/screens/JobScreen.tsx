@@ -20,6 +20,16 @@ import Maintenance from "@/components/ui/Maintenance";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
+import { useQuery } from "@tanstack/react-query";
+import { fetchServer } from "@/utils/helper";
+
+const defaultJobType = [
+  { id: 0, name: "All" },
+  { id: 1, name: "Full Time" },
+  { id: 2, name: "Part Time" },
+  { id: 3, name: "Remote" },
+  { id: 4, name: "Internship" },
+];
 
 const JobScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
@@ -30,6 +40,7 @@ const JobScreen = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
   const {
     data,
@@ -56,23 +67,25 @@ const JobScreen = () => {
   });
 
 
-  useEffect(() => {
-    dispatch(setTitle(jp.jobs));
-  }, [dispatch]);
-  const defaultJobType = [
-    { id: 0, name: "All" },
-    { id: 1, name: "Full Time" },
-    { id: 2, name: "Part Time" },
-    { id: 3, name: "Remote" },
-    { id: 4, name: "Internship" },
-  ];
+  const { data: jobDetail, isLoading: isDetailLoading } = useQuery({
+    queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.JOB_DETAILS}/${selectedJobId}`,
+        method: "GET",
+        token: token,
+      });
+    },
+    enabled: !!selectedJobId && showDetails,
+  });
 
-  console.log("data", data);
+
+  console.log("jobDetail", jobDetail);
   const jobs = data?.data || [];
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
-    console.log(jobs)
+    console.log(jobs);
     return jobs.filter((job: any) =>
       job.job_title.toLowerCase().includes(search.toLowerCase())
     );
@@ -82,18 +95,32 @@ const JobScreen = () => {
     setSearch(e.target.value);
   const handleJobType = (e: React.MouseEvent<HTMLDivElement>) =>
     setJobType((e.target as HTMLDivElement).innerText);
-  const editHandler = () => setIsEdit(true);
+  const editHandler = () => {
+    setIsEdit(true)
+  };
   const addHandler = () => setIsAdd(true);
   const backHandler = () => {
     setIsAdd(false);
     setIsEdit(false);
   };
 
+  const handleJobDetails = (id: number) => {
+    console.log("id", id)
+    setShowDetails(true)
+    setSelectedJobId(id)
+  }
+
   useEffect(() => {
     if (fetchError) {
       alert(fetchError.message);
     }
   }, [fetchError]);
+
+  useEffect(() => {
+    dispatch(setTitle(jp.jobs));
+  }, [dispatch]);
+
+
 
   return (
     <>
@@ -172,18 +199,22 @@ const JobScreen = () => {
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
             {filteredJobs.length > 0 ? (
-              filteredJobs.map((item: any) => {
-                const city = citys?.data.find((city: any) => city.id === item.prefecture_id);
-            
-                return (
-                  <JobListItem
-                  key={item.id}
-                  item={item}
-                  setShowDetails={setShowDetails}
-                  city={city}
-                />
-                )
-              })
+              filteredJobs
+                .sort((a: any, b: any) => b.id - a.id)
+                .map((item: any) => {
+                  const city = citys?.data.find(
+                    (city: any) => city.id === item.prefecture_id
+                  );
+                  console.log(item);
+                  return (
+                    <JobListItem
+                      key={item.id}
+                      item={item}
+                      setShowDetails={handleJobDetails}
+                      city={city}
+                    />
+                  );
+                })
             ) : (
               <p className="text-center text-lg">No matching jobs found</p>
             )}
@@ -209,6 +240,7 @@ const JobScreen = () => {
             backHandler={setShowDetails}
             isDetails={true}
             editHandler={editHandler}
+            data={jobDetail?.data}
           />
         </motion.div>
       )}

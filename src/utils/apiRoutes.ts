@@ -12,7 +12,9 @@ export interface ApiRoutesType {
     LANGUAGE:string,
     CITY:string,
     PROFILE:string,
-    USER_DETAILS:string
+    USER_DETAILS:string,
+    JOB_DETAILS:string,
+    MATCHED:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -28,5 +30,7 @@ export const apiRoutes: ApiRoutesType = {
     LANGUAGE:"/auth/language-exam",
     CITY:"/auth/areas",
     PROFILE:"/client/auth/company",
-    USER_DETAILS:"client/users/detail"
+    USER_DETAILS:"client/users/detail",
+    JOB_DETAILS:"/client/job/detail",
+    MATCHED:"/client/job/match"
 }

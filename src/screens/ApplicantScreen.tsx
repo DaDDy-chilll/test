@@ -63,6 +63,7 @@ const ApplicantScreen = () => {
       !!filter.gender &&
       !!filter.job_type,
   });
+  
   const {
     data: jobTypes,
     isLoading: isJobTypesLoading,

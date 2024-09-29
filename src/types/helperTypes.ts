@@ -169,8 +169,9 @@ export type ApplicantDetail = {
   ];
   m_preferred_jobs: [
     {
-      id: number;
-      job_type: number;
+      m_job_types:{
+        job_type_jp:string
+      }
     }
   ];
   m_prefer_other: {

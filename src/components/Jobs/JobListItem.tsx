@@ -27,21 +27,21 @@ type Job = {
 
 type JobListItemProps = {
   item: Job;
-  setShowDetails: (showDetails: boolean) => void;
+  setShowDetails: (id: number) => void;
   city: any;
 };
 
 const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
   const dispatch = useDispatch();
   const date = moment(item.created_at).fromNow();
-  const handleShowDetails = () => {
-    setShowDetails(true);
-    dispatch(setTitle(jp.jobDetails));
-  };
+  // const handleShowDetails = () => {
+  //   setShowDetails(true);
+  //   dispatch(setTitle(jp.jobDetails));
+  // };
   return (
     <div
       className="flex justify-start items-center gap-4 w-full cursor-pointer"
-      onClick={handleShowDetails}
+      onClick={() => setShowDetails(item.id)}
     >
       <div className="w-20 h-2w-20 rounded-md">
         <img
