@@ -86,69 +86,69 @@ const DashboardScreen = () => {
 */
   // TODO: remove this
   // Sample data for today's events
-const todayEvents = [
-  {
-    id: 1,
-    title: "Team Meeting",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Discuss project updates and next steps",
-  },
-  {
-    id: 2,
-    title: "Client Call",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Review project requirements with the client",
-  },
-  {
-    id: 3,
-    title: "Project Planning",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Plan the next phase of the project",
-  },
-  {
-    id: 4,
-    title: "Design Review",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Review the latest design mockups",
-  },
-  {
-    id: 5,
-    title: "Code Review",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Review the latest code changes",
-  },
-  {
-    id: 6,
-    title: "Marketing Meeting",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Discuss marketing strategies",
-  },
-  {
-    id: 7,
-    title: "Sales Call",
-    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
-    description: "Call with potential client",
-  },
-];
+  const todayEvents = [
+    {
+      id: 1,
+      title: "Team Meeting",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Discuss project updates and next steps",
+    },
+    {
+      id: 2,
+      title: "Client Call",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Review project requirements with the client",
+    },
+    {
+      id: 3,
+      title: "Project Planning",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Plan the next phase of the project",
+    },
+    {
+      id: 4,
+      title: "Design Review",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Review the latest design mockups",
+    },
+    {
+      id: 5,
+      title: "Code Review",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Review the latest code changes",
+    },
+    {
+      id: 6,
+      title: "Marketing Meeting",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Discuss marketing strategies",
+    },
+    {
+      id: 7,
+      title: "Sales Call",
+      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      description: "Call with potential client",
+    },
+  ];
 
-// TODO: remove this
-// Sample data for upcoming events
-const upcomingEvents = Array.from({ length: 30 }, (_, index) => {
-  const date = format(new Date(new Date().setDate(new Date().getDate() + index + 1)), "yyyy-MM-dd");
-  return {
-    [date]: Array.from({ length: index + 1 }, (_, eventIndex) => ({
-      id: index * 15 + eventIndex + 1,
-      title: `Event ${index * 15 + eventIndex + 1}`,
-      date: date,
-      description: `Description for event ${index * 15 + eventIndex + 1}`,
-    })),
-  };
-}).reduce((acc, event) => ({ ...acc, ...event }), {});
+  // TODO: remove this
+  // Sample data for upcoming events
+  const upcomingEvents = Array.from({ length: 30 }, (_, index) => {
+    const date = format(new Date(new Date().setDate(new Date().getDate() + index + 1)), "yyyy-MM-dd");
+    return {
+      [date]: Array.from({ length: index + 1 }, (_, eventIndex) => ({
+        id: index * 15 + eventIndex + 1,
+        title: `Event ${index * 15 + eventIndex + 1}`,
+        date: date,
+        description: `Description for event ${index * 15 + eventIndex + 1}`,
+      })),
+    };
+  }).reduce((acc, event) => ({ ...acc, ...event }), {});
 
-// const todayEvents: any = [];
-// const upcomingEvents: any = [];
+  // const todayEvents: any = [];
+  // const upcomingEvents: any = {};
 
-const today = format(new Date(), "yyyy-MM-dd");
+  const today = format(new Date(), "yyyy-MM-dd");
 
   const data = [
     {
@@ -335,9 +335,14 @@ const today = format(new Date(), "yyyy-MM-dd");
           <div className="w-full">
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-2/3 pb-4">
-                <h1 className="text-base font-semibold text-center my-2">
-                  {selectedDate} {jp.meetings}
-                </h1>
+                <div className="flex items-center justify-between relative px-5">
+                  <button className={`text-sm rounded-md px-2 py-1 absolute right-2 ${selectedDate === today ? 'bg-primaryColor text-white' : 'text-gray-500 bg-gray-200'} hover:bg-gray-300`} onClick={() => { setSelectedDate(today); setActiveDate(today); selectedDate === today ? setActiveDate(today) : null }}>
+                    {jp.todayMeetings} <span className={`ml-2 text-xs ${selectedDate === today ? 'text-white' : 'text-primaryColor'}`}>+{todayEvents.length}</span>
+                  </button>
+                  <h1 className="text-base font-semibold text-center my-2">
+                    {selectedDate} {jp.meetings}
+                  </h1>
+                </div>
                 <div className="w-full h-[62vh] overflow-y-auto border-r-2 border-gray-200">
                   {selectedDate === today ? (
                     todayEvents.map((event: Event, index: number) => {
@@ -362,19 +367,19 @@ const today = format(new Date(), "yyyy-MM-dd");
                 )}
               </div>
               <div className="w-1/3 pl-3 h-[67vh]">
-                  <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
-                  <div ref={scrollableRef} className="overflow-y-auto h-[62vh] relative">
-                    {Array.from({ length: 30 }, (_, index) => {
-                      const date = moment(new Date(today).setDate(new Date(today).getDate() + index + 1)).format('YYYY-MM-DD');
-                      return (
-                        <div
-                          key={index}
-                          className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${activeDate === date ? 'bg-primaryColor text-white' : 'hover:bg-gray-300'}`}
-                          onClick={() => {
-                            setActiveDate(date);
-                            setSelectedDate(date);
-                          }}
-                        >
+                <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
+                <div ref={scrollableRef} className="overflow-y-auto h-[62vh] relative">
+                  {Array.from({ length: 30 }, (_, index) => {
+                    const date = moment(new Date(today).setDate(new Date(today).getDate() + index + 1)).format('YYYY-MM-DD');
+                    return (
+                      <div
+                        key={index}
+                        className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${activeDate === date ? 'bg-primaryColor text-white' : 'hover:bg-gray-300'}`}
+                        onClick={() => {
+                          setActiveDate(date);
+                          setSelectedDate(date);
+                        }}
+                      >
                         {date}
                         {activeDate !== date && upcomingEvents[date] && upcomingEvents[date].length > 0 && (
                           <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">

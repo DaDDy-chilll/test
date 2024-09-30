@@ -57,6 +57,7 @@ export const jp = {
   language: "言語",
   workExperience: "実務経験",
   meetings: "会議スケジュール",
+  todayMeetings: "今日の会議",
   aiChat: "Ai翻訳",
   adminHelp: "Ai翻訳",
   newMessages: "新しいメッセージ",
