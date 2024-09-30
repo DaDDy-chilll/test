@@ -19,12 +19,16 @@ import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
+import React, { useState } from 'react';
+
 const DashboardScreen = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const dispatch = useDispatch();
   const scrollableRef = useRef<HTMLDivElement>(null);
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
@@ -81,8 +85,71 @@ const DashboardScreen = () => {
   
 */
   // TODO: remove this
-const todayEvents: any = [];
+  // Sample data for today's events
+const todayEvents = [
+  {
+    id: 1,
+    title: "Team Meeting",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Discuss project updates and next steps",
+  },
+  {
+    id: 2,
+    title: "Client Call",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Review project requirements with the client",
+  },
+  {
+    id: 3,
+    title: "Project Planning",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Plan the next phase of the project",
+  },
+  {
+    id: 4,
+    title: "Design Review",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Review the latest design mockups",
+  },
+  {
+    id: 5,
+    title: "Code Review",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Review the latest code changes",
+  },
+  {
+    id: 6,
+    title: "Marketing Meeting",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Discuss marketing strategies",
+  },
+  {
+    id: 7,
+    title: "Sales Call",
+    date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+    description: "Call with potential client",
+  },
+];
+
+// TODO: remove this
+// Sample data for upcoming events
+const upcomingEvents = Array.from({ length: 30 }, (_, index) => {
+  const date = format(new Date(new Date().setDate(new Date().getDate() + index + 1)), "yyyy-MM-dd");
+  return {
+    [date]: Array.from({ length: index + 1 }, (_, eventIndex) => ({
+      id: index * 15 + eventIndex + 1,
+      title: `Event ${index * 15 + eventIndex + 1}`,
+      date: date,
+      description: `Description for event ${index * 15 + eventIndex + 1}`,
+    })),
+  };
+}).reduce((acc, event) => ({ ...acc, ...event }), {});
+
+// const todayEvents: any = [];
+// const upcomingEvents: any = [];
+
 const today = format(new Date(), "yyyy-MM-dd");
+
   const data = [
     {
       name: "January",
@@ -269,11 +336,15 @@ const today = format(new Date(), "yyyy-MM-dd");
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-2/3 pb-4">
                 <h1 className="text-base font-semibold text-center my-2">
-                  {today} {jp.meetings}
+                  {selectedDate} {jp.meetings}
                 </h1>
                 <div className="w-full h-[62vh] overflow-y-auto border-r-2 border-gray-200">
-                  {todayEvents.length > 0 ? (
+                  {selectedDate === today ? (
                     todayEvents.map((event: Event, index: number) => {
+                      return <EventListItem key={index} event={event} />;
+                    })
+                  ) : upcomingEvents[selectedDate] ? (
+                    upcomingEvents[selectedDate].map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
                   ) : (
@@ -292,25 +363,28 @@ const today = format(new Date(), "yyyy-MM-dd");
               </div>
               <div className="w-1/3 pl-3 h-[67vh]">
                   <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
-                  <div ref={scrollableRef} className="overflow-y-auto h-[62vh]">
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-01</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-02</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-03</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-04</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-05</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-06</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-07</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-08</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-09</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-10</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-11</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-12</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-13</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-14</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-15</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-16</div>
-                    <div className="bg-gray-200 w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer">2024-10-17</div>
-                  </div>
+                  <div ref={scrollableRef} className="overflow-y-auto h-[62vh] relative">
+                    {Array.from({ length: 30 }, (_, index) => {
+                      const date = moment(new Date(today).setDate(new Date(today).getDate() + index + 1)).format('YYYY-MM-DD');
+                      return (
+                        <div
+                          key={index}
+                          className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${activeDate === date ? 'bg-primaryColor text-white' : 'hover:bg-gray-300'}`}
+                          onClick={() => {
+                            setActiveDate(date);
+                            setSelectedDate(date);
+                          }}
+                        >
+                        {date}
+                        {activeDate !== date && upcomingEvents[date] && upcomingEvents[date].length > 0 && (
+                          <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">
+                            + {upcomingEvents[date].length}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
