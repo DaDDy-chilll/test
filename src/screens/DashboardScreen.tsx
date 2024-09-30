@@ -336,7 +336,7 @@ const DashboardScreen = () => {
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-2/3 pb-4">
                 <div className="flex items-center justify-between relative px-5">
-                  <button className={`text-sm rounded-md px-2 py-1 absolute right-2 ${selectedDate === today ? 'bg-primaryColor text-white' : 'text-gray-500 bg-gray-200'} hover:bg-gray-300`} onClick={() => { setSelectedDate(today); setActiveDate(today); selectedDate === today ? setActiveDate(today) : null }}>
+                  <button className={`text-sm rounded-md px-2 py-1 absolute right-2 ${selectedDate === today ? 'bg-primaryColor text-white' : 'text-gray-500 bg-gray-200 hover:bg-gray-300'}`} onClick={() => { setSelectedDate(today); setActiveDate(today); selectedDate === today ? setActiveDate(today) : null }}>
                     {jp.todayMeetings} <span className={`ml-2 text-xs ${selectedDate === today ? 'text-white' : 'text-primaryColor'}`}>+{todayEvents.length}</span>
                   </button>
                   <h1 className="text-base font-semibold text-center my-2">
