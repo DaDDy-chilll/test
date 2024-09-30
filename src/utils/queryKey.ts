@@ -9,5 +9,6 @@ export enum QueryKey {
   CITY = "city",
   PROFILE = "profile",
   JOB_DETAILS = "jobDetails",
-  MATCHED = "matched"
+  MATCHED = "matched",
+  MATCHED_DETAIL = "matchedDetail"
 }

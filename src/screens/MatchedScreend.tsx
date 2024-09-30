@@ -15,7 +15,7 @@ import { jp } from "@/lang/jp";
 import DefaultProfile from "@/assets/images/default.png";
 import { userProfile } from "@/constants/mock";
 import UserCard from "@/components/Matched/UserCard";
-import useFetch  from "@/hooks/useFetch";
+import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
 import { useSelector } from "react-redux";
@@ -23,11 +23,16 @@ import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
 
+let MATCHED_USERS: any;
+
 const MatchedScreend = () => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const [jobType, setJobType] = useState<{id: number | null, name: string}>({id: null, name: ""});
+  const [jobType, setJobType] = useState<{ id: number | null; name: string }>({
+    id: null,
+    name: "",
+  });
   const [matchedType, setMatchedType] = useState<number>(0);
-  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [showDetail, setShowDetail] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(2);
@@ -35,13 +40,13 @@ const MatchedScreend = () => {
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
-      params.append("liked", liked.toString());
+    params.append("liked", liked.toString());
     if (page > 0) params.append("page", page.toString());
     if (limit > 0) params.append("limit", limit.toString());
     return params.toString();
   };
 
- const {
+  const {
     data: jobNameType,
     isLoading: jobNameTypeLoading,
     isError: jobNameTypeError,
@@ -49,26 +54,26 @@ const MatchedScreend = () => {
     error: fetchError,
   } = useQuery({
     queryKey: [QueryKey.JOBS],
-    queryFn: () => fetchServer({
-      endpoint: apiRoutes.JOBS,
-      method: "GET",
-      token: token,
-    }),
+    queryFn: () =>
+      fetchServer({
+        endpoint: apiRoutes.JOBS,
+        method: "GET",
+        token: token,
+      }),
     enabled: !!token,
   });
 
-  const defaultJobType = jobNameType?.data?.map((item: any) => ({
-    id: item.id,
-    name: item.job_title,
-  })) || [];
+  const defaultJobType =
+    jobNameType?.data?.map((item: any) => ({
+      id: item.id,
+      name: item.job_title,
+    })) || [];
 
-  useEffect(() => {
-    if (jobNameTypeSuccess && defaultJobType.length > 0) {
-      setJobType(defaultJobType[0]);
-    }
-  }, [jobNameTypeSuccess]);
-
-  const { data:matchedData, isLoading, refetch } = useQuery({
+  const {
+    data: matchedData,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [QueryKey.MATCHED, jobType?.id, page, liked, limit],
     queryFn: () => {
       if (!jobType.id) return [];
@@ -78,40 +83,52 @@ const MatchedScreend = () => {
         token: token,
       });
     },
-    enabled:
-      !!jobType.id &&
-      !!page &&
-      !!liked &&
-      !!limit,
+    enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
 
-  console.log(matchedData);
+  console.log("matchedData", matchedData);
 
+  const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
+    queryKey: [QueryKey.MATCHED_DETAIL],
+    queryFn: () => {
+      if (!showDetail) return [];
+      return fetchServer({
+        endpoint: `${apiRoutes.USER_DETAILS}/${showDetail}`,
+        method: "GET",
+        token: token,
+      });
+    },
+    enabled: !!showDetail,
+  });
 
+  // console.log('matchedData',matchedData);
 
-
-  const handleJobType = (item: {id: number, name: string}) => setJobType(item);
-  const handleShowDetail = () => {
+  const handleJobType = (item: { id: number; name: string }) =>
+    setJobType(item);
+  const handleShowDetail = (id: number) => {
     document.body.style.overflow = "hidden";
-    setShowDetail((prev) => !prev);
+    setShowDetail(id);
   };
 
   const handleCloseDetail = () => {
-    setShowDetail((prev) => !prev);
+    setShowDetail(null);
     document.body.style.overflowY = "auto";
   };
 
-
-
+  useEffect(() => {
+    if (jobNameTypeSuccess && defaultJobType.length > 0) {
+      setJobType(defaultJobType[0]);
+    }
+  }, [jobNameTypeSuccess]);
   useEffect(() => {
     dispatch(setTitle(jp.matches));
   }, [dispatch]);
 
   useEffect(() => {
-    refetch();
-  }, [page, liked, limit,jobType]);
-
-
+    if (page > 0 && limit > 0 && jobType.id) {
+      refetch();
+    }
+  }, [page, liked, limit, jobType]);
 
   return (
     <>
@@ -127,7 +144,7 @@ const MatchedScreend = () => {
           <div className="flex gap-4">
             <button
               className={`p-2 text-sm ${
-                liked 
+                liked
                   ? "border-b border-primaryColor text-primaryColor"
                   : "text-gray-400"
               }`}
@@ -137,7 +154,7 @@ const MatchedScreend = () => {
             </button>
             <button
               className={`p-2 text-sm ${
-                !liked 
+                !liked
                   ? "border-b border-primaryColor text-primaryColor"
                   : "text-gray-400"
               }`}
@@ -167,29 +184,34 @@ const MatchedScreend = () => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {defaultJobType.length > 0 && 
-              defaultJobType.map((item: {id: number, name: string}) => (
-                <DropdownMenuItem
-                  key={"z" + item.id}
-                  onClick={() => handleJobType(item)}
-                >
-                  <p>{item.name}</p>
-                </DropdownMenuItem>
-              ))}
+              {defaultJobType.length > 0 &&
+                defaultJobType.map((item: { id: number; name: string }) => (
+                  <DropdownMenuItem
+                    key={"z" + item.id}
+                    onClick={() => handleJobType(item)}
+                  >
+                    <p>{item.name}</p>
+                  </DropdownMenuItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
         <AnimatePresence>
           <div className="grid grid-cols-4 grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
-            {liked
-              ? matchedData?.data?.users?.length > 0 &&
+            {matchedData && matchedData?.data?.users?.length > 0 ? (
               matchedData?.data?.users?.map((item: any) => (
-                  <UserCard key={item.id} handleShowDetail={handleShowDetail} matchedData={item} />
-                ))
-              : matchedData?.data?.users?.length > 0 &&
-              matchedData?.data?.users?.map((item: any) => (
-                  <UserCard key={item.id} handleShowDetail={handleShowDetail} matchedData={item} />
-                ))}
+                <UserCard
+                  key={item.id}
+                  handleShowDetail={handleShowDetail}
+                  matchedData={item}
+                  jobType={jobType}
+                />
+              ))
+            ) : (
+              <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
+                No Matchde Users found
+              </div>
+            )}
           </div>
           {showDetail && (
             <motion.div
@@ -220,7 +242,10 @@ const MatchedScreend = () => {
                     />
                   </svg>
                 </button>
-                <MatchedApplicants applicant={userProfile} className="h-full" />
+                <MatchedApplicants
+                  applicantDetail={applicantDetail?.data}
+                  className="h-full w-full overflow-y-auto"
+                />
               </span>
             </motion.div>
           )}
@@ -235,7 +260,6 @@ const matchedVariants = {
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
-
 
 const detailVariants = {
   initial: { opacity: 0, x: 100 },

@@ -15,7 +15,7 @@ type parms = {
 
 const usePost = ({token,queryKey}:usePostProps) => {
     const queryClient = useQueryClient()
-    const { mutate,isPending,error,isSuccess}  = useMutation({
+    const { mutate,isPending,error,isSuccess,data}  = useMutation({
         mutationFn:({endpoint, body, method}:parms) => {
             console.log("endpoint",endpoint,body,method)
             return fetchServer({ endpoint, method: method || "POST", body, token: token || undefined })
@@ -26,7 +26,7 @@ const usePost = ({token,queryKey}:usePostProps) => {
         }
     })
 
-    return {mutate,isPending,error,isSuccess}
+    return {mutate,isPending,error,isSuccess,data}
 }
 
 export default usePost;
