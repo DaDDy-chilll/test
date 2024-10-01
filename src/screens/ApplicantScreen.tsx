@@ -47,7 +47,7 @@ const ApplicantScreen = () => {
     if (currentPage > 0) params.append("page", currentPage.toString());
     return params.toString();
   };
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch,error } = useQuery({
     queryKey: [QueryKey.APPLICANTS, currentPage, filter],
     queryFn: () => {
       return fetchServer({
@@ -63,6 +63,8 @@ const ApplicantScreen = () => {
       !!filter.gender &&
       !!filter.job_type,
   });
+
+  console.log("error applicants", error);
   
   const {
     data: jobTypes,

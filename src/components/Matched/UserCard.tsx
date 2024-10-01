@@ -1,41 +1,31 @@
 import React from "react";
 import { motion } from "framer-motion";
 import DefaultProfile from "@/assets/images/default.png";
-import usePost from "@/hooks/usePost";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
+import { useEffect } from "react";
 
 type UserCardProps = {
   handleShowDetail: (id: number) => void;
   matchedData: any;
 jobType: { id: number | null; name: string } | null;
+likeorUnlikeHandler: (event:React.MouseEvent<HTMLButtonElement>,user_id:number) => void;
 };
 
 const UserCard = ({
   handleShowDetail,
   matchedData,
   jobType,
+  likeorUnlikeHandler
 }: UserCardProps) => {
-  const { token } = useSelector((state: RootState) => state.auth);
-  const { mutate: likeOrUnlikeMutate } = usePost({ token, queryKey: QueryKey.MATCHED });
   // const profile = `https://api.japanjob.exbrainedu.com/v1/file/photo/${matchedData.m_basicinfos.profile_path}` || null;
 
   const cardClick = () => {
       handleShowDetail(matchedData.id);
   };
 
-  const likeorUnlikeHandler = (event:React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    if (jobType) {
-      const likeOrUnlike = event.currentTarget.name;
-      likeOrUnlikeMutate({
-        endpoint: likeOrUnlike === "like" ? apiRoutes.LIKE : apiRoutes.UNLIKE,
-        body: { user_id: matchedData.id, jobs_id: jobType.id },
-      });
-    }
-  };
 
 
 
@@ -90,7 +80,7 @@ const UserCard = ({
           </div>
         </div>
         <div className="flex mt-4 md:mt-6 w-full justify-evenly">
-          <button onClick={likeorUnlikeHandler} name="unlike">
+            <button onClick={(event) => likeorUnlikeHandler(event,matchedData.id)} name="unlike">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -106,7 +96,7 @@ const UserCard = ({
               />
             </svg>
           </button>
-          <button onClick={likeorUnlikeHandler} name="like">
+          <button onClick={(event) => likeorUnlikeHandler(event,matchedData.id)} name="like">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"

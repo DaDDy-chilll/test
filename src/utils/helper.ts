@@ -54,17 +54,16 @@ export const fetchServer = async ({
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        const { data } = error.response;
+        const { data,status } = error.response;
         if (data.status == 400) {
             console.log("error-400", data);
-          throw { error: true, message: data.message };
+          throw { error: true, message: data.message, status };
         } else if (data.status == 401) {
             localStorage.removeItem("token");
             console.log("error-401", data);
-          throw { error: true, message: data.message };
+          throw { error: true, message: data.message ,status};
         } else {
-            console.log("error-else", data);
-          throw { error: true, message: data.message, status: data?.status };
+          throw { error: true, message: data.message, status};
         }
       }
     } else {

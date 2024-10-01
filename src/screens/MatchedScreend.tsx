@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState,useCallback } from "react";
 import MatchedApplicants from "@/components/Matched/MatchedApplicants";
 import { UserProfile } from "@/types/user";
 import Loading from "@/components/ui/Loading";
@@ -23,9 +23,13 @@ import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
 import DefaultCard from "@/components/Matched/DefaultCard";
+import usePost from "@/hooks/usePost";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 const MatchedScreend = () => {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const { token } = useSelector((state: RootState) => state.auth);
   const [matchedUsers, setMatchedUsers] = useState<any>([]);
   const [jobType, setJobType] = useState<{ id: number | null; name: string }>({
@@ -36,9 +40,10 @@ const MatchedScreend = () => {
   const [showDetail, setShowDetail] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(7);
+  const [limit, setLimit] = useState<number>(3);
   const [prevData, setPrevData] = useState<{jobId:number | null,like:boolean | null}>({jobId:null,like:null});
-  const dispatch = useDispatch();
+  const { mutate: likeOrUnlikeMutate, isSuccess } = usePost({ token, queryKey: QueryKey.MATCHED });
+
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
@@ -117,40 +122,72 @@ const MatchedScreend = () => {
     document.body.style.overflowY = "auto";
   };
 
-  const addMoreMatchedUsers = (data:any) => {
-    if(jobType.id !== prevData.jobId || liked !== prevData.like){
-      setMatchedUsers(data);
-    }else{    
-      setMatchedUsers((prev: any) => {
-        const existingIds = new Set(prev.map((user: any) => user.id));
+  const handleAddMore = () => {
+    if(matchedData?.data.totalUsers !== matchedUsers?.length){
+      console.log(matchedData?.data.totalUsers,matchedUsers?.length,matchedData?.data.totalUsers !== matchedUsers?.length)
+      setLimit(prev=>prev+4);
+  }
+  console.log('matched users',matchedUsers)
+}
+
+  const addMoreMatchedUsers = (data: any) => {
+    setMatchedUsers((prev: any) => {
+      if (jobType.id !== prevData.jobId || liked !== prevData.like) {
+        return data;
+      }
+      const existingIds = new Set(prev.map((user: any) => user.id));
       const newUsers = data.filter((user: any) => !existingIds.has(user.id));
       return [...prev, ...newUsers];
     });
-  }
-}
+    setPrevData({ jobId: jobType.id, like: liked });
+  };
+
+  const likeorUnlikeHandler = useCallback((event:React.MouseEvent<HTMLButtonElement>,user_id:number) => {
+    event.stopPropagation();
+    if (jobType) {
+      const likeOrUnlike = event.currentTarget.name;
+      likeOrUnlikeMutate({
+        endpoint: likeOrUnlike === "like" ? apiRoutes.LIKE : apiRoutes.UNLIKE,
+        body: { user_id: user_id, jobs_id: jobType.id },
+      });
+    }
+    queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
+  },[jobType, likeOrUnlikeMutate, queryClient]);
+
+
+  useEffect(() => {
+    dispatch(setTitle(jp.matches));
+  }, [dispatch]);
+  
 
   useEffect(() => {
     if (jobNameTypeSuccess && defaultJobType.length > 0) {
       setJobType(defaultJobType[0]);
     }
   }, [jobNameTypeSuccess]);
-  useEffect(() => {
-    dispatch(setTitle(jp.matches));
-  }, [dispatch]);
+
+
 
   useEffect(() => {
-    if(matchedDataSuccess){
-      addMoreMatchedUsers(matchedData?.data?.users);
+    if (matchedDataSuccess && matchedData?.data?.users) {
+      addMoreMatchedUsers(matchedData.data.users);
     }
-  },[matchedDataSuccess,matchedData,])
+  }, [matchedDataSuccess, matchedData?.data?.users?.length, jobType.id, liked]);
 
   useEffect(() => {
-    if (page > 0 && limit > 0 && jobType.id) {
-      setPrevData({jobId:jobType.id,like:liked});
+    if (jobType.id) {
+      console.log('change job type')
+      setPage(1);
+      setLimit(3);
       refetch();
-     
     }
-  }, [page, liked, limit, jobType]);
+  }, [jobType.id, liked]);
+
+  useEffect(() => {
+    if (page > 1 || limit > 3) {
+      refetch();
+    }
+  }, [page, limit,isSuccess]);
 
   return (
     <>
@@ -222,15 +259,17 @@ const MatchedScreend = () => {
           <div className="grid grid-cols-4   grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
           {matchedData && matchedData?.data?.users?.length > 0 ? (
   <>
-    {matchedUsers.map((item: any) => (
+    {
+    matchedData?.data?.users.map((item: any) => (
       <UserCard
         key={item.id}
         handleShowDetail={handleShowDetail}
         matchedData={item}
         jobType={jobType}
+        likeorUnlikeHandler={likeorUnlikeHandler}
       />
     ))}
-    <DefaultCard hasMore={matchedData?.data?.totalPages > page} />
+    <DefaultCard hasMore={matchedData?.data?.totalUsers > matchedUsers?.length} click={handleAddMore} />
   </>
 ) : (
   <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
@@ -292,4 +331,4 @@ const detailVariants = {
   exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
 };
 
-export default MatchedScreend;
+export default React.memo(MatchedScreend);

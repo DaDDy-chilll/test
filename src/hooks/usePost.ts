@@ -22,7 +22,7 @@ const usePost = ({token,queryKey}:usePostProps) => {
         },
         onSuccess:(data) => {
             queryClient.invalidateQueries({queryKey:[queryKey]})
-            console.log("server post return",data)
+            console.log("server post return",data,queryKey)
         }
     })
 

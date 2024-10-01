@@ -66,7 +66,6 @@ const JobScreen = () => {
     token: token as string,
   });
 
-
   const { data: jobDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
     queryFn: () => {
@@ -79,13 +78,11 @@ const JobScreen = () => {
     enabled: !!selectedJobId && showDetails,
   });
 
-
-  console.log("jobDetail", jobDetail);
   const jobs = data?.data || [];
+  console.log(data);
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
-    console.log(jobs);
     return jobs.filter((job: any) =>
       job.job_title.toLowerCase().includes(search.toLowerCase())
     );
@@ -96,7 +93,7 @@ const JobScreen = () => {
   const handleJobType = (e: React.MouseEvent<HTMLDivElement>) =>
     setJobType((e.target as HTMLDivElement).innerText);
   const editHandler = () => {
-    setIsEdit(true)
+    setIsEdit(true);
   };
   const addHandler = () => setIsAdd(true);
   const backHandler = () => {
@@ -105,10 +102,9 @@ const JobScreen = () => {
   };
 
   const handleJobDetails = (id: number) => {
-    console.log("id", id)
-    setShowDetails(true)
-    setSelectedJobId(id)
-  }
+    setShowDetails(true);
+    setSelectedJobId(id);
+  };
 
   useEffect(() => {
     if (fetchError) {
@@ -119,8 +115,6 @@ const JobScreen = () => {
   useEffect(() => {
     dispatch(setTitle(jp.jobs));
   }, [dispatch]);
-
-
 
   return (
     <>

@@ -2,11 +2,14 @@ import { motion } from "framer-motion";
 
 interface DefaultCardProps {
     hasMore: boolean;
+    click:()=>void;
 }
 
-const DefaultCard = ({hasMore}: DefaultCardProps) => {
+const DefaultCard = ({hasMore,click}: DefaultCardProps) => {
     const cardClick = () => {
-        console.log("cardClick");
+        if(hasMore){
+          click();
+        }
     };
   return (
     <motion.button
