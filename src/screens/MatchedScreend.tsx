@@ -35,7 +35,7 @@ const MatchedScreend = () => {
   const [showDetail, setShowDetail] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(2);
+  const [limit, setLimit] = useState<number>(4);
   const dispatch = useDispatch();
 
   const buildQueryString = () => {
