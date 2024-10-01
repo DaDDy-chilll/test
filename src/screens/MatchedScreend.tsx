@@ -22,11 +22,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
+import DefaultCard from "@/components/Matched/DefaultCard";
 
-let MATCHED_USERS: any;
 
 const MatchedScreend = () => {
   const { token } = useSelector((state: RootState) => state.auth);
+  const [matchedUsers, setMatchedUsers] = useState<any>([]);
   const [jobType, setJobType] = useState<{ id: number | null; name: string }>({
     id: null,
     name: "",
@@ -35,7 +36,8 @@ const MatchedScreend = () => {
   const [showDetail, setShowDetail] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(4);
+  const [limit, setLimit] = useState<number>(7);
+  const [prevData, setPrevData] = useState<{jobId:number | null,like:boolean | null}>({jobId:null,like:null});
   const dispatch = useDispatch();
 
   const buildQueryString = () => {
@@ -73,6 +75,7 @@ const MatchedScreend = () => {
     data: matchedData,
     isLoading,
     refetch,
+    isSuccess: matchedDataSuccess,
   } = useQuery({
     queryKey: [QueryKey.MATCHED, jobType?.id, page, liked, limit],
     queryFn: () => {
@@ -86,7 +89,6 @@ const MatchedScreend = () => {
     enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
 
-  console.log("matchedData", matchedData);
 
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.MATCHED_DETAIL],
@@ -115,6 +117,18 @@ const MatchedScreend = () => {
     document.body.style.overflowY = "auto";
   };
 
+  const addMoreMatchedUsers = (data:any) => {
+    if(jobType.id !== prevData.jobId || liked !== prevData.like){
+      setMatchedUsers(data);
+    }else{    
+      setMatchedUsers((prev: any) => {
+        const existingIds = new Set(prev.map((user: any) => user.id));
+      const newUsers = data.filter((user: any) => !existingIds.has(user.id));
+      return [...prev, ...newUsers];
+    });
+  }
+}
+
   useEffect(() => {
     if (jobNameTypeSuccess && defaultJobType.length > 0) {
       setJobType(defaultJobType[0]);
@@ -125,8 +139,16 @@ const MatchedScreend = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if(matchedDataSuccess){
+      addMoreMatchedUsers(matchedData?.data?.users);
+    }
+  },[matchedDataSuccess,matchedData,])
+
+  useEffect(() => {
     if (page > 0 && limit > 0 && jobType.id) {
+      setPrevData({jobId:jobType.id,like:liked});
       refetch();
+     
     }
   }, [page, liked, limit, jobType]);
 
@@ -197,21 +219,24 @@ const MatchedScreend = () => {
           </DropdownMenu>
         </div>
         <AnimatePresence>
-          <div className="grid grid-cols-4 grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
-            {matchedData && matchedData?.data?.users?.length > 0 ? (
-              matchedData?.data?.users?.map((item: any) => (
-                <UserCard
-                  key={item.id}
-                  handleShowDetail={handleShowDetail}
-                  matchedData={item}
-                  jobType={jobType}
-                />
-              ))
-            ) : (
-              <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
-                No Matchde Users found
-              </div>
-            )}
+          <div className="grid grid-cols-4   grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
+          {matchedData && matchedData?.data?.users?.length > 0 ? (
+  <>
+    {matchedUsers.map((item: any) => (
+      <UserCard
+        key={item.id}
+        handleShowDetail={handleShowDetail}
+        matchedData={item}
+        jobType={jobType}
+      />
+    ))}
+    <DefaultCard hasMore={matchedData?.data?.totalPages > page} />
+  </>
+) : (
+  <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
+    No Matched Users found
+  </div>
+)}
           </div>
           {showDetail && (
             <motion.div

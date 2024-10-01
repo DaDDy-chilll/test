@@ -46,7 +46,7 @@ const UserCard = ({
       initial="initial"
       animate="animate"
       exit="exit"
-      className="w-full h-fit max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
+      className="w-full h-80 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
     >
       <div className="flex  space-y-5 flex-col items-center p-3">
         <img
