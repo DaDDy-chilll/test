@@ -20,6 +20,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import usePost  from "@/hooks/usePost";
 import moment from "moment";
+import { Helmet } from "react-helmet-async";
+
 const Profile = () => {
   const dispatch = useDispatch();
   const {token} = useSelector((state:RootState)=>state.auth)
@@ -111,6 +113,9 @@ const Profile = () => {
 
   return (
     <>
+           <Helmet>
+      <title>{jp.profile} - Japan Job</title>
+    </Helmet>
       {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={profileVariants}

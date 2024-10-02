@@ -22,7 +22,7 @@ import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
-
+import { Helmet } from "react-helmet-async";
 const defaultJobType = [
   { id: 0, name: "All" },
   { id: 1, name: "Full Time" },
@@ -113,11 +113,14 @@ const JobScreen = () => {
   }, [fetchError]);
 
   useEffect(() => {
-    dispatch(setTitle(jp.jobs));
+    dispatch(setTitle(jp.joblists));
   }, [dispatch]);
 
   return (
     <>
+           <Helmet>
+      <title>{jp.joblists} - Japan Job</title>
+    </Helmet>
       {/* {isLoading && !error && (
         <Loading isLoading={isLoading} className="h-[calc(100vh-68px)] z-40" />
       )} */}

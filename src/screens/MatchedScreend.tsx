@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React,{ useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import MatchedApplicants from "@/components/Matched/MatchedApplicants";
 import { UserProfile } from "@/types/user";
 import Loading from "@/components/ui/Loading";
@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import DefaultCard from "@/components/Matched/DefaultCard";
 import usePost from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { Helmet } from "react-helmet-async";
 
 const MatchedScreend = () => {
   const dispatch = useDispatch();
@@ -41,9 +41,14 @@ const MatchedScreend = () => {
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(3);
-  const [prevData, setPrevData] = useState<{jobId:number | null,like:boolean | null}>({jobId:null,like:null});
-  const { mutate: likeOrUnlikeMutate, isSuccess } = usePost({ token, queryKey: QueryKey.MATCHED });
-
+  const [prevData, setPrevData] = useState<{
+    jobId: number | null;
+    like: boolean | null;
+  }>({ jobId: null, like: null });
+  const { mutate: likeOrUnlikeMutate, isSuccess } = usePost({
+    token,
+    queryKey: QueryKey.MATCHED,
+  });
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
@@ -94,7 +99,6 @@ const MatchedScreend = () => {
     enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
 
-
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.MATCHED_DETAIL],
     queryFn: () => {
@@ -123,12 +127,10 @@ const MatchedScreend = () => {
   };
 
   const handleAddMore = () => {
-    if(matchedData?.data.totalUsers !== matchedUsers?.length){
-      console.log(matchedData?.data.totalUsers,matchedUsers?.length,matchedData?.data.totalUsers !== matchedUsers?.length)
-      setLimit(prev=>prev+4);
-  }
-  console.log('matched users',matchedUsers)
-}
+    if (matchedData?.data.totalUsers !== matchedUsers?.length) {
+      setLimit((prev) => prev + 4);
+    }
+  };
 
   const addMoreMatchedUsers = (data: any) => {
     setMatchedUsers((prev: any) => {
@@ -142,31 +144,30 @@ const MatchedScreend = () => {
     setPrevData({ jobId: jobType.id, like: liked });
   };
 
-  const likeorUnlikeHandler = useCallback((event:React.MouseEvent<HTMLButtonElement>,user_id:number) => {
-    event.stopPropagation();
-    if (jobType) {
-      const likeOrUnlike = event.currentTarget.name;
-      likeOrUnlikeMutate({
-        endpoint: likeOrUnlike === "like" ? apiRoutes.LIKE : apiRoutes.UNLIKE,
-        body: { user_id: user_id, jobs_id: jobType.id },
-      });
-    }
-    queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
-  },[jobType, likeOrUnlikeMutate, queryClient]);
-
+  const likeorUnlikeHandler = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>, user_id: number) => {
+      event.stopPropagation();
+      if (jobType) {
+        const likeOrUnlike = event.currentTarget.name;
+        likeOrUnlikeMutate({
+          endpoint: likeOrUnlike === "like" ? apiRoutes.LIKE : apiRoutes.UNLIKE,
+          body: { user_id: user_id, jobs_id: jobType.id },
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
+    },
+    [jobType, likeOrUnlikeMutate, queryClient]
+  );
 
   useEffect(() => {
     dispatch(setTitle(jp.matches));
   }, [dispatch]);
-  
 
   useEffect(() => {
     if (jobNameTypeSuccess && defaultJobType.length > 0) {
       setJobType(defaultJobType[0]);
     }
   }, [jobNameTypeSuccess]);
-
-
 
   useEffect(() => {
     if (matchedDataSuccess && matchedData?.data?.users) {
@@ -176,7 +177,7 @@ const MatchedScreend = () => {
 
   useEffect(() => {
     if (jobType.id) {
-      console.log('change job type')
+      console.log("change job type");
       setPage(1);
       setLimit(3);
       refetch();
@@ -187,10 +188,13 @@ const MatchedScreend = () => {
     if (page > 1 || limit > 3) {
       refetch();
     }
-  }, [page, limit,isSuccess]);
+  }, [page, limit, isSuccess]);
 
   return (
     <>
+         <Helmet>
+      <title>{jp.matches} - Japan Job</title>
+    </Helmet>
       {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={matchedVariants}
@@ -257,25 +261,27 @@ const MatchedScreend = () => {
         </div>
         <AnimatePresence>
           <div className="grid grid-cols-4   grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
-          {matchedData && matchedData?.data?.users?.length > 0 ? (
-  <>
-    {
-    matchedData?.data?.users.map((item: any) => (
-      <UserCard
-        key={item.id}
-        handleShowDetail={handleShowDetail}
-        matchedData={item}
-        jobType={jobType}
-        likeorUnlikeHandler={likeorUnlikeHandler}
-      />
-    ))}
-    <DefaultCard hasMore={matchedData?.data?.totalUsers > matchedUsers?.length} click={handleAddMore} />
-  </>
-) : (
-  <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
-    No Matched Users found
-  </div>
-)}
+            {matchedData && matchedData?.data?.users?.length > 0 ? (
+              <>
+                {matchedData?.data?.users.map((item: any) => (
+                  <UserCard
+                    key={item.id}
+                    handleShowDetail={handleShowDetail}
+                    matchedData={item}
+                    jobType={jobType}
+                    likeorUnlikeHandler={likeorUnlikeHandler}
+                  />
+                ))}
+                <DefaultCard
+                  hasMore={matchedData?.data?.totalUsers > matchedUsers?.length}
+                  click={handleAddMore}
+                />
+              </>
+            ) : (
+              <div className="text-center text-gray-400 col-span-4 h-full flex justify-center items-center">
+                No Matched Users found
+              </div>
+            )}
           </div>
           {showDetail && (
             <motion.div

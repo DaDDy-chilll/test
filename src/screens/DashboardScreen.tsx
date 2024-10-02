@@ -19,7 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
-import React, { useState } from 'react';
+import { useState } from 'react';
+import {Helmet} from 'react-helmet-async'
 
 const DashboardScreen = () => {
   const navigate = useNavigate();
@@ -235,6 +236,9 @@ const DashboardScreen = () => {
 
   return (
     <>
+    <Helmet>
+      <title>{jp.dashboard} - Japan Job</title>
+    </Helmet>
       {/* {(isEventLoading || isChatLoading) && (
         <Loading
           isLoading={isEventLoading || isChatLoading}

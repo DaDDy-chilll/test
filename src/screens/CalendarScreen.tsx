@@ -22,7 +22,7 @@ import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
-
+import { Helmet } from "react-helmet-async";
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const CalendarScreen = () => {
@@ -71,6 +71,9 @@ const CalendarScreen = () => {
 
   return (
     <>
+           <Helmet>
+      <title>{jp.calendar} - Japan Job</title>
+    </Helmet>
       {false && (
         <Loading isLoading={false} className="h-[calc(100vh-68px)]" />
       )}

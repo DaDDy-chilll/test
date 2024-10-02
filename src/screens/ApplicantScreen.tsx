@@ -20,6 +20,8 @@ import { jp } from "@/lang/jp";
 import { userProfile } from "@/constants/mock";
 import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
+import { Helmet } from "react-helmet-async";
+
 const itemsPerPage = 5;
 const initialFilter: FilterType = {
   live_in_japan: "0",
@@ -47,7 +49,7 @@ const ApplicantScreen = () => {
     if (currentPage > 0) params.append("page", currentPage.toString());
     return params.toString();
   };
-  const { data, isLoading, refetch,error } = useQuery({
+  const { data, isLoading, refetch, error } = useQuery({
     queryKey: [QueryKey.APPLICANTS, currentPage, filter],
     queryFn: () => {
       return fetchServer({
@@ -65,7 +67,7 @@ const ApplicantScreen = () => {
   });
 
   console.log("error applicants", error);
-  
+
   const {
     data: jobTypes,
     isLoading: isJobTypesLoading,
@@ -132,6 +134,9 @@ const ApplicantScreen = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{jp.applicant} - Japan Job</title>
+      </Helmet>
       {(isLoading || isDetailLoading) && (
         <Loading
           isLoading={isLoading || isDetailLoading}

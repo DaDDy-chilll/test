@@ -28,7 +28,7 @@ import useChat from "@/hooks/useChat";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
-
+import { Helmet } from "react-helmet-async";
 // company id
 // const currentUser = {
 //   id: 1,
@@ -240,6 +240,9 @@ const ChatScreen = () => {
   }, [navChat]);
   return (
     <>
+           <Helmet>
+      <title>{jp.chat} - Japan Job</title>
+    </Helmet>
       {isLoading && (
         <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
       )}
