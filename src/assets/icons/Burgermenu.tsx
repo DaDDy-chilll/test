@@ -22,7 +22,7 @@ const Burgermenu = () => {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M6 18 18 6M6 6l12 12"
+            d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
           />
         </svg>
       ) : (

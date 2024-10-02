@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-
+import moment from "moment";
 interface DatePickerProps {
   type: string;
   label: string;
@@ -8,6 +8,7 @@ interface DatePickerProps {
   className?: string;
   placeholder?: string;
   value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -17,16 +18,21 @@ const DatePicker: React.FC<DatePickerProps> = ({
   label,
   className,
   placeholder = "",
+  onChange,
 }) => {
+
+  const formattedValue = value ? moment(value).format("YYYY-MM-DD") : "";
   return (
     <div className="relative z-0 w-full mb-5 group">
       <input
         type="date"
         name={name}
         id={name}
+        value={formattedValue}
         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         required
         placeholder={placeholder}
+        onChange={onChange}
       />
       <label
         htmlFor={name}

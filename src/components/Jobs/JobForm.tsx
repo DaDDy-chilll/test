@@ -156,7 +156,6 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             options={jobTypes}
             className=""
             defaultOption={jp.chooseJobType}
-            value=""
           />
 
           <Select

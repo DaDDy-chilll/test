@@ -60,7 +60,7 @@ const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
         </div>
         <div className="flex flex-col items-end gap-6 ">
           <p className="text-sm font-semibold text-gray-700">
-            ¥{item.annual_salary}
+            ¥ {item.annual_salary}
           </p>
           <p className="text-xs font-light text-gray-500">{date}</p>
         </div>

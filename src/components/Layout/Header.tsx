@@ -15,7 +15,7 @@ import Burgermenu from "@/assets/icons/Burgermenu";
 
 const Header = () => {
   let title = useSelector((state: RootState) => state.navigation.title);
-  const { user } = useSelector((state: RootState) => state.auth);
+  const name = useSelector((state: RootState) => state.navigation.name);
   const defaultNoti = [
     {
       id: 1,
@@ -152,7 +152,7 @@ const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <div>
-          <h1>{user?.name}</h1>
+          <h1>{name}</h1>
         </div>
       </div>
     </nav>

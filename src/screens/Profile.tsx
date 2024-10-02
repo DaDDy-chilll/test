@@ -1,18 +1,11 @@
 import ProfileDetail from "@/components/ui/ProfileDetail";
 import { motion } from "framer-motion";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useCallback, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import Input from "@/components/ui/Input";
-import Select from "@/components/ui/Select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import logo from "@/assets/icons/logo.svg";
-import defaultImage from "@/assets/images/default.png";
-import { jp } from "@/lang/jp";
-import DatePicker from "@/components/ui/DatePicker";
 import Loading from "@/components/ui/Loading";
+import { jp } from "@/lang/jp";
 import { useDispatch } from "react-redux";
-import { setTitle } from "@/store";
+import { setTitle, setName } from "@/store";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
@@ -21,17 +14,33 @@ import { RootState } from "@/store/store";
 import usePost from "@/hooks/usePost";
 import moment from "moment";
 import { Helmet } from "react-helmet-async";
+import ProfileForm from "@/components/Profile/ProfileForm";
+
+
+const defaultFormData = {
+  name: "",
+  industry_type_id: {label: "", value: ""},
+  budget: "",
+  starting: "",
+  staff:  {label: "", value: ""},
+  prefecture_id: {label: "", value: ""},
+  company_des: "",
+  address: "",
+}
+
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [isEdit, setIsEdit] = useState(false);
+  const [formData, setFormData] = useState(defaultFormData);
+  console.log('formData', formData);
   const { data, isLoading } = useFetch({
     endpoint: apiRoutes.PROFILE,
     key: QueryKey.PROFILE,
     token: token as string,
   });
-  const { mutate, isPending, error, isSuccess } = usePost({
+  const { mutate, isPending, error, isSuccess,data: profileData } = usePost({
     token,
     queryKey: QueryKey.PROFILE,
   });
@@ -60,11 +69,13 @@ const Profile = () => {
     token: token as string,
   });
 
-  const countries =
-    city?.data.map((type: any) => ({
-      value: type.id.toString(),
-      label: type.area,
-    })) || [];
+  console.log('city', city);
+
+  // const countries =
+  //   city?.data.map((type: any) => ({
+  //     value: type.id.toString(),
+  //     label: type.area,
+  //   })) || [];
 
   const jobTypes =
     jobType?.data.map((type: any) => ({
@@ -80,7 +91,11 @@ const Profile = () => {
     if (isSuccess) {
       setIsEdit(false);
     }
-  }, [isSuccess]);
+    if (profileData) {
+      console.log('profileData', profileData);
+      dispatch(setName(profileData.data.name));
+    }
+  }, [isSuccess,data]);
 
   const employeeNumber = [
     { value: "100", label: "100" },
@@ -89,7 +104,45 @@ const Profile = () => {
     { value: "400", label: "400" },
   ];
 
+
+  const transformAreaData = useCallback(
+    (data: any) => {
+      if (data) {
+        const areaList = data?.map((item: any) => ({
+          label: item.area,
+          value: item.id.toString(),
+        }));
+        const relativeArea = data?.reduce((acc: any, item: any) => {
+          if (item.m_prefectures.length > 0) {
+            acc[item.id.toString()] = item.m_prefectures.map(
+              (prefecture: any) => ({
+                label: prefecture.name,
+                value: prefecture.id.toString(),
+              })
+            );
+          }
+          return acc;
+        }, {});
+        return { areaList, relativeArea };
+      }
+    },
+    [city]
+  );
+  const { areaList, relativeArea } = useMemo(() => {
+    if (city && "data" in city) {
+      return (
+        transformAreaData(city.data) || {
+          areaList: [],
+          relativeArea: {},
+        }
+      );
+    } else return { areaList: [], relativeArea: {} };
+  }, [city, transformAreaData]);
+
+  console.log('areaList', areaList);
+  console.log('relativeArea', relativeArea);
   const editHandler = () => setIsEdit(true);
+
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,8 +150,7 @@ const Profile = () => {
     const formData = new FormData(form);
     const jobData = {
       name: formData.get("name") as string,
-      // industry_type_id: Number(formData.get("industry_type_id") as string),
-      industry_type_id: 1,
+      industry_type_id: Number(formData.get("industry_type_id") as string),
       budget: Number(formData.get("budget") as string),
       starting: moment(formData.get("starting") as string).format("DD/MM/YYYY"),
       staff: Number(formData.get("staff") as string),
@@ -106,11 +158,27 @@ const Profile = () => {
       company_des: formData.get("company_des") as string,
       address: formData.get("address") as string,
     };
-    // console.log('jobData', jobData);
+    // console.log('jobData', jobData,'prefecture_id', formData.get("prefecture_id") as string);
+  
     mutate({ endpoint: apiRoutes.PROFILE, body: jobData, method: "PUT" });
   };
 
-  console.log("data", data);
+  useEffect(() => {
+    if (data) {
+      console.log(data.data);
+      setFormData({
+        name: data.data.name,
+        industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},
+        budget: data.data.budget,
+        starting: data.data.starting,
+        staff: {label: data.data.staff, value: data.data.staff},
+        prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
+        company_des: data.data.company_des,
+        address: data.data.address,
+      });
+    }
+  }, [data]);
+
   return (
     <>
       <Helmet>
@@ -129,117 +197,17 @@ const Profile = () => {
             <ProfileDetail editHandler={editHandler} data={data?.data} />
           )}
           {isEdit && (
-            <motion.div
-              key="form"
-              className="w-full h-full bg-gray-100 px-8 pb-5 pt-29 space-y-2 flex flex-col justify-center items-center relative"
-              variants={formVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <div className="absolute left-7 top-5 flex items-center gap-3">
-                <div className="w-12">
-                  <img src={logo} className="w-full" alt="Japan job logo" />
-                </div>
-                <h1 className="font-medium">JAPAN JOB</h1>
-              </div>
-              <div className="flex justify-between w-5/6 pt-14 pb-2 pl-10">
-                <div className="space-y-1">
-                  <h1 className="sub-title text-black">Profile Photo</h1>
-                  <p>This will be your public photo for your company</p>
-                </div>
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src={defaultImage} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </div>
-              <form className=" w-full" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">
-                  <Input
-                    name="name"
-                    type="text"
-                    placeholder={jp.companyName}
-                    label={jp.companyName}
-                    className="mt-1 block w-full bg-gray-100 "
-                    value={data?.data.name}
-                  />
-
-                  <Select
-                    name="industry_type_id"
-                    label={jp.jobArea}
-                    id={jp.jobArea}
-                    options={jobTypes}
-                    className=""
-                    defaultOption={data?.data.industry_type.name || jp.chooseIndustry}
-                  />
-                  <Input
-                    name="budget"
-                    type="text"
-                    label={jp.investmentAmount}
-                    className="mt-1 block w-full bg-gray-100 "
-                    placeholder="100000 $"
-                    value={data?.data.budget}
-                  />
-                  <Input
-                    name="address"
-                    type="text"
-                    label={jp.undertake}
-                    className="mt-1 block w-full bg-red-100 "
-                    value={data?.data.address}
-                  />
-                  <Select
-                    name="staff"
-                    label={jp.employeeNumber}
-                    id={jp.employeeNumber}
-                    options={employeeNumber}
-                    className=""
-                    defaultOption={data?.data.staff || jp.chooseEmployee}
-                  />
-                  <Select
-                    name="prefecture_id"
-                    label="Location"
-                    id="location"
-                    options={countries}
-                    className=""
-                    defaultOption={data?.data.prefecture.name || jp.chooseLocation}
-                  />
-                  <DatePicker
-                    name="starting"
-                    type="text"
-                    label={jp.establishment}
-                    className="mt-1 block w-ful"
-                    value={data?.data.starting}
-                  />
-                  <div></div>
-                  <span className="col-span-2">
-                    <Input
-                      name="company_des"
-                      type="text"
-                      label={jp.companyDescription}
-                      className="mt-1 block w-full bg-gray-100 "
-                      placeholder="100000 $"
-                      value={data?.data.company_des}
-                    />
-                  </span>
-                </div>
-
-                <div className="flex justify-between w-full px-10 mr-10">
-                  <button
-                    className="underline font-medium"
-                    onClick={() => setIsEdit(false)}
-                  >
-                    Back
-                  </button>
-                  <Button
-                    variant="destructive"
-                    className="font-medium w-44"
-                    onClick={() => {}}
-                  >
-                    Finish
-                  </Button>
-                </div>
-              </form>
-            </motion.div>
+            <ProfileForm
+              setIsEdit={setIsEdit}
+              data={data?.data}
+              jobTypes={jobTypes}
+              employeeNumber={employeeNumber}
+              countries={areaList}
+              handleSubmit={handleSubmit}
+              formData={formData}
+              setFormData={setFormData}
+              city={relativeArea}
+            />
           )}
         </AnimatePresence>
       </motion.div>
@@ -253,9 +221,5 @@ const profileVariants = {
   exit: { opacity: 0, y: -100 },
 };
 
-const formVariants = {
-  hidden: { opacity: 0, y: 100 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
-};
+
 export default Profile;

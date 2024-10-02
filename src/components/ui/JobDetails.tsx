@@ -50,7 +50,7 @@ const JobDetails = ({
       </div>
       <div className="text-center">
         <h1 className="font-bold text-xl my-3">{data?.job_title || "Job Title"}</h1>
-        <p className="text-gray-500">{data?.annual_salary || "Salary"}</p>
+        <p className="text-gray-500">¥ {data?.annual_salary || "Salary"}</p>
       </div>
       <div className="flex justify-center gap-4 space-x-20 pt-6 pb-5">
         <span className="flex items-center gap-2">
@@ -165,7 +165,7 @@ const JobDetails = ({
                 fill="#211E1E"
               />
             </svg>
-            <p>{data?.annual_salary || "Annual Salary"}</p>
+            <p>¥ {data?.annual_salary || "Annual Salary"}</p>
           </div>
           <div className="flex items-center gap-2">
             <svg
@@ -286,9 +286,9 @@ const JobDetails = ({
 };
 
 const formVariants = {
-  hidden: { opacity: 0, y: 100 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },
+  exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
 };
 
 export default JobDetails;

@@ -5,6 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   title: jp.dashboard,
   sideBar: true,
+  name: localStorage.getItem("name") || "", 
 };
 
 export const navigationSlice = createSlice({
@@ -18,8 +19,11 @@ export const navigationSlice = createSlice({
     setSideBar: (state) => {
       state.sideBar = !state.sideBar;
     },
+    setName: (state, action) => {
+      state.name = action.payload;
+    },
   },
 });
 
-export const { setTitle, setSideBar } = navigationSlice.actions;
+export const { setTitle, setSideBar, setName } = navigationSlice.actions;
 export default navigationSlice.reducer;

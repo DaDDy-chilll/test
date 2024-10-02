@@ -9,7 +9,7 @@ import User from "@/navigations/routes";
 import { useState } from "react";
 import { ErrorType } from "@/types/helperTypes";
 import { errorMessage } from "@/constants/errorMessage";
-
+import { setName } from "@/store";
 
 
 const useAuth = () => {
@@ -24,6 +24,7 @@ const useAuth = () => {
             setError(null)
             if (data.data) {
                 dispatch(setToken(data.data));
+                dispatch(setName(data.data.name || data.data.email));
                 navigate(User.DASHBOARD);
             }
         },
@@ -40,7 +41,7 @@ const useAuth = () => {
         },
         onSuccess: (data) => {
             setError(null)
-            // dispatch(setVerified(true));
+            dispatch(setName(data.data.name || data.data.email));
             dispatch(setToken(data));
             navigate(User.LOGIN);
         },

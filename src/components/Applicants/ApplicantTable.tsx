@@ -394,7 +394,7 @@ const ApplicantTable = ({
                     </g>
                   </svg>
                 </div>
-                <p className="text-gray-500 text-lg">No Applicants</p>
+                <p className="text-gray-500 text-lg">No Applicants Yet</p>
               </td>
             </tr>
           )}

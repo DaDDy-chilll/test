@@ -14,9 +14,11 @@ interface SelectProps {
   className?: string;
   defaultOption?: string;
   name?: string;
-  value?: string;
+  value?: {label: string, value: string};
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
   style?: number;
+  register?: any;
+  disabled?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -27,7 +29,13 @@ const Select: React.FC<SelectProps> = ({
   className = "",
   defaultOption = "Choose an option",
   style = 0,
+  register,
+  value,
+  onChange,
+  disabled = false,
 }) => {
+
+
   return (
     <div
       className={cn(
@@ -47,20 +55,36 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         name={name}
+        onChange={(e) => {
+          const selectedOption = options.find(option => option.value === e.target.value);
+          if (onChange && selectedOption) {
+            onChange({
+              target: {
+                value: selectedOption.value,
+                labels: selectedOption.label,
+              }
+            } as any);
+          }
+        }}
         className={`relative block font-normal outline-none  w-full text-sm text-black bg-transparent ${
           style === 0
             ? "border-0 border-b-2 py-2.5 px-0"
-            : "border-none bg-gray-300  px-1 py-1.5 rounded-md"
+            : "border-none bg-gray-500  px-1 py-1.5 rounded-md"
         } appearance-none  peer`}
+        disabled={disabled}
       >
-        <option defaultValue={defaultOption} value={defaultOption} >
+        <option defaultValue={defaultOption} disabled={disabled}>
           {defaultOption}{" "}
         </option>
-        {options.filter((option) => option.label != defaultOption).map((option, index) => (
-          <option key={index} value={option.value}>
+
+        {options.filter((option) => option.label != defaultOption).map((option, index) =>{
+          return(
+            <option key={index} value={option.value} disabled={disabled} selected={option.value == value?.value}>
             {option.label}
           </option>
-        ))}
+          )
+        })}
+
       </select>
 
       <div className={`absolute right-2  ${style === 0 ? "top-2" : "top-1"}`}>

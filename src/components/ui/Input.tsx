@@ -23,9 +23,12 @@ const Input: React.FC<InputProps> = ({
   placeholder = "",
   required = true,
 }) => {
+
+
+
   return (
     <div className="relative z-0 w-full mb-5 group">
-      <input
+      <input  
         type={type}
         name={name}
         id={name}

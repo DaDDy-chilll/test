@@ -74,4 +74,6 @@ export const jp = {
   supportHouse:"サポートハウス",
   supportHouseRent:"サポートハウス家賃",
   noChatFound:"チャットが見つかりませんでした",
+  area:"エリア",
+  city:"都道府県",
 };

@@ -116,7 +116,7 @@ const FilterBar = ({
           setFilter({ ...filter, job_type: e.target.value });
         }}
       >
-        <option value="">Job Type</option>
+        <option value="" >Job Type</option>
         {jobTypes &&
           jobTypes.data.length > 0 &&
           jobTypes.data.map((jobType: any) => (

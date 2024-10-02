@@ -23,6 +23,7 @@ import { jp } from "@/lang/jp";
 import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { Helmet } from "react-helmet-async";
+import { colors } from "@/constants/color";
 const defaultJobType = [
   { id: 0, name: "All" },
   { id: 1, name: "Full Time" },
@@ -118,9 +119,9 @@ const JobScreen = () => {
 
   return (
     <>
-           <Helmet>
-      <title>{jp.joblists} - Japan Job</title>
-    </Helmet>
+      <Helmet>
+        <title>{jp.joblists} - Japan Job</title>
+      </Helmet>
       {/* {isLoading && !error && (
         <Loading isLoading={isLoading} className="h-[calc(100vh-68px)] z-40" />
       )} */}
@@ -213,7 +214,25 @@ const JobScreen = () => {
                   );
                 })
             ) : (
-              <p className="text-center text-lg">No matching jobs found</p>
+              <div className="w-full h-full flex flex-col justify-center items-center">
+                <svg
+                  width="152px"
+                  height="152px"
+                  viewBox="0 0 20 19"
+                  fill={colors.third}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 19C1.45 19 0.979167 18.8042 0.5875 18.4125C0.195833 18.0208 0 17.55 0 17V6C0 5.45 0.195833 4.97917 0.5875 4.5875C0.979167 4.19583 1.45 4 2 4H6V2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0H12C12.55 0 13.0208 0.195833 13.4125 0.5875C13.8042 0.979167 14 1.45 14 2V4H18C18.55 4 19.0208 4.19583 19.4125 4.5875C19.8042 4.97917 20 5.45 20 6V17C20 17.55 19.8042 18.0208 19.4125 18.4125C19.0208 18.8042 18.55 19 18 19H2ZM2 17H18V6H2V17ZM8 4H12V2H8V4Z"
+                    fillOpacity="0.8"
+                    strokeWidth={1}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <p className="text-center text-lg text-gray-500 mt-4">
+                  No added jobs yet
+                </p>
+              </div>
             )}
           </div>
           <div className="flex justify-end items-center mt-4 ">
@@ -231,7 +250,7 @@ const JobScreen = () => {
       {showDetails && !isEdit && (
         <motion.div
           key="job-details"
-          className="w-full h-full flex justify-center items-center px-10 z-50"
+          className="w-full h-full flex justify-center items-center z-50"
         >
           <JobDetails
             backHandler={setShowDetails}
@@ -257,9 +276,9 @@ const jobVariants = {
 };
 
 const formVariants = {
-  hidden: { opacity: 0, y: 100 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },
+  exit: { opacity: 0, x: -100, transition: { duration: 0.2 } },
 };
 
 export default JobScreen;
