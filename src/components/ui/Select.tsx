@@ -56,7 +56,7 @@ const Select: React.FC<SelectProps> = ({
         <option defaultValue={defaultOption} value={defaultOption} >
           {defaultOption}{" "}
         </option>
-        {options.map((option, index) => (
+        {options.filter((option) => option.label != defaultOption).map((option, index) => (
           <option key={index} value={option.value}>
             {option.label}
           </option>
