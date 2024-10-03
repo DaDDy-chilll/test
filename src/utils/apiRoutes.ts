@@ -16,7 +16,8 @@ export interface ApiRoutesType {
     JOB_DETAILS:string,
     MATCHED:string,
     LIKE:string,
-    UNLIKE:string
+    UNLIKE:string,
+    UPDATE_JOB:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -34,6 +35,7 @@ export const apiRoutes: ApiRoutesType = {
     PROFILE:"/client/auth/company",
     USER_DETAILS:"client/users/detail",
     JOB_DETAILS:"/client/job/detail",
+    UPDATE_JOB:"/client/job/update",
     MATCHED:"/client/job/match",
     LIKE:"/client/users/like",
     UNLIKE:'/client/users/dislike'

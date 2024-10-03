@@ -17,7 +17,6 @@ const MessageItem: React.FC<MessageItemProps> = ({
   const isCurrentUser = Number(`2${currentUser.id}`) === message.sender_id;
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${selectedChat.jobfinder_profile_image}`;
 
-  console.log("message",message,currentUser,selectedChat);
   return (
     <div
       className={`flex  mb-3 items-center gap-2   ${

@@ -137,9 +137,9 @@ const ApplicantScreen = () => {
       <Helmet>
         <title>{jp.applicant} - Japan Job</title>
       </Helmet>
-      {(isLoading || isDetailLoading) && (
+      {(isLoading || isDetailLoading || isJobTypesLoading) && (
         <Loading
-          isLoading={isLoading || isDetailLoading}
+          isLoading={isLoading || isDetailLoading || isJobTypesLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}

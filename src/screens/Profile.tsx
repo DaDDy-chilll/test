@@ -69,7 +69,6 @@ const Profile = () => {
     token: token as string,
   });
 
-  console.log('city', city);
 
   // const countries =
   //   city?.data.map((type: any) => ({
@@ -139,8 +138,8 @@ const Profile = () => {
     } else return { areaList: [], relativeArea: {} };
   }, [city, transformAreaData]);
 
-  console.log('areaList', areaList);
-  console.log('relativeArea', relativeArea);
+  // console.log('areaList', areaList);
+  // console.log('relativeArea', relativeArea);
   const editHandler = () => setIsEdit(true);
 
 
@@ -184,7 +183,7 @@ const Profile = () => {
       <Helmet>
         <title>{jp.profile} - Japan Job</title>
       </Helmet>
-      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
+      {(isLoading || isJobTypesLoading || isCityLoading) && <Loading isLoading={isLoading || isJobTypesLoading || isCityLoading} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={profileVariants}
         initial="initial"

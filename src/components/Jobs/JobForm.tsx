@@ -18,9 +18,12 @@ import { apiRoutes } from "@/utils/apiRoutes";
 type JobFormProps = {
   onBack?: () => void;
   formVariant?: any;
+  form: any;
+  setForm: any;
+  setShowDetails?: (value: boolean) => void;
 };
 
-const JobForm = ({ onBack, formVariant }: JobFormProps) => {
+const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
   const {mutate,isPending,error,isSuccess} = usePost({token,queryKey:QueryKey.JOBS})
   const [jobDescription, setJobDescription] = useState<string>('');
@@ -84,13 +87,12 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
- 
+    const formData = new FormData(e.target as HTMLFormElement);
+
     const jobData = {
       job_title: formData.get("job_title") as string,
       job_types: Number(formData.get("job_types") as string),
-      job_des: jobDescription,
+      job_des: form.job_des,
       prefecture_id: Number(formData.get("prefecture_id") as string),
       annual_salary: Number(formData.get("annual_salary") as string),
       working_time: Number(formData.get("working_time") as string),
@@ -101,8 +103,9 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
       support_home_rent: formData.get("support_home_rent") as string ? 1 : 0,
     };
     console.log('jobData', jobData);
-    mutate({endpoint:apiRoutes.JOBS,body:jobData})
+    mutate({endpoint:`${apiRoutes.UPDATE_JOB}/${form.id}`,body:jobData,method:'PUT'})
   };
+
 
 
   useEffect(() => {
@@ -112,8 +115,11 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
     }
     if(isSuccess){
       onBack?.()
+      setShowDetails && setShowDetails(false)
     }
   }, [error,isSuccess]);
+
+  console.log('form',form);
 
   return (
     <motion.div
@@ -147,6 +153,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             placeholder={jp.jobName}
             label={jp.jobName}
             className="mt-1 block w-full bg-gray-100"
+            value={form.job_title}
+            onChange={(e) => setForm({ ...form, job_title: e.target.value })}
           />
 
           <Select
@@ -156,6 +164,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             options={jobTypes}
             className=""
             defaultOption={jp.chooseJobType}
+            value={form.job_type}
+            onChange={(e) => setForm({ ...form, job_type: {label: e.target.labels, value: e.target.value} })}
           />
 
           <Select
@@ -165,6 +175,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             options={countries}
             className=""
             defaultOption={jp.chooseLocation}
+            value={form.prefecture_id}
+            onChange={(e) => setForm({ ...form, prefecture_id: {label: e.target.labels, value: e.target.value} })}
           />
 
           <Select
@@ -174,6 +186,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             options={annualSalary}
             className=""
             defaultOption={jp.chooseSalary}
+            value={form.annual_salary}
+            onChange={(e) => setForm({ ...form, annual_salary: {label: e.target.labels, value: e.target.value} })}
           />
 
           <Select
@@ -183,6 +197,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
             options={workHour}
             className=""
             defaultOption={jp.chooseDays}
+            value={form.working_time}
+            onChange={(e) => setForm({ ...form, working_time: {label: e.target.labels, value: e.target.value} })}
           />
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">
@@ -194,6 +210,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
               label=""
               className="mt-1 block w-auto bg-gray-200"
               placeholder="100000 $"
+              value={form.start_time}
+              onChange={(e) => setForm({ ...form, start_time: e.target.value })}
             />
             <p> ~ </p>
             <Input
@@ -202,6 +220,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
               label=""
               className="mt-1 block w-auto bg-gray-200"
               placeholder="100000 $"
+              value={form.end_time}
+              onChange={(e) => setForm({ ...form, end_time: e.target.value })}
             />
           </div>
           <div className="col-span-2 w-full ">
@@ -215,6 +235,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
                     name={benefit.value}
                     value={benefit.value}
                     className="accent-primaryColor"
+                    checked={form[benefit.value] == 1}
+                    onChange={(e) => setForm({ ...form, [benefit.value]: e.target.checked ? 1 : 0 })}
                   />
                   <label htmlFor={benefit.value} className="text-sm">
                     {benefit.label}
@@ -237,8 +259,8 @@ const JobForm = ({ onBack, formVariant }: JobFormProps) => {
           </div>
           <span className="col-span-2 mt-3">
             <ReactQuill
-              value={jobDescription}
-              onChange={setJobDescription}
+              value={form.job_des}
+              onChange={(e) => setForm({ ...form, job_des: e })}
               theme="snow"
               className="h-36 mb-16"
               placeholder={jp.companyDescription}

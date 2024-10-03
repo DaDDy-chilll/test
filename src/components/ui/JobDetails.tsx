@@ -20,6 +20,7 @@ type Props = {
   deleteHandler?: () => void;
   isDetails?: boolean;
   data?:any
+  setFormData?: (value: any) => void;
 };
 const JobDetails = ({
   formData,
@@ -27,12 +28,15 @@ const JobDetails = ({
   editHandler,
   deleteHandler,
   isDetails = false,
+  setFormData,
   data
 }: Props) => {
   const clickBackEvent = () => backHandler && backHandler(false);
   const clickDeleteEvent = () => deleteHandler && deleteHandler();
-  const clickEditEvent = () => editHandler && editHandler(true);
-  console.log(data);
+  const clickEditEvent = () => {
+    editHandler && editHandler(true);
+    setFormData && setFormData((prev:any) => ({...prev,id:data.id}));
+  };
   return (
     <motion.div
       key="complete"

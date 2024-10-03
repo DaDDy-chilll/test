@@ -32,6 +32,20 @@ const defaultJobType = [
   { id: 4, name: "Internship" },
 ];
 
+const defaultForm = {
+  id:null,
+  job_title: "",
+  job_type: {label: "", value: ""},
+  prefecture_id: {label: "", value: ""},
+  annual_salary: {label: "", value: ""},
+  working_time: {label: "", value: ""},
+  start_time: "",
+  end_time: "",
+  job_des: "",
+  support_home: "",
+  support_home_rent:""
+}
+
 const JobScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
@@ -41,6 +55,7 @@ const JobScreen = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
   const {
@@ -80,7 +95,7 @@ const JobScreen = () => {
   });
 
   const jobs = data?.data || [];
-  console.log(data);
+
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
@@ -116,6 +131,26 @@ const JobScreen = () => {
   useEffect(() => {
     dispatch(setTitle(jp.joblists));
   }, [dispatch]);
+
+  useEffect(() => {
+    if(jobDetail?.data) {
+      console.log('jobDetail',jobDetail);
+      setForm({
+        id:jobDetail?.data.id,
+        job_title: jobDetail?.data.job_title,
+        job_type: {label: jobDetail?.data.job_type.job_type_jp, value: jobDetail?.data.job_types},
+        prefecture_id: {label: jobDetail?.data.prefecture.name, value: jobDetail?.data.prefecture_id},
+        annual_salary: {label: jobDetail?.data.annual_salary, value: jobDetail?.data.annual_salary},
+        working_time: {label: jobDetail?.data.working_time, value: jobDetail?.data.working_time},
+        start_time: jobDetail?.data.start_time,
+        end_time: jobDetail?.data.end_time,
+        job_des: jobDetail?.data.job_des,
+        support_home:jobDetail?.data.support_home,
+        support_home_rent:jobDetail?.data.support_home_rent
+      });
+    }
+  }, [jobDetail]);
+
 
   return (
     <>
@@ -257,12 +292,13 @@ const JobScreen = () => {
             isDetails={true}
             editHandler={editHandler}
             data={jobDetail?.data}
+            setFormData={setForm}
           />
         </motion.div>
       )}
       {(isAdd || isEdit) && (
         <div className="w-full h-full flex justify-center items-center px-10">
-          <JobForm onBack={backHandler} formVariant={formVariants} />
+          <JobForm onBack={backHandler} setShowDetails={setShowDetails} formVariant={formVariants} form={form} setForm={setForm}/>
         </div>
       )}
     </>
