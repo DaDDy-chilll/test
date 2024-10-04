@@ -8,7 +8,6 @@ import LoginScreen from "./Auth/LoginScreen";
 import RegisterScreen from "./Auth/RegisterScreen";
 import ChatScreen from "./ChatScreen";
 // import ProfileScreen from "./ProfileScreen";
-import AddJobScreen from "./AddJobScreen";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
 import Otp from "./Auth/Otp";
@@ -24,7 +23,6 @@ export {
   LoginScreen,
   RegisterScreen,
   ChatScreen,
-  AddJobScreen,
   ForgotPassword,
   ChangePassword,
   Otp,

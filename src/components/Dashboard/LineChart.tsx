@@ -1,3 +1,4 @@
+import { colors } from "@/constants/color";
 import {
   LineChart,
   Line,
@@ -8,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+
 
 type LineChartProps = {
   data?: any[];
@@ -28,7 +30,7 @@ const LineCharts = ({ data = [] }: LineChartProps) => {
         <Line
           type="monotone"
           dataKey="matched"
-          stroke="#8884d8"
+          stroke={colors.primary}
           activeDot={{ r: 8 }}
         />
       </LineChart>
