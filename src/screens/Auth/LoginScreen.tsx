@@ -1,5 +1,5 @@
 import { FormEvent, useEffect } from "react";
-import { Button,Input, } from "@/components";
+import { Button, Input } from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 import { LoginProps, AuthErrorType } from "@/types/helperTypes";
@@ -7,16 +7,18 @@ import useAuth from "@/hooks/useAuth";
 import { BeatLoader } from "react-spinners";
 import { NavLink, useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import useHandleError from "@/hooks/useHandleError";
 import { jp } from "@/lang/jp";
+import { setForgotPassword } from "@/store";
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { onLogin, isLoginPending, error } = useAuth();
   const { authHandleError, emailError, passwordError, resetAuthError } =
     useHandleError();
   const { user, token } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,8 +37,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
-
   }, [error]);
+
+  const handleForgotPassword = () => {
+    dispatch(setForgotPassword(true));
+    navigate(RouteName.FORGOT_PASSWORD);
+  };
 
   return (
     <div className="bg-gray-200">
@@ -55,7 +61,9 @@ const LoginScreen = () => {
               initial="hidden"
               animate="visible"
             >
-              <h4 className="text-center text-2xl font-bold text-black my-10">{jp.login}</h4>
+              <h4 className="text-center text-2xl font-bold text-black my-10">
+                {jp.login}
+              </h4>
             </motion.div>
             <motion.form
               className="space-y-8 w-full"
@@ -64,7 +72,7 @@ const LoginScreen = () => {
               initial="hidden"
               animate="visible"
             >
-              <div >
+              <div>
                 <Input
                   name="email"
                   type="email"
@@ -74,22 +82,22 @@ const LoginScreen = () => {
                   error={!!emailError ? emailError : ""}
                 />
               </div>
-              <div >
+              <div>
                 <Input
                   name="password"
                   type="password"
-                  label={jp.password} 
+                  label={jp.password}
                   className="mt-1 block w-full"
                   required={false}
                   error={!!passwordError ? passwordError : ""}
                 />
                 <div className="flex justify-end">
-                  <NavLink
-                    to={RouteName.FORGOT_PASSWORD}
-                    className="text-xs text-end  text-gray-500"
+                  <div
+                    onClick={handleForgotPassword}
+                    className="text-xs text-end  text-gray-500 cursor-pointer"
                   >
                     {jp.forgotPassword}
-                  </NavLink>
+                  </div>
                 </div>
               </div>
 

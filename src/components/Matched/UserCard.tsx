@@ -6,28 +6,31 @@ import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useEffect } from "react";
-
+import moment from "moment";
 type UserCardProps = {
   handleShowDetail: (id: number) => void;
   matchedData: any;
-jobType: { id: number | null; name: string } | null;
-likeorUnlikeHandler: (event:React.MouseEvent<HTMLButtonElement>,user_id:number) => void;
+  jobType: { id: number | null; name: string } | null;
+  likeorUnlikeHandler: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    user_id: number
+  ) => void;
 };
 
 const UserCard = ({
   handleShowDetail,
   matchedData,
   jobType,
-  likeorUnlikeHandler
+  likeorUnlikeHandler,
 }: UserCardProps) => {
   // const profile = `https://api.japanjob.exbrainedu.com/v1/file/photo/${matchedData.m_basicinfos.profile_path}` || null;
 
   const cardClick = () => {
-      handleShowDetail(matchedData.id);
+    handleShowDetail(matchedData.id);
   };
-
-
-
+  const { m_preferred_jobs, m_basicinfos } = matchedData;
+  console.log("m_preferred_jobs", m_preferred_jobs);
+  const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
 
   return (
     <motion.div
@@ -36,51 +39,86 @@ const UserCard = ({
       initial="initial"
       animate="animate"
       exit="exit"
-      className="w-full h-80 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
+      className="w-full h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
     >
-      <div className="flex  space-y-5 flex-col items-center p-3">
+      <div className="flex w-full h-full  justify-between flex-col items-center p-3">
         <img
           className="w-16 h-16 mb-3 rounded-full shadow-lg"
-          src={DefaultProfile}
-          alt="Bonnie image"
+          src={profileImage || DefaultProfile}
+          alt={m_basicinfos.name}
         />
         <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
-          Bonnie Green
+          {m_basicinfos.name}
         </h5>
         <div className="flex gap-2 flex-row flex-wrap">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <span
-              key={index}
-              className="bg-primaryColor text-white text-xs px-2 py-1 rounded-full"
-            >
-              Prefer Job
-            </span>
-          ))}
+          <div
+            data-tooltip-target="tooltip-default"
+            className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+          >
+            {m_preferred_jobs.length > 0 ? (
+              <>
+                <div className="flex  items-center justify-start gap-1 cursor-pointer">
+                  {m_preferred_jobs
+                    .filter((_: any, index: number) => index < 3)
+                    .map((job: any, index: number) => (
+                      <p className="bg-primaryColor text-white text-xs px-2 py-1 rounded-md">
+                        {job.job_type}
+                      </p>
+                    ))}
+
+                  {m_preferred_jobs.length > 1 && (
+                    <span className="text-xs text-gray-500 ml-1">
+                      +{m_preferred_jobs.length - 3}
+                    </span>
+                  )}
+                </div>
+                {m_preferred_jobs.length > 3 && (
+                  <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+                    {m_preferred_jobs
+                      .slice(3)
+                      .map((job: any, index: number) => (
+                        <p
+                          key={index}
+                          className="text-xs text-gray-700 whitespace-nowrap my-2"
+                        >
+                          {job.job_type}
+                        </p>
+                      ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div>No Job Type</div>
+            )}
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-2 w-full">
           <div className="flex flex-col gap-2 items-start">
             <span className="flex gap-2 text-sm">
               <p>Age:</p>
-              <p>25</p>
+              <p>{moment(m_basicinfos.dob).fromNow().split(" ")[0]}</p>
             </span>
             <span className="flex gap-2 text-sm">
               <p>Gender:</p>
-              <p>Male</p>
+              <p>{m_basicinfos.gender === 1 ? "Male" : "Female"}</p>
             </span>
           </div>
           <div className="flex flex-col gap-2 items-start">
             <span className="flex gap-2 text-sm">
               <p>Live:</p>
-              <p>Myanmar</p>
+              <p>{m_basicinfos.live_in_japan === 1 ? "Japan" : "Myanmar"}</p>
             </span>
             <span className="flex gap-2 text-sm">
               <p>Passport:</p>
-              <p>Yes</p>
+              <p>{m_basicinfos.has_passport === 1 ? "Yes" : "No"}</p>
             </span>
           </div>
         </div>
         <div className="flex mt-4 md:mt-6 w-full justify-evenly">
-            <button onClick={(event) => likeorUnlikeHandler(event,matchedData.id)} name="unlike">
+          <button
+            onClick={(event) => likeorUnlikeHandler(event, matchedData.id)}
+            name="unlike"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -96,7 +134,10 @@ const UserCard = ({
               />
             </svg>
           </button>
-          <button onClick={(event) => likeorUnlikeHandler(event,matchedData.id)} name="like">
+          <button
+            onClick={(event) => likeorUnlikeHandler(event, matchedData.id)}
+            name="like"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"

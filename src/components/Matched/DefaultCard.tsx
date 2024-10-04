@@ -18,7 +18,7 @@ const DefaultCard = ({hasMore,click}: DefaultCardProps) => {
     initial="initial"
     animate="animate"
     exit="exit"
-    className={`w-full h-80 max-w-sm flex flex-col justify-center items-center bg-gray-100 border rounded-lg shadow py-2  ${hasMore ? "hover:bg-gray-200 hover:shadow-lg":""} cursor-pointer group`}
+    className={`w-full h-full max-w-sm flex flex-col justify-center items-center bg-gray-100 border rounded-lg shadow py-2  ${hasMore ? "hover:bg-gray-200 hover:shadow-lg":""} cursor-pointer group`}
     disabled={!hasMore}
     >
       <svg

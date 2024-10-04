@@ -98,6 +98,8 @@ const MatchedScreend = () => {
     enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
 
+  console.log('matchedData',matchedData);
+
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.MATCHED_DETAIL],
     queryFn: () => {
@@ -259,7 +261,7 @@ const MatchedScreend = () => {
           </DropdownMenu>
         </div>
         <AnimatePresence>
-          <div className="grid grid-cols-4   grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
+          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto auto-rows-[350px]">
             {matchedData && matchedData?.data?.users?.length > 0 ? (
               <>
                 {matchedData?.data?.users.map((item: any) => (
