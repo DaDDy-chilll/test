@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SelectYear from "@/components/ui/selectYear";
-import moment from "moment";
+
 // Utility function to get days in a month
 const getDaysInMonth = (year: number, month: number) => {
   return new Array(31)
@@ -13,14 +13,16 @@ const getDaysInMonth = (year: number, month: number) => {
 type CalendarProps = {
   className?: string;
   style?: number;
-  selectedDate?: (date: Date) => void;
+  selectedDate?: Date;
+  onDateSelect: (date: Date) => void;
 };
 
-const Calendar = ({ className, style = 0, selectedDate }: CalendarProps) => {
+const Calendar = ({ className, style = 0, selectedDate, onDateSelect }: CalendarProps) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+  const [selected, setSelected] = useState<Date | null>(selectedDate || null);
 
   // Get days in the current month
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
@@ -29,18 +31,8 @@ const Calendar = ({ className, style = 0, selectedDate }: CalendarProps) => {
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ];
 
   const handlePrevMonth = () => {
@@ -55,6 +47,11 @@ const Calendar = ({ className, style = 0, selectedDate }: CalendarProps) => {
     if (currentMonth === 11) {
       setCurrentYear(currentYear + 1);
     }
+  };
+
+  const handleDateClick = (date: Date) => {
+    setSelected(date);
+    onDateSelect(date);
   };
 
   useEffect(() => {
@@ -127,14 +124,14 @@ const Calendar = ({ className, style = 0, selectedDate }: CalendarProps) => {
         {Array(firstDayOfMonth)
           .fill(null)
           .map((_, index) => (
-            <div key={index}></div>
+            <div key={`empty-${index}`}></div>
           ))}
 
         {/* Render the days of the month */}
         {daysInMonth.map((date, index) => (
           <div
-            key={index}
-            onClick={() => selectedDate && selectedDate(date)}
+            key={`day-${index}`}
+            onClick={() => handleDateClick(date)}
             className={`${style === 0 ? "py-2" : "m-1 cursor-pointer"} ${
               date.getDate() === today.getDate() &&
               currentMonth === today.getMonth() &&
@@ -142,6 +139,13 @@ const Calendar = ({ className, style = 0, selectedDate }: CalendarProps) => {
                 ? style === 0
                   ? "bg-black text-white rounded-full"
                   : "bg-none text-primaryColor"
+                : ""
+            } ${
+              selected &&
+              date.getDate() === selected.getDate() &&
+              currentMonth === selected.getMonth() &&
+              currentYear === selected.getFullYear()
+                ? "bg-blue-500 text-white rounded-full"
                 : ""
             }`}
           >

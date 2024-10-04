@@ -14,7 +14,7 @@ export const fetchServer = async ({
   file,
   token = null,
 }: FetchServerType) => {
-  let urlEndPoint = endpoint || "";
+  const urlEndPoint = endpoint || "";
   console.log("urlEndPoint", api.defaults.baseURL, urlEndPoint);
   try {
     if (method === "GET") {

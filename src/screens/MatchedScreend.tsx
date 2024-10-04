@@ -13,9 +13,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
-import DefaultProfile from "@/assets/images/default.png";
-import { userProfile } from "@/constants/mock";
-import useFetch from "@/hooks/useFetch";
+
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
 import { useSelector } from "react-redux";
@@ -35,7 +33,7 @@ const MatchedScreend = () => {
     id: null,
     name: "",
   });
-  const [matchedType, setMatchedType] = useState<number>(0);
+
   const [showDetail, setShowDetail] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);

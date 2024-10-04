@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { colors } from "@/constants/color";
 import {
   query,
@@ -31,6 +31,9 @@ import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
+
+
+
 // company id
 // const currentUser = {
 //   id: 1,
@@ -55,15 +58,19 @@ const ChatScreen = () => {
 
   const [newMessage, setNewMessage] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [adminTime, setAdminTime] = useState<moment.Moment | null>(null);
-  const [meetingTime, setMeetingTime] = useState<moment.Moment | null>(null);
+
+  
   const [isAppointmentModelOpen, setIsAppointmentModelOpen] = useState(false);
+
   // const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
   // const [newJobTitle, setNewJobTitle] = useState("");
   // const queryClient = useQueryClient();
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
+ 
+
+ 
+
   const { chats, isLoading } = useChat({ id: user?.id });
   useEffect(() => {
     dispatch(setTitle(jp.chat));
@@ -81,7 +88,7 @@ const ChatScreen = () => {
 
   //fetch Messages
   const fetchMessages = (chatId: string) => {
-    setError(null);
+ 
     const messagesRef = collection(db, "messages");
     const q = query(
       messagesRef,
@@ -100,7 +107,7 @@ const ChatScreen = () => {
       },
       (error) => {
         console.error("Error fetching messages:", error);
-        setError("Failed to fetch messages. Please try again.");
+   
       }
     );
 
@@ -112,7 +119,7 @@ const ChatScreen = () => {
   // Modify the handleSendMessage function:
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
-    setError(null);
+
 
     const messageData = {
       chat_id: selectedChat.id,
@@ -137,7 +144,7 @@ const ChatScreen = () => {
       fetchMessages(selectedChat.id);
     } catch (error) {
       console.error("Error sending message:", error);
-      setError("Failed to send message. Please try again.");
+  
     }
   };
 
@@ -271,9 +278,9 @@ const ChatScreen = () => {
           {isAppointmentModelOpen && (
             <AppointmentModel
               key="isAppointmentModelOpen"
-              setAdminTime={setAdminTime}
-              setMeetingTime={setMeetingTime}
-              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+           setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+              userId={Number(selectedChat?.jobfinder_id)}
+              jobId={Number(selectedChat?.job_id)}
             />
           )}
         </AnimatePresence>
@@ -282,7 +289,7 @@ const ChatScreen = () => {
   );
 };
 
-const chatVariants = {
+const chatVariants = { 
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
