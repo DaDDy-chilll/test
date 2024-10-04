@@ -1,3 +1,4 @@
+import { jp } from "@/lang/jp";
 import { FilterType } from "@/types/helperTypes";
 
 type FilterBarProps = {
@@ -19,35 +20,35 @@ const FilterBar = ({
     <div
       className={`bg-white justify-start text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center cursor-pointer">
         <input
           type="radio"
           name="live_in_japan"
           id="livesInJapan"
-          className="accent-primaryColor"
+          className="accent-primaryColor cursor-pointer"
           onChange={() => {
             setCurrentPage(1);
             setFilter({ ...filter, live_in_japan: "1" });
           }}
         />
-        <label htmlFor="livesInJapan" className="text-sm">
-          Lives in Japan
+        <label htmlFor="livesInJapan" className="text-sm cursor-pointer">
+          {jp.liveInJapan}
         </label>
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center cursor-pointer">
         <input
           type="radio"
           name="live_in_japan"
           id="livesInMyanmar"
           checked={filter.live_in_japan === "0"}
-          className="accent-primaryColor"
+          className="accent-primaryColor cursor-pointer"
           onChange={() => {
             setCurrentPage(1);
             setFilter({ ...filter, live_in_japan: "0" });
           }}
         />
-        <label htmlFor="livesInMyanmar" className="text-sm">
-          Lives in Myanmar
+        <label htmlFor="livesInMyanmar" className="text-sm cursor-pointer">
+          {jp.liveInMyanmar}
         </label>
       </div>
       <div className="flex gap-2 items-center">
@@ -56,13 +57,13 @@ const FilterBar = ({
           name="gender"
           id="male"
           checked={filter.gender === "0"}
-          className="accent-primaryColor"
+          className="accent-primaryColor cursor-pointer"
           onChange={() => {
             setCurrentPage(1);
             setFilter({ ...filter, gender: "0" });
           }}
         />
-        <label htmlFor="male">Male</label>
+        <label htmlFor="male" className="cursor-pointer">{jp.male}</label>
       </div>
       <div className="flex gap-2 items-center">
         <input
@@ -70,13 +71,13 @@ const FilterBar = ({
           name="gender"
           id="female"
           checked={filter.gender === "1"}
-          className="accent-primaryColor"
+          className="accent-primaryColor cursor-pointer"
           onChange={() => {
             setCurrentPage(1);
             setFilter({ ...filter, gender: "1" });
           }}
         />
-        <label htmlFor="female">Female</label>
+        <label htmlFor="female" className="cursor-pointer">{jp.female}</label>
       </div>
       {/* <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm"
@@ -110,13 +111,13 @@ const FilterBar = ({
       </select> */}
 
       <select
-        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-96"
+        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-96 cursor-pointer"
         onChange={(e) => {
           setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });
         }}
       >
-        <option value="" >Job Type</option>
+        <option value="" >{jp.jobType}</option>
         {jobTypes &&
           jobTypes.data.length > 0 &&
           jobTypes.data.map((jobType: any) => (

@@ -1,11 +1,8 @@
 import { useEffect, useRef } from "react";
-import LineCharts from "@/components/Dashboard/LineChart";
-import Pichart from "@/components/Dashboard/Pichart";
+import {LineCharts,Loading,EventListItem} from "@/components";
 import { jp } from "@/lang/jp";
 import { motion } from "framer-motion";
-import EventListItem from "@/components/CalendarScreen/EventListItem";
 // import { events } from "@/constants";
-import Loading from "@/components/ui/Loading";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import useChat from "@/hooks/useChat";
@@ -438,7 +435,7 @@ const DashboardScreen = () => {
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-500 mt-10">No messages</p>
+              <p className="text-center text-gray-500 mt-10">{jp.noMessages}</p>
             )}
           </div>
           {chats.length > 0 && (

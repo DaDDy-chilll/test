@@ -1,20 +1,16 @@
-import ProfileDetail from "@/components/ui/ProfileDetail";
-import { motion } from "framer-motion";
+import {ProfileDetail,Loading,ProfileForm} from "@/components";
+import { motion,AnimatePresence } from "framer-motion";
 import { useState, useEffect, FormEvent, useCallback, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
-import Loading from "@/components/ui/Loading";
 import { jp } from "@/lang/jp";
-import { useDispatch } from "react-redux";
 import { setTitle, setName } from "@/store";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import usePost from "@/hooks/usePost";
 import moment from "moment";
 import { Helmet } from "react-helmet-async";
-import ProfileForm from "@/components/Profile/ProfileForm";
 
 
 const defaultFormData = {
@@ -189,7 +185,7 @@ const Profile = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className=" w-full h-full flex justify-center items-center px-10"
+        className="w-full flex justify-center px-10 pt-5"
       >
         <AnimatePresence mode="wait">
           {!isEdit && (

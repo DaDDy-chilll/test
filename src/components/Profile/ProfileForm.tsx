@@ -48,7 +48,7 @@ const ProfileForm = ({
   return (
     <motion.div
       key="form"
-      className="w-full h-full bg-gray-100 px-8 pb-5 pt-29 space-y-2 flex flex-col justify-center items-center relative"
+      className="w-full h-full bg-gray-100 px-8 pb-5 space-y-2 flex flex-col justify-center relative"
       variants={formVariants}
       initial="hidden"
       animate="visible"
@@ -62,8 +62,8 @@ const ProfileForm = ({
       </div>
       <div className="flex justify-between w-5/6 pt-14 pb-2 pl-10">
         <div className="space-y-1">
-          <h1 className="sub-title text-black">Profile Photo</h1>
-          <p>This will be your public photo for your company</p>
+          <h1 className="sub-title text-black">{jp.profilePhoto}</h1>
+          <p>{jp.profilePhotoDescription}</p>
         </div>
         <Avatar className="w-20 h-20">
           <AvatarImage src={defaultImage} />
@@ -168,14 +168,14 @@ const ProfileForm = ({
             className="underline font-medium"
             onClick={() => setIsEdit(false)}
           >
-            Back
+            {jp.back}
           </button>
           <Button
             variant="destructive"
             className="font-medium w-44"
             onClick={() => {}}
           >
-            Finish
+            {jp.finish}
           </Button>
         </div>
       </form>

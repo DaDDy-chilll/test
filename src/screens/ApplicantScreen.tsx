@@ -1,23 +1,16 @@
 import { motion, AnimatePresence } from "framer-motion";
-import FilterBar from "@/components/Applicants/FilterBar";
-import ApplicantTable from "@/components/Applicants/ApplicantTable";
+import {FilterBar,ApplicantTable,Pagination,Loading,MatchedApplicants,Maintenance} from "@/components";
 import { useEffect, useState, useRef } from "react";
-import Pagination from "@/components/Applicants/Pagination";
 import { FilterType } from "@/types/helperTypes";
 import useFetch from "@/hooks/useFetch";
-import Loading from "@/components/ui/Loading";
 import { apiRoutes } from "@/utils/apiRoutes";
-import MatchedApplicants from "@/components/Matched/MatchedApplicants";
-import { UserProfile } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import Maintenance from "@/components/ui/Maintenance";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
-import { userProfile } from "@/constants/mock";
 import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
@@ -138,17 +131,19 @@ const ApplicantScreen = () => {
         <title>{jp.applicant} - Japan Job</title>
       </Helmet>
       {(isLoading || isDetailLoading || isJobTypesLoading) && (
-        <Loading
+        <div className="relative">
+          <Loading
           isLoading={isLoading || isDetailLoading || isJobTypesLoading}
-          className="h-[calc(100vh-68px)]"
-        />
+          className="h-[calc(100vh-68px)] left-0 top-0"
+          />
+        </div>
       )}
       <motion.div
         variants={applicantVariants}
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full overflow-hidden relative"
+        className="w-full overflow-hidden"
       >
         <FilterBar
           filter={filter}
@@ -158,7 +153,7 @@ const ApplicantScreen = () => {
         />
         <div className="flex justify-start items-center px-4 py-2 z-10">
           <p className="text-gray-500 text-sm">
-            Search Result{" "}
+            {jp.searchResult}{" "}
             <span className="text-secondaryColor">
               ({data?.data.totalUsers})
             </span>

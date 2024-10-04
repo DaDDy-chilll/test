@@ -1,9 +1,11 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Routenames from "./routes";
-import ProtectRoute from "./ProtectRoute";
+import ServicesProtectedPage from "./ServicesProtectRoute";
+import AuthProtectRoute from "./AuthProtectRoute";
 import ShareLayout from "@/layouts/ShareLayout";
 import { AnimatePresence } from "framer-motion";
+import AuthShareLayout from "@/layouts/AuthShareLayout";
 import {
   initialLanding,
   LoginScreen,
@@ -12,8 +14,8 @@ import {
   ChangePassword,
   Otp,
 } from "@/screens";
-import NotFound from "@/components/Auth/NotFound";
-import Loading from "@/components/ui/Loading";
+import { NotFound, Loading, VerifyMali } from "@/components";
+
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
 const ApplicantScreen = lazy(() => import("@/screens/ApplicantScreen"));
@@ -44,30 +46,31 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
-        {/* Not found route */}
-        <Route path="*" Component={NotFound} />
-        {/* Forgot password route */}
-        <Route path={Routenames.FORGOT_PASSWORD} Component={ForgotPassword} />
-        {/* OTP route */}
-        <Route path={Routenames.OTP} Component={Otp} />
-        {/* Change password route */}
-        <Route path={Routenames.CHANGE_PASSWORD} Component={ChangePassword} />
-        {/* User form route */}
         <Route
-          path={Routenames.USER_FORM}
           element={
-            <ProtectRoute>
-              <UserFormScreen />
-            </ProtectRoute>
+            <AuthProtectRoute>
+              <AuthShareLayout />
+            </AuthProtectRoute>
           }
-        />
+        >
+          {/* verification route */}
+          <Route path={Routenames.VERIFICATION} Component={VerifyMali} />
+          {/* Forgot password route */}
+          <Route path={Routenames.FORGOT_PASSWORD} Component={ForgotPassword} />
+          {/* OTP route */}
+          <Route path={Routenames.OTP} Component={Otp} />
+          {/* Change password route */}
+          <Route path={Routenames.CHANGE_PASSWORD} Component={ChangePassword} />
+                   {/* User form route */}
+                   <Route path={Routenames.USER_FORM} Component={UserFormScreen} />
+        </Route>
 
         {/* Protected routes */}
         <Route
           element={
-            <ProtectRoute>
+            <ServicesProtectedPage>
               <ShareLayout />
-            </ProtectRoute>
+            </ServicesProtectedPage>
           }
         >
           {/* Dashboard routes */}
@@ -86,7 +89,11 @@ const AnimatedRoutes = () => {
           <Route path={Routenames.CALENDAR} Component={CalendarScreen} />
           {/* jobs routes */}
           <Route path={Routenames.PROFILE} Component={Profile} />
+ 
         </Route>
+
+        {/* Not found route */}
+        <Route path="*" Component={NotFound} />
       </Routes>
     </AnimatePresence>
   );

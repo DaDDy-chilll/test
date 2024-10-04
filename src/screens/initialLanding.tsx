@@ -1,5 +1,5 @@
 import LOGO from "@/assets/icons/LOGO";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

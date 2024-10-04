@@ -3,7 +3,8 @@ import { User } from "@/types/helperTypes";
 interface AuthState {
   user: User | null;
   token: string | null;
-  // verified: boolean;
+  forgotPassword: boolean;
+  verified: boolean | null;
 }
 const user = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user") as string)
@@ -11,14 +12,16 @@ const user = localStorage.getItem("user")
 const token = localStorage.getItem("token")
   ? localStorage.getItem("token")
   : null;
-// const verified = localStorage.getItem("verified")
-//   ? localStorage.getItem("verified") === "true"
-//   : false;
+
+const verified = localStorage.getItem("verified")
+  ? localStorage.getItem("verified") === "true"
+  : null;
 
 const initialState: AuthState = {
   user,
   token,
-  // verified,
+  verified,
+  forgotPassword: false,
 };
 
 const getT = () => {
@@ -36,22 +39,23 @@ export const authSlice = createSlice({
       state.token = token;
       state.user = { email, id, name };
     },
-    // setVerified: (state, action) => {
-    //   state.verified = action.payload;
-    // },
+    setVerified: (state, action) => {
+      state.verified = action.payload;
+    },
     getToken: (state) => {
       state.token = getT();
     },
     removeToken: (state) => {
       state.token = null;
       state.user = null;
-      // state.verified = false;
-      // localStorage.removeItem("token"); // Clear from localStorage
-      // localStorage.removeItem("user"); // Clear from localStorage
-      // localStorage.removeItem("verified"); // Clear from localStorage
+      state.forgotPassword = false;
+      state.verified = null;
+    },
+    setForgotPassword: (state, action) => { 
+      state.forgotPassword = action.payload;
     },
   },
 });
 
-export const { setToken, removeToken } = authSlice.actions;
+export const { setToken, removeToken, setForgotPassword, setVerified } = authSlice.actions;
 export default authSlice.reducer;

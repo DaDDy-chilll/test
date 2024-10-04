@@ -1,5 +1,6 @@
 import notfound from "@/assets/images/notfound.svg";
 import { Link } from "react-router-dom";
+import Routes from "@/navigations/routes";
 const NotFound = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center gap-y-10">
@@ -12,10 +13,10 @@ const NotFound = () => {
           Sorry, we couldn't find the page you're looking for.
         </p>
         <Link
-          to="/login"
+          to={Routes.DASHBOARD}
           className="bg-primaryColor text-white px-10 py-2 rounded-md"
         >
-          Go to login
+          Go to Dashboard
         </Link>
       </div>
     </div>

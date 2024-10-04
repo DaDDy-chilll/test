@@ -1,5 +1,5 @@
 import { Chat } from "@/types/helperTypes";
-
+import { jp } from "@/lang/jp";
 type ChatHeaderProps = {
   selectedChat: Chat | null;
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
@@ -16,7 +16,7 @@ const ChatHeader = ({
               {selectedChat?.jobfinder_name}
             </h1>
             <button className="bg-gray-500 text-sm text-white px-3 py-2 rounded-md" onClick={handleAppointmentModel}>
-              Interview Schedule
+              {jp.interviewSchedule}
             </button>
           </div>
   )

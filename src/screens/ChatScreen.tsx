@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { colors } from "@/constants/color";
 import {
@@ -14,16 +14,17 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import ChatList from "../components/Chat/ChatList";
-import Loading from "@/components/ui/Loading";
+import {
+  ChatList,
+  Loading,
+  AppointmentModel,
+  ChatHeader,
+  ChatView,
+  ChatInput,
+} from "@/components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import AppointmentModel from "@/components/Chat/AppointmentModel";
 import { Chat, Message } from "@/types/helperTypes";
-import ChatHeader from "@/components/Chat/ChatHeader";
-import ChatView from "@/components/Chat/ChatView";
-import ChatInput from "@/components/Chat/ChatInput";
-import { AnimatePresence } from "framer-motion";
 import { jp } from "@/lang/jp";
 import useChat from "@/hooks/useChat";
 import { useLocation } from "react-router-dom";
@@ -48,7 +49,9 @@ const ChatScreen = () => {
   // const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const[unreadCounts,setUnreadCounts]=useState<{ [key: string]: number }>({});
+  const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
+    {}
+  );
 
   const [newMessage, setNewMessage] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
@@ -66,11 +69,7 @@ const ChatScreen = () => {
     dispatch(setTitle(jp.chat));
   }, [dispatch]);
 
-  console.log(
-    "unreadCount",
-    unreadCounts,
-    messages
-  );
+  console.log("unreadCount", unreadCounts, messages);
 
   //Handle Chat Select
 
@@ -245,7 +244,7 @@ const ChatScreen = () => {
                   />
                 </svg>
                 <p className="text-gray-400 text-normal mt-3">
-                  No messages yet
+                  {jp.noMessagesYet}
                 </p>
               </div>
             )

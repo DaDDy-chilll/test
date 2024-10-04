@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Sidebar />
-      <div className={`flex flex-col flex-1 ${sideBar ? 'md:ml-64' : ''}`}>
+      <div className={`flex flex-col flex-1 ${sideBar ? 'md:ml-64' : ''} relative`}>
         <Header />
         <div >{children}</div>
       </div>

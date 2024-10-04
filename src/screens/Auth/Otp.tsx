@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 const Otp: React.FC = () => {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
+  const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleChange = (

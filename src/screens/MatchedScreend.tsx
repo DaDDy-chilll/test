@@ -4,17 +4,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  MatchedApplicants,
+  Loading,
+  UserCard,
+  DefaultCard,
+} from "@/components";
 import React, { useEffect, useState, useCallback } from "react";
-import MatchedApplicants from "@/components/Matched/MatchedApplicants";
-import { UserProfile } from "@/types/user";
-import Loading from "@/components/ui/Loading";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 import DefaultProfile from "@/assets/images/default.png";
 import { userProfile } from "@/constants/mock";
-import UserCard from "@/components/Matched/UserCard";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
-import DefaultCard from "@/components/Matched/DefaultCard";
 import usePost from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
@@ -98,6 +97,8 @@ const MatchedScreend = () => {
     },
     enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
+
+  console.log('matchedData',matchedData);
 
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.MATCHED_DETAIL],
@@ -192,9 +193,9 @@ const MatchedScreend = () => {
 
   return (
     <>
-         <Helmet>
-      <title>{jp.matches} - Japan Job</title>
-    </Helmet>
+      <Helmet>
+        <title>{jp.matches} - Japan Job</title>
+      </Helmet>
       {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={matchedVariants}
@@ -213,7 +214,7 @@ const MatchedScreend = () => {
               }`}
               onClick={() => setLiked(true)}
             >
-              User who like you
+              {jp.userLikeYou}
             </button>
             <button
               className={`p-2 text-sm ${
@@ -223,13 +224,13 @@ const MatchedScreend = () => {
               }`}
               onClick={() => setLiked(false)}
             >
-              Other Matches
+              {jp.otherMatches}
             </button>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="flex w-auto justify-between items-center gap-2 bg-primaryColor text-white px-4 py-1 rounded-md">
-                <p className="text-sm mr-3">{jobType.name || "Job Name"}</p>
+                <p className="text-sm mr-3">{jobType.name || jp.chooseJobType}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -260,7 +261,7 @@ const MatchedScreend = () => {
           </DropdownMenu>
         </div>
         <AnimatePresence>
-          <div className="grid grid-cols-4   grid-flow-row gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto">
+          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto auto-rows-[350px]">
             {matchedData && matchedData?.data?.users?.length > 0 ? (
               <>
                 {matchedData?.data?.users.map((item: any) => (
@@ -344,7 +345,7 @@ const MatchedScreend = () => {
                       />{" "}
                     </g>
                 </svg>
-                <p className="text-gray-500 text-lg">No Matches Yet</p>
+                <p className="text-gray-500 text-lg">{jp.noMatchesYet}</p>
               </div>
             )}
           </div>

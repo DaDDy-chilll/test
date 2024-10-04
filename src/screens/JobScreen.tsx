@@ -4,19 +4,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  JobListItem,
+  Button,
+  JobDetails,
+  JobForm,
+  Loading,
+  Maintenance,
+} from "@/components";
 import { useMemo, useState, useEffect, FormEvent } from "react";
-import JobListItem from "@/components/Jobs/JobListItem";
-import { Button } from "@/components/ui/button";
-import JobDetails from "@/components/ui/JobDetails";
-import JobForm from "@/components/Jobs/JobForm";
-import Loading from "@/components/ui/Loading";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
-import Maintenance from "@/components/ui/Maintenance";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
@@ -51,7 +51,7 @@ const JobScreen = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
-  const [jobType, setJobType] = useState("Job Type");
+  const [jobType, setJobType] = useState(jp.jobType);
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -192,14 +192,16 @@ const JobScreen = () => {
                 type="search"
                 name="search"
                 id="search"
-                placeholder="Search"
+                placeholder={jp.search}
                 className="w-full rounded-lg px-4 py-2 outline-none bg-gray-200"
                 value={search}
                 onChange={handleSearch}
               />
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-lg mr-3">Sort by</p>
+              <p className="text-lg mr-3">
+                {jp.sortBy}
+              </p>
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <div className="flex items-center justify-between w-40 gap-2 bg-gray-900 text-white px-3 py-1.5 rounded-lg">
@@ -224,7 +226,7 @@ const JobScreen = () => {
                   {defaultJobType.map((item) => (
                     <DropdownMenuItem key={item.id} onClick={handleJobType}>
                       <p>{item.name}</p>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> 
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -265,7 +267,7 @@ const JobScreen = () => {
                   />
                 </svg>
                 <p className="text-center text-lg text-gray-500 mt-4">
-                  No added jobs yet
+                  {jp.noJobsFound}
                 </p>
               </div>
             )}
@@ -276,7 +278,7 @@ const JobScreen = () => {
               className="px-10"
               onClick={addHandler}
             >
-              Make New Job Post
+              {jp.makeNewJobPost}
             </Button>
           </div>
         </motion.div>
