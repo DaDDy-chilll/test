@@ -10,10 +10,8 @@ import {
   addMonths,
 } from "date-fns";
 import { useMemo, useState, useEffect } from "react";
-import CalendarCell from "@/components/CalendarScreen/CalendarCell";
+import {CalendarCell,EventListItem,Loading} from "@/components";
 import { jp } from "@/lang/jp";
-import EventListItem from "@/components/CalendarScreen/EventListItem";
-import Loading from "@/components/ui/Loading";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { Event } from "@/types/helperTypes";

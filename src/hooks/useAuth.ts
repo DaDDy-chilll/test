@@ -40,8 +40,8 @@ const useAuth = () => {
             return fetchServer({ endpoint: apiRoutes.REGISTER, method: "POST", body: data });
         },
         onSuccess: (data) => {
-            setError(null)
-            dispatch(setName(data.data.name || data.data.email));
+            setError(null);
+            // dispatch(setName(data.data.email));
             dispatch(setToken(data));
             navigate(User.LOGIN);
         },

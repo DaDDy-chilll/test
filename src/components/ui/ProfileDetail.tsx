@@ -19,7 +19,7 @@ type Props = {
   editHandler?: (value: boolean) => void;
   data?: any
 };
-const JobDetails = ({
+const ProfileDetail = ({
   formData,
   backHandler,
   editHandler,
@@ -151,4 +151,4 @@ const formVariants = {
   exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
 };
 
-export default JobDetails;
+export default ProfileDetail;

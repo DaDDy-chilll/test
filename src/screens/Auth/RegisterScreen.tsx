@@ -1,7 +1,7 @@
 // import { useMutation } from "@tanstack/react-query";
 import { FormEvent, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import Input from "@/components/ui/Input";
+
+import { Button,Input } from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";

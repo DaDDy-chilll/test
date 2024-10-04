@@ -1,14 +1,9 @@
-import { Button } from "@/components/ui/button";
-import Input from "@/components/ui/Input";
-import Select from "@/components/ui/Select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button,Input,Select,Avatar, AvatarFallback, AvatarImage,DiplayFormData,DatePicker  } from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import defaultImage from "@/assets/images/default.png";
-import DatePicker from "@/components/ui/DatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import DiplayFormData from "@/components/ui/DiplayFormData";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 export interface UserFormData {

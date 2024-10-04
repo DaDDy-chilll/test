@@ -4,17 +4,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  MatchedApplicants,
+  Loading,
+  UserCard,
+  DefaultCard,
+} from "@/components";
 import React, { useEffect, useState, useCallback } from "react";
-import MatchedApplicants from "@/components/Matched/MatchedApplicants";
-import { UserProfile } from "@/types/user";
-import Loading from "@/components/ui/Loading";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
 import DefaultProfile from "@/assets/images/default.png";
 import { userProfile } from "@/constants/mock";
-import UserCard from "@/components/Matched/UserCard";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
-import DefaultCard from "@/components/Matched/DefaultCard";
 import usePost from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";

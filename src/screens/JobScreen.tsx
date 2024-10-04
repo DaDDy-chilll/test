@@ -4,19 +4,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  JobListItem,
+  Button,
+  JobDetails,
+  JobForm,
+  Loading,
+  Maintenance,
+} from "@/components";
 import { useMemo, useState, useEffect, FormEvent } from "react";
-import JobListItem from "@/components/Jobs/JobListItem";
-import { Button } from "@/components/ui/button";
-import JobDetails from "@/components/ui/JobDetails";
-import JobForm from "@/components/Jobs/JobForm";
-import Loading from "@/components/ui/Loading";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
-import Maintenance from "@/components/ui/Maintenance";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";

@@ -8,7 +8,7 @@ const useHandleError = () => {
   >(null);
   const authHandleError = (error: AuthErrorType | null) => {
     console.log("hook", error);
-    if (error && "validation" in error && error?.validation) {
+    if (error && error?.validation) {
       error.validation.forEach((err: any) => {
         if (err?.email) {
           setEmailError(err?.email?.jp ?? null);
