@@ -438,7 +438,7 @@ const DashboardScreen = () => {
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-500 mt-10">No messages</p>
+              <p className="text-center text-gray-500 mt-10">{jp.noMessages}</p>
             )}
           </div>
           {chats.length > 0 && (

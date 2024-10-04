@@ -40,7 +40,7 @@ const JobDetails = ({
   return (
     <motion.div
       key="complete"
-      className="w-full  shadow-md bg-gray-100 p-8 pt-29 space-y-2 flex flex-col justify-center items-center relative"
+      className="w-full w-full shadow-md bg-gray-100 p-8 pt-29 space-y-2 flex flex-col justify-center items-center relative"
       variants={formVariants}
       initial="hidden"
       animate="visible"

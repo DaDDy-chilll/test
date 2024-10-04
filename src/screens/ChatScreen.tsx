@@ -245,7 +245,7 @@ const ChatScreen = () => {
                   />
                 </svg>
                 <p className="text-gray-400 text-normal mt-3">
-                  No messages yet
+                  {jp.noMessagesYet}
                 </p>
               </div>
             )

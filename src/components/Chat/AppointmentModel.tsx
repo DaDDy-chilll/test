@@ -11,7 +11,7 @@ type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
 };
 const AppointmentModel = ({
-  setAdminTime,
+  // setAdminTime,
   setMeetingTime,
   setIsAppointmentModelOpen,
 }: AppointmentModelProps) => {
@@ -60,10 +60,10 @@ const AppointmentModel = ({
       </div>
 
       <div className="mt-3">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <h1 className="text-xs font-bold">Add Admin</h1>
           <TimeSelect onTimeSelect={setAdminTime} />
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-between mt-6">
           <h1 className="text-xs font-bold flex items-center gap-3 ">
@@ -79,14 +79,14 @@ const AppointmentModel = ({
                 fill="#000"
               />
             </svg>
-            အချိန်
+            {jp.time}
           </h1>
           <TimeSelect onTimeSelect={setMeetingTime} dropStyle={1} />
         </div>
       </div>
 
       <div className="mt-3 bg-gray-300 flex flex-col gap-3 p-3 rounded-md">
-        <h1 className="text-lg font-semibold">Schedule</h1>
+        <h1 className="text-lg font-semibold">{jp.schedule}</h1>
         <div className="flex items-start gap-5">
           <svg
             width="18"
@@ -101,7 +101,7 @@ const AppointmentModel = ({
             />
           </svg>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold">Date</p>
+            <p className="text-sm font-semibold">{jp.date}</p>
             <p className="text-sm">01 Jan 2024</p>
           </div>
         </div>
@@ -119,7 +119,7 @@ const AppointmentModel = ({
             />
           </svg>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold">Time</p>
+            <p className="text-sm font-semibold">{jp.time}</p>
             <p className="text-sm">12:00 PM</p>
           </div>
         </div>
@@ -128,7 +128,7 @@ const AppointmentModel = ({
         <Button variant="outline" onClick={handleCloseModel}>
           Cancel
         </Button>
-        <Button variant="destructive">Make Appointment</Button>
+        <Button variant="destructive">{jp.makeAppointment}</Button>
       </div>
     </motion.div>
   );

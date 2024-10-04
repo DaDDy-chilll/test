@@ -18,7 +18,7 @@ const Loading = ({ className, isLoading }: LoadingProps) => {
   }, [isLoading]);
   return (
     <div
-      className={`absolute w-full h-full flex justify-center items-center bg-gray-200/50 z-50 overflow-hidden ${className}`}
+      className={`w-full h-full bg-gray-200/50 z-50 overflow-hidden absolute left-0 top-0 flex justify-center items-center ${className}`}
     >
       <BounceLoader color={colors.primary} size={50} />
     </div>

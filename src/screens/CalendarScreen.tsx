@@ -199,7 +199,7 @@ const CalendarScreen = () => {
               ))
             ) : (
               <p className="text-center text-gray-500 pt-10">
-                No events for this day
+                {jp.noEventsForThisDay}
               </p>
             )}
           </div>

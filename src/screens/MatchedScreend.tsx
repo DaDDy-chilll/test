@@ -192,9 +192,9 @@ const MatchedScreend = () => {
 
   return (
     <>
-         <Helmet>
-      <title>{jp.matches} - Japan Job</title>
-    </Helmet>
+      <Helmet>
+        <title>{jp.matches} - Japan Job</title>
+      </Helmet>
       {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={matchedVariants}
@@ -213,7 +213,7 @@ const MatchedScreend = () => {
               }`}
               onClick={() => setLiked(true)}
             >
-              User who like you
+              {jp.userLikeYou}
             </button>
             <button
               className={`p-2 text-sm ${
@@ -223,13 +223,13 @@ const MatchedScreend = () => {
               }`}
               onClick={() => setLiked(false)}
             >
-              Other Matches
+              {jp.otherMatches}
             </button>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="flex w-auto justify-between items-center gap-2 bg-primaryColor text-white px-4 py-1 rounded-md">
-                <p className="text-sm mr-3">{jobType.name || "Job Name"}</p>
+                <p className="text-sm mr-3">{jobType.name || jp.chooseJobType}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -344,7 +344,7 @@ const MatchedScreend = () => {
                       />{" "}
                     </g>
                 </svg>
-                <p className="text-gray-500 text-lg">No Matches Yet</p>
+                <p className="text-gray-500 text-lg">{jp.noMatchesYet}</p>
               </div>
             )}
           </div>

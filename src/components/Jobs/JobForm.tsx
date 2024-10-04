@@ -130,10 +130,10 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
       animate="visible"
       exit="exit"
     >
-      <div className="text-start w-full  border-b-2 border-gray-400 pb-4">
-        <p>Post your job position to recruit workers</p>
+      <div className="text-start w-full  border-b-2 border-gray-400 pb-4 mb-14">
+        <p>{jp.postJobPosition}</p>
       </div>
-      <div className="flex justify-between w-5/6 p-5 pl-10">
+      {/* <div className="flex justify-between w-5/6 p-5 pl-10">
         <div className="space-y-1">
           <h1 className="font-medium text-black">Profile Photo</h1>
           <p className="text-sm text-gray-500">
@@ -144,7 +144,7 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
           <AvatarImage src={DefaultLogo} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-      </div>
+      </div> */}
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-y-2 gap-x-20 px-10">
           <Input
@@ -262,7 +262,7 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
               value={form.job_des}
               onChange={(e) => setForm({ ...form, job_des: e })}
               theme="snow"
-              className="h-36 mb-16"
+              className="h-64 mb-16"
               placeholder={jp.companyDescription}
               modules={{
                 toolbar: [
@@ -280,14 +280,14 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
 
         <div className="flex justify-between w-full pb-3 px-10 mr-10">
           <button className="underline font-medium" onClick={onBack}>
-            Back
+            {jp.back}
           </button>
           <Button
             variant="destructive"
             className="font-medium w-44"
             type="submit"
           >
-            Finish
+            {jp.finish}
           </Button>
         </div>
       </form>

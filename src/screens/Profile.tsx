@@ -189,7 +189,7 @@ const Profile = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className=" w-full h-full flex justify-center items-center px-10"
+        className="w-full flex justify-center px-10 pt-5"
       >
         <AnimatePresence mode="wait">
           {!isEdit && (

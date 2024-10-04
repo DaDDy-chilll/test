@@ -17,7 +17,7 @@ type Props = {
   formData?: formData;
   backHandler?: (value: boolean) => void;
   editHandler?: (value: boolean) => void;
-  data?:any
+  data?: any
 };
 const JobDetails = ({
   formData,
@@ -25,13 +25,13 @@ const JobDetails = ({
   editHandler,
   data
 }: Props) => {
-//   const clickBackEvent = () => backHandler && backHandler(false);
+  //   const clickBackEvent = () => backHandler && backHandler(false);
   const clickEditEvent = () => editHandler && editHandler(true);
   console.log(data);
   return (
     <motion.div
       key="complete"
-      className="w-full  shadow-md bg-gray-100 p-8 pt-29 space-y-2 flex flex-col justify-center items-center relative"
+      className="w-full h-[85vh] shadow-md bg-gray-100 p-8 pt-10 space-y-2 flex flex-col items-center relative"
       variants={formVariants}
       initial="hidden"
       animate="visible"
@@ -44,7 +44,7 @@ const JobDetails = ({
         </Avatar>
       </div>
       <div className="text-center">
-        <h1 className="font-bold text-xl my-3">{data?.name || "Name"}</h1>
+        <h1 className="font-bold text-xl my-3">{data?.name || jp.companyName}</h1>
         <p className="text-gray-500">{data?.email || "Email"}</p>
       </div>
       <div className="flex justify-center gap-4 space-x-20 pt-6 pb-5">
@@ -71,25 +71,25 @@ const JobDetails = ({
           <p>{data?.prefecture.name || "Location"}</p>
         </span>
 
-     
-          <span className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-              />
-            </svg>
-            <p>{data?.staff || 0} Persons</p>
-          </span>
-        
+
+        <span className="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+            />
+          </svg>
+          <p>{data?.staff || 0} Persons</p>
+        </span>
+
 
         <span className="flex items-center gap-2">
           <svg
@@ -110,16 +110,15 @@ const JobDetails = ({
         </span>
 
       </div>
-     
-        <div className="space-y-3 h-56 px-10 w-full">
-          <h1 className="font-bold text-bg">{jp.companyDescription}</h1>
-          
-            {data?.company_des || "Company Description"}
-          
-        </div>
-      
 
-
+      <div className="flex justify-start w-full">
+        <h1 className="font-bold text-bg text-left px-10 pb-3">{jp.companyDescription}</h1>
+      </div>
+      <div className="overflow-y-auto w-full px-10 space-y-3">
+        <p className="text-gray-500">
+          {data?.company_des || jp.noBasicJobDescription}
+        </p>
+      </div>
 
       <div className="flex items-center gap-4 absolute top-2 right-2">
         <button
@@ -138,9 +137,9 @@ const JobDetails = ({
               fill="white"
             />
           </svg>
-          Edit
+          {jp.edit}
         </button>
-    
+
       </div>
     </motion.div>
   );

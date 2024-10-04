@@ -138,17 +138,19 @@ const ApplicantScreen = () => {
         <title>{jp.applicant} - Japan Job</title>
       </Helmet>
       {(isLoading || isDetailLoading || isJobTypesLoading) && (
-        <Loading
+        <div className="relative">
+          <Loading
           isLoading={isLoading || isDetailLoading || isJobTypesLoading}
-          className="h-[calc(100vh-68px)]"
-        />
+          className="h-[calc(100vh-68px)] left-0 top-0"
+          />
+        </div>
       )}
       <motion.div
         variants={applicantVariants}
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full overflow-hidden relative"
+        className="w-full overflow-hidden"
       >
         <FilterBar
           filter={filter}
@@ -158,7 +160,7 @@ const ApplicantScreen = () => {
         />
         <div className="flex justify-start items-center px-4 py-2 z-10">
           <p className="text-gray-500 text-sm">
-            Search Result{" "}
+            {jp.searchResult}{" "}
             <span className="text-secondaryColor">
               ({data?.data.totalUsers})
             </span>
