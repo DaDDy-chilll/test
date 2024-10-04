@@ -17,7 +17,7 @@ const ChatList: React.FC<ChatListProps> = ({
 }) => {
   return (
     <div className="flex-1 ">
-      <div className="flex flex-col h-[90vh] gap-2 p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
+      <div className="flex flex-col h-[90vh]  p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
         {chats.length === 0 ? (
           <div className="text-center text-sm text-gray-500 my-64">
             {jp.noChatFound}
@@ -28,8 +28,8 @@ const ChatList: React.FC<ChatListProps> = ({
               key={index}
               onClick={() => onSelectChat(chat)}
               className={`${
-                selectedChat?.id === chat.id ? "bg-primaryColor text-white" : ""
-              } hover:bg-red-300 transition-all duration-100 active:scale-90`}
+                selectedChat?.id === chat.id ? "bg-gray-300" : ""
+              } hover:bg-gray-200 transition-all duration-100 active:scale-90`}
             >
               <ChatItem
                 chat={chat}

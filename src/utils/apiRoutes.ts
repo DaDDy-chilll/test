@@ -17,7 +17,8 @@ export interface ApiRoutesType {
     MATCHED:string,
     LIKE:string,
     UNLIKE:string,
-    UPDATE_JOB:string
+    UPDATE_JOB:string,
+    INTERVIEW:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -38,5 +39,6 @@ export const apiRoutes: ApiRoutesType = {
     UPDATE_JOB:"/client/job/update",
     MATCHED:"/client/job/match",
     LIKE:"/client/users/like",
-    UNLIKE:'/client/users/dislike'
+    UNLIKE:'/client/users/dislike',
+    INTERVIEW:'/client/interview'
 }
