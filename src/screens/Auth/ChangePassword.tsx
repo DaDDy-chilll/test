@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { jp } from "@/lang/jp";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
@@ -10,33 +10,73 @@ import eyeOpen from "@/assets/icons/eye-open.svg";
 import eyeClose from "@/assets/icons/eye-close.svg";
 import { motion } from "framer-motion";
 import Alert from "@/components/ui/alert";
+import usePost from "@/hooks/usePost";
+import { QueryKey } from "@/utils/queryKey";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { BeatLoader } from "react-spinners";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { useDispatch } from "react-redux";
+import { setToken } from "@/store";
 
 const ChangePassword: React.FC = () => {
+  const dispatch = useDispatch();
+  const {token} = useSelector((state:RootState)=>state.auth)
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const navigate = useNavigate();
-
+  const { mutate, isPending, isSuccess, error, data } = usePost({token});
 
   const showSuccessAlert = () => (
-    <Alert type="success" title="Password changed successfully" description="You will be redirected to the login page" />
+    <Alert
+      type="success"
+      title="Password changed successfully"
+      description="You will be redirected to the login page"
+    />
   );
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (newPassword !== confirmNewPassword) {
+  //     setError("New passwords do not match");
+  //     return;
+  //   }
+  //   Add logic to handle password change
+  //   setSuccess(true);
+  //   setTimeout(() => {
+  //     navigate(RouteName.LOGIN);
+  //   }, 2000);
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPassword !== confirmNewPassword) {
-      setError("New passwords do not match");
-      return;
-    }
-    // Add logic to handle password change
-    setSuccess(true);
-    setTimeout(() => {
-      navigate(RouteName.LOGIN);
-    }, 2000);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const confirm_password = formData.get("confirm_password") as string;
+    const password = formData.get("password") as string;
+    mutate({
+      endpoint: apiRoutes.CHANGE_PASSWORD,
+      body: {
+        confirm_password,
+        password,
+      },
+    });
   };
+
+
+  useEffect(() => {
+    console.log(data,token);
+    if (isSuccess) {
+      dispatch(setToken({token:null}));
+      setTimeout(() => {
+        navigate(RouteName.LOGIN);
+      }, 2000);
+    }
+    if (error) {
+      console.log(error);
+    }
+  }, [isSuccess, error]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">
@@ -68,7 +108,7 @@ const ChangePassword: React.FC = () => {
           <div>
             <div className="relative">
               <Input
-                name="newPassword"
+                name="password"
                 type={showNewPassword ? "text" : "password"}
                 label={jp.newPassword}
                 value={newPassword}
@@ -83,13 +123,17 @@ const ChangePassword: React.FC = () => {
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                 onClick={() => setShowNewPassword(!showNewPassword)}
               >
-                <img src={showNewPassword ? eyeOpen : eyeClose} className="w-5 h-5 opacity-50 hover:opacity-100" alt="Toggle password visibility" />
+                <img
+                  src={showNewPassword ? eyeOpen : eyeClose}
+                  className="w-5 h-5 opacity-50 hover:opacity-100"
+                  alt="Toggle password visibility"
+                />
               </button>
             </div>
           </div>
           <div className="relative">
             <Input
-              name="confirmNewPassword"
+              name="confirm_password"
               type={showConfirmNewPassword ? "text" : "password"}
               label={jp.confirmPassword}
               value={confirmNewPassword}
@@ -102,10 +146,14 @@ const ChangePassword: React.FC = () => {
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
               onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
             >
-              <img src={showConfirmNewPassword ? eyeOpen : eyeClose} className="w-5 h-5 opacity-50 hover:opacity-100" alt="Toggle password visibility" />
+              <img
+                src={showConfirmNewPassword ? eyeOpen : eyeClose}
+                className="w-5 h-5 opacity-50 hover:opacity-100"
+                alt="Toggle password visibility"
+              />
             </button>
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {/* {error && <p className="text-red-500 text-sm">{error}</p>} */}
           <div className="flex flex-col sm:flex-row justify-center gap-x-2 pb-2">
             <div className="sm:w-1/3 md:w-1/3 w-full">
               <Link to="/otp">
@@ -115,13 +163,13 @@ const ChangePassword: React.FC = () => {
               </Link>
             </div>
             <div className="sm:w-2/3 md:w-2/3 w-full">
-              <Button className="mt-6 px-4 py-2 rounded w-full">
-                {jp.changePassword}
+              <Button className="mt-6 px-4 py-2 rounded w-full" disabled={isPending}>
+              {isPending ? <BeatLoader loading={isPending} size={8} color={"#fff"} /> : jp.changePassword}
               </Button>
             </div>
           </div>
         </motion.form>
-        {success && showSuccessAlert()}
+        {(isSuccess && !error) && showSuccessAlert()}
       </div>
     </div>
   );

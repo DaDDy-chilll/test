@@ -18,7 +18,11 @@ export interface ApiRoutesType {
     LIKE:string,
     UNLIKE:string,
     UPDATE_JOB:string,
-    INTERVIEW:string
+    INTERVIEW:string,
+    FORGOT_PASSWORD:string,
+    VERIFY_OTP:string,
+    CHANGE_PASSWORD:string,
+    DASHBOARD:string
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -40,5 +44,9 @@ export const apiRoutes: ApiRoutesType = {
     MATCHED:"/client/job/match",
     LIKE:"/client/users/like",
     UNLIKE:'/client/users/dislike',
-    INTERVIEW:'/client/interview'
+    INTERVIEW:'/client/interview',
+    FORGOT_PASSWORD:'/client/auth/send-forgot-password-otp',
+    VERIFY_OTP:'/client/auth/verify-forgot-password-otp',
+    CHANGE_PASSWORD:'/client/auth/change-password',
+    DASHBOARD:'/client/dashboard'
 }

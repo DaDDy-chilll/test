@@ -79,6 +79,8 @@ export const jp = {
   city:"都道府県",
   liveInJapan:"日本在住",
   liveInMyanmar:"ミャンマー在住",
+  myanmar:"ミャンマー",
+  japan:"日本",
   male:"男性",
   female:"女性",
   all:"全て",
@@ -115,4 +117,5 @@ export const jp = {
   schedule:"スケジュール",
   date:"日付",
   makeAppointment:"面接予定を作成する",
+  chooseCountry:"国を選択してください",
 };

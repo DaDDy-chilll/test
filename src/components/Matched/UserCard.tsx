@@ -50,7 +50,7 @@ const UserCard = ({
         <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
           {m_basicinfos.name}
         </h5>
-        <div className="flex gap-2 flex-row flex-wrap">
+        {/* <div className="flex gap-2 flex-row flex-wrap">
           <div
             data-tooltip-target="tooltip-default"
             className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
@@ -91,7 +91,7 @@ const UserCard = ({
               <div>No Job Type</div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="grid grid-cols-2 gap-2 w-full">
           <div className="flex flex-col gap-2 items-start">
             <span className="flex gap-2 text-sm">

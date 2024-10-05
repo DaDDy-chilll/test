@@ -1,12 +1,30 @@
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, useRef, ChangeEvent,useEffect } from "react";
 import { jp } from "@/lang/jp";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import Routenames from "@/navigations/routes";
+import { setToken } from "@/store";
+import { useDispatch } from "react-redux"
+import usePost from "@/hooks/usePost";
+import { QueryKey } from "@/utils/queryKey";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { BeatLoader } from "react-spinners";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 const Otp: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { mutate, isPending, isSuccess, error,data } = usePost({});
+
+
+
+  
 
   const handleChange = (
     element: ChangeEvent<HTMLInputElement>,
@@ -32,6 +50,23 @@ const Otp: React.FC = () => {
       inputRefs.current[index - 1]?.focus();
     }
   };
+
+
+  const onSubmit = () => {
+    mutate({
+      endpoint: apiRoutes.VERIFY_OTP,
+      body: { email: user?.email,otp: otp.join("") },
+    });
+  };
+
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+      dispatch(setToken({token:data?.data?.token,email:null}));
+      navigate(Routenames.CHANGE_PASSWORD);
+    }
+  }, [isSuccess,data]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
@@ -76,8 +111,8 @@ const Otp: React.FC = () => {
               </Link>
             </div>
             <div className="sm:w-2/3 md:w-2/3 w-full">
-              <Button className="mt-6 px-4 py-2 rounded w-full">
-                {jp.verify}
+              <Button className="mt-6 px-4 py-2 rounded w-full" onClick={onSubmit} disabled={isPending}>
+                {isPending ? <BeatLoader loading={isPending} size={8} color={"#fff"} /> : jp.verify}
               </Button>
             </div>
           </div>

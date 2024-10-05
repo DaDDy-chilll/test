@@ -15,42 +15,27 @@ export const fetchServer = async ({
   token = null,
 }: FetchServerType) => {
   const urlEndPoint = endpoint || "";
-  console.log("urlEndPoint", api.defaults.baseURL, urlEndPoint);
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   try {
     if (method === "GET") {
-      const { data } = await api.get(urlEndPoint, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await api.get(urlEndPoint);
       result = data;
     } else if (method === "POST" && !file && !token) {
       const { data } = await api.post(urlEndPoint, body);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
       result = data;
     } else if (method === "POST" && !file) {
-      const { data } = await api.post(urlEndPoint, body, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log("post data")
-      console.log("post data",data)
+      const { data } = await api.post(urlEndPoint, body);
       result = data;
     } else if (method === "POST" && file) {
       const { data } = await api.post(urlEndPoint, body, {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
     
       result = data;
     }else if (method === "PUT" && !file) {
-      const { data } = await api.put(urlEndPoint, body, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await api.put(urlEndPoint, body);
       result = data;
     } 
     return result;

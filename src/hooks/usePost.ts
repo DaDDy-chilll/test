@@ -3,8 +3,8 @@ import { useMutation,useQueryClient } from "@tanstack/react-query"
 import { QueryKey } from "@/utils/queryKey"
 
 type usePostProps = {
-    token: string | null
-    queryKey: QueryKey
+    token?: string | null
+    queryKey?: QueryKey | null
 }
 
 type parms = {
@@ -13,7 +13,7 @@ type parms = {
     method?: "POST" | "PUT" | "DELETE"
 }
 
-const usePost = ({token,queryKey}:usePostProps) => {
+const usePost = ({token='',queryKey=null}:usePostProps ) => {
     const queryClient = useQueryClient()
     const { mutate,isPending,error,isSuccess,data}  = useMutation({
         mutationFn:({endpoint, body, method}:parms) => {
@@ -21,7 +21,9 @@ const usePost = ({token,queryKey}:usePostProps) => {
             return fetchServer({ endpoint, method: method || "POST", body, token: token || undefined })
         },
         onSuccess:(data) => {
-            queryClient.invalidateQueries({queryKey:[queryKey]})
+            if(queryKey){
+                queryClient.invalidateQueries({queryKey:[queryKey]})
+            }
             console.log("server post return",data,queryKey)
         }
     })

@@ -23,15 +23,25 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
   const profile_path = m_basicinfos.profile_path;
   return (
     <div className={`bg-gray-100 pt-2 pb-5 px-14 shadow-md ${className}`}>
-
       <div className="flex items-center gap-x-10 my-3 ">
         <img
-          src={profile_path ? profile_path : DefaultLogo}
+          // src={profile_path ? profile_path : DefaultLogo}
+          src={DefaultLogo}
           alt="profile"
           className="w-16 h-16 rounded-full"
         />
-        <div className="flex flex-col gap-y-2">
-          <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
+        <div className="flex flex-col gap-y-4">
+          <div className="flex items-center justify-start gap-x-2">
+            <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
+            <span className="text-xl">.</span>
+            <div className="flex items-center gap-2">
+              {m_basicinfos.gender === 0 ? (
+                <p className="text-sm">{jp.male}</p>
+              ) : (
+                <p className="text-sm">{jp.female}</p>
+              )}
+            </div>
+          </div>
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-2">
               <svg
@@ -47,8 +57,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
                 />
               </svg>
               <p className="text-sm">
-                Live in{" "}
-                {m_basicinfos.live_in_japan === 1 ? " Japan" : " Myanmar"}
+                {m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}
               </p>
             </div>
 
@@ -68,54 +77,6 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
               <p className="text-sm">
                 {moment(m_basicinfos.dob).format("YYYY-MM-DD")}
               </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {m_basicinfos.gender === 0 ? (
-                <>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    className="text-primaryColor"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M399.5 849.5a225 225 0 1 0 0-450 225 225 0 0 0 0 450zm0 56.25a281.25 281.25 0 1 1 0-562.5 281.25 281.25 0 0 1 0 562.5zm253.125-787.5h225q28.125 0 28.125 28.125T877.625 174.5h-225q-28.125 0-28.125-28.125t28.125-28.125z"
-                    />
-                    <path
-                      fill="currentColor"
-                      d="M877.625 118.25q28.125 0 28.125 28.125v225q0 28.125-28.125 28.125T849.5 371.375v-225q0-28.125 28.125-28.125z"
-                    />
-                    <path
-                      fill="currentColor"
-                      d="M604.813 458.9 565.1 419.131l292.613-292.668 39.825 39.824z"
-                    />
-                  </svg>
-                  <p className="text-sm">Male</p>
-                </>
-              ) : (
-                <>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-primaryColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M20 9C20 13.0803 16.9453 16.4471 12.9981 16.9383C12.9994 16.9587 13 16.9793 13 17V19H14C14.5523 19 15 19.4477 15 20C15 20.5523 14.5523 21 14 21H13V22C13 22.5523 12.5523 23 12 23C11.4477 23 11 22.5523 11 22V21H10C9.44772 21 9 20.5523 9 20C9 19.4477 9.44772 19 10 19H11V17C11 16.9793 11.0006 16.9587 11.0019 16.9383C7.05466 16.4471 4 13.0803 4 9C4 4.58172 7.58172 1 12 1C16.4183 1 20 4.58172 20 9ZM6.00365 9C6.00365 12.3117 8.68831 14.9963 12 14.9963C15.3117 14.9963 17.9963 12.3117 17.9963 9C17.9963 5.68831 15.3117 3.00365 12 3.00365C8.68831 3.00365 6.00365 5.68831 6.00365 9Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <p className="text-sm">Female</p>
-                </>
-              )}
             </div>
           </div>
         </div>

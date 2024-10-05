@@ -13,7 +13,6 @@ export const navigationSlice = createSlice({
   initialState,
   reducers: {
     setTitle: (state, action) => {
-      console.log(action.payload);
       state.title = action.payload;
     },
     setSideBar: (state) => {
