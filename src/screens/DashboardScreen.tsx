@@ -20,6 +20,8 @@ import { Helmet } from "react-helmet-async";
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
+const startOfMonth = moment().startOf("month").format("YYYY-MM-DD");
+const endOfMonth = moment().endOf("month").format("YYYY-MM-DD");
 
 const DashboardScreen = () => {
   const navigate = useNavigate();
@@ -31,13 +33,18 @@ const DashboardScreen = () => {
     token: token as string,
     key: QueryKey.DASHBOARD,
   });
+  const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
+    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startOfMonth}&end_date=${startOfMonth}`,
+    token: token as string,
+    key: QueryKey.INTERVIEW,
+  });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>(
     format(new Date(), "yyyy-MM-dd")
   );
 
-  console.log(dashboardData);
+  console.log(interviewData,startOfMonth,endOfMonth);
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));

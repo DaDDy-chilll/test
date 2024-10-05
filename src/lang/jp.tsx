@@ -118,4 +118,5 @@ export const jp = {
   date:"日付",
   makeAppointment:"面接予定を作成する",
   chooseCountry:"国を選択してください",
+
 };

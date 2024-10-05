@@ -13,4 +13,5 @@ export enum QueryKey {
   MATCHED_DETAIL = "matchedDetail",
   FORGOT_PASSWORD = "forgotPassword",
   DASHBOARD = "dashboard",
+  INTERVIEW = "interview",
 }
