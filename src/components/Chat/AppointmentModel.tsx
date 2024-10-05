@@ -30,7 +30,7 @@ const AppointmentModel = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [currentMeetingData, setCurrentMeetingData] = useState<MeetingData | null>(null);
   const handleCloseModel = () => setIsAppointmentModelOpen(false);
-
+ const [validationData,setValidationData] = useState<any>(null);
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
  
@@ -54,18 +54,17 @@ const AppointmentModel = ({
         body: data,
       });
     },
-    onSuccess: () => {
-      handleCloseModel();
-    },
-    onError: (error: any) => {
-      console.log("meeting error",error);
-      if (error) {
-        setShowConfirmModal(true);
-      } else {
-        console.error('Error creating meeting:', error);
-      
+    onSuccess: (responseData) => {
+    
+      if(responseData.data){
+        setValidationData(responseData.data);
+          setShowConfirmModal(true);
+      }else{
+        handleCloseModel();
       }
+    
     },
+  
   });
 
   const handleMakeAppointment = (isInitial:boolean) => {
@@ -248,6 +247,17 @@ const AppointmentModel = ({
         <div className="p-6">
           <h2 className="text-xl font-bold mb-4">Confirm Rewrite</h2>
           <p className="mb-4">This appointment already exists. Are you sure you want to rewrite it?</p>
+          
+          {/* Add validation data display */}
+          {validationData && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold mb-2">Existing Appointment:</h3>
+              <p>Date: {validationData.date}</p>
+              <p>Start Time: {validationData.start_time}</p>  
+              <p>End Time: {validationData.end_time}</p>
+              </div>
+          )}    
+
           <div className="flex justify-end">
             <button
               className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
@@ -256,14 +266,14 @@ const AppointmentModel = ({
               Cancel
             </button>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={handleConfirmRewrite}
             >
               Confirm
             </button>
           </div>
         </div>
-      </Modal>
+    </Modal>
     </>
   );
 };
