@@ -123,5 +123,9 @@ export const jp = {
   date:"日付",
   makeAppointment:"面接予定を作成する",
   chooseCountry:"国を選択してください",
-
+  selfIntroduction: "自己紹介ビデオ",
+  preferredCities:"希望都市",
+  preferredJobs:"希望職種",
+  notFoundEducation:"教育が見つかりません",
+  notFoundJobExprenced:"職歴が見つかりません"
 };

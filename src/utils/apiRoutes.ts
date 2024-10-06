@@ -25,6 +25,7 @@ export interface ApiRoutesType {
   CALENDAR: string;
   CREATE_JOB: string;
   DELETE_JOB: string;
+  UPCOMING_INTERVIEW:string,
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -54,4 +55,5 @@ export const apiRoutes: ApiRoutesType = {
   DASHBOARD: "/client/dashboard",
   CALENDAR: "/client/calendar",
   DELETE_JOB: "/client/job/delete",
+  UPCOMING_INTERVIEW:"/client/interview/upcoming"
 };
