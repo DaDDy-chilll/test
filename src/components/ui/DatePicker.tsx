@@ -21,7 +21,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
 }) => {
 
-  const formattedValue = value ? moment(value).format("YYYY-MM-DD") : "";
+  const formattedValue = value
+    ? moment(value, "DD/MM/YYYY").isValid()
+      ? moment(value, "DD/MM/YYYY").format("YYYY-MM-DD")
+      : ""
+    : "";
   return (
     <div className="relative z-0 w-full mb-5 group">
       <input

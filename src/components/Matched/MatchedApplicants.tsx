@@ -34,7 +34,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
           crossOrigin="anonymous"
         />
         <div className="flex flex-col gap-y-4">
-          <div className="flex items-center justify-start gap-x-2">
+          <div className="flex items-center justify-start">
             <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
             <span className="text-xl">・</span>
             <div className="flex items-center gap-2">
@@ -286,10 +286,11 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
         </div>
         {/* column right */}
         <div className="p-2 space-y-8  px-4">
-          <div className="w-full  space-y-3">
+          <div className="w-full  space-y-2 ">
             <h1 className="font-sm font-semibold">{jp.acceptView}</h1>
 
-            <div className="grid grid-cols-2 px-5">
+         <div className="space-y-1">
+         <div className="grid grid-cols-2 px-5">
               <div className="flex items-center gap-x-2 text-xs">
                 <p className="text-sm">・{jp.salary}</p>
               </div>
@@ -333,6 +334,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
                   : jp.notRequired}
               </p>
             </div>
+         </div>
           </div>
 
           <div className="flex flex-col gap-y-3 mt-8">

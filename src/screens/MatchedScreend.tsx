@@ -209,7 +209,7 @@ const MatchedScreend = () => {
       <Helmet>
         <title>{jp.matches} - Japan Job</title>
       </Helmet>
-      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
+      {(isPending || isLoading || isDetailLoading) && <Loading isLoading={isPending || isLoading || isDetailLoading} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={matchedVariants}
         initial="initial"

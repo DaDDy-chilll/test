@@ -7,10 +7,12 @@ import Select from "@/components/ui/Select";
 import DatePicker from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
 import defaultImage from "@/assets/images/default.png";
-
+import { useMutation } from "@tanstack/react-query";
 
 import { jp } from "@/lang/jp";
 import { useForm } from "react-hook-form";
+import { fetchServer } from "@/utils/helper";
+import { apiRoutes } from "@/utils/apiRoutes";
 
 const defaultData = {
   name: "",
@@ -21,8 +23,9 @@ const defaultData = {
   prefecture_id: "",
   starting: "",
   company_des: "",
-  profileImage: "",
+  photo: "",
 };
+
 
 type profileFormProps = {
   setIsEdit: (value: boolean) => void;
@@ -50,35 +53,39 @@ const ProfileForm = ({
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
 
+  const { mutate: uploadImage } = useMutation({
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      console.log("iformData",formData)
+      return fetchServer({
+        endpoint: apiRoutes.UPLOAD_IMAGE,
+        method: "POST",
+        body: {file:formData.get("file")},
+        file : true
+      });
+    },
+    onSuccess: (data) => {
+      console.log("data",data)
+      setAvatarImage("https://api.japanjob.exbrainedu.com/v1/file/photo/" +data.data.filename);
+      setFormData((prevData:any) => ({ ...prevData, photo: data.data.filename }));
+    },
+    onError: (error) => {
+      console.error('Error uploading image:', error);
+    },
+    onSettled: () => {
+      setIsUploading(false);
+    },
+  });
 
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setIsUploading(true);
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        const response = await fetch('/api/upload-image', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setAvatarImage(data.imageUrl);
-          setFormData({ ...formData, profileImage: data.imageUrl });
-        } else {
-          console.error('Image upload failed');
-        }
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      } finally {
-        setIsUploading(false);
-      }
+      uploadImage(file);
     }
   };
+
 
   return (
     <motion.div
@@ -91,7 +98,7 @@ const ProfileForm = ({
     >
       <div className="absolute left-7 top-5 flex items-center gap-3">
         <div className="w-12">
-          <img src={logo} className="w-full" alt="Japan job logo" />
+          <img src={logo} crossOrigin="anonymous" className="w-full" alt="Japan job logo" />
         </div>
         <h1 className="font-medium">JAPAN JOB</h1>
       </div>
@@ -101,10 +108,10 @@ const ProfileForm = ({
           <p>{jp.profilePhotoDescription}</p>
         </div>
         <label htmlFor="avatar-upload" className="cursor-pointer">
-          <Avatar className="w-20 h-20">
-            <AvatarImage src={avatarImage} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <div className="w-20 h-20 rounded-full overflow-hidden">
+            <img width="full"  src={avatarImage} crossOrigin="anonymous" />
+          
+          </div>
         </label>
         <input
           id="avatar-upload"
@@ -173,8 +180,8 @@ const ProfileForm = ({
             options={countries}
             className=""
             defaultOption={jp.chooseLocation}
-            value={formData.prefecture_id}
-            onChange={(e) => setFormData({ ...formData, prefecture_id: {label: e.target.labels, value: e.target.value} })}
+            value={formData.area}
+            onChange={(e) => setFormData({ ...formData, area: {label: e.target.labels, value: e.target.value} })}
           />
           <DatePicker
             name="starting"
@@ -188,7 +195,7 @@ const ProfileForm = ({
             disabled={formData.prefecture_id.value !== "" ? false : true}
             label={jp.city}
             id="city"
-            options={countries}
+            options={city[formData.area.value]}
             className=""
             defaultOption={jp.chooseLocation}
             value={formData.prefecture_id}

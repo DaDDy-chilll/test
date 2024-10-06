@@ -1,6 +1,6 @@
 import { jp } from "../../lang/jp";
 import eyeOpenWhite from "../../assets/icons/eye-open-white.svg";
-
+import DefaultUser from "@/assets/icons/default_user.svg"
 type Applicant = {
   id: string;
   profileImage: string;
@@ -12,6 +12,7 @@ type Applicant = {
     user_id: number;
     live_in_japan: number;
     profile_path: string;
+    address:string;
   };
   m_preferred_jobs: [
     {
@@ -99,7 +100,7 @@ const ApplicantTable = ({
 
   return (
     <div className="relative overflow-y-auto h-[calc(100vh-225px)]">
-      <table className="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white z-40">
           <tr>
             <th scope="col" className=" py-3 text-start pl-5">
@@ -134,11 +135,11 @@ const ApplicantTable = ({
         <tbody className="overflow-y-auto ">
           {applicants.length > 0 ? (
             applicants.map((applicant, index) => (
-              <tr className="bg-white dark:bg-gray-800" key={index}>
+              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" key={index}>
                 {/* image column */}
                 <td className=" py-2 text-start pl-5">
                   <img
-                    src={`https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}`}
+                    src={applicant.m_basicinfos.profile_path ? `https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}` : DefaultUser}
                     alt="profile"
                     className="w-10 h-10 rounded-full"
                     crossOrigin="anonymous"
@@ -149,8 +150,8 @@ const ApplicantTable = ({
                   scope="row"
                   className=" py-2 text-start font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <p>{applicant.m_basicinfos.name}</p>
-                  <p className="text-xs font-normal text-gray-500">
+                  <p className="text-xs">{applicant.m_basicinfos.name}</p>
+                  <p className="text-xs font-light text-gray-500">
                     {applicant.m_basicinfos.user_id}
                   </p>
                 </th>
@@ -191,16 +192,14 @@ const ApplicantTable = ({
                         )}
                       </>
                     ) : (
-                      <div>{jp.noPreferredJobs}</div>
+                      <div className="text-xs text-gray-500">{jp.noPreferredJobs}</div>
                     )}
                   </div>
                 </td>
 
                 {/* address column */}
-                <td className="py-2 text-start text-secondaryColor">
-                  {applicant.m_basicinfos.live_in_japan === 1
-                    ? "Japan"
-                    : "Myanmar"}
+                <td className="py-2 text-xs text-start text-secondaryColor">
+                  {applicant.m_basicinfos.address}
                 </td>
 
                 {/* education column */}
@@ -212,7 +211,7 @@ const ApplicantTable = ({
                     {applicant.m_education.length > 0 ? (
                       <>
                         <div className="flex  items-center justify-start gap-1 cursor-pointer">
-                          <p>{applicant.m_education[0].major}</p>
+                          <p className="text-xs">{applicant.m_education[0].major}</p>
                           {applicant.m_education.length > 1 && (
                             <span className="text-xs text-gray-500 ml-1">
                               +{applicant.m_education.length - 1}
@@ -235,7 +234,7 @@ const ApplicantTable = ({
                         )}
                       </>
                     ) : (
-                      <div>{jp.noEducation}</div>
+                      <div className="text-xs text-gray-500">{jp.noEducation}</div>
                     )}
                   </div>
                 </td>
@@ -249,7 +248,7 @@ const ApplicantTable = ({
                     {applicant.m_language_exams.length > 0 ? (
                       <>
                         <div className="flex  items-center justify-start gap-1 cursor-pointer">
-                          <p>{applicant.m_language_exams[0].m_exams.name_jp}</p>
+                          <p className="text-xs">{applicant.m_language_exams[0].m_exams.name_jp}</p>
                           {applicant.m_language_exams.length > 1 && (
                             <span className="text-xs text-gray-500 ml-1">
                               +{applicant.m_language_exams.length - 1}
@@ -272,7 +271,7 @@ const ApplicantTable = ({
                         )}
                       </>
                     ) : (
-                      <div>{jp.noTokutei}</div>
+                      <div className="text-xs text-gray-500">{jp.noTokutei}</div>
                     )}
                   </div>
                 </td>
@@ -286,7 +285,7 @@ const ApplicantTable = ({
                     {applicant.m_language_exams.length > 0 ? (
                       <>
                         <div className="flex  items-center justify-start gap-1 cursor-pointer">
-                          <p>
+                          <p className="text-xs">
                             {applicant.m_language_exams[0].m_exam_levels.level}
                           </p>
                           {applicant.m_language_exams.length > 1 && (
@@ -311,13 +310,15 @@ const ApplicantTable = ({
                         )}
                       </>
                     ) : (
-                      <div>{jp.noJapanese}</div>
+                      <div className="text-xs text-gray-500">{jp.noJapanese}</div>
                     )}
                   </div>
                 </td>
 
                 <td className=" py-2 text-start text-secondaryColor">
+                  <p className="text-xs">
                   {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
+                  </p>
                 </td>
 
                 <td className=" py-2 text-start text-secondaryColor">

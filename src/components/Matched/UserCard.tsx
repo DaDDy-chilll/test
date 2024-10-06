@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import DefaultProfile from "@/assets/images/default.png";
+import DefaultProfile from "@/assets/icons/default_user.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
@@ -44,7 +44,7 @@ const UserCard = ({
       <div className="flex w-full h-full  justify-between flex-col items-center p-3">
         <img
           className="w-16 h-16 mb-3 rounded-full shadow-lg"
-          src={profileImage || DefaultProfile}
+          src={m_basicinfos.profile_path ?  profileImage :  DefaultProfile}
           alt={m_basicinfos.name}
           crossOrigin="anonymous"
         />

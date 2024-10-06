@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Button, JobDetails, JobForm } from "@/components";
+import { Button, JobDetails, JobForm,Loading } from "@/components";
 import { useMemo, useState, useEffect } from "react";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
@@ -41,15 +41,15 @@ const JobScreen = () => {
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
-  const { data, error: fetchError } = useFetch({
+  const { data, error: fetchError, isLoading: jobListLoading } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
   });
 
-  console.log("data", data);
+  // console.log("data", data);
 
-  const { data: jobDetail } = useQuery({
+  const { data: jobDetail, isLoading: jobDetailLoading } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
     queryFn: () => {
       return fetchServer({
@@ -154,9 +154,9 @@ const JobScreen = () => {
       <Helmet>
         <title>{jp.joblists} - Japan Job</title>
       </Helmet>
-      {/* {isLoading && !error && (
-        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)] z-40" />
-      )} */}
+      {(jobDetailLoading || jobListLoading || deleteJob.isPending) && (
+        <Loading isLoading={jobDetailLoading || jobListLoading || deleteJob.isPending} className="h-[calc(100vh-68px)] z-40" />
+      )}
       {!showDetails && !isAdd && !isEdit && (
         <motion.div
           key="job-list"

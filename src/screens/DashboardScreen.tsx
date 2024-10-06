@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import DefaultUser from "@/assets/icons/default_user.svg"
+import { db } from "../firebaseConfig";
 import {
   query,
   where,
@@ -28,12 +30,11 @@ import {
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
-const startOfMonth = moment().startOf("month").format("YYYY-MM-DD");
-const endOfMonth = moment().endOf("month").format("YYYY-MM-DD");
+
 const currentDate = moment().format("YYYY-MM-DD");
 // const currentDate = "2024-10-07";
 const currentYear = moment().format("YYYY");
@@ -114,21 +115,6 @@ const DashboardScreen = () => {
     key: QueryKey.DASHBOARD,
   });
 
-  // const buildQueryString = () => {
-  //   const params = new URLSearchParams();
-  //   params.append("start_date", `${currentYear}-${selectedMonth}-01`);
-  //   params.append("end_date", `${currentYear}-${selectedMonth}-30`);
-  //   return params.toString();
-  // };
-
-  // const { data: interviewData, isLoading: isInterviewLoading,refetch: refetchInterviewData } = useFetch({
-  //   endpoint: `${
-  //     apiRoutes.INTERVIEW
-  //   }?${buildQueryString()}`,
-  //   token: token as string,
-  //   key: QueryKey.INTERVIEW,
-  // });
-
   const {
     data: interviewData,
     isLoading: isInterviewLoading,
@@ -141,9 +127,6 @@ const DashboardScreen = () => {
 
   const upcomingInterviews = interviewData?.data;
 
-  // console.log("interviewData", upcomingInterviews);
-
-  // console.log(interviewData, startOfMonth, endOfMonth);
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
@@ -216,13 +199,6 @@ const DashboardScreen = () => {
     };
   }, [chats, user?.id]);
 
-  // useEffect(() => {
-  //   if(selectedMonth === TODAY){
-  //     refetchInterviewData()
-  //   }
-  // },[selectedMonth])
-
-  // console.log("upcomingInterviews",upcomingInterviews)
 
   const coverInterviews = useCallback(
     (data: any) => {
@@ -255,19 +231,19 @@ useEffect(()=>{
 },[upcomingInterviews])
 
 
-console.log('chat',chats)
+console.log(chats)
 
   return (
     <>
       <Helmet>
         <title>{jp.dashboard} - Japan Job</title>
       </Helmet>
-      {/* {(isEventLoading || isChatLoading) && (
+      {(isDashboardLoading || isChatLoading || isInterviewLoading) && (
         <Loading
-          isLoading={isEventLoading || isChatLoading}
+          isLoading={isDashboardLoading || isChatLoading || isInterviewLoading}
           className="h-[calc(100vh-68px)]"
         />
-      )} */}
+      )}
       <motion.div
         variants={dashboardVariants}
         initial="initial"
@@ -314,13 +290,6 @@ console.log('chat',chats)
                             }}
                           >
                             {key}
-                            {/* {activeDate !== date &&
-                          upcomingEvents[date] &&
-                          upcomingEvents[date].length > 0 && (
-                            <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">
-                              + {upcomingEvents[date].length}
-                            </span>
-                          )} */}
                           </div>
                         );
                       }
@@ -329,23 +298,8 @@ console.log('chat',chats)
               </div>
               <div className="col-span-2 w-2/3 pb-4">
                 <div className="flex items-center justify-between relative px-5">
-                  {/* <button
-                    className={`text-sm rounded-md px-2 py-1 absolute right-2 ${
-                      selectedDate === today
-                        ? "bg-primaryColor text-white"
-                        : "text-gray-500 bg-gray-200 hover:bg-gray-300"
-                    }`}
-                    onClick={() => {}}
-                  >
-                    {jp.todayMeetings}{" "}
-                    <span
-                      className={`ml-2 text-xs`}
-                    >
-                      +{todayEvents.length}
-                    </span>
-                  </button> */}
                   <h1 className="text-base font-semibold text-center my-2">
-                    {selectedDate} {jp.meetings}
+                    {selectedDate || currentDate} {jp.meetings}
                   </h1>
                 </div>
                 <div className="w-full h-[62vh] overflow-y-auto">
@@ -364,13 +318,6 @@ console.log('chat',chats)
                     </p>
                   }
                 </div>
-                {0 > 0 && (
-                  <div className="text-end pt-3">
-                    <button className="text-sm text-gray-500">
-                      See More &gt;&gt;
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -383,20 +330,40 @@ console.log('chat',chats)
           </h1>
           <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
             {chats.length > 0 ? (
-              chats.map((chat, index) => (
-                <div
+              chats.map((chat, index) => {
+                const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
+
+                return(
+                  <div
                   key={index}
                   className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
                   onClick={() => handleChatClick(chat)}
                 >
-                  <img
-                    src={`https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`}
-                    alt="profile"
-                    width={50}
-                    height={50}
-                    className="rounded-full"
-                    crossOrigin="anonymous"
-                  />
+                  {
+                    chat.jobfinder_profile_image && profileImage ? (
+                      <img
+                      src={profileImage}
+                      alt="profile"
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                      crossOrigin="anonymous"
+                    />
+                    ) :(
+                      <img
+                      src={DefaultUser}
+                      alt="profile"
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                      crossOrigin="anonymous"
+                    />
+                    )
+                  }
+               
+                    
+                    
+                 
                   <div
                     key={index}
                     className="flex items-start flex-col gap-x-2 w-full"
@@ -417,7 +384,8 @@ console.log('chat',chats)
                     <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
                   )}
                 </div>
-              ))
+                )
+              })
             ) : (
               <p className="text-center text-gray-500 mt-10">{jp.noMessages}</p>
             )}

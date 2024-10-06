@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import moment from "moment";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -9,7 +10,7 @@ import {
   subMonths,
   addMonths,
 } from "date-fns";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { CalendarCell, EventListItem, Loading } from "@/components";
 import { jp } from "@/lang/jp";
 import useFetch from "@/hooks/useFetch";
@@ -22,33 +23,32 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
+const startForMonth = moment().startOf("month").format("YYYY-MM-DD");
+const endForMonth = moment().endOf("month").format("YYYY-MM-DD");
+const today = moment().format("YYYY-MM-DD");
 const CalendarScreen = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
+  const [selectedEvents, setSelectedEvents] = useState<any>();
+  const [selectedDate, setSelectedDate] = useState<string>("");
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-
-
-  const events: Event[] = [];
+  const [hasTodayEvents, setHasTodayEvents] = useState<any>({
+    date: "",
+    events: null,
+  });
+  console.log(startForMonth, endForMonth);
+  const {
+    data: eventsOfMonth,
+    isLoading: isEventsLoading,
+    refetch: refetchEvents,
+  } = useFetch({
+    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startForMonth}&end_date=${endForMonth}`,
+    token: token as string,
+    key: QueryKey.INTERVIEW,
+  });
   const today = format(new Date(), "yyyy-MM-dd");
-  useEffect(() => {
-    dispatch(setTitle(jp.calendar));
-  }, [dispatch]);
-  const eventsByDate = useMemo(() => {
-    return events.reduce((acc: { [key: string]: Event[] }, event: Event) => {
-      const dateKey = format(new Date(event.date), "yyyy-MM-dd");
-      if (!acc[dateKey]) {
-        acc[dateKey] = [];
-      }
-      acc[dateKey].push(event);
-      return acc;
-    }, {});
-  }, [events]);
-  const dayEvents = eventsByDate[today] || [];
-
   const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const daysInMonth = eachDayOfInterval({
@@ -60,15 +60,54 @@ const CalendarScreen = () => {
   const endingDayIndex =
     getDay(lastDayOfMonth) === 0 ? 0 : 7 - getDay(lastDayOfMonth);
 
-  const handleCellClick = (todaysEvents: Event[]) =>
-    setSelectedEvents(todaysEvents);
+  const handleCellClick = (todaysEvents: Event, dateKey: string) => {
+    setSelectedDate(dateKey);
+
+    setSelectedEvents(coverInterviews(todaysEvents));
+  };
+
+  const coverInterviews = useCallback(
+    (data: any) => {
+      if (!data) return [];
+      return Object.entries(data as any[]).flatMap(([date, interviews]) => {
+        return Object.entries(interviews as Record<string, any>).map(
+          ([key, value]) => {
+            return {
+              name: key,
+              user_photo: value[0].user_photo,
+              start_time: value[0].start_time,
+              end_time: value[0].end_time,
+              job_title: value[0].job_title,
+            };
+          }
+        );
+      });
+    },
+    [selectedDate]
+  );
+
+  useEffect(() => {
+    dispatch(setTitle(jp.calendar));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (eventsOfMonth) {
+      Object.entries(eventsOfMonth.data).forEach(([key, value]) => {
+        if (key === today) {
+          setHasTodayEvents({ date: key, events: coverInterviews(value) });
+        }
+      });
+    }
+  }, [eventsOfMonth]);
 
   return (
     <>
       <Helmet>
         <title>{jp.calendar} - Japan Job</title>
       </Helmet>
-      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
+      {isEventsLoading && (
+        <Loading isLoading={isEventsLoading} className="h-[calc(100vh-68px)]" />
+      )}
       <motion.div
         variants={calendarVariants}
         initial="initial"
@@ -146,13 +185,13 @@ const CalendarScreen = () => {
             })}
             {daysInMonth.map((day, index) => {
               const dateKey = format(day, "yyyy-MM-dd");
-              const todaysEvents = eventsByDate[dateKey] || [];
+              const todaysEvents = eventsOfMonth?.data[dateKey] || [];
               return (
                 <CalendarCell
                   key={index}
                   day={day}
                   todaysEvents={todaysEvents}
-                  handleClick={() => handleCellClick(todaysEvents)}
+                  handleClick={() => handleCellClick(todaysEvents, dateKey)}
                 />
               );
             })}
@@ -170,10 +209,9 @@ const CalendarScreen = () => {
           <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
           <div className="flex justify-between items-center">
             <p className="text-sm text-gray-500">
-              {selectedEvents.length > 0
-                ? format(selectedEvents[0].date, "yyyy-MM-dd")
-                : dayEvents.length > 0 &&
-                  format(dayEvents[0].date, "yyyy-MM-dd")}
+              {selectedDate
+                ? format(selectedDate, "yyyy-MM-dd")
+                : format(new Date(), "yyyy-MM-dd")}
             </p>
             <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
               <option value="all">All</option>
@@ -181,17 +219,17 @@ const CalendarScreen = () => {
             </select>
           </div>
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
-            {selectedEvents.length > 0 ? (
-              selectedEvents.map((event, index) => (
-                <EventListItem key={index} event={event} />
-              ))
-            ) : dayEvents.length > 0 ? (
-              dayEvents.map((event, index) => (
-                <EventListItem key={index} event={event} />
-              ))
+            {selectedEvents ? (
+              selectedEvents.map((event: Event, index: number) => {
+                return <EventListItem key={index} event={event} />;
+              })
+            ) : hasTodayEvents.events ? (
+              hasTodayEvents.events.map((event: Event, index: number) => {
+                return <EventListItem key={index} event={event} />;
+              })
             ) : (
-              <p className="text-center text-gray-500 pt-10">
-                {jp.noEventsForThisDay}
+              <p className="text-center text-gray-500 mt-10">
+                {jp.noInterviewSchedule}
               </p>
             )}
           </div>

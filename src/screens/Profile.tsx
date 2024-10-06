@@ -19,6 +19,7 @@ const defaultFormData = {
   budget: "",
   starting: "",
   staff:  {label: "", value: ""},
+  area: {label: "", value: ""},
   prefecture_id: {label: "", value: ""},
   company_des: "",
   address: "",
@@ -30,7 +31,6 @@ const Profile = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
-  console.log('formData', formData);
   const { data, isLoading } = useFetch({
     endpoint: apiRoutes.PROFILE,
     key: QueryKey.PROFILE,
@@ -163,6 +163,7 @@ const Profile = () => {
         budget: data.data.budget,
         starting: data.data.starting,
         staff: {label: data.data.staff, value: data.data.staff},
+        area: {label: data.data.prefecture.area_id, value: data.data.prefecture.area_id},
         prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
         company_des: data.data.company_des,
         address: data.data.address,

@@ -30,9 +30,10 @@ export const fetchServer = async ({
       const { data } = await api.post(urlEndPoint, body, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`
         },
       });
-    
+      console.log('data',data);
       result = data;
     }else if (method === "PUT" && !file) {
       const { data } = await api.put(urlEndPoint, body);
