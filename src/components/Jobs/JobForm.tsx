@@ -25,18 +25,16 @@ type JobFormProps = {
   isEdit?: boolean;
 };
 
-
-
 const JobForm = ({
   onBack,
   formVariant,
   form,
   setForm,
   setShowDetails,
-  isEdit
+  isEdit,
 }: JobFormProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const [showErrorModal,setShowErrorModal] = useState(false)
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const { mutate, error, isSuccess } = usePost({
     token,
     queryKey: QueryKey.JOBS,
@@ -97,28 +95,31 @@ const JobForm = ({
 
     const jobData = {
       job_title: formData.get("job_title") as string,
-      job_types: Number(formData.get("job_types") as string),
+      job_types: Number(formData.get("job_types") as string) || undefined,
       job_des: form.job_des,
-      prefecture_id: Number(formData.get("prefecture_id") as string),
-      annual_salary: Number(formData.get("annual_salary") as string),
-      working_time: Number(formData.get("working_time") as string),
+      prefecture_id:
+        Number(formData.get("prefecture_id") as string) || undefined,
+      annual_salary:
+        Number(formData.get("annual_salary") as string) || undefined,
+      working_time: Number(formData.get("working_time") as string) || undefined,
       start_time: formData.get("start_time") as string,
       end_time: formData.get("end_time") as string,
-      holiday_in_year: 0,
+      holiday_in_year:
+        Number(formData.get("holiday_in_year") as string) || undefined,
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
     console.log("jobData111", jobData);
-    if(isEdit){
+    if (isEdit) {
       mutate({
         endpoint: `${apiRoutes.UPDATE_JOB}/${form.id}`,
         body: jobData,
         method: "PUT",
       });
-    }else{
-    mutate({
-      endpoint: `${apiRoutes.CREATE_JOB}`,
-      body: jobData,
+    } else {
+      mutate({
+        endpoint: `${apiRoutes.CREATE_JOB}`,
+        body: jobData,
         method: "POST",
       });
     }
@@ -126,7 +127,7 @@ const JobForm = ({
 
   useEffect(() => {
     if (error) {
-      setShowErrorModal(true)
+      setShowErrorModal(true);
     }
     if (isSuccess) {
       onBack?.();
@@ -135,25 +136,46 @@ const JobForm = ({
   }, [error, isSuccess]);
 
   console.log("form", form);
+
+  const getFieldLabel = (field: string): string => {
+    switch (field) {
+      case "job_des":
+        return jp.jobDescription;
+      case "prefecture_id":
+        return jp.jobLocation;
+      case "annual_salary":
+        return jp.annualSalary;
+      case "working_time":
+        return jp.annualHoliday;
+      case "job_types":
+        return jp.jobType;
+      default:
+        return field;
+    }
+  };
   const renderErrorMessage = () => {
-    if (typeof error?.message === 'object' && 'validation' in error.message) {
+    if (typeof error?.message === "object" && "validation" in error.message) {
       return (
         <ul className="list-disc pl-5">
-                 {(error.message as { validation: any[] }).validation.map((validationError: any, index: number) => (
-            <li key={index}>
-              {Object.entries(validationError).map(([field, messages]) => (
-                <div key={field}>
-                  <span className="font-semibold mr-1">{field=="job_des"&&jp.jobDescription}</span> {(messages as Record<string, string>).jp}
-                </div>
-              ))}
-            </li>
-          ))}
+          {(error.message as { validation: any[] }).validation.map(
+            (validationError: any, index: number) => (
+              <li key={index}>
+                {Object.entries(validationError).map(([field, messages]) => (
+                  <div key={field}>
+                    <span className="font-semibold mr-1">
+                      {getFieldLabel(field)}
+                    </span>
+                    {(messages as Record<string, string>).jp}
+                  </div>
+                ))}
+              </li>
+            )
+          )}
         </ul>
       );
     }
     return <p>{JSON.stringify(error?.message)}</p>;
   };
-
 
   return (
     <motion.div
@@ -164,22 +186,17 @@ const JobForm = ({
       animate="visible"
       exit="exit"
     >
-      <Modal
-        isOpen={showErrorModal}
-        onClose={handleCloseErrorModal}
-      >
+      <Modal isOpen={showErrorModal} onClose={handleCloseErrorModal}>
         <h2 className="text-xl font-bold mb-4">エラー</h2>
-        <div className="mb-4">
-          {renderErrorMessage()}
-        </div>
+        <div className="mb-4">{renderErrorMessage()}</div>
         <div className="flex justify-end">
-      <button 
-        onClick={handleCloseErrorModal}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-      >
-        閉じる
-      </button>
-    </div>
+          <button
+            onClick={handleCloseErrorModal}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            閉じる
+          </button>
+        </div>
       </Modal>
       <div className="text-start w-full  border-b-2 border-gray-400 pb-4 mb-14">
         <p>{jp.postJobPosition}</p>
@@ -197,7 +214,7 @@ const JobForm = ({
         </Avatar>
       </div> */}
       <form className="w-full" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-y-2 gap-x-20 px-10">
+        <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">
           <Input
             name="job_title"
             type="text"
@@ -216,7 +233,7 @@ const JobForm = ({
             className=""
             defaultOption={jp.chooseJobType}
             value={form.job_type}
-            defaultValue={jobTypes.length > 0 ? jobTypes[0].value : ''}
+            defaultValue={jobTypes.length > 0 ? jobTypes[0].value : ""}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -233,7 +250,7 @@ const JobForm = ({
             className=""
             defaultOption={jp.chooseLocation}
             value={form.prefecture_id}
-            defaultValue={countries.length > 0 ? countries[0].value : ''}
+            defaultValue={countries.length > 0 ? countries[0].value : ""}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -280,6 +297,20 @@ const JobForm = ({
                 working_time: { label: e.target.labels, value: e.target.value },
               })
             }
+          />
+
+          <Input
+            name="holiday_in_year"
+            type="number"
+            placeholder={jp.holidayInYear}
+            label={jp.holidayInYear}
+            className="mt-1 block w-full bg-gray-100"
+            value={form.holiday_in_year}
+            onChange={(e) =>
+              setForm({ ...form, holiday_in_year: e.target.value })
+            }
+            min="0"
+            max="365"
           />
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">

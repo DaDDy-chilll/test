@@ -32,12 +32,18 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (user && token) navigate(RouteName.DASHBOARD);
-  }, [user, token]);
+    if (user && token) {
+    if (!localStorage.getItem('isCompletedProfile') ) {
+      navigate(RouteName.PROFILE_FORM);
+    }else{
+    navigate(RouteName.DASHBOARD);
+    }
+  }
+  }, [user, token, navigate]);
 
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
-  }, [error]);
+  }, [error, authHandleError]);
 
   const handleForgotPassword = () => {
     dispatch(setForgotPassword(true));

@@ -1,30 +1,17 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import logo from "@/assets/icons/logo.svg";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import DatePicker from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
 import defaultImage from "@/assets/images/default.png";
 import { useMutation } from "@tanstack/react-query";
-
+import { useEffect } from "react";
 import { jp } from "@/lang/jp";
-import { useForm } from "react-hook-form";
+
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
-
-const defaultData = {
-  name: "",
-  industry_type_id: "",
-  budget: "",
-  address: "",
-  staff: "",
-  prefecture_id: "",
-  starting: "",
-  company_des: "",
-  photo: "",
-};
 
 
 type profileFormProps = {
@@ -41,14 +28,12 @@ type profileFormProps = {
 
 const ProfileForm = ({
   setIsEdit,
-  data,
   jobTypes,
   employeeNumber,
   countries,
   handleSubmit,
   formData,
   setFormData,
-  city,
 }: profileFormProps) => {
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
@@ -85,7 +70,11 @@ const ProfileForm = ({
       uploadImage(file);
     }
   };
-
+useEffect(() => {
+  if(formData.photo){
+    setAvatarImage("https://api.japanjob.exbrainedu.com/v1/file/photo/"+formData.photo)
+  }
+},[formData.photo])
   return (
     <motion.div
       key="form"
@@ -107,9 +96,13 @@ const ProfileForm = ({
           <p>{jp.profilePhotoDescription}</p>
         </div>
         <label htmlFor="avatar-upload" className="cursor-pointer">
-          <div className="w-20 h-20 rounded-full overflow-hidden">
-            <img width="full"  src={avatarImage} crossOrigin="anonymous" />
-          
+          <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
+            <img
+              className="w-full h-full object-cover"
+              src={avatarImage}
+              crossOrigin="anonymous"
+              alt="Profile avatar"
+            />
           </div>
         </label>
         <input

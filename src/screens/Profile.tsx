@@ -20,6 +20,7 @@ const defaultFormData = {
   starting: "",
   staff:  {label: "", value: ""},
   prefecture_id: {label: "", value: ""},
+  photo: "",
   company_des: "",
   address: "",
 }
@@ -139,19 +140,24 @@ const Profile = () => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
+    
     const jobData = {
-      name: formData.get("name") as string,
-      industry_type_id: Number(formData.get("industry_type_id") as string),
-      budget: Number(formData.get("budget") as string),
-      starting: moment(formData.get("starting") as string).format("DD/MM/YYYY"),
-      staff: Number(formData.get("staff") as string),
-      prefecture_id: Number(formData.get("prefecture_id") as string),
-      company_des: formData.get("company_des") as string,
-      address: formData.get("address") as string,
+      name: formData.get("name") as string || undefined,
+      industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
+      budget: Number(formData.get("budget") as string) || undefined,
+      starting: formData.get("starting") ? moment(formData.get("starting") as string).format("DD/MM/YYYY") : undefined,
+      staff: Number(formData.get("staff") as string) || undefined,
+      prefecture_id: Number(formData.get("prefecture_id") as string) || undefined,
+      company_des: formData.get("company_des") as string || undefined,
+      address: formData.get("address") as string || undefined,
     };
-    // console.log('jobData', jobData,'prefecture_id', formData.get("prefecture_id") as string);
   
-    mutate({ endpoint: apiRoutes.PROFILE, body: jobData, method: "PUT" });
+    // Remove undefined properties
+    const cleanedJobData = Object.fromEntries(
+      Object.entries(jobData).filter(([_, value]) => value !== undefined)
+    );
+  
+    mutate({ endpoint: apiRoutes.PROFILE, body: cleanedJobData, method: "PUT" });
   };
 
   useEffect(() => {
@@ -164,6 +170,7 @@ const Profile = () => {
         starting: data.data.starting,
         staff: {label: data.data.staff, value: data.data.staff},
         prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
+        photo: data.data.photo,
         company_des: data.data.company_des,
         address: data.data.address,
       });
@@ -184,7 +191,7 @@ const Profile = () => {
         className="w-full flex justify-center px-10 pt-5"
       >
         <AnimatePresence mode="wait">
-          {!isEdit && (
+          {!isEdit && data?.data && (
             <ProfileDetail editHandler={editHandler} data={data?.data} />
           )}
           {isEdit && (

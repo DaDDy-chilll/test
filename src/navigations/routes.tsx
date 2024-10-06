@@ -18,6 +18,7 @@ enum RouteName {
   CHAT = "/chat",
   PROFILE = "/profile",
   VERIFICATION = "/verification",
+  PROFILE_FORM = "/profile_form",
 }
 
 export default RouteName;

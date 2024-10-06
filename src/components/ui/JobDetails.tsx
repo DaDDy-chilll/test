@@ -79,7 +79,7 @@ const JobDetails = ({
         </div>
 
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">{jp.jobDescription}</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{jp.jobDescription}</h2>
           <div className="text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: data?.job_des || "Job Description" }} />
         </div>
 

@@ -24,6 +24,7 @@ const ChatScreen = lazy(() => import("@/screens/ChatScreen"));
 const JobScreen = lazy(() => import("@/screens/JobScreen"));
 const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
 const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
+const ProfileFormScreen = lazy(() => import("@/screens/ProfileFormScreen"));
 
 const Router = () => {
   return (
@@ -60,6 +61,7 @@ const AnimatedRoutes = () => {
           <Route path={Routenames.FORGOT_PASSWORD} Component={ForgotPassword} />
           {/* OTP route */}
           <Route path={Routenames.OTP} Component={Otp} />
+          <Route path={Routenames.PROFILE_FORM} Component={ProfileFormScreen} />
           {/* Change password route */}
           <Route path={Routenames.CHANGE_PASSWORD} Component={ChangePassword} />
           {/* User form route */}

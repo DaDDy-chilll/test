@@ -10,6 +10,8 @@ interface InputProps {
   required?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  min?: string;
+  max?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +24,8 @@ const Input: React.FC<InputProps> = ({
   className,
   placeholder = "",
   required = true,
+  min,
+  max,
 }) => {
 
 
@@ -37,6 +41,8 @@ const Input: React.FC<InputProps> = ({
         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         required={required}
         placeholder={placeholder}
+        min={min}
+        max={max}
       />
       <label
         htmlFor={name}

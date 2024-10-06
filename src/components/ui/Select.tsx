@@ -19,6 +19,7 @@ interface SelectProps {
   style?: number;
   register?: any;
   disabled?: boolean;
+  defaultValue?: string | undefined;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -33,6 +34,7 @@ const Select: React.FC<SelectProps> = ({
   value,
   onChange,
   disabled = false,
+  defaultValue = undefined,
 }) => {
 
 
@@ -73,7 +75,7 @@ const Select: React.FC<SelectProps> = ({
         } appearance-none  peer`}
         disabled={disabled}
       >
-        <option defaultValue={defaultOption} disabled={disabled}>
+        <option defaultValue={defaultValue} disabled={disabled}>
           {defaultOption}{" "}
         </option>
 

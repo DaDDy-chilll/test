@@ -58,6 +58,7 @@ const useAuth = () => {
     })
 
     const onLogout = () => {
+        localStorage.removeItem('isCompletedProfile');
         dispatch(removeToken());
         dispatch(setName(''))
         setError(null)
