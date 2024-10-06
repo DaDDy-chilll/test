@@ -118,10 +118,10 @@ const ApplicantTable = ({
               {jp.education}
             </th>
             <th scope="col" className=" py-3 text-start">
-              {jp.exam}
+              {jp.language}
             </th>
             <th scope="col" className=" py-3 text-start">
-              {jp.language}
+              {jp.level}
             </th>
             <th scope="col" className="py-3 text-start">
               {jp.gender}
@@ -141,6 +141,7 @@ const ApplicantTable = ({
                     src={`https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}`}
                     alt="profile"
                     className="w-10 h-10 rounded-full"
+                    crossOrigin="anonymous"
                   />
                 </td>
                 {/* name column */}

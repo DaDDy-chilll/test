@@ -60,9 +60,12 @@ export type FilterType = {
 };
 
 export type Event = {
+  name: string;
+  user_photo: string;
   title: string;
-  date: string;
-  description: string;
+  start_time: string;
+  end_time: string;
+  job_title: string;
 };
 
 export interface Chat {

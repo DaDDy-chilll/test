@@ -18,8 +18,8 @@ const FilterBar = ({
   jobTypes,
   setCurrentPage,
 }: FilterBarProps) => {
-  const maleType = useRef<boolean>(false);
-  const femaleType = useRef<boolean>(false);
+  const maleType = useRef<boolean>(true);
+  const femaleType = useRef<boolean>(true);
 
   const genderChange = () => {
     if (
@@ -47,6 +47,7 @@ const FilterBar = ({
         <Checkbox
           name="gender"
           id="male"
+          defaultChecked={true}
           onChange={(checked) => {
             console.log(checked);
             setCurrentPage(1);
@@ -66,6 +67,7 @@ const FilterBar = ({
         <Checkbox
           name="gender"
           id="female"
+          defaultChecked={true}
           onChange={(checked) => {
             setCurrentPage(1);
             if (checked) {
@@ -100,6 +102,7 @@ const FilterBar = ({
 
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
+        
         onChange={(e) => {
           setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });
