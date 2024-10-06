@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import React, { ChangeEvent } from "react";
+import React from "react";
+import { ChangeEvent } from "react";
 
 interface Option {
   value: string;
@@ -13,12 +14,11 @@ interface SelectProps {
   className?: string;
   defaultOption?: string;
   name?: string;
-  value?: string;
+  value?: {label: string, value: string};
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
   style?: number;
   register?: any;
   disabled?: boolean;
-  defaultValue?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -29,11 +29,13 @@ const Select: React.FC<SelectProps> = ({
   className = "",
   defaultOption = "Choose an option",
   style = 0,
-  defaultValue="",
+  register,
   value,
   onChange,
   disabled = false,
 }) => {
+
+
   return (
     <div
       className={cn(
@@ -53,7 +55,6 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         name={name}
-        value={value}
         onChange={(e) => {
           const selectedOption = options.find(option => option.value === e.target.value);
           if (onChange && selectedOption) {
@@ -65,27 +66,28 @@ const Select: React.FC<SelectProps> = ({
             } as any);
           }
         }}
-        className={`relative block font-normal outline-none w-full text-sm text-black bg-transparent ${
+        className={`relative block font-normal outline-none  w-full text-sm text-black bg-transparent ${
           style === 0
             ? "border-0 border-b-2 py-2.5 px-0"
-            : "border-none bg-gray-500 px-1 py-1.5 rounded-md"
-        } appearance-none peer`}
+            : "border-none bg-gray-500  px-1 py-1.5 rounded-md"
+        } appearance-none  peer`}
         disabled={disabled}
       >
-        <option value={defaultValue} disabled={disabled}>
-          {defaultOption}
+        <option defaultValue={defaultOption} disabled={disabled}>
+          {defaultOption}{" "}
         </option>
 
-        {options
-          .filter((option) => option.label !== defaultOption)
-          .map((option, index) => (
-            <option key={index} value={option.value} disabled={disabled}>
-              {option.label}
-            </option>
-          ))}
+        {options.filter((option) => option.label != defaultOption).map((option, index) =>{
+          return(
+            <option key={index} value={option.value} disabled={disabled} selected={option.value == value?.value}>
+            {option.label}
+          </option>
+          )
+        })}
+
       </select>
 
-      <div className={`absolute right-2 ${style === 0 ? "top-2" : "top-1"}`}>
+      <div className={`absolute right-2  ${style === 0 ? "top-2" : "top-1"}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
