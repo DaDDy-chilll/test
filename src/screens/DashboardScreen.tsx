@@ -17,34 +17,111 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import {
+  query,
+  where,
+  addDoc,
+  collection,
+  orderBy,
+  Timestamp,
+  doc,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
 const startOfMonth = moment().startOf("month").format("YYYY-MM-DD");
 const endOfMonth = moment().endOf("month").format("YYYY-MM-DD");
+const TODAY = moment().format('YYYY-MM-DD');
+const currentYear = moment().format("YYYY");
+const currentDay = moment().format("DD");
+
+// const TODAY = "2024-11-03";
+const monthNames = [
+{
+  id: 1,
+  name: "January",
+},
+{
+  id: 2,
+  name: "February",
+},
+{
+  id: 3,
+  name: "March",
+},
+{
+  id: 4,
+  name: "April",
+},
+{
+  id: 5,
+  name: "May",
+},
+{
+  id: 6,
+  name: "June",
+},
+{
+  id: 7,
+  name: "July",
+},
+{
+  id: 8,
+  name: "August",
+}
+,{
+  id: 9,
+  name: "September",
+},
+{
+  id: 10,
+  name: "October",
+},
+{
+  id: 11,
+  name: "November",
+},
+{
+  id: 12,
+  name: "December",
+}
+];
 
 const DashboardScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
-  const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
-    endpoint: `${apiRoutes.DASHBOARD}?start_date=${startOfYear}&end_date=${endOfYear}`,
-    token: token as string,
-    key: QueryKey.DASHBOARD,
-  });
-  const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
-    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startOfMonth}&end_date=${startOfMonth}`,
-    token: token as string,
-    key: QueryKey.INTERVIEW,
-  });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>(
     format(new Date(), "yyyy-MM-dd")
   );
+  const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
+    {}
+  );
+  const [selectedMonth,setSelectedMonth] = useState<number | string>(TODAY);
+  const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
+    endpoint: `${
+      apiRoutes.DASHBOARD
+    }?start_date=${startOfYear.toString()}&end_date=${endOfYear.toString()}`,
+    token: token as string,
+    key: QueryKey.DASHBOARD,
+  });
+  const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
+    endpoint: `${
+      apiRoutes.INTERVIEW
+    }?start_date=${setSelectedMonth}-01&end_date=${selectedMonth}30`,
+    token: token as string,
+    key: QueryKey.INTERVIEW,
+    enabled:!!selectedMonth
+  });
 
-  console.log(interviewData,startOfMonth,endOfMonth);
+
+  console.log(interviewData, startOfMonth, endOfMonth);
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
@@ -195,36 +272,56 @@ const DashboardScreen = () => {
   const data = useMemo(() => {
     if (!dashboardData) return [];
 
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
     return Object.entries(dashboardData?.data.matchings)
       .map(([key, value]) => {
         const [year, month] = key.split("-");
         const monthIndex = parseInt(month) - 1;
         return {
-          name: monthNames[monthIndex],
+          name: monthNames[monthIndex].name,
           matched: value,
         };
       })
-      .sort((a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name));
+      .sort((a, b) => monthNames.findIndex(month => month.name === a.name) - monthNames.findIndex(month => month.name === b.name));
   }, [dashboardData]);
 
-
-
   const handleChatClick = (chat: Chat) => navigate("/chat", { state: chat });
+
+  useEffect(() => {
+    const messageListeners: any[] = [];
+
+    chats.forEach((chat) => {
+      const messagesRef = collection(db, "messages");
+
+      const q = query(
+        messagesRef,
+        where("chat_id", "==", chat.id),
+        where("sender_id", "!=", Number(`2${user?.id}`)),
+        where("read", "==", false)
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const unreadCount = snapshot.docs.length;
+        console.log("chat.id", chat.id);
+        console.log("unreadCount1", unreadCount);
+
+        setUnreadCounts((prev) => ({
+          ...prev,
+          [chat.id]: unreadCount,
+        }));
+      });
+      console.log("unreadCount", unreadCounts);
+
+      messageListeners.push(unsubscribe);
+    });
+
+    return () => {
+      messageListeners.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [chats, user?.id]);
+
+  useEffect(() => {
+    console.log(`${selectedMonth}-01`)
+  },[selectedMonth])
 
   return (
     <>
@@ -253,81 +350,9 @@ const DashboardScreen = () => {
             <LineCharts data={data} />
           </div>
         </div>
-
-        {/* User Pie Chart */}
-        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-1 row-end-2">
-          <div className="flex justify-between items-center mx-3 mt-3">
-            <h1 className="text-sm font-semibold">Matched List</h1>
-            <div className="flex items-center gap-x-5">
-              <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
-                <option value="all" defaultChecked>
-                  Total Users
-                </option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-          </div>
-          <div className="w-full h-full flex justify-start items-center pl-2 pb-12">
-            <Pichart data={genderData} colors={["#8B78B8", "#5E3FBE"]} />
-            <div className="flex flex-col items-start justify-center ml-10 gap-y-4">
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#8B78B8]"></div>
-                <p className="text-sm">Male</p>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#5E3FBE]"></div>
-                <p className="text-sm">Female</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* Laungauge Pie Chart */}
-        {/* <div className="bg-gray-100 col-start-5 col-end-7 row-start-2 row-end-3">
-          <div className="flex justify-between items-center mx-3 mt-3">
-            <h1 className="text-sm font-semibold">Matched List</h1>
-            <div className="flex items-center gap-x-5">
-              <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
-                <option value="all" defaultChecked>
-                  JLPT
-                </option>
-                <option value="JLPT N4">N4</option>
-                <option value="JLPT N5">N5</option>
-                <option value="JLPT N3">N3</option>
-                <option value="JLPT N2">N2</option>
-                <option value="JLPT N1">N1</option>
-              </select>
-            </div>
-          </div>
-          <div className="w-full h-full flex justify-start items-center pl-2 pb-12">
-            <Pichart
-              data={languageData}
-              colors={["#EAF6ED", "#C9EAD4", "#A9DEBA", "#67C587"]}
-            />
-            <div className="grid grid-cols-2 grid-flow-row ml-10 gap-4">
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#EAF6ED]"></div>
-                <p>N1</p>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#C9EAD4]"></div>
-                <p>N2</p>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#A9DEBA]"></div>
-                <p>N3</p>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <div className="w-5 h-5 bg-[#67C587]"></div>
-                <p>N4</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
+       
         {/* Meeting */}
-        <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5">
+        <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-5 overflow-hidden">
           <div className="w-full">
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-2/3 pb-4">
@@ -392,36 +417,30 @@ const DashboardScreen = () => {
                   ref={scrollableRef}
                   className="overflow-y-auto h-[62vh] relative"
                 >
-                  {Array.from({ length: 30 }, (_, index) => {
-                    const date = moment(
-                      new Date(today).setDate(
-                        new Date(today).getDate() + index + 1
-                      )
-                    ).format("YYYY-MM-DD");
-                    return (
-                      <div
-                        key={index}
-                        className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${
-                          activeDate === date
-                            ? "bg-primaryColor text-white"
-                            : "hover:bg-gray-300"
-                        }`}
-                        onClick={() => {
-                          setActiveDate(date);
-                          setSelectedDate(date);
-                        }}
-                      >
-                        {date}
-                        {activeDate !== date &&
+                  {monthNames.map((month, index) => (
+                    <div
+                      key={index}
+                      className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${
+                        activeDate === month.name
+                          ? "bg-primaryColor text-white"
+                          : "hover:bg-gray-300"
+                      }`}
+                      onClick={() => {
+                        setSelectedMonth(`${currentYear}-${month.id}`)
+                        // setActiveDate(date);
+                        // setSelectedDate(date);
+                      }}
+                    >
+                      {month.name}
+                      {/* {activeDate !== date &&
                           upcomingEvents[date] &&
                           upcomingEvents[date].length > 0 && (
                             <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">
                               + {upcomingEvents[date].length}
                             </span>
-                          )}
-                      </div>
-                    );
-                  })}
+                          )} */}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -464,6 +483,9 @@ const DashboardScreen = () => {
                     </div>
                     <p className="text-xs text-gray-500">{chat.last_message}</p>
                   </div>
+                  {unreadCounts[chat.id] > 0 && (
+                    <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
+                  )}
                 </div>
               ))
             ) : (

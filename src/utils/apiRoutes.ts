@@ -23,6 +23,7 @@ export interface ApiRoutesType {
   CHANGE_PASSWORD: string;
   DASHBOARD: string;
   CALENDAR: string;
+  UPCOMING_INTERVIEW:string,
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -50,4 +51,5 @@ export const apiRoutes: ApiRoutesType = {
   CHANGE_PASSWORD: "/client/auth/change-password",
   DASHBOARD: "/client/dashboard",
   CALENDAR: "/client/calendar",
+  UPCOMING_INTERVIEW:"/client/interview/upcoming"
 };
