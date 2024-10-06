@@ -17,14 +17,14 @@ type LineChartProps = {
 const LineCharts = ({ data = [] }: LineChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart width={500} height={300} data={data} >
+      <LineChart  data={data} >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="name"
           interval={0}
-          tick={{ fontSize: 10, textAnchor: "middle", }}
+          tick={{ fontSize: 10,  textAnchor: "end", }}
         />
-        <YAxis />
+        <YAxis tick={{ fontSize: 10,  textAnchor: "end", }} />
         <Tooltip />
         {/* <Legend /> */}
         <Line
