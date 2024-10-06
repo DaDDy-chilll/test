@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import logo from "@/assets/icons/logo.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,6 +7,8 @@ import Select from "@/components/ui/Select";
 import DatePicker from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
 import defaultImage from "@/assets/images/default.png";
+
+
 import { jp } from "@/lang/jp";
 import { useForm } from "react-hook-form";
 
@@ -19,6 +21,7 @@ const defaultData = {
   prefecture_id: "",
   starting: "",
   company_des: "",
+  profileImage: "",
 };
 
 type profileFormProps = {
@@ -44,7 +47,39 @@ const ProfileForm = ({
   setFormData,
   city,
 }: profileFormProps) => {
-  console.log(formData)
+  const [avatarImage, setAvatarImage] = useState(defaultImage);
+  const [isUploading, setIsUploading] = useState(false);
+
+
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setAvatarImage(data.imageUrl);
+          setFormData({ ...formData, profileImage: data.imageUrl });
+        } else {
+          console.error('Image upload failed');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
   return (
     <motion.div
       key="form"
@@ -65,20 +100,30 @@ const ProfileForm = ({
           <h1 className="sub-title text-black">{jp.profilePhoto}</h1>
           <p>{jp.profilePhotoDescription}</p>
         </div>
-        <Avatar className="w-20 h-20">
-          <AvatarImage src={defaultImage} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <label htmlFor="avatar-upload" className="cursor-pointer">
+          <Avatar className="w-20 h-20">
+            <AvatarImage src={avatarImage} />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </label>
+        <input
+          id="avatar-upload"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageUpload}
+          disabled={isUploading}
+        />
       </div>
-      <form className=" w-full" onSubmit={handleSubmit}>
+      <form className="w-full" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-y-3 gap-x-20 px-10">
           <Input
             name="name"
             type="text"
             placeholder={jp.companyName}
             label={jp.companyName}
-            className="mt-1 block w-full bg-gray-100 "
-            value={formData.name }
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
 
@@ -98,7 +143,7 @@ const ProfileForm = ({
             name="budget"
             type="number"
             label={jp.investmentAmount}
-            className="mt-1 block w-full bg-gray-100 "
+            className="mt-1 block w-full bg-gray-100"
             placeholder="100000 $"
             value={formData.budget}
             onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
@@ -107,7 +152,7 @@ const ProfileForm = ({
             name="address"
             type="text"
             label={jp.undertake}
-            className="mt-1 block w-full bg-gray-100 "
+            className="mt-1 block w-full bg-gray-100"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
           />
@@ -135,13 +180,12 @@ const ProfileForm = ({
             name="starting"
             type="text"
             label={jp.establishment}
-            className="mt-1 block w-ful"
+            className="mt-1 block w-full"
             value={formData.starting}
             onChange={(e) => setFormData({ ...formData, starting: e.target.value })}
           />
-            <Select
+          <Select
             disabled={formData.prefecture_id.value !== "" ? false : true}
-            // name="prefecture_id"
             label={jp.city}
             id="city"
             options={countries}
@@ -155,25 +199,26 @@ const ProfileForm = ({
               name="company_des"
               type="text"
               label={jp.companyDescription}
-              className="mt-1 block w-full bg-gray-100 "
-              placeholder="100000 $"
+              className="mt-1 block w-full bg-gray-100"
+              placeholder="Company description"
               value={formData.company_des}
               onChange={(e) => setFormData({ ...formData, company_des: e.target.value })}
             />
           </span>
         </div>
 
-        <div className="flex justify-between w-full px-10 mr-10">
+        <div className="flex justify-between w-full px-10 mr-10 mt-5">
           <button
             className="underline font-medium"
             onClick={() => setIsEdit(false)}
+            type="button"
           >
             {jp.back}
           </button>
           <Button
             variant="destructive"
             className="font-medium w-44"
-            onClick={() => {}}
+            type="submit"
           >
             {jp.finish}
           </Button>
@@ -188,4 +233,5 @@ const formVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
   exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
 };
+
 export default ProfileForm;
