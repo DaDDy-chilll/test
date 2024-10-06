@@ -69,19 +69,19 @@ const JobForm = ({
     })) || [];
 
   const annualSalary = [
-    { value: "100", label: "100" },
-    { value: "200", label: "200" },
-    { value: "300", label: "300" },
-    { value: "400", label: "400" },
-    { value: "500", label: "500" },
-    { value: "600", label: "600" },
+    { value: "100", label: "~100万円" },
+    { value: "200", label: "~200万円" },
+    { value: "300", label: "~300万円" },
+    { value: "400", label: "~400万円" },
+    { value: "500", label: "~500万円" },
+    { value: "600", label: "~600万円" },
   ];
 
-  const workHour = [
-    { value: "7", label: "7" },
-    { value: "8", label: "8" },
-    { value: "9", label: "9" },
-    { value: "10", label: "10" },
+  const dayofholidayinyear = [
+    { value: "120", label: "120日" },
+    { value: "130", label: "130日" },
+    { value: "140", label: "140日" },
+    { value: "150", label: "150日" },
   ];
 
   const benefits = [
@@ -286,11 +286,11 @@ const JobForm = ({
             name="working_time"
             label={jp.annualHoliday}
             id={jp.annualHoliday}
-            options={workHour}
+            options={dayofholidayinyear}
             className=""
             defaultOption={jp.chooseDays}
             value={form.working_time}
-            defaultValue={workHour[0].value}
+            defaultValue={dayofholidayinyear[0].value}
             onChange={(e) =>
               setForm({
                 ...form,

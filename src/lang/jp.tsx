@@ -137,4 +137,5 @@ export const jp = {
   notFoundLanguage:"言語試験が見つかりません",
   notFoundJapanese:"日本語試験が見つかりません",
   noInterviewSchedule:"今日は面接はありません",
+  employees:"従業員数",
 };

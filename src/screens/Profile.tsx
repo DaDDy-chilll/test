@@ -19,6 +19,7 @@ const defaultFormData = {
   budget: "",
   starting: "",
   staff:  {label: "", value: ""},
+  area: {label: "", value: ""},
   prefecture_id: {label: "", value: ""},
   photo: "",
   company_des: "",
@@ -31,7 +32,6 @@ const Profile = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
-  console.log('formData', formData);
   const { data, isLoading } = useFetch({
     endpoint: apiRoutes.PROFILE,
     key: QueryKey.PROFILE,
@@ -169,6 +169,7 @@ const Profile = () => {
         budget: data.data.budget,
         starting: data.data.starting,
         staff: {label: data.data.staff, value: data.data.staff},
+        area: {label: data.data.prefecture.area_id, value: data.data.prefecture.area_id},
         prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
         photo: data.data.photo,
         company_des: data.data.company_des,
@@ -183,11 +184,8 @@ const Profile = () => {
         <title>{jp.profile} - Japan Job</title>
       </Helmet>
       {(isLoading || isJobTypesLoading || isCityLoading) && <Loading isLoading={isLoading || isJobTypesLoading || isCityLoading} className="h-[calc(100vh-68px)]" />}
-      <motion.div
-        variants={profileVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
+      <div
+       
         className="w-full flex justify-center px-10 pt-5"
       >
         <AnimatePresence mode="wait">
@@ -208,16 +206,11 @@ const Profile = () => {
             />
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </>
   );
 };
 
-const profileVariants = {
-  initial: { opacity: 0, y: 100 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -100 },
-};
 
 
 export default Profile;

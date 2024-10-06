@@ -30,6 +30,7 @@ const ProfileForm = ({
   setIsEdit,
   jobTypes,
   employeeNumber,
+  city,
   countries,
   handleSubmit,
   formData,
@@ -172,8 +173,8 @@ useEffect(() => {
             options={countries}
             className=""
             defaultOption={jp.chooseLocation}
-            value={formData.prefecture_id}
-            onChange={(e) => setFormData({ ...formData, prefecture_id: {label: e.target.labels, value: e.target.value} })}
+            value={formData.area}
+            onChange={(e) => setFormData({ ...formData, area: {label: e.target.labels, value: e.target.value} })}
           />
           <DatePicker
             name="starting"
@@ -187,7 +188,7 @@ useEffect(() => {
             disabled={formData.prefecture_id.value !== "" ? false : true}
             label={jp.city}
             id="city"
-            options={countries}
+            options={city[formData.area.value]}
             className=""
             defaultOption={jp.chooseLocation}
             value={formData.prefecture_id}
