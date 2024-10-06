@@ -36,7 +36,7 @@ const Profile = () => {
     key: QueryKey.PROFILE,
     token: token as string,
   });
-  const { mutate, isPending, error, isSuccess,data: profileData } = usePost({
+  const { mutate, isSuccess,data: profileData } = usePost({
     token,
     queryKey: QueryKey.PROFILE,
   });
@@ -44,9 +44,7 @@ const Profile = () => {
   const {
     data: jobType,
     isLoading: isJobTypesLoading,
-    isError: isJobTypesError,
-    isSuccess: isJobTypesSuccess,
-    error: jobTypesError,
+
   } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
@@ -56,9 +54,7 @@ const Profile = () => {
   const {
     data: city,
     isLoading: isCityLoading,
-    isError: isCityError,
-    isSuccess: isCitySuccess,
-    error: cityError,
+
   } = useFetch({
     endpoint: apiRoutes.CITY,
     key: QueryKey.CITY,
@@ -90,7 +86,7 @@ const Profile = () => {
       console.log('profileData', profileData);
       dispatch(setName(profileData.data.name));
     }
-  }, [isSuccess,data]);
+  }, [isSuccess,profileData,dispatch]);
 
   const employeeNumber = [
     { value: "100", label: "100" },
@@ -121,7 +117,7 @@ const Profile = () => {
         return { areaList, relativeArea };
       }
     },
-    [city]
+    []
   );
   const { areaList, relativeArea } = useMemo(() => {
     if (city && "data" in city) {

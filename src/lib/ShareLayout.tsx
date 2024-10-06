@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Layout from "./Layout";
+import Layout from "../layouts/Layout";
 
 const ShareLayout = () => {
   return (

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Routenames from "./routes";
 import ServicesProtectedPage from "./ServicesProtectRoute";
 import AuthProtectRoute from "./AuthProtectRoute";
-import ShareLayout from "@/layouts/ShareLayout";
+import ShareLayout from "@/lib/ShareLayout";
 import { AnimatePresence } from "framer-motion";
 import AuthShareLayout from "@/layouts/AuthShareLayout";
 import {
