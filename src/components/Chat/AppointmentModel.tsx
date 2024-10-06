@@ -244,17 +244,17 @@ const AppointmentModel = ({
     </motion.div>
 
     <Modal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)}>
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-4">Confirm Rewrite</h2>
-          <p className="mb-4">This appointment already exists. Are you sure you want to rewrite it?</p>
+    <div className="p-6">
+          <h2 className="text-xl font-bold mb-4">予約の上書き確認</h2>
+          <p className="mb-4">この予約は既に存在します。上書きしてもよろしいですか？</p>
           
           {/* Add validation data display */}
           {validationData && (
             <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">Existing Appointment:</h3>
-              <p>Date: {validationData.date}</p>
-              <p>Start Time: {validationData.start_time}</p>  
-              <p>End Time: {validationData.end_time}</p>
+              <h3 className="text-lg font-semibold mb-2">既存の予約:</h3>
+              <p>日付: {validationData.date}</p>
+              <p>開始時間: {validationData.start_time}</p>  
+              <p>終了時間: {validationData.end_time}</p>
               </div>
           )}    
 

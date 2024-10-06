@@ -25,11 +25,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
       ref={messagesEndRef}
     >
       {!isCurrentUser && (
-        <img src={profileImage} alt="" className="w-5 h-5 rounded-full" />
+        <img src={profileImage} crossOrigin="anonymous" alt="" className="w-5 h-5 rounded-full" />
       )}
 
       <div
-        className={`px-3 py-2  rounded-full ${
+        className={`px-3 py-2 rounded-md ${
           isCurrentUser ? "bg-primaryColor text-white" : "bg-gray-200"
         }`}
       >

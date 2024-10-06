@@ -8,12 +8,14 @@ interface ChatListProps {
   chats: Chat[];
   onSelectChat: (chat: Chat) => void;
   selectedChat: Chat | null;
+  unreadCounts: { [key: string]: number };
 }
 
 const ChatList: React.FC<ChatListProps> = ({
   chats,
   onSelectChat,
   selectedChat,
+  unreadCounts,
 }) => {
   return (
     <div className="flex-1 ">
@@ -35,6 +37,7 @@ const ChatList: React.FC<ChatListProps> = ({
                 chat={chat}
                 onSelect={onSelectChat}
                 isActive={selectedChat?.id === chat.id}
+                unreadCount={unreadCounts[chat.id]}
               />
             </div>
           ))

@@ -2,7 +2,7 @@ import React from "react";
 import { Chat, Message } from "@/types/helperTypes";
 import { User } from "@/types/helperTypes";
 import MessageItem from "./MessageItem";
-import { jp } from "@/lang/jp";
+
 
 type ChatViewProps = {
   messages: Message[];

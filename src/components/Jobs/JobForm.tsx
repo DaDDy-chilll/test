@@ -253,10 +253,7 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
               ))}
             </div>
           </div>
-          <div className="flex flex-row items-center col-span-2 gap-x-2">
-            <p className="text-xs text-gray-500">Other</p>
-            <input type="text" name="other" className="bg-gray-200" />
-          </div>
+        
           <span className="col-span-2 mt-3">
             <ReactQuill
               value={form.job_des}

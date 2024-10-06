@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { updateDoc } from "firebase/firestore";
 import { colors } from "@/constants/color";
 import {
   query,
@@ -88,30 +88,36 @@ const ChatScreen = () => {
 
   //fetch Messages
   const fetchMessages = (chatId: string) => {
- 
     const messagesRef = collection(db, "messages");
     const q = query(
       messagesRef,
       where("chat_id", "==", chatId),
       orderBy("timestamp", "asc")
     );
-
+  
     const unsubscribe = onSnapshot(
       q,
-      (querySnapshot) => {
+      async (querySnapshot) => {
         const fetchedMessages: Message[] = [];
+        const updatePromises: Promise<void>[] = [];
+  
         querySnapshot.forEach((doc) => {
-          fetchedMessages.push({ id: doc.id, ...doc.data() } as Message);
+          const messageData = doc.data() as Message;
+          fetchedMessages.push({...messageData,id:doc.id });
+  
+          if (messageData.sender_id !== Number(`2${user?.id}`) && !messageData.read) {
+            updatePromises.push(updateDoc(doc.ref, { read: true }));
+          }
         });
+  
+        await Promise.all(updatePromises);
         setMessages(fetchedMessages);
       },
       (error) => {
         console.error("Error fetching messages:", error);
-   
       }
     );
-
-    // Return the unsubscribe function
+  
     return unsubscribe;
   };
 
@@ -154,9 +160,10 @@ const ChatScreen = () => {
 
   useEffect(() => {
     const messageListeners: any[] = [];
-
+   
     chats.forEach((chat) => {
       const messagesRef = collection(db, "messages");
+
       const q = query(
         messagesRef,
         where("chat_id", "==", chat.id),
@@ -166,11 +173,15 @@ const ChatScreen = () => {
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const unreadCount = snapshot.docs.length;
+        console.log("chat.id", chat.id);
+        console.log("unreadCount1", unreadCount);
+
         setUnreadCounts((prev) => ({
           ...prev,
           [chat.id]: unreadCount,
         }));
       });
+      console.log("unreadCount", unreadCounts);
 
       messageListeners.push(unsubscribe);
     });
@@ -206,6 +217,7 @@ const ChatScreen = () => {
             chats={chats}
             onSelectChat={handleChatSelect}
             selectedChat={selectedChat}
+            unreadCounts={unreadCounts}
           />
         </div>
 
