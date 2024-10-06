@@ -23,6 +23,8 @@ export interface ApiRoutesType {
   CHANGE_PASSWORD: string;
   DASHBOARD: string;
   CALENDAR: string;
+  CREATE_JOB: string;
+  DELETE_JOB: string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -41,6 +43,7 @@ export const apiRoutes: ApiRoutesType = {
   USER_DETAILS: "client/users/detail",
   JOB_DETAILS: "/client/job/detail",
   UPDATE_JOB: "/client/job/update",
+  CREATE_JOB: "/client/job",
   MATCHED: "/client/job/match",
   LIKE: "/client/users/like",
   UNLIKE: "/client/users/dislike",
@@ -50,4 +53,5 @@ export const apiRoutes: ApiRoutesType = {
   CHANGE_PASSWORD: "/client/auth/change-password",
   DASHBOARD: "/client/dashboard",
   CALENDAR: "/client/calendar",
+  DELETE_JOB: "/client/job/delete",
 };

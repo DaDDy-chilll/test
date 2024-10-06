@@ -1,17 +1,6 @@
 import { motion } from "framer-motion";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  JobListItem,
-  Button,
-  JobDetails,
-  JobForm,
-  Loading,
-  Maintenance,
-} from "@/components";
-import { useMemo, useState, useEffect, FormEvent } from "react";
+import { Button, JobDetails, JobForm } from "@/components";
+import { useMemo, useState, useEffect } from "react";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
 import { useSelector } from "react-redux";
@@ -24,65 +13,43 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { Helmet } from "react-helmet-async";
 import { colors } from "@/constants/color";
-const defaultJobType = [
-  { id: 0, name: "All" },
-  { id: 1, name: "Full Time" },
-  { id: 2, name: "Part Time" },
-  { id: 3, name: "Remote" },
-  { id: 4, name: "Internship" },
-];
-
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 const defaultForm = {
-  id:null,
+  id: null,
   job_title: "",
-  job_type: {label: "", value: ""},
-  prefecture_id: {label: "", value: ""},
-  annual_salary: {label: "", value: ""},
-  working_time: {label: "", value: ""},
+  job_type: { label: "", value: "" },
+  prefecture_id: { label: "", value: "" },
+  annual_salary: { label: "", value: "" },
+  working_time: { label: "", value: "" },
   start_time: "",
   end_time: "",
   job_des: "",
   support_home: "",
-  support_home_rent:""
-}
+  support_home_rent: "",
+};
 
 const JobScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
-  const [jobType, setJobType] = useState(jp.jobType);
+  const queryClient = useQueryClient(); 
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
-  const {
-    data,
-    isLoading,
-    isError,
-    isSuccess,
-    error: fetchError,
-  } = useFetch({
+  const { data, error: fetchError } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
   });
 
-  const {
-    data: citys,
-    isLoading: isCityLoading,
-    isError: isCityError,
-    isSuccess: isCitySuccess,
-    error: cityError,
-  } = useFetch({
-    endpoint: apiRoutes.CITY,
-    key: QueryKey.CITY,
-    token: token as string,
-  });
+  console.log("data", data);
 
-  const { data: jobDetail, isLoading: isDetailLoading } = useQuery({
+  const { data: jobDetail } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
     queryFn: () => {
       return fetchServer({
@@ -94,8 +61,7 @@ const JobScreen = () => {
     enabled: !!selectedJobId && showDetails,
   });
 
-  const jobs = data?.data || [];
-
+  const jobs = useMemo(() => data?.data || [], [data]);
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
@@ -106,11 +72,31 @@ const JobScreen = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearch(e.target.value);
-  const handleJobType = (e: React.MouseEvent<HTMLDivElement>) =>
-    setJobType((e.target as HTMLDivElement).innerText);
+
   const editHandler = () => {
     setIsEdit(true);
   };
+
+  const deleteJob = useMutation({
+    mutationFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.DELETE_JOB}/${jobDetail?.data.id}`,
+        method: "DELETE",
+        token: token,
+      });
+    },
+    onSuccess: () => {
+      setShowDetails(false);
+      setIsEdit(false);
+      setIsAdd(false);
+      queryClient.invalidateQueries({ queryKey: [QueryKey.JOBS] });
+    },
+  });
+
+  const deleteHandler = () => {
+    deleteJob.mutate();
+  };
+
   const addHandler = () => setIsAdd(true);
   const backHandler = () => {
     setIsAdd(false);
@@ -133,24 +119,35 @@ const JobScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(jobDetail?.data) {
-      console.log('jobDetail',jobDetail);
+    if (jobDetail?.data) {
+      console.log("jobDetail", jobDetail);
       setForm({
-        id:jobDetail?.data.id,
+        id: jobDetail?.data.id,
         job_title: jobDetail?.data.job_title,
-        job_type: {label: jobDetail?.data.job_type.job_type_jp, value: jobDetail?.data.job_types},
-        prefecture_id: {label: jobDetail?.data.prefecture.name, value: jobDetail?.data.prefecture_id},
-        annual_salary: {label: jobDetail?.data.annual_salary, value: jobDetail?.data.annual_salary},
-        working_time: {label: jobDetail?.data.working_time, value: jobDetail?.data.working_time},
+        job_type: {
+          label: jobDetail?.data.job_type.job_type_jp,
+          value: jobDetail?.data.job_types,
+        },
+        prefecture_id: {
+          label: jobDetail?.data.prefecture.name,
+          value: jobDetail?.data.prefecture_id,
+        },
+        annual_salary: {
+          label: jobDetail?.data.annual_salary,
+          value: jobDetail?.data.annual_salary,
+        },
+        working_time: {
+          label: jobDetail?.data.working_time,
+          value: jobDetail?.data.working_time,
+        },
         start_time: jobDetail?.data.start_time,
         end_time: jobDetail?.data.end_time,
         job_des: jobDetail?.data.job_des,
-        support_home:jobDetail?.data.support_home,
-        support_home_rent:jobDetail?.data.support_home_rent
+        support_home: jobDetail?.data.support_home,
+        support_home_rent: jobDetail?.data.support_home_rent,
       });
     }
   }, [jobDetail]);
-
 
   return (
     <>
@@ -198,58 +195,66 @@ const JobScreen = () => {
                 onChange={handleSearch}
               />
             </div>
-            <div className="flex items-center gap-2">
-              <p className="text-lg mr-3">
-                {jp.sortBy}
-              </p>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div className="flex items-center justify-between w-40 gap-2 bg-gray-900 text-white px-3 py-1.5 rounded-lg">
-                    <p className="text-sm mr-3">{jobType}</p>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {defaultJobType.map((item) => (
-                    <DropdownMenuItem key={item.id} onClick={handleJobType}>
-                      <p>{item.name}</p>
-                    </DropdownMenuItem> 
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
             {filteredJobs.length > 0 ? (
-              filteredJobs
-                .sort((a: any, b: any) => b.id - a.id)
-                .map((item: any) => {
-                  const city = citys?.data.find(
-                    (city: any) => city.id === item.prefecture_id
-                  );
-                  console.log(item);
-                  return (
-                    <JobListItem
-                      key={item.id}
-                      item={item}
-                      setShowDetails={handleJobDetails}
-                      city={city}
-                    />
-                  );
-                })
+              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        {jp.jobTitle}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {jp.jobType}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {jp.prefecture}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {jp.annualSalary}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {jp.action}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredJobs
+                      .sort((a: any, b: any) => b.id - a.id)
+                      .map((item: any) => {
+                        return (
+                          <tr
+                            key={item.id}
+                            className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {item.job_title}
+                            </th>
+                            <td className="px-6 py-4">
+                              {item.job_type?.job_type_jp}
+                            </td>
+                            <td className="px-6 py-4">
+                              {item.prefecture.name}
+                            </td>
+                            <td className="px-6 py-4">{item.annual_salary}</td>
+                            <td className="px-6 py-4">
+                              <button
+                                onClick={() => handleJobDetails(item.id)}
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                              >
+                                {jp.viewDetails}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <div className="w-full h-full flex flex-col justify-center items-center">
                 <svg
@@ -293,6 +298,7 @@ const JobScreen = () => {
             backHandler={setShowDetails}
             isDetails={true}
             editHandler={editHandler}
+            deleteHandler={deleteHandler}
             data={jobDetail?.data}
             setFormData={setForm}
           />
@@ -300,7 +306,14 @@ const JobScreen = () => {
       )}
       {(isAdd || isEdit) && (
         <div className="w-full h-full flex justify-center items-center px-10">
-          <JobForm onBack={backHandler} setShowDetails={setShowDetails} formVariant={formVariants} form={form} setForm={setForm}/>
+          <JobForm
+            onBack={backHandler}
+            setShowDetails={setShowDetails}
+            formVariant={formVariants}
+            isEdit={isEdit}
+            form={form}
+            setForm={setForm}
+          />
         </div>
       )}
     </>
