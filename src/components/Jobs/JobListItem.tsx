@@ -1,9 +1,5 @@
-import React from "react";
+
 import moment from "moment";
-import { setTitle } from "@/store";
-import { useDispatch } from "react-redux";
-import DefaultImage from "@/assets/images/default.png"
-import { jp } from "@/lang/jp";
 
 type Job = {
   annual_salary: number;
@@ -32,7 +28,7 @@ type JobListItemProps = {
 };
 
 const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
-  const dispatch = useDispatch();
+
   const date = moment(item.created_at).fromNow();
   // const handleShowDetails = () => {
   //   setShowDetails(true);
@@ -43,13 +39,7 @@ const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
       className="flex justify-start items-center gap-4 w-full cursor-pointer"
       onClick={() => setShowDetails(item.id)}
     >
-      <div className="w-20 h-2w-20 rounded-md">
-        <img
-          src={item.job_photo || DefaultImage}
-          alt={item.job_title}
-          className="w-full h-full object-cover rounded-md"
-        />
-      </div>
+     
       <div className="flex justify-between items-center w-full">
         <div className="flex flex-col gap-1">
           <h1 className="text-md font-semibold">{item.job_title}</h1>

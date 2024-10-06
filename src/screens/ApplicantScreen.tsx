@@ -15,7 +15,7 @@ import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
 
-const itemsPerPage = 5;
+
 const initialFilter: FilterType = {
   live_in_japan: "",
   gender: "",

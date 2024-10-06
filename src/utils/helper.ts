@@ -37,8 +37,10 @@ export const fetchServer = async ({
     }else if (method === "PUT" && !file) {
       const { data } = await api.put(urlEndPoint, body);
       result = data;
-    } 
-    console.log("result",result)
+    } else if (method === "DELETE") {
+      const { data } = await api.delete(urlEndPoint);
+      result = data;
+    }
     return result;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {

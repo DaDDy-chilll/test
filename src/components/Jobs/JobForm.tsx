@@ -1,11 +1,11 @@
-import React, { FormEvent, useState,useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { jp } from "@/lang/jp";
-import DefaultLogo from "@/assets/images/default.png";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import usePost from "@/hooks/usePost";
@@ -14,6 +14,7 @@ import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
+import Modal from "@/components/Chat/Modal";
 
 type JobFormProps = {
   onBack?: () => void;
@@ -21,48 +22,53 @@ type JobFormProps = {
   form: any;
   setForm: any;
   setShowDetails?: (value: boolean) => void;
+  isEdit?: boolean;
 };
 
-const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormProps) => {
+
+
+const JobForm = ({
+  onBack,
+  formVariant,
+  form,
+  setForm,
+  setShowDetails,
+  isEdit
+}: JobFormProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const {mutate,isPending,error,isSuccess} = usePost({token,queryKey:QueryKey.JOBS})
-  const [jobDescription, setJobDescription] = useState<string>('');
-  const {
-    data: jobType,
-    isLoading: isJobTypesLoading,
-    isError: isJobTypesError,
-    isSuccess: isJobTypesSuccess,
-    error: jobTypesError,
-  } = useFetch({
+  const [showErrorModal,setShowErrorModal] = useState(false)
+  const { mutate, error, isSuccess } = usePost({
+    token,
+    queryKey: QueryKey.JOBS,
+  });
+
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false);
+  };
+
+  const { data: jobType } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
 
-  const {
-    data: city,
-    isLoading: isCityLoading,
-    isError: isCityError,
-    isSuccess: isCitySuccess,
-    error: cityError,
-  } = useFetch({
+  const { data: city } = useFetch({
     endpoint: apiRoutes.CITY,
     key: QueryKey.CITY,
     token: token as string,
   });
 
+  const jobTypes =
+    jobType?.data.map((type: any) => ({
+      value: type.id.toString(),
+      label: type.job_type_jp,
+    })) || [];
 
-  const jobTypes = jobType?.data.map((type: any) => ({
-    value: type.id.toString(),
-    label: type.job_type_jp,
-  })) || [];
-
-  
-
-  const countries = city?.data.map((type: any) => ({
-    value: type.id.toString(),
-    label: type.area,
-  })) || [];
+  const countries =
+    city?.data.map((type: any) => ({
+      value: type.id.toString(),
+      label: type.area,
+    })) || [];
 
   const annualSalary = [
     { value: "100", label: "100" },
@@ -99,27 +105,55 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
       start_time: formData.get("start_time") as string,
       end_time: formData.get("end_time") as string,
       holiday_in_year: 0,
-      support_home: formData.get("support_home") as string ? 1 : 0,
-      support_home_rent: formData.get("support_home_rent") as string ? 1 : 0,
+      support_home: (formData.get("support_home") as string) ? 1 : 0,
+      support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
-    console.log('jobData', jobData);
-    mutate({endpoint:`${apiRoutes.UPDATE_JOB}/${form.id}`,body:jobData,method:'PUT'})
+    console.log("jobData111", jobData);
+    if(isEdit){
+      mutate({
+        endpoint: `${apiRoutes.UPDATE_JOB}/${form.id}`,
+        body: jobData,
+        method: "PUT",
+      });
+    }else{
+    mutate({
+      endpoint: `${apiRoutes.CREATE_JOB}`,
+      body: jobData,
+        method: "POST",
+      });
+    }
   };
-
-
 
   useEffect(() => {
     if (error) {
-      console.log(error.message)
-      alert(error.message);
+      setShowErrorModal(true)
     }
-    if(isSuccess){
-      onBack?.()
-      setShowDetails && setShowDetails(false)
+    if (isSuccess) {
+      onBack?.();
+      setShowDetails && setShowDetails(false);
     }
-  }, [error,isSuccess]);
+  }, [error, isSuccess]);
 
-  console.log('form',form);
+  console.log("form", form);
+  const renderErrorMessage = () => {
+    if (typeof error?.message === 'object' && 'validation' in error.message) {
+      return (
+        <ul className="list-disc pl-5">
+                 {(error.message as { validation: any[] }).validation.map((validationError: any, index: number) => (
+            <li key={index}>
+              {Object.entries(validationError).map(([field, messages]) => (
+                <div key={field}>
+                  <span className="font-semibold mr-1">{field=="job_des"&&jp.jobDescription}</span> {(messages as Record<string, string>).jp}
+                </div>
+              ))}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return <p>{JSON.stringify(error?.message)}</p>;
+  };
+
 
   return (
     <motion.div
@@ -130,6 +164,23 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
       animate="visible"
       exit="exit"
     >
+      <Modal
+        isOpen={showErrorModal}
+        onClose={handleCloseErrorModal}
+      >
+        <h2 className="text-xl font-bold mb-4">エラー</h2>
+        <div className="mb-4">
+          {renderErrorMessage()}
+        </div>
+        <div className="flex justify-end">
+      <button 
+        onClick={handleCloseErrorModal}
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+      >
+        閉じる
+      </button>
+    </div>
+      </Modal>
       <div className="text-start w-full  border-b-2 border-gray-400 pb-4 mb-14">
         <p>{jp.postJobPosition}</p>
       </div>
@@ -165,7 +216,13 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
             className=""
             defaultOption={jp.chooseJobType}
             value={form.job_type}
-            onChange={(e) => setForm({ ...form, job_type: {label: e.target.labels, value: e.target.value} })}
+            defaultValue={jobTypes.length > 0 ? jobTypes[0].value : ''}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                job_type: { label: e.target.labels, value: e.target.value },
+              })
+            }
           />
 
           <Select
@@ -176,7 +233,16 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
             className=""
             defaultOption={jp.chooseLocation}
             value={form.prefecture_id}
-            onChange={(e) => setForm({ ...form, prefecture_id: {label: e.target.labels, value: e.target.value} })}
+            defaultValue={countries.length > 0 ? countries[0].value : ''}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                prefecture_id: {
+                  label: e.target.labels,
+                  value: e.target.value,
+                },
+              })
+            }
           />
 
           <Select
@@ -187,7 +253,16 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
             className=""
             defaultOption={jp.chooseSalary}
             value={form.annual_salary}
-            onChange={(e) => setForm({ ...form, annual_salary: {label: e.target.labels, value: e.target.value} })}
+            defaultValue={annualSalary[0].value}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                annual_salary: {
+                  label: e.target.labels,
+                  value: e.target.value,
+                },
+              })
+            }
           />
 
           <Select
@@ -198,7 +273,13 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
             className=""
             defaultOption={jp.chooseDays}
             value={form.working_time}
-            onChange={(e) => setForm({ ...form, working_time: {label: e.target.labels, value: e.target.value} })}
+            defaultValue={workHour[0].value}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                working_time: { label: e.target.labels, value: e.target.value },
+              })
+            }
           />
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">
@@ -236,7 +317,12 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
                     value={benefit.value}
                     className="accent-primaryColor"
                     checked={form[benefit.value] == 1}
-                    onChange={(e) => setForm({ ...form, [benefit.value]: e.target.checked ? 1 : 0 })}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        [benefit.value]: e.target.checked ? 1 : 0,
+                      })
+                    }
                   />
                   <label htmlFor={benefit.value} className="text-sm">
                     {benefit.label}
@@ -253,7 +339,7 @@ const JobForm = ({ onBack, formVariant, form, setForm,setShowDetails }: JobFormP
               ))}
             </div>
           </div>
-        
+
           <span className="col-span-2 mt-3">
             <ReactQuill
               value={form.job_des}
