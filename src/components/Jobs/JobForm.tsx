@@ -71,19 +71,19 @@ const JobForm = ({
     })) || [];
 
   const annualSalary = [
-    { value: "100", label: "100" },
-    { value: "200", label: "200" },
-    { value: "300", label: "300" },
-    { value: "400", label: "400" },
-    { value: "500", label: "500" },
-    { value: "600", label: "600" },
+    { value: "100", label: "~100万円" },
+    { value: "200", label: "~200万円" },
+    { value: "300", label: "~300万円" },
+    { value: "400", label: "~400万円" },
+    { value: "500", label: "~500万円" },
+    { value: "600", label: "~600万円" },
   ];
 
-  const workHour = [
-    { value: "7", label: "7" },
-    { value: "8", label: "8" },
-    { value: "9", label: "9" },
-    { value: "10", label: "10" },
+  const dayofholidayinyear = [
+    { value: "120", label: "120日" },
+    { value: "130", label: "130日" },
+    { value: "140", label: "140日" },
+    { value: "150", label: "150日" },
   ];
 
   const benefits = [
@@ -164,22 +164,17 @@ const JobForm = ({
       animate="visible"
       exit="exit"
     >
-      <Modal
-        isOpen={showErrorModal}
-        onClose={handleCloseErrorModal}
-      >
+      <Modal isOpen={showErrorModal} onClose={handleCloseErrorModal}>
         <h2 className="text-xl font-bold mb-4">エラー</h2>
-        <div className="mb-4">
-          {renderErrorMessage()}
-        </div>
+        <div className="mb-4">{renderErrorMessage()}</div>
         <div className="flex justify-end">
-      <button 
-        onClick={handleCloseErrorModal}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-      >
-        閉じる
-      </button>
-    </div>
+          <button
+            onClick={handleCloseErrorModal}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            閉じる
+          </button>
+        </div>
       </Modal>
       <div className="text-start w-full  border-b-2 border-gray-400 pb-4 mb-14">
         <p>{jp.postJobPosition}</p>
@@ -216,7 +211,7 @@ const JobForm = ({
             className=""
             defaultOption={jp.chooseJobType}
             value={form.job_type}
-            defaultValue={jobTypes.length > 0 ? jobTypes[0].value : ''}
+            defaultValue={jobTypes.length > 0 ? jobTypes[0].value : ""}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -233,7 +228,7 @@ const JobForm = ({
             className=""
             defaultOption={jp.chooseLocation}
             value={form.prefecture_id}
-            defaultValue={countries.length > 0 ? countries[0].value : ''}
+            defaultValue={countries.length > 0 ? countries[0].value : ""}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -269,11 +264,11 @@ const JobForm = ({
             name="working_time"
             label={jp.annualHoliday}
             id={jp.annualHoliday}
-            options={workHour}
+            options={dayofholidayinyear}
             className=""
             defaultOption={jp.chooseDays}
             value={form.working_time}
-            defaultValue={workHour[0].value}
+            defaultValue={dayofholidayinyear[0].value}
             onChange={(e) =>
               setForm({
                 ...form,
