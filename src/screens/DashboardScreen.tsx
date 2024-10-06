@@ -303,12 +303,12 @@ console.log(chats)
                   </h1>
                 </div>
                 <div className="w-full h-[62vh] overflow-y-auto">
-                  { hasTodayEvents.events ? (
-                    hasTodayEvents.events.map((event: Event, index: number) => {
+                  { selectedDateData ? (
+                    selectedDateData.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
-                  ) : selectedDateData ? (
-                    selectedDateData.map((event: Event, index: number) => {
+                  ) :  hasTodayEvents.events  ? (
+                    hasTodayEvents.events.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
                     
