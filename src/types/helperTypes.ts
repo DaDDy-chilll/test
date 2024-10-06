@@ -61,11 +61,10 @@ export type FilterType = {
 
 export type Event = {
   name: string;
-  user_photo: string;
-  title: string;
-  start_time: string;
-  end_time: string;
-  job_title: string;
+  user_photo: any;
+  start_time: any;
+  end_time: any;
+  job_title: any;
 };
 
 export interface Chat {
@@ -154,6 +153,8 @@ export interface User {
 
 export type ApplicantDetail = {
   id: string | number;
+  address:string;
+  email:string;
   m_basicinfos: {
     profile_path: string;
     name: string;
@@ -162,6 +163,7 @@ export type ApplicantDetail = {
     gender: number;
     has_passport: number;
     video_path: string;
+    phone:string;
   };
   m_prefer_areas: [
     {

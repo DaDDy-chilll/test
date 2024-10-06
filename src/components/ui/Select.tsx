@@ -34,8 +34,6 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   disabled = false,
 }) => {
-
-
   return (
     <div
       className={cn(
@@ -55,6 +53,7 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         name={name}
+        value={value?.value}
         onChange={(e) => {
           const selectedOption = options.find(option => option.value === e.target.value);
           if (onChange && selectedOption) {

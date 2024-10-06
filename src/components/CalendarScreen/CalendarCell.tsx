@@ -2,14 +2,14 @@ import clsx from "clsx";
 import { format, isToday } from "date-fns";
 
 interface Event {
-  date: string;
-  title: string;
+count: number
+interviews:any
 }
 
 type CalendarCellProps = {
   day: Date;
-  todaysEvents: Event[];
-  handleClick: (todaysEvents: Event[]) => void;
+  todaysEvents: Event;
+  handleClick: (todaysEvents: Event) => void;
 };
 
 const CalendarCell = ({
@@ -18,7 +18,6 @@ const CalendarCell = ({
   handleClick,
 }: CalendarCellProps) => {
   const clickEvent = () => handleClick(todaysEvents);
-
   return (
     <div
       className={clsx(
@@ -33,11 +32,11 @@ const CalendarCell = ({
       <div className={clsx("w-8 h-8 flex items-center justify-center mx-auto")}>
         {format(day, "d")}
       </div>
-      {todaysEvents.length !== 0 && (
+      {todaysEvents.interviews && (
         <div className="flex items-center gap-1">
           <div className="bg-primaryColor w-2 h-2 rounded-full"></div>
-          {todaysEvents.length > 1 && (
-            <p className="text-xs text-primaryColor">+{todaysEvents.length}</p>
+          {todaysEvents.count > 1 && (
+            <p className="text-xs text-primaryColor">+{todaysEvents.count}</p>
           )}
         </div>
       )}
