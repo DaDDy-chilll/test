@@ -30,7 +30,7 @@ const CalendarScreen = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedEvents, setSelectedEvents] = useState<any>();
+  const [selectedEvents, setSelectedEvents] = useState<any[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
