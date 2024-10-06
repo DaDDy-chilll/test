@@ -1,5 +1,7 @@
 import { jp } from "@/lang/jp";
 import { FilterType } from "@/types/helperTypes";
+import { Checkbox } from "@/components";
+import { useRef } from "react";
 
 type FilterBarProps = {
   className?: string;
@@ -16,108 +18,94 @@ const FilterBar = ({
   jobTypes,
   setCurrentPage,
 }: FilterBarProps) => {
+  const maleType = useRef<boolean>(false);
+  const femaleType = useRef<boolean>(false);
+
+  const genderChange = () => {
+    if (
+      (maleType.current && femaleType.current) ||
+      (!maleType.current && !femaleType.current)
+    ) {
+      return "";
+    } else if (maleType.current && !femaleType.current) {
+      return "0";
+    } else {
+      return "1";
+    }
+  };
+
+  const defaultLocation = [
+    { label: jp.liveInMyanmar, value: 2 },
+    { label: jp.liveInJapan, value: 1 },
+  ];
+
   return (
     <div
-      className={`bg-white justify-start text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
+      className={`bg-white justify-end text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
     >
-      <div className="flex gap-2 items-center cursor-pointer">
-        <input
-          type="radio"
-          name="live_in_japan"
-          id="livesInJapan"
-          className="accent-primaryColor cursor-pointer"
-          onChange={() => {
-            setCurrentPage(1);
-            setFilter({ ...filter, live_in_japan: "1" });
-          }}
-        />
-        <label htmlFor="livesInJapan" className="text-sm cursor-pointer">
-          {jp.liveInJapan}
-        </label>
-      </div>
-      <div className="flex gap-2 items-center cursor-pointer">
-        <input
-          type="radio"
-          name="live_in_japan"
-          id="livesInMyanmar"
-          checked={filter.live_in_japan === "0"}
-          className="accent-primaryColor cursor-pointer"
-          onChange={() => {
-            setCurrentPage(1);
-            setFilter({ ...filter, live_in_japan: "0" });
-          }}
-        />
-        <label htmlFor="livesInMyanmar" className="text-sm cursor-pointer">
-          {jp.liveInMyanmar}
-        </label>
-      </div>
       <div className="flex gap-2 items-center">
-        <input
-          type="radio"
+        <Checkbox
           name="gender"
           id="male"
-          checked={filter.gender === "0"}
-          className="accent-primaryColor cursor-pointer"
-          onChange={() => {
+          onChange={(checked) => {
+            console.log(checked);
             setCurrentPage(1);
-            setFilter({ ...filter, gender: "0" });
+            if (checked) {
+              maleType.current = true;
+            } else {
+              maleType.current = false;
+            }
+            setFilter({ ...filter, gender: genderChange() });
           }}
         />
-        <label htmlFor="male" className="cursor-pointer">{jp.male}</label>
+        <label htmlFor="male" className="cursor-pointer">
+          {jp.male}
+        </label>
       </div>
       <div className="flex gap-2 items-center">
-        <input
-          type="radio"
+        <Checkbox
           name="gender"
           id="female"
-          checked={filter.gender === "1"}
-          className="accent-primaryColor cursor-pointer"
-          onChange={() => {
+          onChange={(checked) => {
             setCurrentPage(1);
-            setFilter({ ...filter, gender: "1" });
+            if (checked) {
+              femaleType.current = true;
+            } else {
+              femaleType.current = false;
+            }
+            setFilter({ ...filter, gender: genderChange() });
           }}
         />
-        <label htmlFor="female" className="cursor-pointer">{jp.female}</label>
+        <label htmlFor="female" className="cursor-pointer">
+          {jp.female}
+        </label>
       </div>
-      {/* <select
-        className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        onChange={(e) => {
-          setCurrentPage(1)
-          setFilter({ ...filter, language: e.target.value });
-        }}
-      >
-        <option value="Japanese" defaultValue="Japanese">
-          Japanese
-        </option>
-        <option value="N5">N5</option>
-        <option value="N4">N4</option>
-        <option value="N3">N3</option>
-        <option value="N2">N2</option>
-        <option value="N1">N1</option>
-      </select> */}
-      {/* <select
-        className="bg-secondaryColor text-white p-2 rounded-md text-sm"
-        onChange={(e) => {
-          setCurrentPage(1)
-          setFilter({ ...filter, education: e.target.value });
-        }}
-      >
-        <option value="" defaultValue="">
-          Education
-        </option>
-        <option value="Bachelor">Bachelor</option>
-        <option value="Master">Master</option>
-        <option value="Diploma">Diploma</option>
-      </select> */}
 
       <select
-        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-96 cursor-pointer"
+        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
+        onChange={(e) => {
+          setCurrentPage(1);
+          setFilter({ ...filter, live_in_japan: e.target.value });
+        }}
+      >
+        <option value="" autoFocus>
+          {jp.chooseCountry}
+        </option>
+        {defaultLocation.map((location: any) => (
+          <option key={location.value} value={location.value}>
+            {location.label}
+          </option>
+        ))}
+      </select>
+
+      <select
+        className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
         onChange={(e) => {
           setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });
         }}
       >
-        <option value="" >{jp.jobType}</option>
+        <option value="">{jp.jobType}</option>
         {jobTypes &&
           jobTypes.data.length > 0 &&
           jobTypes.data.map((jobType: any) => (

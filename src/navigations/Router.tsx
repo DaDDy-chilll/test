@@ -45,6 +45,8 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
+        
+        {/* Auth Protected routes */}
         <Route
           element={
             <AuthProtectRoute>
@@ -64,7 +66,7 @@ const AnimatedRoutes = () => {
           <Route path={Routenames.USER_FORM} Component={UserFormScreen} />
         </Route>
 
-        {/* Protected routes */}
+        {/* Services Protected routes */}
         <Route
           element={
             <ServicesProtectedPage>

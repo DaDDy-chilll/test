@@ -17,8 +17,8 @@ import { Helmet } from "react-helmet-async";
 
 const itemsPerPage = 5;
 const initialFilter: FilterType = {
-  live_in_japan: "0",
-  gender: "0",
+  live_in_japan: "",
+  gender: "",
   job_type: "",
 };
 const ApplicantScreen = () => {
@@ -143,7 +143,7 @@ const ApplicantScreen = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full overflow-hidden"
+        className="w-full overflow-hidden relative"
       >
         <FilterBar
           filter={filter}

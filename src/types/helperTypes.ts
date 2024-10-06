@@ -158,6 +158,7 @@ export type ApplicantDetail = {
     dob: string;
     gender: number;
     has_passport: number;
+    video_path: string;
   };
   m_prefer_areas: [
     {

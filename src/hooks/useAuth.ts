@@ -59,6 +59,7 @@ const useAuth = () => {
 
     const onLogout = () => {
         dispatch(removeToken());
+        dispatch(setName(''))
         setError(null)
         navigate('/');
     }

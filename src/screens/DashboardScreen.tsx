@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import {LineCharts,Loading,EventListItem} from "@/components";
+import { useEffect, useRef, useMemo } from "react";
+import { LineCharts, Loading, EventListItem } from "@/components";
 import { jp } from "@/lang/jp";
 import { motion } from "framer-motion";
 // import { events } from "@/constants";
@@ -9,40 +9,60 @@ import useChat from "@/hooks/useChat";
 import moment from "moment";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
-import { useMemo } from "react";
 import { format } from "date-fns";
 import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
-import { useState } from 'react';
-import {Helmet} from 'react-helmet-async'
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+
+const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
+const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
+const startOfMonth = moment().startOf("month").format("YYYY-MM-DD");
+const endOfMonth = moment().endOf("month").format("YYYY-MM-DD");
 
 const DashboardScreen = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
-  const dispatch = useDispatch();
+  const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
+    endpoint: `${apiRoutes.DASHBOARD}?start_date=${startOfYear}&end_date=${endOfYear}`,
+    token: token as string,
+    key: QueryKey.DASHBOARD,
+  });
+  const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
+    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startOfMonth}&end_date=${startOfMonth}`,
+    token: token as string,
+    key: QueryKey.INTERVIEW,
+  });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [activeDate, setActiveDate] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
+  const [selectedDate, setSelectedDate] = useState<string>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+
+  console.log(interviewData,startOfMonth,endOfMonth);
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
 
     const checkForScrollbar = () => {
       if (scrollableRef.current) {
-        const hasScrollbar = scrollableRef.current.scrollHeight > scrollableRef.current.clientHeight;
-        scrollableRef.current.classList.toggle('pr-3', hasScrollbar);
+        const hasScrollbar =
+          scrollableRef.current.scrollHeight >
+          scrollableRef.current.clientHeight;
+        scrollableRef.current.classList.toggle("pr-3", hasScrollbar);
       }
     };
 
     checkForScrollbar();
-    window.addEventListener('resize', checkForScrollbar);
+    window.addEventListener("resize", checkForScrollbar);
 
     return () => {
-      window.removeEventListener('resize', checkForScrollbar);
+      window.removeEventListener("resize", checkForScrollbar);
     };
   }, [dispatch]);
 
@@ -88,43 +108,64 @@ const DashboardScreen = () => {
     {
       id: 1,
       title: "Team Meeting",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Discuss project updates and next steps",
     },
     {
       id: 2,
       title: "Client Call",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Review project requirements with the client",
     },
     {
       id: 3,
       title: "Project Planning",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Plan the next phase of the project",
     },
     {
       id: 4,
       title: "Design Review",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Review the latest design mockups",
     },
     {
       id: 5,
       title: "Code Review",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Review the latest code changes",
     },
     {
       id: 6,
       title: "Marketing Meeting",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Discuss marketing strategies",
     },
     {
       id: 7,
       title: "Sales Call",
-      date: format(new Date(new Date().setDate(new Date().getDate() + 1)), "yyyy-MM-dd"),
+      date: format(
+        new Date(new Date().setDate(new Date().getDate() + 1)),
+        "yyyy-MM-dd"
+      ),
       description: "Call with potential client",
     },
   ];
@@ -132,7 +173,10 @@ const DashboardScreen = () => {
   // TODO: remove this
   // Sample data for upcoming events
   const upcomingEvents = Array.from({ length: 30 }, (_, index) => {
-    const date = format(new Date(new Date().setDate(new Date().getDate() + index + 1)), "yyyy-MM-dd");
+    const date = format(
+      new Date(new Date().setDate(new Date().getDate() + index + 1)),
+      "yyyy-MM-dd"
+    );
     return {
       [date]: Array.from({ length: index + 1 }, (_, eventIndex) => ({
         id: index * 15 + eventIndex + 1,
@@ -148,94 +192,45 @@ const DashboardScreen = () => {
 
   const today = format(new Date(), "yyyy-MM-dd");
 
-  const data = [
-    {
-      name: "January",
-      matched: 5,
-    },
-    {
-      name: "February",
-      matched: 3,
-    },
-    {
-      name: "March",
-      matched: 6,
-    },
-    {
-      name: "April",
-      matched: 2,
-    },
-    {
-      name: "May",
-      matched: 4,
-    },
-    {
-      name: "June",
-      matched: 7,
-    },
-    {
-      name: "July",
-      matched: 1,
-    },
-    {
-      name: "August",
-      matched: 3,
-    },
-    {
-      name: "September",
-      matched: 5,
-    },
-    {
-      name: "October",
-      matched: 2,
-    },
-    {
-      name: "November",
-      matched: 4,
-    },
-    {
-      name: "December",
-      matched: 6,
-    },
-  ];
+  const data = useMemo(() => {
+    if (!dashboardData) return [];
 
-  const genderData = [
-    {
-      name: "Male",
-      value: 400,
-    },
-    {
-      name: "Female",
-      value: 300,
-    },
-  ];
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
 
-  const languageData = [
-    {
-      name: "N1",
-      value: 400,
-    },
-    {
-      name: "N2",
-      value: 300,
-    },
-    {
-      name: "N3",
-      value: 200,
-    },
-    {
-      name: "N4",
-      value: 100,
-    },
-  ];
+    return Object.entries(dashboardData?.data.matchings)
+      .map(([key, value]) => {
+        const [year, month] = key.split("-");
+        const monthIndex = parseInt(month) - 1;
+        return {
+          name: monthNames[monthIndex],
+          matched: value,
+        };
+      })
+      .sort((a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name));
+  }, [dashboardData]);
+
+
 
   const handleChatClick = (chat: Chat) => navigate("/chat", { state: chat });
 
   return (
     <>
-    <Helmet>
-      <title>{jp.dashboard} - Japan Job</title>
-    </Helmet>
+      <Helmet>
+        <title>{jp.dashboard} - Japan Job</title>
+      </Helmet>
       {/* {(isEventLoading || isChatLoading) && (
         <Loading
           isLoading={isEventLoading || isChatLoading}
@@ -337,8 +332,28 @@ const DashboardScreen = () => {
             <div className="flex items-start justify-between p-3">
               <div className="col-span-2 w-2/3 pb-4">
                 <div className="flex items-center justify-between relative px-5">
-                  <button className={`text-sm rounded-md px-2 py-1 absolute right-2 ${selectedDate === today ? 'bg-primaryColor text-white' : 'text-gray-500 bg-gray-200 hover:bg-gray-300'}`} onClick={() => { setSelectedDate(today); setActiveDate(today); selectedDate === today ? setActiveDate(today) : null }}>
-                    {jp.todayMeetings} <span className={`ml-2 text-xs ${selectedDate === today ? 'text-white' : 'text-primaryColor'}`}>+{todayEvents.length}</span>
+                  <button
+                    className={`text-sm rounded-md px-2 py-1 absolute right-2 ${
+                      selectedDate === today
+                        ? "bg-primaryColor text-white"
+                        : "text-gray-500 bg-gray-200 hover:bg-gray-300"
+                    }`}
+                    onClick={() => {
+                      setSelectedDate(today);
+                      setActiveDate(today);
+                      selectedDate === today ? setActiveDate(today) : null;
+                    }}
+                  >
+                    {jp.todayMeetings}{" "}
+                    <span
+                      className={`ml-2 text-xs ${
+                        selectedDate === today
+                          ? "text-white"
+                          : "text-primaryColor"
+                      }`}
+                    >
+                      +{todayEvents.length}
+                    </span>
                   </button>
                   <h1 className="text-base font-semibold text-center my-2">
                     {selectedDate} {jp.meetings}
@@ -350,9 +365,11 @@ const DashboardScreen = () => {
                       return <EventListItem key={index} event={event} />;
                     })
                   ) : upcomingEvents[selectedDate] ? (
-                    upcomingEvents[selectedDate].map((event: Event, index: number) => {
-                      return <EventListItem key={index} event={event} />;
-                    })
+                    upcomingEvents[selectedDate].map(
+                      (event: Event, index: number) => {
+                        return <EventListItem key={index} event={event} />;
+                      }
+                    )
                   ) : (
                     <p className="text-center text-gray-500 mt-10">
                       No meetings today
@@ -368,25 +385,40 @@ const DashboardScreen = () => {
                 )}
               </div>
               <div className="w-1/3 pl-3 h-[67vh]">
-                <h2 className="text-base font-semibold text-center my-2">今後の会議</h2>
-                <div ref={scrollableRef} className="overflow-y-auto h-[62vh] relative">
+                <h2 className="text-base font-semibold text-center my-2">
+                  今後の会議
+                </h2>
+                <div
+                  ref={scrollableRef}
+                  className="overflow-y-auto h-[62vh] relative"
+                >
                   {Array.from({ length: 30 }, (_, index) => {
-                    const date = moment(new Date(today).setDate(new Date(today).getDate() + index + 1)).format('YYYY-MM-DD');
+                    const date = moment(
+                      new Date(today).setDate(
+                        new Date(today).getDate() + index + 1
+                      )
+                    ).format("YYYY-MM-DD");
                     return (
                       <div
                         key={index}
-                        className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${activeDate === date ? 'bg-primaryColor text-white' : 'hover:bg-gray-300'}`}
+                        className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer bg-gray-200  ${
+                          activeDate === date
+                            ? "bg-primaryColor text-white"
+                            : "hover:bg-gray-300"
+                        }`}
                         onClick={() => {
                           setActiveDate(date);
                           setSelectedDate(date);
                         }}
                       >
                         {date}
-                        {activeDate !== date && upcomingEvents[date] && upcomingEvents[date].length > 0 && (
-                          <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">
-                            + {upcomingEvents[date].length}
-                          </span>
-                        )}
+                        {activeDate !== date &&
+                          upcomingEvents[date] &&
+                          upcomingEvents[date].length > 0 && (
+                            <span className="text-xs text-gray-500 absolute right-8 text-primaryColor">
+                              + {upcomingEvents[date].length}
+                            </span>
+                          )}
                       </div>
                     );
                   })}

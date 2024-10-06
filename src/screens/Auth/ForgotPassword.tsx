@@ -4,8 +4,36 @@ import { motion } from "framer-motion";
 import Input from "@/components/ui/Input";
 import { jp } from "@/lang/jp";
 import { Button } from "@/components/ui/button";
-
+import usePost from "@/hooks/usePost";
+import { QueryKey } from "@/utils/queryKey";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { BeatLoader } from "react-spinners";
+import { useEffect,useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Routenames from "@/navigations/routes";
+import { setToken } from "@/store";
+import { useDispatch } from "react-redux"
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const { mutate, isPending, isSuccess, error } = usePost({});
+
+  const onSubmit = () => {
+    console.log(email);
+    mutate({
+      endpoint: apiRoutes.FORGOT_PASSWORD,
+      body: { email },
+    });
+  };
+  useEffect(() => {
+    if (isSuccess) {
+   
+      dispatch(setToken({ token: null, email  }));
+      navigate(Routenames.OTP);
+    }
+  }, [isSuccess]);
+
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
@@ -25,7 +53,7 @@ const ForgotPassword = () => {
             {jp.forgotPassword}
           </h4>
         </motion.div>
-        <motion.form
+        <motion.div
           className="space-y-8 w-full"
           variants={formVariants}
           initial="hidden"
@@ -38,10 +66,20 @@ const ForgotPassword = () => {
               label={jp.email}
               className="mt-1 block w-full"
               required={false}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <Button type="submit" className="w-full p-2 rounded-md">
-            {jp.resetPassword}
+          <Button
+            onClick={onSubmit}
+            className="w-full p-2 rounded-md"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <BeatLoader loading={isPending} size={8} color={"#fff"} />
+            ) : (
+              jp.resetPassword
+            )}
           </Button>
 
           <h1 className="text-sm text-gray-900 mt-4 pb-6">
@@ -53,8 +91,8 @@ const ForgotPassword = () => {
               {jp.login}
             </Link>{" "}
             {jp.page}
-          </h1>
-        </motion.form>
+          </h1> 
+        </motion.div>
       </div>
     </div>
   );
