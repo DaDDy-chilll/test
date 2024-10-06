@@ -360,7 +360,7 @@ console.log('chat',chats)
                     
                     ) :
                     <p className="text-center text-gray-500 mt-10">
-                      No meetings today
+                     {jp.noInterviewSchedule}
                     </p>
                   }
                 </div>
