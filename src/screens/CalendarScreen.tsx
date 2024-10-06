@@ -62,7 +62,7 @@ const CalendarScreen = () => {
 
   const handleCellClick = (todaysEvents: Event, dateKey: string) => {
     setSelectedDate(dateKey);
-
+    console.log('todaysEvents',todaysEvents)
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
@@ -209,7 +209,7 @@ const CalendarScreen = () => {
           <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
           <div className="flex justify-between items-center">
             <p className="text-sm text-gray-500">
-              {selectedDate
+              {selectedDate && selectedEvents.length > 0 
                 ? format(selectedDate, "yyyy-MM-dd")
                 : format(new Date(), "yyyy-MM-dd")}
             </p>
@@ -219,7 +219,7 @@ const CalendarScreen = () => {
             </select>
           </div>
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
-            {selectedEvents ? (
+            {selectedEvents.length > 0 ? (
               selectedEvents.map((event: Event, index: number) => {
                 return <EventListItem key={index} event={event} />;
               })
