@@ -10,7 +10,7 @@ import {
   addMonths,
 } from "date-fns";
 import { useMemo, useState, useEffect } from "react";
-import {CalendarCell,EventListItem,Loading} from "@/components";
+import { CalendarCell, EventListItem, Loading } from "@/components";
 import { jp } from "@/lang/jp";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
@@ -30,13 +30,9 @@ const CalendarScreen = () => {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
-  // const { data, isLoading, isError, isSuccess, error } = useFetch({
-  //   endpoint: apiRoutes.EVENTS,
-  //   token: token as string,
-  //   key: QueryKey.EVENTS,
-  // });
-  // const events: Event[] = data || [];
-  const events: Event[] =  [];
+
+
+  const events: Event[] = [];
   const today = format(new Date(), "yyyy-MM-dd");
   useEffect(() => {
     dispatch(setTitle(jp.calendar));
@@ -69,12 +65,10 @@ const CalendarScreen = () => {
 
   return (
     <>
-           <Helmet>
-      <title>{jp.calendar} - Japan Job</title>
-    </Helmet>
-      {false && (
-        <Loading isLoading={false} className="h-[calc(100vh-68px)]" />
-      )}
+      <Helmet>
+        <title>{jp.calendar} - Japan Job</title>
+      </Helmet>
+      {false && <Loading isLoading={false} className="h-[calc(100vh-68px)]" />}
       <motion.div
         variants={calendarVariants}
         initial="initial"
