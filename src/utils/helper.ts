@@ -38,10 +38,12 @@ export const fetchServer = async ({
       const { data } = await api.put(urlEndPoint, body);
       result = data;
     } 
+    console.log("result",result)
     return result;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
+        console.log("error-", error.response);
         const { data,status } = error.response;
         if (data.status == 400) {
             console.log("error-400", data);

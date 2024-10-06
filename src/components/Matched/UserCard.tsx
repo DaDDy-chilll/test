@@ -46,52 +46,11 @@ const UserCard = ({
           className="w-16 h-16 mb-3 rounded-full shadow-lg"
           src={profileImage || DefaultProfile}
           alt={m_basicinfos.name}
+          crossOrigin="anonymous"
         />
         <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
           {m_basicinfos.name}
         </h5>
-        {/* <div className="flex gap-2 flex-row flex-wrap">
-          <div
-            data-tooltip-target="tooltip-default"
-            className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
-          >
-            {m_preferred_jobs.length > 0 ? (
-              <>
-                <div className="flex  items-center justify-start gap-1 cursor-pointer">
-                  {m_preferred_jobs
-                    .filter((_: any, index: number) => index < 3)
-                    .map((job: any, index: number) => (
-                      <p className="bg-primaryColor text-white text-xs px-2 py-1 rounded-md">
-                        {job.job_type}
-                      </p>
-                    ))}
-
-                  {m_preferred_jobs.length > 1 && (
-                    <span className="text-xs text-gray-500 ml-1">
-                      +{m_preferred_jobs.length - 3}
-                    </span>
-                  )}
-                </div>
-                {m_preferred_jobs.length > 3 && (
-                  <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
-                    {m_preferred_jobs
-                      .slice(3)
-                      .map((job: any, index: number) => (
-                        <p
-                          key={index}
-                          className="text-xs text-gray-700 whitespace-nowrap my-2"
-                        >
-                          {job.job_type}
-                        </p>
-                      ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <div>No Job Type</div>
-            )}
-          </div>
-        </div> */}
         <div className="grid grid-cols-2 gap-2 w-full">
           <div className="flex flex-col gap-2 items-start">
             <span className="flex gap-2 text-sm">
