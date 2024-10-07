@@ -30,11 +30,12 @@ const useAuth = () => {
                 dispatch(setToken(data.data));
                 if(data.data.name){
                     dispatch(setVerified(true));
+                    dispatch(setName(data.data.name));
                 }else{
                     dispatch(setVerified(false));
                 }
                 dispatch(setForgotPassword(false));
-                    navigate(RouteName.DASHBOARD);
+                navigate(RouteName.DASHBOARD);
             }
         },
         onError: (error: ErrorType) => {

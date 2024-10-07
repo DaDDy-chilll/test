@@ -48,6 +48,7 @@ const CalendarScreen = () => {
     token: token as string,
     key: QueryKey.INTERVIEW,
   });
+  // console.log('eventsOfMonth',eventsOfMonth)
   const today = format(new Date(), "yyyy-MM-dd");
   const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
@@ -62,7 +63,6 @@ const CalendarScreen = () => {
 
   const handleCellClick = (todaysEvents: Event, dateKey: string) => {
     setSelectedDate(dateKey);
-    console.log('todaysEvents',todaysEvents)
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 

@@ -231,7 +231,6 @@ useEffect(()=>{
 },[upcomingInterviews])
 
 
-console.log(chats)
 
   return (
     <>
