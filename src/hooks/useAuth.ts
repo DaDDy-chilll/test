@@ -28,7 +28,11 @@ const useAuth = () => {
             setError(null)
             if (data.data) {
                 dispatch(setToken(data.data));
-                dispatch(setName(data.data.name || data.data.email));
+                if(data.data.name){
+                    dispatch(setVerified(true));
+                }else{
+                    dispatch(setVerified(false));
+                }
                 dispatch(setForgotPassword(false));
                     navigate(RouteName.DASHBOARD);
             }
