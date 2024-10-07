@@ -22,6 +22,7 @@ const defaultForm = {
   prefecture_id: { label: "", value: "" },
   annual_salary: { label: "", value: "" },
   working_time: { label: "", value: "" },
+  holiday_in_year: { label: "", value: "" },
   start_time: "",
   end_time: "",
   job_des: "",
@@ -131,6 +132,10 @@ const JobScreen = () => {
         prefecture_id: {
           label: jobDetail?.data.prefecture.name,
           value: jobDetail?.data.prefecture_id,
+        },
+        holiday_in_year: {
+          label: jobDetail?.data?.holiday_in_year||150,
+          value: jobDetail?.data?.holiday_in_year||150,
         },
         annual_salary: {
           label: jobDetail?.data.annual_salary,

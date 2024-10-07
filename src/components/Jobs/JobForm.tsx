@@ -77,7 +77,14 @@ const JobForm = ({
     { value: "600", label: "~600万円" },
   ];
 
-  const dayofholidayinyear = [
+  const workingTime = [
+    { value: "7", label: "7時間" },
+    { value: "8", label: "8時間" },
+    { value: "9", label: "9時間" },
+    { value: "10", label: "10時間" },
+  ];
+
+  const annualHoliday = [
     { value: "120", label: "120日" },
     { value: "130", label: "130日" },
     { value: "140", label: "140日" },
@@ -284,13 +291,13 @@ const JobForm = ({
 
           <Select
             name="working_time"
-            label={jp.annualHoliday}
-            id={jp.annualHoliday}
-            options={dayofholidayinyear}
+            label={jp.workHour}
+            id={jp.workHour}
+            options={workingTime}
             className=""
-            defaultOption={jp.chooseDays}
+            defaultOption={jp.chooseTime}
             value={form.working_time}
-            defaultValue={dayofholidayinyear[0].value}
+            defaultValue={workingTime[0].value}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -299,19 +306,26 @@ const JobForm = ({
             }
           />
 
-          <Input
+          <Select
             name="holiday_in_year"
-            type="number"
-            placeholder={jp.holidayInYear}
-            label={jp.holidayInYear}
-            className="mt-1 block w-full bg-gray-100"
+            label={jp.workHour}
+            id={jp.workHour}
+            options={annualHoliday}
+            className=""
+            defaultOption={jp.chooseDays}
             value={form.holiday_in_year}
+            defaultValue={annualHoliday[0].value}
             onChange={(e) =>
-              setForm({ ...form, holiday_in_year: e.target.value })
+              setForm({
+                ...form,
+                holiday_in_year: {
+                  label: e.target.labels,
+                  value: e.target.value,
+                },
+              })
             }
-            min="0"
-            max="365"
           />
+
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">
               {jp.workHour}

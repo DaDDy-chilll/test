@@ -27,7 +27,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
   useEffect(() => {
     if (value) {
       const momentDate = moment(value, ["YYYY-MM-DD", "DD/MM/YYYY", "MM/DD/YYYY"]);
-      console.log(momentDate);
       if (momentDate.isValid()) {
         setInputValue(momentDate.format("YYYY-MM-DD"));
       }
@@ -39,7 +38,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     const formattedDate = moment(newValue).format("YYYY-MM-DD");
-    console.log("formattedDate", formattedDate);
     setInputValue(formattedDate);
     if (onChange) {
       const formattedEvent = {
@@ -59,7 +57,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         type="date"
         name={name}
         id={name}
-        value={inputValue}
+        value={moment(inputValue).format("YYYY-MM-DD")}
         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         required
         placeholder={placeholder}
