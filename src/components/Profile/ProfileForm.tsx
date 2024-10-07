@@ -178,7 +178,7 @@ useEffect(() => {
           />
           <DatePicker
             name="starting"
-            type="text"
+            type="date"
             label={jp.establishment}
             className="mt-1 block w-full"
             value={formData.starting}
