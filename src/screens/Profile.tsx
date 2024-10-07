@@ -145,7 +145,7 @@ const Profile = () => {
       name: formData.get("name") as string || undefined,
       industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
       budget: Number(formData.get("budget") as string) || undefined,
-      starting: formData.get("starting") ? moment(formData.get("starting") as string).format("DD/MM/YYYY") : undefined,
+      starting: formData.get("starting") ? moment(formData.get("starting") as string).format("YYYY-MM-DD") : undefined,
       staff: Number(formData.get("staff") as string) || undefined,
       prefecture_id: Number(formData.get("prefecture_id") as string) || undefined,
       company_des: formData.get("company_des") as string || undefined,
