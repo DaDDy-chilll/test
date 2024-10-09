@@ -33,7 +33,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
           <p className="font-bold text-sm">{chat.jobfinder_name || "Unknown"}</p>
           {chat.last_message && (
           <p
-            className={`text-xs font-light ${
+            className={`text-xs ${
               unreadCount > 0 ? "text-black font-bold" : "text-gray-500"
             }`}
           >
