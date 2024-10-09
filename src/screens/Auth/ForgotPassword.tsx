@@ -20,7 +20,6 @@ const ForgotPassword = () => {
   const { mutate, isPending, isSuccess, error } = usePost({});
 
   const onSubmit = () => {
-    console.log(email);
     mutate({
       endpoint: apiRoutes.FORGOT_PASSWORD,
       body: { email },

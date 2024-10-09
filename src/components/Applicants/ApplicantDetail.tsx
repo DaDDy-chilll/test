@@ -10,7 +10,6 @@ type MatchProps = {
 };
 
 const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
-console.log('card applicantDetail',applicantDetail);
   if (!applicantDetail) return null;
   const {
     m_basicinfos,

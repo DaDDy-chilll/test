@@ -150,9 +150,7 @@ const handleSelectChange = (
   ) => {
   
     const selectedOption = e.target.value;
-    console.log("selectedOption", selectedOption);
     setFormData({ ...formData, [field]: selectedOption });
-    console.log("formData", formData);
   };
 
   return (

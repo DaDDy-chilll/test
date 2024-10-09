@@ -38,7 +38,6 @@ const CalendarScreen = () => {
     date: "",
     events: null,
   });
-  console.log(startForMonth, endForMonth);
   const {
     data: eventsOfMonth,
     isLoading: isEventsLoading,
@@ -48,7 +47,6 @@ const CalendarScreen = () => {
     token: token as string,
     key: QueryKey.INTERVIEW,
   });
-  // console.log('eventsOfMonth',eventsOfMonth)
   const today = format(new Date(), "yyyy-MM-dd");
   const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));

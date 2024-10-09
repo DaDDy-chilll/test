@@ -62,7 +62,6 @@ const Otp: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data);
       dispatch(setToken({token:data?.data?.token,email:null}));
       navigate(Routenames.CHANGE_PASSWORD);
     }

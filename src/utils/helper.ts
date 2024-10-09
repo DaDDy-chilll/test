@@ -33,7 +33,6 @@ export const fetchServer = async ({
           "Authorization": `Bearer ${token}`
         },
       });
-      console.log('data',data);
       result = data;
     }else if (method === "PUT" && !file) {
       const { data } = await api.put(urlEndPoint, body);

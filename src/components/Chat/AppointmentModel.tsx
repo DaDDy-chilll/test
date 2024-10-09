@@ -78,7 +78,6 @@ const AppointmentModel = ({
       initial: isInitial,
     }
     setCurrentMeetingData(mettingdata);
-    console.log(mettingdata);
     postMeeting(mettingdata);
   }
   const handleConfirmRewrite = () => {

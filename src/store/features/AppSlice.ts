@@ -15,7 +15,6 @@ export const fetchJobTypes = createAsyncThunk("app/fetchJobTypes", async () => {
         method: "GET",
         token: token as string,
     });
-    console.log("response", response);
     return response.data;
 });
 
@@ -34,7 +33,6 @@ const AppSlice = createSlice({
         builder.addCase(fetchJobTypes.fulfilled, (state, action) => {
             state.loading = false;
             state.jobTypes = action.payload;
-            console.log("action.payload", action.payload);
         });
         builder.addCase(fetchJobTypes.rejected, (state) => {
             state.loading = false;

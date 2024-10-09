@@ -17,14 +17,12 @@ const usePost = ({token='',queryKey=null}:usePostProps ) => {
     const queryClient = useQueryClient()
     const { mutate,isPending,error,isSuccess,data}  = useMutation({
         mutationFn:({endpoint, body, method}:parms) => {
-            console.log("endpoint",endpoint,body,method)
             return fetchServer({ endpoint, method: method || "POST", body, token: token || undefined })
         },
         onSuccess:(data) => {
             if(queryKey){
                 queryClient.invalidateQueries({queryKey:[queryKey]})
             }
-            console.log("server post return",data,queryKey)
         }
     })
 

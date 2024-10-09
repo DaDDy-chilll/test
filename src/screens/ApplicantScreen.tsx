@@ -59,7 +59,6 @@ const ApplicantScreen = () => {
       !!filter.job_type,
   });
 
-  console.log("error applicants", error);
 
   const {
     data: jobTypes,
