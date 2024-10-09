@@ -66,7 +66,6 @@ const ChangePassword: React.FC = () => {
 
 
   useEffect(() => {
-    console.log(data,token);
     if (isSuccess) {
       dispatch(setToken({token:null}));
       setTimeout(() => {

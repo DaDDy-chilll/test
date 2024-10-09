@@ -113,7 +113,6 @@ const MatchedScreend = () => {
     data,
   } = useMutation({
     mutationFn: ({ endpoint, body }: any) => {
-      console.log("endpoint", endpoint, body);
       return fetchServer({
         endpoint,
         method: "POST",
@@ -126,7 +125,6 @@ const MatchedScreend = () => {
     },
   });
 
-  // console.log('matchedData',matchedData);
 
   const handleJobType = (item: { id: number; name: string }) =>
     setJobType(item);
@@ -191,7 +189,6 @@ const MatchedScreend = () => {
 
   useEffect(() => {
     if (jobType.id) {
-      console.log("change job type");
       setPage(1);
       setLimit(3);
       refetch();

@@ -76,7 +76,6 @@ const ChatScreen = () => {
     dispatch(setTitle(jp.chat));
   }, [dispatch]);
 
-  console.log("unreadCount", unreadCounts, messages);
 
   //Handle Chat Select
 
@@ -173,15 +172,12 @@ const ChatScreen = () => {
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const unreadCount = snapshot.docs.length;
-        console.log("chat.id", chat.id);
-        console.log("unreadCount1", unreadCount);
 
         setUnreadCounts((prev) => ({
           ...prev,
           [chat.id]: unreadCount,
         }));
       });
-      console.log("unreadCount", unreadCounts);
 
       messageListeners.push(unsubscribe);
     });

@@ -39,7 +39,6 @@ const useAuth = () => {
             }
         },
         onError: (error: ErrorType) => {
-            console.log("error login", error)
             dispatch(removeToken());
             setError(error.message)
         },
@@ -57,7 +56,6 @@ const useAuth = () => {
         },
         onError: (error: ErrorType) => {
             dispatch(removeToken());
-            console.log("error register", error)
             setError(error.message)
         }
     })

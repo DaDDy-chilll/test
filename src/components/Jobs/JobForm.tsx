@@ -116,7 +116,6 @@ const JobForm = ({
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
-    console.log("jobData111", jobData);
     if (isEdit) {
       mutate({
         endpoint: `${apiRoutes.UPDATE_JOB}/${form.id}`,
@@ -142,7 +141,6 @@ const JobForm = ({
     }
   }, [error, isSuccess]);
 
-  console.log("form", form);
 
   const getFieldLabel = (field: string): string => {
     switch (field) {

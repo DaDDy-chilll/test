@@ -48,7 +48,6 @@ const JobScreen = () => {
     key: QueryKey.JOBS,
   });
 
-  // console.log("data", data);
 
   const { data: jobDetail, isLoading: jobDetailLoading } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
@@ -121,7 +120,6 @@ const JobScreen = () => {
 
   useEffect(() => {
     if (jobDetail?.data) {
-      console.log("jobDetail", jobDetail);
       setForm({
         id: jobDetail?.data.id,
         job_title: jobDetail?.data.job_title,

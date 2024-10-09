@@ -84,7 +84,6 @@ const Profile = () => {
       setIsEdit(false);
     }
     if (profileData) {
-      console.log('profileData', profileData);
       dispatch(setName(profileData.data.name));
     }
   }, [isSuccess,profileData,dispatch]);
@@ -131,8 +130,6 @@ const Profile = () => {
     } else return { areaList: [], relativeArea: {} };
   }, [city, transformAreaData]);
 
-  // console.log('areaList', areaList);
-  // console.log('relativeArea', relativeArea);
   const editHandler = () => setIsEdit(true);
 
 
@@ -162,7 +159,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data.data);
       setFormData({
         name: data.data.name,
         industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},

@@ -49,7 +49,6 @@ const FilterBar = ({
           id="male"
           defaultChecked={true}
           onChange={(checked) => {
-            console.log(checked);
             setCurrentPage(1);
             if (checked) {
               maleType.current = true;

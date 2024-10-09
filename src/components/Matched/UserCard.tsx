@@ -29,7 +29,6 @@ const UserCard = ({
     handleShowDetail(matchedData.id);
   };
   const { m_preferred_jobs, m_basicinfos } = matchedData;
-  console.log("m_preferred_jobs", m_preferred_jobs);
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
 
   return (

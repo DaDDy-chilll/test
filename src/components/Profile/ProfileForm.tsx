@@ -43,7 +43,6 @@ const ProfileForm = ({
     mutationFn: (file: File) => {
       const formData = new FormData();
       formData.append('file', file);
-      console.log("iformData",formData)
       return fetchServer({
         endpoint: apiRoutes.UPLOAD_IMAGE,
         method: "POST",
@@ -52,7 +51,6 @@ const ProfileForm = ({
       });
     },
     onSuccess: (data) => {
-      console.log("data",data)
       setAvatarImage("https://api.japanjob.exbrainedu.com/v1/file/photo/" +data.data.filename);
       setFormData((prevData:any) => ({ ...prevData, photo: data.data.filename }));
     },

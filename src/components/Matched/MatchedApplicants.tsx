@@ -23,7 +23,6 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
-  console.log(applicantDetail);
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
