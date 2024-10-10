@@ -7,6 +7,7 @@ import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useEffect } from "react";
 import moment from "moment";
+import { jp } from "@/lang/jp";
 type UserCardProps = {
   handleShowDetail: (id: number) => void;
   matchedData: any;
@@ -38,7 +39,7 @@ const UserCard = ({
       initial="initial"
       animate="animate"
       exit="exit"
-      className="w-full h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
+      className="w-full h-full  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
     >
       <div className="flex w-full h-full  justify-between flex-col items-center p-3">
         <img
@@ -50,25 +51,25 @@ const UserCard = ({
         <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
           {m_basicinfos.name}
         </h5>
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <div className="flex flex-col gap-2 items-start">
+        <div className="flex flex-row justify-center  gap-x-10 w-full">
+          <div className="flex flex-col gap-2 items-start ">
             <span className="flex gap-2 text-sm">
-              <p>Age:</p>
+              <p>{jp.age}:</p>
               <p>{moment(m_basicinfos.dob).fromNow().split(" ")[0]}</p>
             </span>
             <span className="flex gap-2 text-sm">
-              <p>Gender:</p>
-              <p>{m_basicinfos.gender === 1 ? "Male" : "Female"}</p>
+              <p>{jp.gender}:</p>
+              <p>{m_basicinfos.gender === 1 ? jp.male : jp.female}</p>
             </span>
           </div>
           <div className="flex flex-col gap-2 items-start">
             <span className="flex gap-2 text-sm">
-              <p>Live:</p>
-              <p>{m_basicinfos.live_in_japan === 1 ? "Japan" : "Myanmar"}</p>
+              <p>{jp.location}:</p>
+              <p>{m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}</p>
             </span>
             <span className="flex gap-2 text-sm">
-              <p>Passport:</p>
-              <p>{m_basicinfos.has_passport === 1 ? "Yes" : "No"}</p>
+              <p>{jp.passport}:</p>
+              <p>{m_basicinfos.has_passport === 1 ? jp.yes :jp.no}</p>
             </span>
           </div>
         </div>

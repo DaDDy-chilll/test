@@ -21,6 +21,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     m_preferred_jobs,
     m_prefer_other,
   } = applicantDetail;
+  console.log(m_basicinfos.live_in_japan);
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
   return (

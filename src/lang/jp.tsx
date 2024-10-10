@@ -139,4 +139,6 @@ export const jp = {
   notFoundJapanese:"日本語試験が見つかりません",
   noInterviewSchedule:"今日は面接はありません",
   employees:"従業員数",
+  age:"年齢",
+  
 };

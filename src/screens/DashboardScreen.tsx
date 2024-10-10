@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import DefaultUser from "@/assets/icons/default_user.svg"
+import DefaultUser from "@/assets/icons/default_user.svg";
 import { db } from "../firebaseConfig";
 import RouteName from "@/navigations/routes";
 import {
@@ -31,7 +31,6 @@ import {
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
-
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
@@ -105,7 +104,11 @@ const DashboardScreen = () => {
   const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
     {}
   );
-  const [hasTodayEvents,setHasTodayEvents] = useState<any>({date:'',events:null});
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const [hasTodayEvents, setHasTodayEvents] = useState<any>({
+    date: "",
+    events: null,
+  });
   // const [selectedMonth,setSelectedMonth] = useState<number | string>();
   // const selectedMonth = useRef<string>(TODAY);
   const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
@@ -127,7 +130,6 @@ const DashboardScreen = () => {
   });
 
   const upcomingInterviews = interviewData?.data;
-
 
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
@@ -168,7 +170,8 @@ const DashboardScreen = () => {
       );
   }, [dashboardData]);
 
-  const handleChatClick = (chat: Chat) => navigate(RouteName.CHAT, { state: chat });
+  const handleChatClick = (chat: Chat) =>
+    navigate(RouteName.CHAT, { state: chat });
 
   useEffect(() => {
     const messageListeners: any[] = [];
@@ -185,21 +188,28 @@ const DashboardScreen = () => {
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const unreadCount = snapshot.docs.length;
-
-        setUnreadCounts((prev) => ({
-          ...prev,
-          [chat.id]: unreadCount,
-        }));
+        setUnreadCounts((prev) => {
+          if (!prev[chat.id] || prev[chat.id] == 0) {
+            return {
+              ...prev,
+              [chat.id]: unreadCount,
+            };
+          }
+          return prev;
+        });
+        // setUnreadCounts((prev) => ({
+        //   ...prev,
+        //   [chat.id]: unreadCount,
+        // }));
+      
       });
 
       messageListeners.push(unsubscribe);
     });
-
     return () => {
       messageListeners.forEach((unsubscribe) => unsubscribe());
     };
   }, [chats, user?.id]);
-
 
   const coverInterviews = useCallback(
     (data: any) => {
@@ -221,16 +231,15 @@ const DashboardScreen = () => {
     [data]
   );
 
-useEffect(()=>{
-  if(upcomingInterviews){
-    Object.entries(upcomingInterviews).forEach(([key,value])=>{
-      if(key === currentDate){
-        setHasTodayEvents({date:key,events:coverInterviews(value)})
-      }
-    })
-  }
-},[upcomingInterviews])
-
+  useEffect(() => {
+    if (upcomingInterviews) {
+      Object.entries(upcomingInterviews).forEach(([key, value]) => {
+        if (key === currentDate) {
+          setHasTodayEvents({ date: key, events: coverInterviews(value) });
+        }
+      });
+    }
+  }, [upcomingInterviews]);
 
 
   return (
@@ -303,20 +312,19 @@ useEffect(()=>{
                   </h1>
                 </div>
                 <div className="w-full h-[62vh] overflow-y-auto">
-                  { selectedDateData ? (
+                  {selectedDateData ? (
                     selectedDateData.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
-                  ) :  hasTodayEvents.events  ? (
+                  ) : hasTodayEvents.events ? (
                     hasTodayEvents.events.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
-                    
-                    ) :
+                  ) : (
                     <p className="text-center text-gray-500 mt-10">
-                     {jp.noInterviewSchedule}
+                      {jp.noInterviewSchedule}
                     </p>
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -333,58 +341,55 @@ useEffect(()=>{
               chats.map((chat, index) => {
                 const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
 
-                return(
-                  <div
-                  key={index}
-                  className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
-                  onClick={() => handleChatClick(chat)}
-                >
-                  {
-                    chat.jobfinder_profile_image && profileImage ? (
-                      <img
-                      src={profileImage}
-                      alt="profile"
-                      width={50}
-                      height={50}
-                      className="rounded-full"
-                      crossOrigin="anonymous"
-                    />
-                    ) :(
-                      <img
-                      src={DefaultUser}
-                      alt="profile"
-                      width={50}
-                      height={50}
-                      className="rounded-full"
-                      crossOrigin="anonymous"
-                    />
-                    )
-                  }
-               
-                    
-                    
-                 
+                return (
                   <div
                     key={index}
-                    className="flex items-start flex-col gap-x-2 w-full"
+                    className="flex items-center p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
+                    onClick={() => handleChatClick(chat)}
                   >
-                    <div className="flex items-center justify-between w-full mb-2">
-                      <h1 className="text-sm font-semibold">
-                        {chat.jobfinder_name}
-                      </h1>
-                      <p className="text-xs text-gray-500">
-                        {moment(
-                          chat.last_message_timestamp.toDate()
-                        ).calendar()}
+                    {chat.jobfinder_profile_image && profileImage ? (
+                      <img
+                        src={profileImage}
+                        alt="profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                        crossOrigin="anonymous"
+                      />
+                    ) : (
+                      <img
+                        src={DefaultUser}
+                        alt="profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                        crossOrigin="anonymous"
+                      />
+                    )}
+
+                    <div
+                      key={index}
+                      className="flex items-start flex-col gap-x-2 w-full"
+                    >
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <h1 className="text-sm font-semibold">
+                          {chat.jobfinder_name}
+                        </h1>
+                        <p className="text-xs text-gray-500">
+                          {moment(
+                            chat.last_message_timestamp.toDate()
+                          ).calendar()}
+                        </p>
+                      </div>
+                      <p className={`text-xs  ${unreadCounts[chat.id] > 0 ? "font-bold text-gray-900" : "text-gray-500"}`}>
+                        {chat.last_message}
                       </p>
                     </div>
-                    <p className="text-xs text-gray-500">{chat.last_message}</p>
+                    {unreadCounts[chat.id] > 0 && (
+                      <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
+                    )}
                   </div>
-                  {unreadCounts[chat.id] > 0 && (
-                    <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
-                  )}
-                </div>
-                )
+                );
               })
             ) : (
               <p className="text-center text-gray-500 mt-10">{jp.noMessages}</p>

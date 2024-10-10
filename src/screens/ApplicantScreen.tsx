@@ -91,6 +91,7 @@ const ApplicantScreen = () => {
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.APPLICANT_DETAIL, selectedApplicantId],
     queryFn: () => {
+      if (!selectedApplicantId) return [];
       return fetchServer({
         endpoint: `${apiRoutes.USER_DETAILS}/${selectedApplicantId}`,
         method: "GET",
@@ -99,7 +100,7 @@ const ApplicantScreen = () => {
     },
     enabled: !!selectedApplicantId && isDetail,
   });
-
+console.log('applicantDetail',applicantDetail)
   const applicants = data?.data.users || [];
 
   const handleDetail = (id: string) => {
