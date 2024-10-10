@@ -150,13 +150,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
                 <h1 className="text-sm font-semibold mb-3">
                   {jp.selfIntroduction}
                 </h1>
-                <ReactPlayer
-                  url={video_path}
-                  controls={true}
-                  width="100%"
-                  height="100%"
-                  crossOrigin="anonymous"
-                />
+                <video src={video_path} className="object-contain w-full h-48" crossOrigin="anonymous" controls></video>
               </>
             ) : (
               <p>{jp.notFoundJobExprenced}</p>

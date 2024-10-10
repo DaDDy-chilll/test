@@ -1,4 +1,5 @@
 import axios from "axios";
+import RouteName from "@/navigations/routes"
 import { FetchServerType } from "../types/helperTypes";
 let result: any;
 
@@ -50,7 +51,8 @@ export const fetchServer = async ({
             console.log("error-400", data);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401) {
-            localStorage.removeItem("token");
+            localStorage.removeItem("persist:root");
+            window.location.href = RouteName.LOGIN;
             // console.log("error-401", data);
           // throw { error: true, message: data.message ,status};
         } else {
