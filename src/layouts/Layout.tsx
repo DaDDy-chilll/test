@@ -13,9 +13,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Sidebar />
-      <div className={`flex flex-col flex-1 ${sideBar ? 'md:ml-64' : ''} relative`}>
+      <div className={`flex flex-col flex-1 ${sideBar ? 'md:ml-64' : 'md:ml-20'} relative transition-all duration-500 ease-in-out`}>
         <Header />
-        <div >{children}</div>
+        <div>{children}</div>
       </div>
     </>
   );
