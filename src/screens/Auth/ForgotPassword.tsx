@@ -13,13 +13,17 @@ import { useNavigate } from "react-router-dom";
 import Routenames from "@/navigations/routes";
 import { setToken } from "@/store";
 import { useDispatch } from "react-redux"
+import useHandleError from "@/hooks/useHandleError";
+import { AuthErrorType } from "@/types/helperTypes";
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const { mutate, isPending, isSuccess, error } = usePost({});
-
+  const { mutate, isPending, isSuccess, error  } = usePost({});
+const {authHandleError,emailError,resetAuthError} = useHandleError()
   const onSubmit = () => {
+    resetAuthError()
     mutate({
       endpoint: apiRoutes.FORGOT_PASSWORD,
       body: { email },
@@ -32,6 +36,13 @@ const ForgotPassword = () => {
       navigate(Routenames.OTP);
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if(error){
+      authHandleError(error?.message as AuthErrorType);
+    }
+  }, [error]);
+
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">
@@ -64,9 +75,10 @@ const ForgotPassword = () => {
               type="email"
               label={jp.email}
               className="mt-1 block w-full"
-              required={false}
+              required={true}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              error={emailError ? emailError : ''}
             />
           </div>
           <Button

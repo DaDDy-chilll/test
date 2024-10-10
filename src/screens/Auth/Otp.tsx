@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent,useEffect } from "react";
+import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { jp } from "@/lang/jp";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,24 +7,23 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Routenames from "@/navigations/routes";
 import { setToken } from "@/store";
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
 import usePost from "@/hooks/usePost";
 import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { BeatLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import useHandleError from "@/hooks/useHandleError";
+import { AuthErrorType } from "@/types/helperTypes";
 const Otp: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const { mutate, isPending, isSuccess, error,data } = usePost({});
-
-
-
-  
+  const { mutate, isPending, isSuccess, error, data } = usePost({});
+  const { resetAuthError, otpError, authHandleError } = useHandleError();
 
   const handleChange = (
     element: ChangeEvent<HTMLInputElement>,
@@ -51,21 +50,28 @@ const Otp: React.FC = () => {
     }
   };
 
-
   const onSubmit = () => {
+    resetAuthError();
     mutate({
       endpoint: apiRoutes.VERIFY_OTP,
-      body: { email: user?.email,otp: otp.join("") },
+      body: { email: user?.email, otp: otp.join("") },
     });
   };
 
-
   useEffect(() => {
     if (isSuccess) {
-      dispatch(setToken({token:data?.data?.token,email:null}));
-      navigate(Routenames.CHANGE_PASSWORD);
+      dispatch(setToken({ token: data?.data?.token, email: null }));
+      setTimeout(() => {
+        navigate(Routenames.CHANGE_PASSWORD);
+      }, 1000);
     }
-  }, [isSuccess,data]);
+  }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (error) {
+      authHandleError(error?.message as AuthErrorType);
+    }
+  }, [error]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
@@ -87,7 +93,7 @@ const Otp: React.FC = () => {
           </h4>
         </motion.div>
         <motion.div variants={formVariants} initial="hidden" animate="visible">
-          <div className="flex flex-wrap justify-center gap-y-2 mb-10">
+          <div className="flex flex-wrap justify-center gap-y-2 mb-5">
             {otp.map((data, index) => (
               <input
                 key={index}
@@ -95,12 +101,20 @@ const Otp: React.FC = () => {
                 maxLength={1}
                 ref={(input) => (inputRefs.current[index] = input)}
                 value={data}
+                onFocus={() => resetAuthError()}
                 onChange={(e) => handleChange(e, index)}
                 onKeyDown={(e) => handleBackspace(e, index)}
-                className="w-12 h-12 border-2 rounded bg-white text-center text-xl font-bold focus:outline-none focus:border-blue-500 mx-1"
+                className={`w-12 h-12 border-2 rounded bg-white text-center text-xl font-bold focus:outline-none focus:border-blue-500 mx-1 ${
+                  otpError ? "border-primaryColor" : ""
+                } ${isSuccess ? "border-green-500" : ""}`}
               />
             ))}
           </div>
+          {otpError && (
+            <div className="flex items-center justify-center">
+              <p className="text-red-500 text-sm">{otpError}</p>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row justify-center gap-x-2 mr-0 sm:mx-[45px] md:mx-[45px] mb-8">
             <div className="sm:w-1/3 md:w-1/3 w-full">
               <Link to="/forgot_password">
@@ -110,8 +124,31 @@ const Otp: React.FC = () => {
               </Link>
             </div>
             <div className="sm:w-2/3 md:w-2/3 w-full">
-              <Button className="mt-6 px-4 py-2 rounded w-full" onClick={onSubmit} disabled={isPending}>
-                {isPending ? <BeatLoader loading={isPending} size={8} color={"#fff"} /> : jp.verify}
+              <Button
+                className="mt-6 px-4 py-2 rounded w-full"
+                onClick={onSubmit}
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <BeatLoader loading={isPending} size={8} color={"#fff"} />
+                ) : isSuccess ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                ) : (
+                  jp.verify
+                )}
               </Button>
             </div>
           </div>

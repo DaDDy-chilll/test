@@ -19,6 +19,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import DefaultUser from "@/assets/icons/default_user.svg"
 import { db } from "../firebaseConfig";
+import RouteName from "@/navigations/routes";
 import {
   query,
   where,
@@ -167,7 +168,7 @@ const DashboardScreen = () => {
       );
   }, [dashboardData]);
 
-  const handleChatClick = (chat: Chat) => navigate("/chat", { state: chat });
+  const handleChatClick = (chat: Chat) => navigate(RouteName.CHAT, { state: chat });
 
   useEffect(() => {
     const messageListeners: any[] = [];

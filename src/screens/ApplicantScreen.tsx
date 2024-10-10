@@ -14,6 +14,8 @@ import { jp } from "@/lang/jp";
 import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
+
 
 
 const initialFilter: FilterType = {
@@ -24,6 +26,8 @@ const initialFilter: FilterType = {
 const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
+  const  applicantID = location.state;
   const { token } = useSelector((state: RootState) => state.auth);
   const [filter, setFilter] = useState<FilterType>(initialFilter);
   const isInitialRender = useRef(true);
@@ -124,16 +128,22 @@ const ApplicantScreen = () => {
     dispatch(setTitle(jp.applicant));
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log(applicantID)
+    if(applicantID){
+      handleDetail(applicantID.jobfinder_id)
+    }
+  },[applicantID])
   return (
     <>
       <Helmet>
         <title>{jp.applicant} - Japan Job</title>
       </Helmet>
       {(isLoading || isDetailLoading || isJobTypesLoading) && (
-        <div className="relative">
+        <div className="relative ">
           <Loading
           isLoading={isLoading || isDetailLoading || isJobTypesLoading}
-          className="h-[calc(100vh-68px)] left-0 top-0"
+          className="h-[calc(100vh-68px)] left-0 top-0 z-50"
           />
         </div>
       )}
@@ -154,7 +164,7 @@ const ApplicantScreen = () => {
           <p className="text-gray-500 text-sm">
             {jp.searchResult}{" "}
             <span className="text-secondaryColor">
-              ({data?.data.totalUsers})
+              ({data?.data.totalUsers || 0})
             </span>
           </p>
         </div>
@@ -163,11 +173,16 @@ const ApplicantScreen = () => {
           handleDetail={handleDetail}
           jobTypes={jobTypes}
         />
-        <Pagination
-          totalPages={data?.data.totalPages}
-          currentPage={data?.data.currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        {
+          applicants.length > 0 && (
+            <Pagination
+            totalPages={data?.data.totalPages}
+            currentPage={data?.data.currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+          )
+        }
+     
         <AnimatePresence>
           {isDetail && (
             <motion.div

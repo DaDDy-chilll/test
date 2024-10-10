@@ -22,6 +22,7 @@ export type RegisterProps = {
 export type ErrorType = {
   error: boolean;
   message: any;
+  status?: number;
 };
 
 export type AuthErrorType = {
@@ -34,6 +35,10 @@ export type AuthErrorType = {
     mm: string;
   };
   confirm_password?: {
+    jp: string;
+    mm: string;
+  };
+  otp?: {
     jp: string;
     mm: string;
   };
@@ -51,6 +56,82 @@ export type AuthErrorType = {
       mm: string;
     }
   ];
+};
+
+export type ProfileFormErrorType = {
+  photo?: {
+    jp: string;
+    mm: string;
+  };
+  name?: {
+    jp: string;
+    mm: string;
+  };
+  industry_type_id?: {
+    jp: string;
+    mm: string;
+  };
+  budget?: {
+    jp: string;
+    mm: string;
+  };
+  starting?: {
+    jp: string;
+    mm: string;
+  };
+  staff?: {
+    jp: string;
+    mm: string;
+  };
+  prefecture_id?: {
+    jp: string;
+    mm: string;
+  };
+  company_des?: {
+    jp: string;
+    mm: string;
+  };
+  address?: {
+    jp: string;
+    mm: string;
+  };
+  validation?: [
+    name?: {
+      jp: string;
+      mm: string;
+    },
+    industry_type_id?: {
+      jp: string;
+      mm: string;
+    },
+    budget?: {
+      jp: string;
+      mm: string;
+    },
+    starting?: {
+      jp: string;
+      mm: string;
+    },
+    staff?: {
+      jp: string;
+      mm: string;
+    },
+    prefecture_id?: {
+      jp: string;
+      mm: string;
+    },
+    company_des?: {
+      jp: string;
+      mm: string;
+    },
+    address?: {
+      jp: string;
+      mm: string;
+    }
+  ];
+
+
+
 };
 
 export type FilterType = {

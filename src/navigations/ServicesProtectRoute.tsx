@@ -11,9 +11,9 @@ const ServicesProtectedPage = ({ children }: ProtectedPageProps) => {
   if (!user && !token && verified == null) {
     return <Navigate to={Routenames.LOGIN} />;
   }
-  // else if(user && token && verified == false){
-  //   return <Navigate to={Routenames.USER_FORM} />;
-  // }
+  else if(user && token && verified == false){
+    return <Navigate to={Routenames.PROFILE_FORM} />;
+  }
   return children;
 };
 export default ServicesProtectedPage;

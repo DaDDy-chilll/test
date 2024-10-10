@@ -14,10 +14,28 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/icons/logo.svg";
 import defaultImage from "@/assets/images/default.png";
 import { useMutation } from "@tanstack/react-query";
+import { setVerified,setName } from "@/store";
+import { useDispatch } from "react-redux";
+import useHandleError from "@/hooks/useHandleError";
+import { ProfileFormErrorType, ErrorType } from "@/types/helperTypes";
+import { BeatLoader } from "react-spinners";
+const employeeNumbers = [
+  { value: "100", label: "100" },
+  { value: "200", label: "200" },
+  { value: "300", label: "300" },
+  { value: "400", label: "400" },
+];
 
 const ProfileFormScreen = () => {
   const navigate = useNavigate();
-  const { token } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const { token, verified } = useSelector((state: RootState) => state.auth);
+  const [avatarImage, setAvatarImage] = useState(defaultImage);
+  const [loading, setLoading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<ErrorType | null>(null);
+  const [jobTypes, setJobTypes] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     industry_type_id: { label: "", value: "" },
@@ -29,17 +47,19 @@ const ProfileFormScreen = () => {
     company_des: "",
     address: "",
   });
-  const [avatarImage, setAvatarImage] = useState(defaultImage);
-  const [isUploading, setIsUploading] = useState(false);
-
-  const [jobTypes, setJobTypes] = useState([]);
-  const [employeeNumbers, setEmployeeNumbers] = useState([
-    { value: "100", label: "100" },
-    { value: "200", label: "200" },
-    { value: "300", label: "300" },
-    { value: "400", label: "400" },
-  ]);
-  const [countries, setCountries] = useState([]);
+  const {
+    ProfileFormHandleError,
+    photoError,
+    companyNameError,
+    industryTypeError,
+    budgetStringError,
+    startingError,
+    staffError,
+    prefectureError,
+    companyDesError,
+    addressError,
+    resetProfileFormError
+  } = useHandleError();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,6 +132,7 @@ const ProfileFormScreen = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetProfileFormError()
     try {
       const jobData = {
         name: formData.name,
@@ -124,7 +145,7 @@ const ProfileFormScreen = () => {
         address: formData.address,
         photo: formData.photo,
       };
-
+      setLoading(true)
       const response = await fetchServer({
         endpoint: apiRoutes.PROFILE,
         method: "PUT",
@@ -133,22 +154,32 @@ const ProfileFormScreen = () => {
       });
 
       if (response.success) {
+    
+        if (verified == false) dispatch(setVerified(true));
         localStorage.setItem("isCompletedProfile", "true");
+        setLoading(false)
+        dispatch(setName(response.data.name))
         navigate(RouteName.DASHBOARD);
       } else {
         console.error("Failed to update profile:", response.message);
       }
-    } catch (error) {
+    } catch (error:ErrorType | any) {
+      setError(error)
+      setLoading(false)
       console.error("Error updating profile:", error);
     }
   };
-// ... existing code ...
+  // ... existing code ...
 
-const handleSelectChange = (
+useEffect(() => {
+  if(error)
+  ProfileFormHandleError(error?.message as ProfileFormErrorType)
+},[error])
+
+  const handleSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     field: string
   ) => {
-  
     const selectedOption = e.target.value;
     setFormData({ ...formData, [field]: selectedOption });
   };
@@ -175,13 +206,16 @@ const handleSelectChange = (
               <p>{jp.profilePhotoDescription}</p>
             </div>
             <label htmlFor="avatar-upload" className="cursor-pointer">
-              <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
-                <img
-                  className="w-full h-full object-cover"
+              <div className={`w-[70px] h-[70px] rounded-full overflow-hidden ${photoError ? 'border border-red-500 p-1' : ''}`}>
+              <div className="w-full h-full object-cover ">
+              <img
+                  className="w-full h-full object-cover rounded-full"
                   src={avatarImage}
                   crossOrigin="anonymous"
                   alt="Profile avatar"
                 />
+              </div>
+    
               </div>
             </label>
             <input
@@ -200,9 +234,11 @@ const handleSelectChange = (
               type="text"
               label={jp.companyName}
               value={formData.name}
+              error={companyNameError || ''}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
+            
             />
 
             <Select
@@ -213,6 +249,7 @@ const handleSelectChange = (
               defaultOption={jp.chooseIndustry}
               value={formData.industry_type_id}
               onChange={(e) => handleSelectChange(e, "industry_type_id")}
+              error={industryTypeError || ''}
             />
             <Input
               name="budget"
@@ -220,6 +257,7 @@ const handleSelectChange = (
               label={jp.investmentAmount}
               placeholder="100000 "
               value={formData.budget}
+              error={budgetStringError || ''}
               onChange={(e) =>
                 setFormData({ ...formData, budget: e.target.value })
               }
@@ -230,6 +268,7 @@ const handleSelectChange = (
               type="text"
               label={jp.undertake}
               value={formData.address}
+              error={addressError || ''}
               onChange={(e) =>
                 setFormData({ ...formData, address: e.target.value })
               }
@@ -242,6 +281,7 @@ const handleSelectChange = (
               options={employeeNumbers}
               defaultOption={jp.chooseEmployee}
               value={formData.staff}
+              error={staffError || ''}
               onChange={(e) => handleSelectChange(e, "staff")}
             />
 
@@ -252,6 +292,7 @@ const handleSelectChange = (
               options={countries}
               defaultOption={jp.chooseLocation}
               value={formData.prefecture_id}
+              error={prefectureError || ''}
               onChange={(e) => handleSelectChange(e, "prefecture_id")}
             />
 
@@ -263,6 +304,7 @@ const handleSelectChange = (
               onChange={(e) =>
                 setFormData({ ...formData, starting: e.target.value })
               }
+              error={startingError || ''}
             />
 
             <Input
@@ -274,11 +316,12 @@ const handleSelectChange = (
               onChange={(e) =>
                 setFormData({ ...formData, company_des: e.target.value })
               }
+              error={companyDesError || ''}
             />
           </div>
 
           <Button type="submit" className="w-full">
-            {jp.finish}
+            {loading ? <BeatLoader color="#fff" size={5} /> : jp.finish}
           </Button>
         </form>
       </motion.div>

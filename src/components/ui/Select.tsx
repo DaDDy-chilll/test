@@ -20,6 +20,7 @@ interface SelectProps {
   register?: any;
   disabled?: boolean;
   defaultValue?: string | undefined;
+  error?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -35,11 +36,12 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   disabled = false,
   defaultValue = undefined,
+  error = '',
 }) => {
   return (
     <div
       className={cn(
-        "relative z-0 w-full mb-5 group flex items-center",
+        "relative z-0 w-full mb-5 group flex flex-col items-start",
         className
       )}
     >
@@ -80,7 +82,7 @@ const Select: React.FC<SelectProps> = ({
 
         {options.filter((option) => option.label != defaultOption).map((option, index) =>{
           return(
-            <option key={index} value={option.value} disabled={disabled} selected={option.value == value?.value}>
+            <option key={index} value={option.value} disabled={disabled} >
             {option.label}
           </option>
           )
@@ -104,6 +106,7 @@ const Select: React.FC<SelectProps> = ({
           />
         </svg>
       </div>
+      {error && <p className="text-red-500 text-xs italic">{error}</p>}
     </div>
   );
 };

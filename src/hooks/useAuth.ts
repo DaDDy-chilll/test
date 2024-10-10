@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useState } from "react";
 import { ErrorType } from "@/types/helperTypes";
-import { errorMessage } from "@/constants/errorMessage";
+import { ERROR_MESSAGE } from "@/constants/errorMessage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 

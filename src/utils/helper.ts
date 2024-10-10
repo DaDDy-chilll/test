@@ -1,6 +1,5 @@
 import axios from "axios";
 import { FetchServerType } from "../types/helperTypes";
-
 let result: any;
 
 const api = axios.create({
@@ -52,8 +51,8 @@ export const fetchServer = async ({
           throw { error: true, message: data.message, status };
         } else if (data.status == 401) {
             localStorage.removeItem("token");
-            console.log("error-401", data);
-          throw { error: true, message: data.message ,status};
+            // console.log("error-401", data);
+          // throw { error: true, message: data.message ,status};
         } else {
           throw { error: true, message: data.message, status};
         }

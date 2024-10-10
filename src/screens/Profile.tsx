@@ -137,7 +137,16 @@ const Profile = () => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    
+    // console.log('post data',{
+    //   name: formData.get("name") as string || undefined,
+    //   industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
+    //   budget: Number(formData.get("budget") as string) || undefined,
+    //   starting: formData.get("starting") ? moment(formData.get("starting") as string).format("YYYY-MM-DD") : undefined,
+    //   staff: Number(formData.get("staff") as string) || undefined,
+    //   prefecture_id: Number(formData.get("prefecture_id") as string) || undefined,
+    //   company_des: formData.get("company_des") as string || undefined,
+    //   address: formData.get("address") as string || undefined,
+    // })
     const jobData = {
       name: formData.get("name") as string || undefined,
       industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
@@ -159,6 +168,19 @@ const Profile = () => {
 
   useEffect(() => {
     if (data) {
+      // console.log('data',data)
+      // console.log('fetch data',{
+      //   name: data.data.name,
+      //   industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},
+      //   budget: data.data.budget,
+      //   starting: data.data.starting,
+      //   staff: {label: data.data.staff, value: data.data.staff},
+      //   area: {label: data.data.prefecture.area_id, value: data.data.prefecture.area_id},
+      //   prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
+      //   photo: data.data.photo,
+      //   company_des: data.data.company_des,
+      //   address: data.data.address,
+      // })
       setFormData({
         name: data.data.name,
         industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},

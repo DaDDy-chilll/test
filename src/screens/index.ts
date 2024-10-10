@@ -1,6 +1,5 @@
 import ApplicantScreen from "./ApplicantScreen";
 // import MatchedScreend from "./MatchedScreend";
-import CalendarScreen from "./CalendarScreen";
 import UserFormScreen from "./UserFormScreen";
 import initialLanding from "./initialLanding";
 import JobScreen from "./JobScreen";
@@ -16,7 +15,6 @@ import Otp from "./Auth/Otp";
 export {
   ApplicantScreen,
   // MatchedScreend,
-  CalendarScreen,
   UserFormScreen,
   initialLanding,
   JobScreen,
