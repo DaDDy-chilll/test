@@ -14,7 +14,7 @@ import {
   ChangePassword,
   Otp,
 } from "@/screens";
-import { NotFound, Loading, VerifyMali,Guide } from "@/components";
+import { NotFound, Loading, VerifyMali, Guide,Error500,NoConnection } from "@/components";
 
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
@@ -46,7 +46,7 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
-        
+
         {/* Auth Protected routes */}
         <Route
           element={
@@ -96,6 +96,10 @@ const AnimatedRoutes = () => {
 
         {/* Not found route */}
         <Route path="*" Component={NotFound} />
+        {/* Not found route */}
+        <Route path={Routenames.NETWORK_ERROR} Component={NoConnection} />
+        {/* Not found route */}
+        <Route path={Routenames.SERVER_ERROR} Component={Error500} />
       </Routes>
     </AnimatePresence>
   );

@@ -1,7 +1,15 @@
 import { useEffect, useRef, useMemo, useCallback } from "react";
-import { LineCharts, Loading, EventListItem } from "@/components";
+import {
+  LineCharts,
+  Loading,
+  EventListItem,
+  ChatSkeleton,
+  EventSkeleton,
+} from "@/components";
 import { jp } from "@/lang/jp";
 import { motion } from "framer-motion";
+// import Skeleton from "react-loading-skeleton";
+// import "react-loading-skeleton/dist/skeleton.css";
 // import { events } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -201,7 +209,6 @@ const DashboardScreen = () => {
         //   ...prev,
         //   [chat.id]: unreadCount,
         // }));
-      
       });
 
       messageListeners.push(unsubscribe);
@@ -241,15 +248,14 @@ const DashboardScreen = () => {
     }
   }, [upcomingInterviews]);
 
-
   return (
     <>
       <Helmet>
         <title>{jp.dashboard} - Japan Job</title>
       </Helmet>
-      {(isDashboardLoading || isChatLoading || isInterviewLoading) && (
+      {(isDashboardLoading) && (
         <Loading
-          isLoading={isDashboardLoading || isChatLoading || isInterviewLoading}
+          isLoading={isDashboardLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -282,7 +288,14 @@ const DashboardScreen = () => {
                   ref={scrollableRef}
                   className="overflow-y-auto h-[62vh] relative"
                 >
-                  {upcomingInterviews &&
+                  {isInterviewLoading ? (
+                    <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start">
+                      {Array.from({ length: 3 }, (_, index) => (
+                        <EventSkeleton key={index} />
+                      ))}
+                    </div>
+                  ) : (
+                    upcomingInterviews &&
                     Object.entries(upcomingInterviews).map(
                       ([key, value], index: number) => {
                         return (
@@ -302,7 +315,8 @@ const DashboardScreen = () => {
                           </div>
                         );
                       }
-                    )}
+                    )
+                  )}
                 </div>
               </div>
               <div className="col-span-2 w-2/3 pb-4">
@@ -312,7 +326,13 @@ const DashboardScreen = () => {
                   </h1>
                 </div>
                 <div className="w-full h-[62vh] overflow-y-auto">
-                  {selectedDateData ? (
+                  {isInterviewLoading ? (
+                    <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start">
+                      {Array.from({ length: 3 }, (_, index) => (
+                        <ChatSkeleton key={index} />
+                      ))}
+                    </div>
+                  ) : selectedDateData ? (
                     selectedDateData.map((event: Event, index: number) => {
                       return <EventListItem key={index} event={event} />;
                     })
@@ -337,7 +357,15 @@ const DashboardScreen = () => {
             {jp.newMessages}
           </h1>
           <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
-            {chats.length > 0 ? (
+            {isChatLoading ? (
+              <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start ">
+                {Array.from({ length: 3 }, (_, index) => (
+                  <div key={index} className="flex items-center w-full p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300">
+                    <ChatSkeleton  />
+                  </div>
+                ))}
+              </div>
+            ) : chats.length > 0 ? (
               chats.map((chat, index) => {
                 const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
 
@@ -381,7 +409,13 @@ const DashboardScreen = () => {
                           ).calendar()}
                         </p>
                       </div>
-                      <p className={`text-xs  ${unreadCounts[chat.id] > 0 ? "font-bold text-gray-900" : "text-gray-500"}`}>
+                      <p
+                        className={`text-xs  ${
+                          unreadCounts[chat.id] > 0
+                            ? "font-bold text-gray-900"
+                            : "text-gray-500"
+                        }`}
+                      >
                         {chat.last_message}
                       </p>
                     </div>

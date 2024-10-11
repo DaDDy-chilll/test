@@ -141,4 +141,7 @@ export const jp = {
   employees:"従業員数",
   age:"年齢",
   guide:"ガイド",
+  pageNotFound:"ページが見つかりません",
+  serverError:"サーバーエラー",
+  noConnection:"インターネット接続がありません"
 };

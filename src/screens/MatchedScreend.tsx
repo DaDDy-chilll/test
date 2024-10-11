@@ -8,6 +8,7 @@ import {
   Loading,
   UserCard,
   DefaultCard,
+  UserProfileSkeleton,
 } from "@/components";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -125,7 +126,6 @@ const MatchedScreend = () => {
     },
   });
 
-
   const handleJobType = (item: { id: number; name: string }) =>
     setJobType(item);
   const handleShowDetail = (id: number) => {
@@ -206,7 +206,12 @@ const MatchedScreend = () => {
       <Helmet>
         <title>{jp.matches} - Japan Job</title>
       </Helmet>
-      {(isPending || isLoading || isDetailLoading) && <Loading isLoading={isPending || isLoading || isDetailLoading} className="h-[calc(100vh-68px)]" />}
+      {(isPending || isLoading) && (
+        <Loading
+          isLoading={isPending || isLoading}
+          className="h-[calc(100vh-68px)]"
+        />
+      )}
       <motion.div
         variants={matchedVariants}
         initial="initial"
@@ -364,7 +369,7 @@ const MatchedScreend = () => {
           {showDetail && (
             <motion.div
               key="matchDetail"
-              className="absolute top-0 left-0 w-full h-full bg-black/50 z-50"
+              className="absolute top-0 left-0 w-full h-full bg-gray-100 z-50"
               variants={detailVariants}
               initial="initial"
               animate="animate"
@@ -390,10 +395,15 @@ const MatchedScreend = () => {
                     />
                   </svg>
                 </button>
-                <MatchedApplicants
-                  applicantDetail={applicantDetail?.data}
-                  className="h-full w-full overflow-y-auto"
-                />
+
+                {isDetailLoading ? (
+                  <UserProfileSkeleton />
+                ) : (
+                  <MatchedApplicants
+                    applicantDetail={applicantDetail?.data}
+                    className="h-full w-full overflow-y-auto"
+                  />
+                )}
               </span>
             </motion.div>
           )}

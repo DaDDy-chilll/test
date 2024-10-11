@@ -1,5 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
-import {FilterBar,ApplicantTable,Pagination,Loading,MatchedApplicants,Maintenance} from "@/components";
+import {
+  FilterBar,
+  ApplicantTable,
+  Pagination,
+  Loading,
+  MatchedApplicants,
+  Maintenance,
+  UserProfileSkeleton,
+} from "@/components";
 import { useEffect, useState, useRef } from "react";
 import { FilterType } from "@/types/helperTypes";
 import useFetch from "@/hooks/useFetch";
@@ -15,8 +23,7 @@ import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
-
-
+import  Skeleton  from "react-loading-skeleton";
 
 const initialFilter: FilterType = {
   live_in_japan: "",
@@ -27,7 +34,7 @@ const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
-  const  applicantID = location.state;
+  const applicantID = location.state;
   const { token } = useSelector((state: RootState) => state.auth);
   const [filter, setFilter] = useState<FilterType>(initialFilter);
   const isInitialRender = useRef(true);
@@ -62,7 +69,6 @@ const ApplicantScreen = () => {
       !!filter.gender &&
       !!filter.job_type,
   });
-
 
   const {
     data: jobTypes,
@@ -100,7 +106,6 @@ const ApplicantScreen = () => {
     },
     enabled: !!selectedApplicantId && isDetail,
   });
-console.log('applicantDetail',applicantDetail)
   const applicants = data?.data.users || [];
 
   const handleDetail = (id: string) => {
@@ -130,21 +135,22 @@ console.log('applicantDetail',applicantDetail)
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(applicantID)
-    if(applicantID){
-      handleDetail(applicantID.jobfinder_id)
+    console.log(applicantID);
+    if (applicantID) {
+      handleDetail(applicantID.jobfinder_id);
     }
-  },[applicantID])
+  }, [applicantID]);
+
   return (
     <>
       <Helmet>
         <title>{jp.applicant} - Japan Job</title>
       </Helmet>
-      {(isLoading || isDetailLoading || isJobTypesLoading) && (
+      {isJobTypesLoading && (
         <div className="relative ">
           <Loading
-          isLoading={isLoading || isDetailLoading || isJobTypesLoading}
-          className="h-[calc(100vh-68px)] left-0 top-0 z-50"
+            isLoading={isJobTypesLoading}
+            className="h-[calc(100vh-68px)] left-0 top-0 z-50"
           />
         </div>
       )}
@@ -173,19 +179,18 @@ console.log('applicantDetail',applicantDetail)
           applicants={applicants}
           handleDetail={handleDetail}
           jobTypes={jobTypes}
+          loading={isLoading}
         />
-        {
-          applicants.length > 0 && (
-            <Pagination
+        {applicants.length > 0 && (
+          <Pagination
             totalPages={data?.data.totalPages}
             currentPage={data?.data.currentPage}
             setCurrentPage={setCurrentPage}
           />
-          )
-        }
-     
+        )}
+
         <AnimatePresence>
-          {isDetail && (
+          {(isDetail || isDetailLoading) && (
             <motion.div
               className="absolute top-0 left-0 bg-white w-full h-full z-50 flex justify-center items-center"
               variants={applicantDetailVariants}
@@ -193,10 +198,15 @@ console.log('applicantDetail',applicantDetail)
               animate="animate"
               exit="exit"
             >
-              <MatchedApplicants
-                applicantDetail={applicantDetail?.data}
-                className="h-full w-full overflow-y-auto"
-              />
+              {isDetailLoading ? (
+                <UserProfileSkeleton />
+              ) : (
+                <MatchedApplicants
+                  applicantDetail={applicantDetail?.data}
+                  className="h-full w-full overflow-y-auto"
+                />
+              )}
+
               <button
                 onClick={() => setIsDetail(false)}
                 className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"

@@ -21,7 +21,7 @@ export const fetchServer = async ({
       const { data } = await api.get(urlEndPoint);
       result = data;
     } else if (method === "POST" && !file && !token) {
-      const { data } = await api.post(urlEndPoint, body);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+      const { data } = await api.post(urlEndPoint, body);
       result = data;
     } else if (method === "POST" && !file) {
       const { data } = await api.post(urlEndPoint, body);
@@ -34,7 +34,7 @@ export const fetchServer = async ({
         },
       });
       result = data;
-    }else if (method === "PUT" && !file) {
+    } else if (method === "PUT" && !file) {
       const { data } = await api.put(urlEndPoint, body);
       result = data;
     } else if (method === "DELETE") {
@@ -45,21 +45,23 @@ export const fetchServer = async ({
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        console.log("error-", error.response);
-        const { data,status } = error.response;
-        if (data.status == 400) {
-            console.log("error-400", data);
+        const { data, status } = error.response;
+        // console.log("error-", error.response, data.status, status);
+        if (data.status == 400 || status == 400) {
           throw { error: true, message: data.message, status };
-        } else if (data.status == 401) {
-            localStorage.removeItem("persist:root");
-            window.location.href = RouteName.LOGIN;
-            // console.log("error-401", data);
-          // throw { error: true, message: data.message ,status};
+        } else if (data.status == 401 || status == 401) {
+          localStorage.removeItem("persist:root");
+          window.location.href = RouteName.LOGIN;
+        }else if (data.status == 500 || status == 500) {
+          window.location.href = RouteName.SERVER_ERROR;
         } else {
-          throw { error: true, message: data.message, status};
+          throw { error: true, message: data.message, status };
         }
+      } else if (error.code = "ERR_NETWORK") {
+        window.location.href = RouteName.NETWORK_ERROR
       }
     } else {
+      console.log(error)
       throw error;
     }
   }

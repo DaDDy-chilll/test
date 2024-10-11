@@ -58,6 +58,14 @@ import Select from "./ui/Select";
 import TimeSelect from "./ui/SelectTime";
 import SelectYear from "./ui/selectYear";
 import Guide from "./Guide/Guide";
+import ChatSkeleton from "./ui/skeleton/ChatSkeleton";
+import EventSkeleton from "./ui/skeleton/EventSkeleton";
+import TableRowSkeleton from "./ui/skeleton/TableRowSkeleton";
+import UserProfileSkeleton from "./ui/skeleton/UserProfileSkeleton";
+import Error500 from "./ui/Error_500";
+import NoConnection from "./ui/NoConnection";
+
+
 export {
     Alert,
     ApplicantTable,
@@ -121,4 +129,10 @@ export {
     UserItem,
     VerifyMali,
     Guide,
+    ChatSkeleton,
+    EventSkeleton,
+    TableRowSkeleton,
+    UserProfileSkeleton,
+    Error500,
+    NoConnection
 }

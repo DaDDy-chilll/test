@@ -1,16 +1,18 @@
-import notfound from "@/assets/images/notfound.svg";
+// import notfound from "@/assets/images/notfound.svg";
 import { Link } from "react-router-dom";
 import Routes from "@/navigations/routes";
+import notfound from '@/assets/images/404.svg'
+import { jp } from "@/lang/jp";
 const NotFound = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center gap-y-10">
       <img src={notfound} alt="not found" width={300} />
       <div className="flex flex-col items-center justify-center gap-y-4">
         <h1 className="text-4xl font-normal text-secondaryColor">
-          Page Not Found.
+          {jp.pageNotFound}
         </h1>
         <p className="text-lg font-light text-gray-500">
-          Sorry, we couldn't find the page you're looking for.
+        申し訳ありませんが、お探しのページは見つかりませんでした。
         </p>
         <Link
           to={Routes.DASHBOARD}

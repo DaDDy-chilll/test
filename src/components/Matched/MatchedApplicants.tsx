@@ -1,9 +1,10 @@
-import { UserProfile } from "@/types/user";
 import { ApplicantDetail } from "@/types/helperTypes";
 import DefaultLogo from "@/assets/images/default.png";
-import ReactPlayer from "react-player/lazy";
 import { jp } from "@/lang/jp";
 import moment from "moment";
+import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import NoVideo from "@/assets/images/no-video.svg";
 
 type MatchProps = {
   className?: string;
@@ -11,6 +12,7 @@ type MatchProps = {
 };
 
 const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
   const {
     m_basicinfos,
@@ -21,9 +23,9 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     m_preferred_jobs,
     m_prefer_other,
   } = applicantDetail;
-  console.log(m_basicinfos.live_in_japan);
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
+
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
@@ -146,15 +148,34 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
         {/* column left */}
         <div className="space-y-7 flex flex-col gap-y-3 ">
           <div className="w-full h-auto p-2">
-            {video_path ? (
-              <>
-                <h1 className="text-sm font-semibold mb-3">
+          <h1 className="text-sm font-semibold mb-3">
                   {jp.selfIntroduction}
                 </h1>
-                <video src={video_path} className="object-contain w-full h-48" crossOrigin="anonymous" controls></video>
+            {video_path && m_basicinfos.video_path !== null ? (
+              <>
+                
+                {isVideoLoading && (
+                  <Skeleton height={200} width={"100%"} />)
+                }
+                  <video
+                    src={video_path}
+                    className={`object-contain w-full h-48 ${isVideoLoading ? "hidden" : ""}`}
+                    crossOrigin="anonymous"
+                    controls
+                    onLoadStart={() => {
+                      setIsVideoLoading(true);
+                    }}
+                    onLoadedData={() => {
+                      console.log("loadedData");
+                      setIsVideoLoading(false);
+                    }}
+                  ></video>
+              
               </>
             ) : (
-              <p>{jp.notFoundJobExprenced}</p>
+              <div className="text-xs text-center text-gray-500 flex items-center justify-center">
+                <img src={NoVideo} alt="no-video" className="w-40 h-40" />
+              </div>
             )}
           </div>
 
@@ -283,52 +304,52 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
           <div className="w-full  space-y-2 ">
             <h1 className="font-sm font-semibold">{jp.acceptView}</h1>
 
-         <div className="space-y-1">
-         <div className="grid grid-cols-2 px-5">
-              <div className="flex items-center gap-x-2 text-xs">
-                <p className="text-sm">・{jp.salary}</p>
+            <div className="space-y-1">
+              <div className="grid grid-cols-2 px-5">
+                <div className="flex items-center gap-x-2 text-xs">
+                  <p className="text-sm">・{jp.salary}</p>
+                </div>
+
+                <p className="text-sm text-start px-2">
+                  ¥ {m_prefer_other.start_salary}万 ~ ¥{" "}
+                  {m_prefer_other.end_salary}万
+                </p>
               </div>
 
-              <p className="text-sm text-start px-2">
-                ¥ {m_prefer_other.start_salary}万 ~ ¥{" "}
-                {m_prefer_other.end_salary}万
-              </p>
-            </div>
+              <div className="grid grid-cols-2 px-5">
+                <div className="flex items-center gap-x-3 text-xs">
+                  <p className="text-sm">・{jp.hourRate}</p>
+                </div>
 
-            <div className="grid grid-cols-2 px-5">
-              <div className="flex items-center gap-x-3 text-xs">
-                <p className="text-sm">・{jp.hourRate}</p>
+                <p className="text-sm text-start px-2">
+                  {m_prefer_other.working_time || 0} 時
+                </p>
               </div>
 
-              <p className="text-sm text-start px-2">
-                {m_prefer_other.working_time || 0} 時
-              </p>
-            </div>
+              <div className="grid grid-cols-2 px-5">
+                <div className="flex items-center gap-x-3 text-xs">
+                  <p className="text-sm">・{jp.dormitory}</p>
+                </div>
 
-            <div className="grid grid-cols-2 px-5">
-              <div className="flex items-center gap-x-3 text-xs">
-                <p className="text-sm">・{jp.dormitory}</p>
+                <p className="text-sm text-start px-2">
+                  {m_prefer_other.support_home === 1
+                    ? jp.required
+                    : jp.notRequired}
+                </p>
               </div>
 
-              <p className="text-sm text-start px-2">
-                {m_prefer_other.support_home === 1
-                  ? jp.required
-                  : jp.notRequired}
-              </p>
-            </div>
+              <div className="grid grid-cols-2 px-5">
+                <div className="flex items-center gap-x-3 text-xs">
+                  <p className="text-sm">・{jp.rent}</p>
+                </div>
 
-            <div className="grid grid-cols-2 px-5">
-              <div className="flex items-center gap-x-3 text-xs">
-                <p className="text-sm">・{jp.rent}</p>
+                <p className="text-sm text-start px-2">
+                  {m_prefer_other.support_home_rent === 1
+                    ? jp.required
+                    : jp.notRequired}
+                </p>
               </div>
-
-              <p className="text-sm text-start px-2">
-                {m_prefer_other.support_home_rent === 1
-                  ? jp.required
-                  : jp.notRequired}
-              </p>
             </div>
-         </div>
           </div>
 
           <div className="flex flex-col gap-y-3 mt-8">

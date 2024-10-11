@@ -20,6 +20,9 @@ enum RouteName {
   VERIFICATION = "/verification",
   PROFILE_FORM = "/profile_form",
   GUIDE = "/guide",
+  ERROR="/error",
+  SERVER_ERROR="/server_error",
+  NETWORK_ERROR="/network_error"
 }
 
 export default RouteName;
