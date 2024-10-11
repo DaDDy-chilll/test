@@ -41,33 +41,33 @@ const UserCard = ({
       exit="exit"
       className="w-full h-full  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 py-2 hover:shadow-lg hover:bg-gray-200 cursor-pointer"
     >
-      <div className="flex w-full h-full  justify-between flex-col items-center p-3">
+      <div className="flex w-full h-full  flex-col items-center py-3 px-2">
         <img
           className="w-16 h-16 mb-3 rounded-full shadow-lg"
           src={m_basicinfos.profile_path ?  profileImage :  DefaultProfile}
           alt={m_basicinfos.name}
           crossOrigin="anonymous"
         />
-        <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
+        <h5 className="my-2 text-lg font-medium text-gray-900 dark:text-white">
           {m_basicinfos.name}
         </h5>
-        <div className="flex flex-row justify-center  gap-x-10 w-full">
-          <div className="flex flex-col gap-2 items-start ">
-            <span className="flex gap-2 text-sm">
+        <div className="flex flex-row justify-center items-center  gap-x-6 w-full bg-gray-300 rounded-sm h-40">
+          <div className="flex flex-col gap-y-6 h-full justify-center">
+            <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.age}:</p>
               <p>{moment(m_basicinfos.dob).fromNow().split(" ")[0]}</p>
             </span>
-            <span className="flex gap-2 text-sm">
+            <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.gender}:</p>
               <p>{m_basicinfos.gender === 1 ? jp.male : jp.female}</p>
             </span>
           </div>
-          <div className="flex flex-col gap-2 items-start">
-            <span className="flex gap-2 text-sm">
+          <div className="flex flex-col gap-y-6 h-full justify-center">
+            <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.location}:</p>
               <p>{m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}</p>
             </span>
-            <span className="flex gap-2 text-sm">
+            <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.passport}:</p>
               <p>{m_basicinfos.has_passport === 1 ? jp.yes :jp.no}</p>
             </span>

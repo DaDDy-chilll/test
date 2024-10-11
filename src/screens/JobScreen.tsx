@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { Button, JobDetails, JobForm,Loading } from "@/components";
+import {
+  Button,
+  JobDetails,
+  JobForm,
+  Loading,
+  JobRowSkeleton,
+  JobDetailSkeleton,
+} from "@/components";
 import { useMemo, useState, useEffect } from "react";
 import { apiRoutes } from "@/utils/apiRoutes";
 import useFetch from "@/hooks/useFetch";
@@ -35,19 +42,22 @@ const JobScreen = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
-  const { data, error: fetchError, isLoading: jobListLoading } = useFetch({
+  const {
+    data,
+    error: fetchError,
+    isLoading: jobListLoading,
+  } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
   });
-
 
   const { data: jobDetail, isLoading: jobDetailLoading } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
@@ -132,8 +142,8 @@ const JobScreen = () => {
           value: jobDetail?.data.prefecture_id,
         },
         holiday_in_year: {
-          label: jobDetail?.data?.holiday_in_year||150,
-          value: jobDetail?.data?.holiday_in_year||150,
+          label: jobDetail?.data?.holiday_in_year || 150,
+          value: jobDetail?.data?.holiday_in_year || 150,
         },
         annual_salary: {
           label: jobDetail?.data.annual_salary,
@@ -157,8 +167,11 @@ const JobScreen = () => {
       <Helmet>
         <title>{jp.joblists} - Japan Job</title>
       </Helmet>
-      {(jobDetailLoading || jobListLoading || deleteJob.isPending) && (
-        <Loading isLoading={jobDetailLoading || jobListLoading || deleteJob.isPending} className="h-[calc(100vh-68px)] z-40" />
+      {deleteJob.isPending && (
+        <Loading
+          isLoading={deleteJob.isPending}
+          className="h-[calc(100vh-68px)] z-40"
+        />
       )}
       {!showDetails && !isAdd && !isEdit && (
         <motion.div
@@ -200,30 +213,58 @@ const JobScreen = () => {
             </div>
           </div>
           <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            {filteredJobs.length > 0 ? (
-              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      {jp.jobTitle}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {jp.jobType}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {jp.prefecture}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {jp.annualSalary} ( 万円 )
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {jp.action}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobListLoading ? (
+                    Array(5)
+                      .fill(0)
+                      .map((item, index) => <JobRowSkeleton key={index} />)
+                  ) : filteredJobs.length < 1 ? (
                     <tr>
-                      <th scope="col" className="px-6 py-3">
-                        {jp.jobTitle}
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        {jp.jobType}
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        {jp.prefecture}
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        {jp.annualSalary} ( 万円 )
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        {jp.action}
-                      </th>
+                      <td colSpan={5}>
+                        <div className="w-full row-span-5 h-full flex flex-col justify-center items-center my-24">
+                          <svg
+                            width="152px"
+                            height="152px"
+                            viewBox="0 0 20 19"
+                            fill={colors.third}
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 19C1.45 19 0.979167 18.8042 0.5875 18.4125C0.195833 18.0208 0 17.55 0 17V6C0 5.45 0.195833 4.97917 0.5875 4.5875C0.979167 4.19583 1.45 4 2 4H6V2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0H12C12.55 0 13.0208 0.195833 13.4125 0.5875C13.8042 0.979167 14 1.45 14 2V4H18C18.55 4 19.0208 4.19583 19.4125 4.5875C19.8042 4.97917 20 5.45 20 6V17C20 17.55 19.8042 18.0208 19.4125 18.4125C19.0208 18.8042 18.55 19 18 19H2ZM2 17H18V6H2V17ZM8 4H12V2H8V4Z"
+                              fillOpacity="0.8"
+                              strokeWidth={1}
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                          <p className="text-center text-lg text-gray-500 mt-4">
+                            {jp.noJobsFound}
+                          </p>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {filteredJobs
+                  ) : (
+                    filteredJobs
                       .sort((a: any, b: any) => b.id - a.id)
                       .map((item: any) => {
                         return (
@@ -254,31 +295,11 @@ const JobScreen = () => {
                             </td>
                           </tr>
                         );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="w-full h-full flex flex-col justify-center items-center">
-                <svg
-                  width="152px"
-                  height="152px"
-                  viewBox="0 0 20 19"
-                  fill={colors.third}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 19C1.45 19 0.979167 18.8042 0.5875 18.4125C0.195833 18.0208 0 17.55 0 17V6C0 5.45 0.195833 4.97917 0.5875 4.5875C0.979167 4.19583 1.45 4 2 4H6V2C6 1.45 6.19583 0.979167 6.5875 0.5875C6.97917 0.195833 7.45 0 8 0H12C12.55 0 13.0208 0.195833 13.4125 0.5875C13.8042 0.979167 14 1.45 14 2V4H18C18.55 4 19.0208 4.19583 19.4125 4.5875C19.8042 4.97917 20 5.45 20 6V17C20 17.55 19.8042 18.0208 19.4125 18.4125C19.0208 18.8042 18.55 19 18 19H2ZM2 17H18V6H2V17ZM8 4H12V2H8V4Z"
-                    fillOpacity="0.8"
-                    strokeWidth={1}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <p className="text-center text-lg text-gray-500 mt-4">
-                  {jp.noJobsFound}
-                </p>
-              </div>
-            )}
+                      })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="flex justify-end items-center mt-4 ">
             <Button
@@ -297,14 +318,18 @@ const JobScreen = () => {
           key="job-details"
           className="w-full h-full flex justify-center items-center z-50"
         >
-          <JobDetails
-            backHandler={setShowDetails}
-            isDetails={true}
-            editHandler={editHandler}
-            deleteHandler={deleteHandler}
-            data={jobDetail?.data}
-            setFormData={setForm}
-          />
+          {jobDetailLoading ? (
+            <JobDetailSkeleton />
+          ) : (
+            <JobDetails
+              backHandler={setShowDetails}
+              isDetails={true}
+              editHandler={editHandler}
+              deleteHandler={deleteHandler}
+              data={jobDetail?.data}
+              setFormData={setForm}
+            />
+          )}
         </motion.div>
       )}
       {(isAdd || isEdit) && (

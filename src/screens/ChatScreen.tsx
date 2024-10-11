@@ -21,6 +21,7 @@ import {
   ChatHeader,
   ChatView,
   ChatInput,
+  ChatSkeleton,
 } from "@/components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -31,8 +32,6 @@ import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
-
-
 
 // company id
 // const currentUser = {
@@ -59,7 +58,6 @@ const ChatScreen = () => {
   const [newMessage, setNewMessage] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
 
-  
   const [isAppointmentModelOpen, setIsAppointmentModelOpen] = useState(false);
 
   // const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
@@ -67,15 +65,11 @@ const ChatScreen = () => {
   // const queryClient = useQueryClient();
   // const [chatId, setChatId] = useState();
   // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
- 
-
- 
 
   const { chats, isLoading } = useChat({ id: user?.id });
   useEffect(() => {
     dispatch(setTitle(jp.chat));
   }, [dispatch]);
-
 
   //Handle Chat Select
 
@@ -93,22 +87,25 @@ const ChatScreen = () => {
       where("chat_id", "==", chatId),
       orderBy("timestamp", "asc")
     );
-  
+
     const unsubscribe = onSnapshot(
       q,
       async (querySnapshot) => {
         const fetchedMessages: Message[] = [];
         const updatePromises: Promise<void>[] = [];
-  
+
         querySnapshot.forEach((doc) => {
           const messageData = doc.data() as Message;
-          fetchedMessages.push({...messageData,id:doc.id });
-  
-          if (messageData.sender_id !== Number(`2${user?.id}`) && !messageData.read) {
+          fetchedMessages.push({ ...messageData, id: doc.id });
+
+          if (
+            messageData.sender_id !== Number(`2${user?.id}`) &&
+            !messageData.read
+          ) {
             updatePromises.push(updateDoc(doc.ref, { read: true }));
           }
         });
-  
+
         await Promise.all(updatePromises);
         setMessages(fetchedMessages);
       },
@@ -116,7 +113,7 @@ const ChatScreen = () => {
         console.error("Error fetching messages:", error);
       }
     );
-  
+
     return unsubscribe;
   };
 
@@ -124,7 +121,6 @@ const ChatScreen = () => {
   // Modify the handleSendMessage function:
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
-
 
     const messageData = {
       chat_id: selectedChat.id,
@@ -149,7 +145,6 @@ const ChatScreen = () => {
       fetchMessages(selectedChat.id);
     } catch (error) {
       console.error("Error sending message:", error);
-  
     }
   };
 
@@ -159,7 +154,7 @@ const ChatScreen = () => {
 
   useEffect(() => {
     const messageListeners: any[] = [];
-   
+
     chats.forEach((chat) => {
       const messagesRef = collection(db, "messages");
 
@@ -197,9 +192,9 @@ const ChatScreen = () => {
       <Helmet>
         <title>{jp.chat} - Japan Job</title>
       </Helmet>
-      {isLoading && (
+      {/* {isLoading && (
         <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
-      )}
+      )} */}
       <motion.div
         variants={chatVariants}
         initial="initial"
@@ -209,12 +204,22 @@ const ChatScreen = () => {
       >
         {/* User Lists View */}
         <div className="bg-gray-100 col-span-2 row-span-9 overflow-hidden">
-          <ChatList
-            chats={chats}
-            onSelectChat={handleChatSelect}
-            selectedChat={selectedChat}
-            unreadCounts={unreadCounts}
-          />
+          {isLoading ? (
+            <div className="flex flex-col gap-y-4 p-4">
+              {Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <ChatSkeleton key={index} />
+                ))}
+            </div>
+          ) : (
+            <ChatList
+              chats={chats}
+              onSelectChat={handleChatSelect}
+              selectedChat={selectedChat}
+              unreadCounts={unreadCounts}
+            />
+          )}
         </div>
 
         {/* Header View */}
@@ -286,7 +291,7 @@ const ChatScreen = () => {
           {isAppointmentModelOpen && (
             <AppointmentModel
               key="isAppointmentModelOpen"
-           setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
               userId={Number(selectedChat?.jobfinder_id)}
               jobId={Number(selectedChat?.job_id)}
             />
@@ -297,7 +302,7 @@ const ChatScreen = () => {
   );
 };
 
-const chatVariants = { 
+const chatVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },

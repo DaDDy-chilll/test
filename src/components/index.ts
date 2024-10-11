@@ -64,7 +64,9 @@ import TableRowSkeleton from "./ui/skeleton/TableRowSkeleton";
 import UserProfileSkeleton from "./ui/skeleton/UserProfileSkeleton";
 import Error500 from "./ui/Error_500";
 import NoConnection from "./ui/NoConnection";
-
+import CardSkeleton from "./ui/skeleton/CardSkeleton";
+import JobRowSkeleton from "./ui/skeleton/JobRowSkeleton";
+import JobDetailSkeleton from "./ui/skeleton/JobDetailSkeleton";
 
 export {
     Alert,
@@ -134,5 +136,8 @@ export {
     TableRowSkeleton,
     UserProfileSkeleton,
     Error500,
-    NoConnection
+    NoConnection,
+    CardSkeleton,
+    JobRowSkeleton,
+    JobDetailSkeleton
 }

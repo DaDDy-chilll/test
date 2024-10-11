@@ -24,6 +24,7 @@ import { useQuery } from "@tanstack/react-query";
 import usePost from "@/hooks/usePost";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
+import { CardSkeleton } from "@/components";
 
 const MatchedScreend = () => {
   const dispatch = useDispatch();
@@ -206,9 +207,9 @@ const MatchedScreend = () => {
       <Helmet>
         <title>{jp.matches} - Japan Job</title>
       </Helmet>
-      {(isPending || isLoading) && (
+      {(isPending) && (
         <Loading
-          isLoading={isPending || isLoading}
+          isLoading={isPending}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -279,7 +280,13 @@ const MatchedScreend = () => {
         </div>
         <AnimatePresence>
           <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto auto-rows-[350px]">
-            {matchedData && matchedData?.data?.users?.length > 0 ? (
+            {isLoading ? (
+              <>
+                <CardSkeleton />
+                <CardSkeleton />
+                <CardSkeleton />
+              </>
+            ) : matchedData && matchedData?.data?.users?.length > 0 ? (
               <>
                 {matchedData?.data?.users.map((item: any) => (
                   <UserCard
@@ -366,7 +373,7 @@ const MatchedScreend = () => {
               </div>
             )}
           </div>
-          {showDetail && (
+          {(showDetail ||isDetailLoading) && (
             <motion.div
               key="matchDetail"
               className="absolute top-0 left-0 w-full h-full bg-gray-100 z-50"
@@ -376,6 +383,14 @@ const MatchedScreend = () => {
               exit="exit"
             >
               <span className="w-full h-full relative">
+              {isDetailLoading ? (
+                  <UserProfileSkeleton />
+                ) : (
+                  <MatchedApplicants
+                    applicantDetail={applicantDetail?.data}
+                    className="h-full w-full overflow-y-auto"
+                  />
+                )}
                 <button
                   onClick={handleCloseDetail}
                   className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
@@ -396,14 +411,7 @@ const MatchedScreend = () => {
                   </svg>
                 </button>
 
-                {isDetailLoading ? (
-                  <UserProfileSkeleton />
-                ) : (
-                  <MatchedApplicants
-                    applicantDetail={applicantDetail?.data}
-                    className="h-full w-full overflow-y-auto"
-                  />
-                )}
+               
               </span>
             </motion.div>
           )}

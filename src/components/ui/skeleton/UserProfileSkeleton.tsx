@@ -5,7 +5,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 const UserProfileSkeleton = () => {
   return (
     <SkeletonTheme baseColor="#d6d6d6" highlightColor="#edeceb">
-      <div className="w-full p-10">
+      <div className="w-full h-full p-5">
         {/* Profile Header */}
         <div className="flex items-center gap-x-5 my-3 ">
           {/* Profile Picture */}
