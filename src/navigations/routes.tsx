@@ -19,6 +19,7 @@ enum RouteName {
   PROFILE = "/profile",
   VERIFICATION = "/verification",
   PROFILE_FORM = "/profile_form",
+  GUIDE = "/guide",
 }
 
 export default RouteName;

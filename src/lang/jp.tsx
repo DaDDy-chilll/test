@@ -140,5 +140,5 @@ export const jp = {
   noInterviewSchedule:"今日は面接はありません",
   employees:"従業員数",
   age:"年齢",
-  
+  guide:"ガイド",
 };

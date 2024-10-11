@@ -14,7 +14,7 @@ import {
   ChangePassword,
   Otp,
 } from "@/screens";
-import { NotFound, Loading, VerifyMali } from "@/components";
+import { NotFound, Loading, VerifyMali,Guide } from "@/components";
 
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));
@@ -90,6 +90,8 @@ const AnimatedRoutes = () => {
           <Route path={Routenames.CALENDAR} Component={CalendarScreen} />
           {/* jobs routes */}
           <Route path={Routenames.PROFILE} Component={Profile} />
+          {/* Guide routes */}
+          <Route path={Routenames.GUIDE} Component={Guide} />
         </Route>
 
         {/* Not found route */}

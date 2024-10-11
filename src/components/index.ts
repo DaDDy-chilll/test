@@ -57,6 +57,7 @@ import RealTimeInput from "./ui/RealTimeInput";
 import Select from "./ui/Select";
 import TimeSelect from "./ui/SelectTime";
 import SelectYear from "./ui/selectYear";
+import Guide from "./Guide/Guide";
 export {
     Alert,
     ApplicantTable,
@@ -119,4 +120,5 @@ export {
     UserCard,
     UserItem,
     VerifyMali,
+    Guide,
 }
