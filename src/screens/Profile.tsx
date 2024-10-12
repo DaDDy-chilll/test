@@ -1,31 +1,34 @@
-import {ProfileDetail,Loading,ProfileForm} from "@/components";
-import { motion,AnimatePresence } from "framer-motion";
+import {
+  ProfileDetail,
+  Loading,
+  ProfileForm,
+  ProfileSkeleton,
+} from "@/components";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, FormEvent, useCallback, useMemo } from "react";
 import { jp } from "@/lang/jp";
 import { setTitle, setName } from "@/store";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import usePost from "@/hooks/usePost";
 import moment from "moment";
 import { Helmet } from "react-helmet-async";
 
-
 const defaultFormData = {
   name: "",
-  industry_type_id: {label: "", value: ""},
+  industry_type_id: { label: "", value: "" },
   budget: "",
   starting: "",
-  staff:  {label: "", value: ""},
-  area: {label: "", value: ""},
-  prefecture_id: {label: "", value: ""},
+  staff: { label: "", value: "" },
+  area: { label: "", value: "" },
+  prefecture_id: { label: "", value: "" },
   photo: "",
   company_des: "",
   address: "",
-}
-
+};
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -37,31 +40,26 @@ const Profile = () => {
     key: QueryKey.PROFILE,
     token: token as string,
   });
-  const { mutate, isSuccess,data: profileData } = usePost({
+  const {
+    mutate,
+    isSuccess,
+    data: profileData,
+  } = usePost({
     token,
     queryKey: QueryKey.PROFILE,
   });
 
-  const {
-    data: jobType,
-    isLoading: isJobTypesLoading,
-
-  } = useFetch({
+  const { data: jobType, isLoading: isJobTypesLoading } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
 
-  const {
-    data: city,
-    isLoading: isCityLoading,
-
-  } = useFetch({
+  const { data: city, isLoading: isCityLoading } = useFetch({
     endpoint: apiRoutes.CITY,
     key: QueryKey.CITY,
     token: token as string,
   });
-
 
   // const countries =
   //   city?.data.map((type: any) => ({
@@ -86,7 +84,7 @@ const Profile = () => {
     if (profileData) {
       dispatch(setName(profileData.data.name));
     }
-  }, [isSuccess,profileData,dispatch]);
+  }, [isSuccess, profileData, dispatch]);
 
   const employeeNumber = [
     { value: "100", label: "100" },
@@ -95,30 +93,26 @@ const Profile = () => {
     { value: "400", label: "400" },
   ];
 
-
-  const transformAreaData = useCallback(
-    (data: any) => {
-      if (data) {
-        const areaList = data?.map((item: any) => ({
-          label: item.area,
-          value: item.id.toString(),
-        }));
-        const relativeArea = data?.reduce((acc: any, item: any) => {
-          if (item.m_prefectures.length > 0) {
-            acc[item.id.toString()] = item.m_prefectures.map(
-              (prefecture: any) => ({
-                label: prefecture.name,
-                value: prefecture.id.toString(),
-              })
-            );
-          }
-          return acc;
-        }, {});
-        return { areaList, relativeArea };
-      }
-    },
-    []
-  );
+  const transformAreaData = useCallback((data: any) => {
+    if (data) {
+      const areaList = data?.map((item: any) => ({
+        label: item.area,
+        value: item.id.toString(),
+      }));
+      const relativeArea = data?.reduce((acc: any, item: any) => {
+        if (item.m_prefectures.length > 0) {
+          acc[item.id.toString()] = item.m_prefectures.map(
+            (prefecture: any) => ({
+              label: prefecture.name,
+              value: prefecture.id.toString(),
+            })
+          );
+        }
+        return acc;
+      }, {});
+      return { areaList, relativeArea };
+    }
+  }, []);
   const { areaList, relativeArea } = useMemo(() => {
     if (city && "data" in city) {
       return (
@@ -131,7 +125,6 @@ const Profile = () => {
   }, [city, transformAreaData]);
 
   const editHandler = () => setIsEdit(true);
-
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -148,22 +141,30 @@ const Profile = () => {
     //   address: formData.get("address") as string || undefined,
     // })
     const jobData = {
-      name: formData.get("name") as string || undefined,
-      industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
+      name: (formData.get("name") as string) || undefined,
+      industry_type_id:
+        Number(formData.get("industry_type_id") as string) || undefined,
       budget: Number(formData.get("budget") as string) || undefined,
-      starting: formData.get("starting") ? moment(formData.get("starting") as string).format("YYYY-MM-DD") : undefined,
+      starting: formData.get("starting")
+        ? moment(formData.get("starting") as string).format("YYYY-MM-DD")
+        : undefined,
       staff: Number(formData.get("staff") as string) || undefined,
-      prefecture_id: Number(formData.get("prefecture_id") as string) || undefined,
-      company_des: formData.get("company_des") as string || undefined,
-      address: formData.get("address") as string || undefined,
+      prefecture_id:
+        Number(formData.get("prefecture_id") as string) || undefined,
+      company_des: (formData.get("company_des") as string) || undefined,
+      address: (formData.get("address") as string) || undefined,
     };
-  
+
     // Remove undefined properties
     const cleanedJobData = Object.fromEntries(
       Object.entries(jobData).filter(([_, value]) => value !== undefined)
     );
-  
-    mutate({ endpoint: apiRoutes.PROFILE, body: cleanedJobData, method: "PUT" });
+
+    mutate({
+      endpoint: apiRoutes.PROFILE,
+      body: cleanedJobData,
+      method: "PUT",
+    });
   };
 
   useEffect(() => {
@@ -183,12 +184,21 @@ const Profile = () => {
       // })
       setFormData({
         name: data.data.name,
-        industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},
+        industry_type_id: {
+          label: data.data.industry_type.name,
+          value: data.data.industry_type.id,
+        },
         budget: data.data.budget,
         starting: data.data.starting,
-        staff: {label: data.data.staff, value: data.data.staff},
-        area: {label: data.data.prefecture.area_id, value: data.data.prefecture.area_id},
-        prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
+        staff: { label: data.data.staff, value: data.data.staff },
+        area: {
+          label: data.data.prefecture.area_id,
+          value: data.data.prefecture.area_id,
+        },
+        prefecture_id: {
+          label: data.data.prefecture.name,
+          value: data.data.prefecture.id,
+        },
         photo: data.data.photo,
         company_des: data.data.company_des,
         address: data.data.address,
@@ -201,14 +211,21 @@ const Profile = () => {
       <Helmet>
         <title>{jp.profile} - Japan Job</title>
       </Helmet>
-      {(isLoading || isJobTypesLoading || isCityLoading) && <Loading isLoading={isLoading || isJobTypesLoading || isCityLoading} className="h-[calc(100vh-68px)]" />}
-      <div
-       
-        className="w-full flex justify-center px-10 pt-5"
-      >
+      {(isJobTypesLoading || isCityLoading) && (
+        <Loading
+          isLoading={isJobTypesLoading || isCityLoading}
+          className="h-[calc(100vh-68px)]"
+        />
+      )}
+      <div className="w-full flex justify-center px-10 pt-5">
         <AnimatePresence mode="wait">
-          {!isEdit && data?.data && (
-            <ProfileDetail editHandler={editHandler} data={data?.data} />
+          {isLoading ? (
+            <ProfileSkeleton />
+          ) : (
+            !isEdit &&
+            data?.data && (
+              <ProfileDetail editHandler={editHandler} data={data?.data} />
+            )
           )}
           {isEdit && (
             <ProfileForm
@@ -228,7 +245,5 @@ const Profile = () => {
     </>
   );
 };
-
-
 
 export default Profile;

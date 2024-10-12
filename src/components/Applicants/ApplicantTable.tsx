@@ -214,7 +214,7 @@ const ApplicantTable = ({
                 </td>
 
                 {/* address column */}
-                <td className="py-2 text-xs text-start text-secondaryColor">
+                <td className="py-2 text-xs text-start text-gray-500">
                   {applicant.m_basicinfos.address}
                 </td>
 
@@ -341,9 +341,9 @@ const ApplicantTable = ({
                   </div>
                 </td>
 
-                <td className=" py-2 text-start text-secondaryColor">
-                  <p className="text-xs">
-                    {applicant.m_basicinfos.gender === 0 ? "Male" : "Female"}
+                <td className=" p-2 text-start text-secondaryColor">
+                  <p className="text-xs text-gray-500">
+                    {applicant.m_basicinfos.gender === 0 ? jp.male : jp.female}
                   </p>
                 </td>
 

@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "date-holidays": "^3.23.12",
     "errors": "^0.3.0",
     "esbuild": "^0.19.11",
     "firebase": "^10.13.1",

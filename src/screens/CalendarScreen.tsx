@@ -11,7 +11,7 @@ import {
   addMonths,
 } from "date-fns";
 import { useMemo, useState, useEffect, useCallback } from "react";
-import { CalendarCell, EventListItem, Loading } from "@/components";
+import { CalendarCell, EventListItem, Loading,Holidays } from "@/components";
 import { jp } from "@/lang/jp";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
@@ -98,6 +98,8 @@ const CalendarScreen = () => {
     }
   }, [eventsOfMonth]);
 
+
+
   return (
     <>
       <Helmet>
@@ -113,6 +115,7 @@ const CalendarScreen = () => {
         exit="exit"
         className="w-full  grid grid-cols-3 gap-x-4 p-4"
       >
+        
         <div className="col-span-2 rounded-lg bg-[#F0F0F0] p-4 shadow-lg">
           <div className="mb-4">
             {/* Header with Month and Navigation Buttons */}
@@ -138,7 +141,8 @@ const CalendarScreen = () => {
               </button>
 
               <h2 className="text-center text-xl">
-                {format(currentDate, "MMMM yyyy")}
+                {moment(currentDate).format("YYYY年  MM月")}
+                {/* {format(currentDate, "MMMM yyyy")} */}
               </h2>
 
               <button
@@ -190,6 +194,7 @@ const CalendarScreen = () => {
                   day={day}
                   todaysEvents={todaysEvents}
                   handleClick={() => handleCellClick(todaysEvents, dateKey)}
+                  year={moment(currentDate).year()}
                 />
               );
             })}

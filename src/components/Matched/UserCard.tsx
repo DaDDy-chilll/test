@@ -59,7 +59,7 @@ const UserCard = ({
             </span>
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.gender}:</p>
-              <p>{m_basicinfos.gender === 1 ? jp.male : jp.female}</p>
+              <p>{m_basicinfos.gender === 0 ? jp.male : jp.female}</p>
             </span>
           </div>
           <div className="flex flex-col gap-y-6 h-full justify-center">

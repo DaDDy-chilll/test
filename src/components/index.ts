@@ -67,6 +67,8 @@ import NoConnection from "./ui/NoConnection";
 import CardSkeleton from "./ui/skeleton/CardSkeleton";
 import JobRowSkeleton from "./ui/skeleton/JobRowSkeleton";
 import JobDetailSkeleton from "./ui/skeleton/JobDetailSkeleton";
+import ProfileSkeleton from "./ui/skeleton/ProfileSkeleton";
+import Holidays from "./CalendarScreen/Holidays"
 
 export {
     Alert,
@@ -139,5 +141,8 @@ export {
     NoConnection,
     CardSkeleton,
     JobRowSkeleton,
-    JobDetailSkeleton
+    JobDetailSkeleton,
+    ProfileSkeleton,
+    Holidays
+
 }
