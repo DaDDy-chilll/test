@@ -35,7 +35,7 @@ const Holidays = ({ date,year }: PropsType) => {
           .map((holiday) => (
             <li
               key={holiday.date}
-              className=" text-white bg-primaryColor px-2 rounded-md"
+              className=" text-white bg-primaryColor px-2 rounded-sm"
             >
               <p className="text-[.8rem] tracking-widest font-light">
                 {/* {holiday.name} */}
@@ -47,7 +47,7 @@ const Holidays = ({ date,year }: PropsType) => {
           ))}
       </ul>
       {holidayForDate?.name.length > 3 && (
-        <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-md shadow-lg p-2 mt-1  left-10 ml-2">
+        <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-sm  p-2 mt-1  left-10 ml-2">
           {holidays
             .filter(
               (day) =>

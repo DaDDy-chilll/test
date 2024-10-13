@@ -1,5 +1,5 @@
 import { ApplicantDetail } from "@/types/helperTypes";
-import DefaultLogo from "@/assets/images/default.png";
+import DefaultProfile from "@/assets/icons/default_user.svg";
 import { jp } from "@/lang/jp";
 import moment from "moment";
 import { useState } from "react";
@@ -30,7 +30,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     <div className={`bg-gray-100 py-5 px-6 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
         <img
-          src={profile_path ? profile_path : DefaultLogo}
+          src={m_basicinfos.profile_path !== null ? profile_path : DefaultProfile}
           alt="profile"
           className="w-16 h-16 rounded-full"
           crossOrigin="anonymous"

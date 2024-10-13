@@ -118,6 +118,13 @@ const JobScreen = () => {
     setSelectedJobId(id);
   };
 
+  const handleBack = (value: boolean) => {
+    setForm(defaultForm);
+    setShowDetails(value);
+    setIsEdit(false);
+    setIsAdd(false);
+  };
+
   useEffect(() => {
     if (fetchError) {
       alert(fetchError.message);
@@ -322,7 +329,7 @@ const JobScreen = () => {
             <JobDetailSkeleton />
           ) : (
             <JobDetails
-              backHandler={setShowDetails}
+              backHandler={handleBack}
               isDetails={true}
               editHandler={editHandler}
               deleteHandler={deleteHandler}

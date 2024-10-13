@@ -9,10 +9,9 @@ import defaultImage from "@/assets/images/default.png";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { jp } from "@/lang/jp";
-
+import { ConfirmationBox } from "@/components";
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
-
 
 type profileFormProps = {
   setIsEdit: (value: boolean) => void;
@@ -38,24 +37,30 @@ const ProfileForm = ({
 }: profileFormProps) => {
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
-
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { mutate: uploadImage } = useMutation({
     mutationFn: (file: File) => {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
       return fetchServer({
         endpoint: apiRoutes.UPLOAD_IMAGE,
         method: "POST",
-        body: {file:formData.get("file")},
-        file : true
+        body: { file: formData.get("file") },
+        file: true,
       });
     },
     onSuccess: (data) => {
-      setAvatarImage("https://api.japanjob.exbrainedu.com/v1/file/photo/" +data.data.filename);
-      setFormData((prevData:any) => ({ ...prevData, photo: data.data.filename }));
+      setAvatarImage(
+        "https://api.japanjob.exbrainedu.com/v1/file/photo/" +
+          data.data.filename
+      );
+      setFormData((prevData: any) => ({
+        ...prevData,
+        photo: data.data.filename,
+      }));
     },
     onError: (error) => {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     },
     onSettled: () => {
       setIsUploading(false);
@@ -69,11 +74,18 @@ const ProfileForm = ({
       uploadImage(file);
     }
   };
-useEffect(() => {
-  if(formData.photo){
-    setAvatarImage("https://api.japanjob.exbrainedu.com/v1/file/photo/"+formData.photo)
-  }
-},[formData.photo])
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  useEffect(() => {
+    if (formData.photo) {
+      setAvatarImage(
+        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo
+      );
+    }
+  }, [formData.photo]);
   return (
     <motion.div
       key="form"
@@ -85,7 +97,12 @@ useEffect(() => {
     >
       <div className="absolute left-7 top-5 flex items-center gap-3">
         <div className="w-12">
-          <img src={logo} crossOrigin="anonymous" className="w-full" alt="Japan job logo" />
+          <img
+            src={logo}
+            crossOrigin="anonymous"
+            className="w-full"
+            alt="Japan job logo"
+          />
         </div>
         <h1 className="font-medium">JAPAN JOB</h1>
       </div>
@@ -134,7 +151,13 @@ useEffect(() => {
             defaultOption={jp.chooseIndustry}
             value={formData.industry_type_id}
             onChange={(e) => {
-              setFormData({ ...formData, industry_type_id: {label:e.target?.labels, value: e.target.value} })
+              setFormData({
+                ...formData,
+                industry_type_id: {
+                  label: e.target?.labels,
+                  value: e.target.value,
+                },
+              });
             }}
           />
           <Input
@@ -144,7 +167,9 @@ useEffect(() => {
             className="mt-1 block w-full bg-gray-100"
             placeholder="100000 $"
             value={formData.budget}
-            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, budget: e.target.value })
+            }
           />
           <Input
             name="address"
@@ -152,7 +177,9 @@ useEffect(() => {
             label={jp.undertake}
             className="mt-1 block w-full bg-gray-100"
             value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
           />
           <Select
             name="staff"
@@ -162,7 +189,12 @@ useEffect(() => {
             className=""
             defaultOption={jp.chooseEmployee}
             value={formData.staff}
-            onChange={(e) => setFormData({ ...formData, staff: {label: e.target.labels, value: e.target.value} })}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                staff: { label: e.target.labels, value: e.target.value },
+              })
+            }
           />
           <Select
             name="prefecture_id"
@@ -172,7 +204,12 @@ useEffect(() => {
             className=""
             defaultOption={jp.chooseLocation}
             value={formData.area}
-            onChange={(e) => setFormData({ ...formData, area: {label: e.target.labels, value: e.target.value} })}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                area: { label: e.target.labels, value: e.target.value },
+              })
+            }
           />
           <DatePicker
             name="starting"
@@ -180,7 +217,9 @@ useEffect(() => {
             label={jp.establishment}
             className="mt-1 block w-full"
             value={formData.starting}
-            onChange={(e) => setFormData({ ...formData, starting: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, starting: e.target.value })
+            }
           />
           <Select
             disabled={formData.prefecture_id.value !== "" ? false : true}
@@ -190,7 +229,9 @@ useEffect(() => {
             className=""
             defaultOption={jp.chooseLocation}
             value={formData.prefecture_id}
-            onChange={(e) => setFormData({ ...formData, prefecture_id: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, prefecture_id: e.target.value })
+            }
           />
           <span className="col-span-2">
             <Input
@@ -200,27 +241,40 @@ useEffect(() => {
               className="mt-1 block w-full bg-gray-100"
               placeholder="Company description"
               value={formData.company_des}
-              onChange={(e) => setFormData({ ...formData, company_des: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, company_des: e.target.value })
+              }
             />
           </span>
         </div>
 
         <div className="flex justify-between w-full px-10 mr-10 mt-5">
           <button
-            className="underline font-medium"
+            className="text-blue-600 hover:text-blue-800 font-medium"
             onClick={() => setIsEdit(false)}
             type="button"
           >
-            {jp.back}
+             ← {jp.back}
           </button>
           <Button
             variant="destructive"
             className="font-medium w-44"
-            type="submit"
+            type="button"
+            onClick={() => setShowConfirmation(true)}
           >
             {jp.finish}
           </Button>
         </div>
+        {showConfirmation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <ConfirmationBox
+                message="送信してもよろしいですか？"
+                onCancel={handleCancel}
+              />
+            </div>
+          </div>
+        )}
       </form>
     </motion.div>
   );

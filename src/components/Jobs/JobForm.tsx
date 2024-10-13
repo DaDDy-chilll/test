@@ -15,6 +15,7 @@ import { QueryKey } from "@/utils/queryKey";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import Modal from "@/components/Chat/Modal";
+import { ConfirmationBox } from "@/components";
 
 type JobFormProps = {
   onBack?: () => void;
@@ -25,6 +26,34 @@ type JobFormProps = {
   isEdit?: boolean;
 };
 
+const annualSalary = [
+  { value: "100", label: "~100万円" },
+  { value: "200", label: "~200万円" },
+  { value: "300", label: "~300万円" },
+  { value: "400", label: "~400万円" },
+  { value: "500", label: "~500万円" },
+  { value: "600", label: "~600万円" },
+];
+
+const workingTime = [
+  { value: "7", label: "7時間" },
+  { value: "8", label: "8時間" },
+  { value: "9", label: "9時間" },
+  { value: "10", label: "10時間" },
+];
+
+const annualHoliday = [
+  { value: "120", label: "120日" },
+  { value: "130", label: "130日" },
+  { value: "140", label: "140日" },
+  { value: "150", label: "150日" },
+];
+
+const benefits = [
+  { value: "support_home", label: jp.supportHouse },
+  { value: "support_home_rent", label: jp.supportHouseRent },
+];
+
 const JobForm = ({
   onBack,
   formVariant,
@@ -34,6 +63,7 @@ const JobForm = ({
   isEdit,
 }: JobFormProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const { mutate, error, isSuccess } = usePost({
     token,
@@ -68,38 +98,18 @@ const JobForm = ({
       label: type.area,
     })) || [];
 
-  const annualSalary = [
-    { value: "100", label: "~100万円" },
-    { value: "200", label: "~200万円" },
-    { value: "300", label: "~300万円" },
-    { value: "400", label: "~400万円" },
-    { value: "500", label: "~500万円" },
-    { value: "600", label: "~600万円" },
-  ];
-
-  const workingTime = [
-    { value: "7", label: "7時間" },
-    { value: "8", label: "8時間" },
-    { value: "9", label: "9時間" },
-    { value: "10", label: "10時間" },
-  ];
-
-  const annualHoliday = [
-    { value: "120", label: "120日" },
-    { value: "130", label: "130日" },
-    { value: "140", label: "140日" },
-    { value: "150", label: "150日" },
-  ];
-
-  const benefits = [
-    { value: "support_home", label: jp.supportHouse },
-    { value: "support_home_rent", label: jp.supportHouseRent },
-  ];
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-
+    const requiredFields = [
+      "job_title",
+      "job_types",
+      "prefecture_id",
+      "annual_salary",
+      "working_time",
+      "holiday_in_year",
+    ];
+    const isFormEmpty = requiredFields.some((field) => !formData.get(field));
     const jobData = {
       job_title: formData.get("job_title") as string,
       job_types: Number(formData.get("job_types") as string) || undefined,
@@ -116,6 +126,10 @@ const JobForm = ({
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
+    // if (isFormEmpty) {
+    //   setShowConfirmation(false);
+    //   return;
+    // }
     if (isEdit) {
       mutate({
         endpoint: `${apiRoutes.UPDATE_JOB}/${form.id}`,
@@ -129,10 +143,27 @@ const JobForm = ({
         method: "POST",
       });
     }
+    setShowConfirmation(false);
+  };
+
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setShowConfirmation(true);
+  // };
+
+  // const handleConfirm = () => {
+  //   // Implement the actual form submission logic here
+  //   // ... (use the existing form submission code)
+  //   setShowConfirmation(false);
+  // };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
   };
 
   useEffect(() => {
     if (error) {
+      setShowConfirmation(false);
       setShowErrorModal(true);
     }
     if (isSuccess) {
@@ -140,7 +171,6 @@ const JobForm = ({
       setShowDetails && setShowDetails(false);
     }
   }, [error, isSuccess]);
-
 
   const getFieldLabel = (field: string): string => {
     switch (field) {
@@ -228,6 +258,7 @@ const JobForm = ({
             className="mt-1 block w-full bg-gray-100"
             value={form.job_title}
             onChange={(e) => setForm({ ...form, job_title: e.target.value })}
+            required={false}
           />
 
           <Select
@@ -336,6 +367,7 @@ const JobForm = ({
               placeholder="100000 $"
               value={form.start_time}
               onChange={(e) => setForm({ ...form, start_time: e.target.value })}
+              required={false}
             />
             <p> ~ </p>
             <Input
@@ -346,6 +378,7 @@ const JobForm = ({
               placeholder="100000 $"
               value={form.end_time}
               onChange={(e) => setForm({ ...form, end_time: e.target.value })}
+              required={false}
             />
           </div>
           <div className="col-span-2 w-full ">
@@ -405,17 +438,28 @@ const JobForm = ({
         </div>
 
         <div className="flex justify-between w-full pb-3 px-10 mr-10">
-          <button className="underline font-medium" onClick={onBack}>
-            {jp.back}
+          <button className="text-blue-600 hover:text-blue-800 font-medium" onClick={onBack}>
+          ← {jp.back}
           </button>
           <Button
+            type="button"
             variant="destructive"
             className="font-medium w-44"
-            type="submit"
+            onClick={() => setShowConfirmation(true)}
           >
             {jp.finish}
           </Button>
         </div>
+        {showConfirmation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <ConfirmationBox
+                message="送信してもよろしいですか？"
+                onCancel={handleCancel}
+              />
+            </div>
+          </div>
+        )}
       </form>
     </motion.div>
   );

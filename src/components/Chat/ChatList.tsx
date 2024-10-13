@@ -29,7 +29,7 @@ const ChatList: React.FC<ChatListProps> = ({
             <div
               key={index}
               onClick={() => onSelectChat(chat)}
-              className={`${
+              className={`border-b border-gray-300 ${
                 selectedChat?.id === chat.id ? "bg-gray-300" : ""
               } hover:bg-gray-200 transition-all duration-100 active:scale-90`}
             >
