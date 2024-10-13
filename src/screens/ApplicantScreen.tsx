@@ -135,7 +135,6 @@ const ApplicantScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(applicantID);
     if (applicantID) {
       handleDetail(applicantID.jobfinder_id);
     }

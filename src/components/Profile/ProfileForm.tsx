@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import logo from "@/assets/icons/logo.svg";
 import Input from "@/components/ui/Input";
@@ -12,6 +12,15 @@ import { jp } from "@/lang/jp";
 import { ConfirmationBox } from "@/components";
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
+import usePost from "@/hooks/usePost";
+import { QueryKey } from "@/utils/queryKey";
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store/store";
+import { setName } from "@/store/features/NavigationSlice";
+import  useHandleError  from "@/hooks/useHandleError";
+import { ProfileFormErrorType } from "@/types/helperTypes";
+import { useQueryClient } from "@tanstack/react-query";
 
 type profileFormProps = {
   setIsEdit: (value: boolean) => void;
@@ -19,7 +28,6 @@ type profileFormProps = {
   jobTypes: any;
   employeeNumber: any;
   countries: any;
-  handleSubmit: (data: any) => void;
   formData: any;
   setFormData: (data: any) => void;
   city: any;
@@ -31,13 +39,38 @@ const ProfileForm = ({
   employeeNumber,
   city,
   countries,
-  handleSubmit,
   formData,
   setFormData,
 }: profileFormProps) => {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const token = useSelector((state: RootState) => state.auth.token);
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const {
+    ProfileFormHandleError,
+    photoError,
+    companyNameError,
+    industryTypeError,
+    budgetStringError,
+    startingError,
+    staffError,
+    prefectureError,
+    companyDesError,
+    addressError,
+    resetProfileFormError
+  } = useHandleError();
+  const {
+    mutate,
+    isSuccess,
+    data: profileData,
+    isPending,
+    error,
+  } = usePost({
+    token,
+    queryKey: QueryKey.PROFILE,
+  });
   const { mutate: uploadImage } = useMutation({
     mutationFn: (file: File) => {
       const formData = new FormData();
@@ -58,6 +91,8 @@ const ProfileForm = ({
         ...prevData,
         photo: data.data.filename,
       }));
+      queryClient.invalidateQueries({ queryKey: [QueryKey.PROFILE]});
+
     },
     onError: (error) => {
       console.error("Error uploading image:", error);
@@ -79,6 +114,52 @@ const ProfileForm = ({
     setShowConfirmation(false);
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    resetProfileFormError();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const jobData = {
+      name: (formData.get("name") as string) || undefined,
+      industry_type_id:
+        Number(formData.get("industry_type_id") as string) || undefined,
+      budget: Number(formData.get("budget") as string) || undefined,
+      starting: formData.get("starting")
+        ? moment(formData.get("starting") as string).format("YYYY-MM-DD")
+        : undefined,
+      staff: Number(formData.get("staff") as string) || undefined,
+      prefecture_id:
+        Number(formData.get("prefecture_id") as string) || undefined,
+      company_des: (formData.get("company_des") as string) || undefined,
+      address: (formData.get("address") as string) || undefined,
+    };
+
+    // Remove undefined properties
+    const cleanedJobData = Object.fromEntries(
+      Object.entries(jobData).filter(([_, value]) => value !== undefined)
+    );
+
+    mutate({
+      endpoint: apiRoutes.PROFILE,
+      body: cleanedJobData,
+      method: "PUT",
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowConfirmation(false);
+      setIsEdit(false);
+    }
+    if (profileData) {
+      dispatch(setName(profileData.data.name));
+    }
+    if (error) {
+      setShowConfirmation(false);
+      ProfileFormHandleError(error?.message as ProfileFormErrorType);
+    }
+  }, [isSuccess, profileData, dispatch, error]);
+
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(
@@ -86,6 +167,7 @@ const ProfileForm = ({
       );
     }
   }, [formData.photo]);
+
   return (
     <motion.div
       key="form"
@@ -140,6 +222,7 @@ const ProfileForm = ({
             className="mt-1 block w-full bg-gray-100"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            error={companyNameError || ''}
           />
 
           <Select
@@ -159,6 +242,7 @@ const ProfileForm = ({
                 },
               });
             }}
+            error={industryTypeError || ''}
           />
           <Input
             name="budget"
@@ -170,6 +254,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, budget: e.target.value })
             }
+            error={budgetStringError || ''}
           />
           <Input
             name="address"
@@ -180,6 +265,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, address: e.target.value })
             }
+            error={addressError || ''}
           />
           <Select
             name="staff"
@@ -195,6 +281,7 @@ const ProfileForm = ({
                 staff: { label: e.target.labels, value: e.target.value },
               })
             }
+            error={staffError || ''}
           />
           <Select
             name="prefecture_id"
@@ -210,6 +297,7 @@ const ProfileForm = ({
                 area: { label: e.target.labels, value: e.target.value },
               })
             }
+            error={prefectureError || ''}
           />
           <DatePicker
             name="starting"
@@ -220,6 +308,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, starting: e.target.value })
             }
+            error={startingError || ''}
           />
           <Select
             disabled={formData.prefecture_id.value !== "" ? false : true}
@@ -232,6 +321,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, prefecture_id: e.target.value })
             }
+            error={prefectureError || ''}
           />
           <span className="col-span-2">
             <Input
@@ -244,6 +334,7 @@ const ProfileForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, company_des: e.target.value })
               }
+              error={companyDesError || ''}
             />
           </span>
         </div>
@@ -254,7 +345,7 @@ const ProfileForm = ({
             onClick={() => setIsEdit(false)}
             type="button"
           >
-             ← {jp.back}
+            ← {jp.back}
           </button>
           <Button
             variant="destructive"
@@ -271,6 +362,7 @@ const ProfileForm = ({
               <ConfirmationBox
                 message="送信してもよろしいですか？"
                 onCancel={handleCancel}
+                loading={isPending}
               />
             </div>
           </div>

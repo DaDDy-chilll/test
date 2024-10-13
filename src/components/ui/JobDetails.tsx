@@ -18,20 +18,23 @@ type Props = {
   backHandler?: (value: boolean) => void;
   editHandler?: (value: boolean) => void;
   deleteHandler?: () => void;
-  isDetails?: boolean;
   data?: any;
   setFormData?: (value: any) => void;
+  loading?: boolean;
+  showConfirmation?: boolean;
+  setShowConfirmation: (value: boolean) => void;
 };
 
 const JobDetails = ({
   backHandler,
   editHandler,
   deleteHandler,
-  isDetails = false,
   setFormData,
   data,
+  loading,
+  showConfirmation,
+  setShowConfirmation,
 }: Props) => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const clickBackEvent = () => backHandler && backHandler(false);
   const clickDeleteEvent = () => deleteHandler && deleteHandler();
@@ -44,7 +47,6 @@ const JobDetails = ({
   };
 
   const handleDelete = () => {
-    setShowConfirmation(false);
     clickDeleteEvent();
   };
 
@@ -137,6 +139,7 @@ const JobDetails = ({
               message="削除してもよろしいですか？"
               onCancel={handleCancel}
               onConfirm={handleDelete}
+              loading={loading}
             />
           </div>
         </div>

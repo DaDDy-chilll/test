@@ -48,7 +48,7 @@ const JobScreen = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
-
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const {
     data,
     error: fetchError,
@@ -96,6 +96,7 @@ const JobScreen = () => {
       });
     },
     onSuccess: () => {
+      setShowConfirmation(false);
       setShowDetails(false);
       setIsEdit(false);
       setIsAdd(false);
@@ -107,7 +108,10 @@ const JobScreen = () => {
     deleteJob.mutate();
   };
 
-  const addHandler = () => setIsAdd(true);
+  const addHandler = () => {
+    setForm(defaultForm);
+    setIsAdd(true)
+  };
   const backHandler = () => {
     setIsAdd(false);
     setIsEdit(false);
@@ -174,12 +178,12 @@ const JobScreen = () => {
       <Helmet>
         <title>{jp.joblists} - Japan Job</title>
       </Helmet>
-      {deleteJob.isPending && (
+      {/* {deleteJob.isPending && (
         <Loading
           isLoading={deleteJob.isPending}
           className="h-[calc(100vh-68px)] z-40"
         />
-      )}
+      )} */}
       {!showDetails && !isAdd && !isEdit && (
         <motion.div
           key="job-list"
@@ -330,11 +334,13 @@ const JobScreen = () => {
           ) : (
             <JobDetails
               backHandler={handleBack}
-              isDetails={true}
               editHandler={editHandler}
               deleteHandler={deleteHandler}
               data={jobDetail?.data}
               setFormData={setForm}
+              loading={deleteJob.isPending}
+              showConfirmation={showConfirmation}
+              setShowConfirmation={setShowConfirmation}
             />
           )}
         </motion.div>

@@ -1,16 +1,19 @@
 import React from "react";
 import { jp } from "@/lang/jp";
+import { MoonLoader } from "react-spinners";
 
 interface ConfirmationBoxProps {
   message: string;
   onConfirm?: () => void;
   onCancel?: () => void;
+  loading?: boolean;
 }
 
 const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
   message,
   onConfirm,
   onCancel,
+  loading = false,
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -27,9 +30,9 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
           <button
             type="submit"
             onClick={onConfirm}
-            className="px-4 py-2 bg-primaryColor  text-white rounded hover:bg-primaryColor/80"
+            className="px-4 py-2 bg-primaryColor flex items-center justify-center text-white rounded hover:bg-primaryColor/80"
           >
-            {jp.confirm}
+            {loading ? <MoonLoader size={20} color="black" /> : jp.confirm}
           </button>
         </div>
       </div>

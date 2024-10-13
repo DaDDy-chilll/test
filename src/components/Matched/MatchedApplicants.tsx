@@ -166,7 +166,6 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
                       setIsVideoLoading(true);
                     }}
                     onLoadedData={() => {
-                      console.log("loadedData");
                       setIsVideoLoading(false);
                     }}
                   ></video>

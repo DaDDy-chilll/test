@@ -2,7 +2,6 @@ import { AuthErrorType, ProfileFormErrorType } from "@/types/helperTypes";
 import { useState } from "react";
 import { ERROR_MESSAGE } from "@/constants/errorMessage";
 
-
 const useHandleError = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -12,8 +11,12 @@ const useHandleError = () => {
   const [otpError, setOtpError] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [companyNameError, setCompanyNameError] = useState<string | null>(null);
-  const [industryTypeError, setIndustryTypeError] = useState<string | null>(null);
-  const [budgetStringError, setBudgetStringError] = useState<string | null>(null);
+  const [industryTypeError, setIndustryTypeError] = useState<string | null>(
+    null
+  );
+  const [budgetStringError, setBudgetStringError] = useState<string | null>(
+    null
+  );
   const [startingError, setStartingError] = useState<string | null>(null);
   const [staffError, setStaffError] = useState<string | null>(null);
   const [prefectureError, setPrefectureError] = useState<string | null>(null);
@@ -42,76 +45,92 @@ const useHandleError = () => {
       if (error?.confirm_password) {
         setConfirmPasswordError(error?.confirm_password?.jp ?? null);
       }
-      if(error?.otp){
+      if (error?.otp) {
         setOtpError(error?.otp?.jp ?? null);
       }
     }
   };
 
-
   const ProfileFormHandleError = (error: ProfileFormErrorType | null) => {
-    console.log('profile form error',error)
+    console.log("profile form error", error);
     if (error && error?.validation) {
       error.validation.forEach((err: any) => {
         if (err?.photo) {
           setPhotoError(err?.photo?.jp ?? ERROR_MESSAGE.INVALID_PHOTO);
         }
         if (err?.name) {
-          setCompanyNameError(err?.name?.jp ?? null);
+          setCompanyNameError(
+            err?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME
+          );
         }
         if (err?.industry_type_id) {
-          setIndustryTypeError(err?.industry_type_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+          setIndustryTypeError(
+            err?.industry_type_id?.jp ??
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
         }
         if (err?.budget) {
-          setBudgetStringError(err?.budget?.jp ?? null);
+          setBudgetStringError(
+            err?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET
+          );
         }
         if (err?.starting_year) {
-          setStartingError(err?.starting_year?.jp ?? null);
+          setStartingError(
+            err?.starting_year?.jp ?? ERROR_MESSAGE.INVALID_STARTING
+          );
         }
         if (err?.staff) {
-          setStaffError(err?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+          setStaffError(
+            err?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
         }
         if (err?.prefecture_id) {
-          setPrefectureError(err?.prefecture_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+          setPrefectureError(
+            err?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE
+          );
         }
         if (err?.company_description) {
-          setCompanyDesError(err?.company_description?.jp ?? null);
+          setCompanyDesError(
+            err?.company_description?.jp ??
+              ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION
+          );
         }
         if (err?.address) {
-          setAddressError(err?.address?.jp ?? null);
+          setAddressError(
+            err?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
         }
       });
     } else {
-      if(error?.photo){
+      if (error?.photo) {
         setPhotoError(error?.photo?.jp ?? ERROR_MESSAGE.INVALID_PHOTO);
       }
       if (error?.name) {
-        setCompanyNameError(error?.name?.jp ?? null);
+        setCompanyNameError(error?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME);
       }
       if (error?.industry_type_id) {
-        setIndustryTypeError(error?.industry_type_id?.jp ?? null);
+        setIndustryTypeError(error?.industry_type_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
       }
       if (error?.budget) {
-        setBudgetStringError(error?.budget?.jp ?? null);
+        setBudgetStringError(error?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET);
       }
-      if(error?.starting){
-        setStartingError(error?.starting?.jp ?? null);
+      if (error?.starting) {
+        setStartingError(error?.starting?.jp ?? ERROR_MESSAGE.INVALID_STARTING);
       }
-      if(error?.staff){
-        setStaffError(error?.staff?.jp ?? null);
+      if (error?.staff) {
+        setStaffError(error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
       }
-      if(error?.prefecture_id){
-        setPrefectureError(error?.prefecture_id?.jp ?? null);
+      if (error?.prefecture_id) {
+        setPrefectureError(error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE);
       }
-      if(error?.company_des){
-        setCompanyDesError(error?.company_des?.jp ?? null);
+      if (error?.company_des) {
+        setCompanyDesError(error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION);
       }
-      if(error?.address){
-        setAddressError(error?.address?.jp ?? null);
+      if (error?.address) {
+        setAddressError(error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
       }
     }
   };
-
 
   return {
     authHandleError,

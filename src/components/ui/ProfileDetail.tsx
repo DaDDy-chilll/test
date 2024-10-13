@@ -21,7 +21,6 @@ type Props = {
 
 const ProfileDetail = ({ editHandler, data }: Props) => {
   const clickEditEvent = () => editHandler && editHandler(true);
-
   return (
     <motion.div
       key="complete"

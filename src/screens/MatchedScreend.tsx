@@ -265,7 +265,7 @@ const MatchedScreend = () => {
                 </svg>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className={`h-[11rem] ${defaultJobType.length > 5 ? "overflow-y-auto" : "overflow-y-hidden"}`}>
+            <DropdownMenuContent className={` ${defaultJobType.length > 5 ? "overflow-y-auto h-[11rem]" : "overflow-y-hidden"}`}>
               {defaultJobType.length > 0 &&
                 defaultJobType.map((item: { id: number; name: string }) => (
                   <DropdownMenuItem

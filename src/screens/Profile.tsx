@@ -4,17 +4,16 @@ import {
   ProfileForm,
   ProfileSkeleton,
 } from "@/components";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, FormEvent, useCallback, useMemo } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { jp } from "@/lang/jp";
-import { setTitle, setName } from "@/store";
+import { setTitle } from "@/store";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
-import usePost from "@/hooks/usePost";
-import moment from "moment";
+
 import { Helmet } from "react-helmet-async";
 
 const defaultFormData = {
@@ -39,14 +38,6 @@ const Profile = () => {
     endpoint: apiRoutes.PROFILE,
     key: QueryKey.PROFILE,
     token: token as string,
-  });
-  const {
-    mutate,
-    isSuccess,
-    data: profileData,
-  } = usePost({
-    token,
-    queryKey: QueryKey.PROFILE,
   });
 
   const { data: jobType, isLoading: isJobTypesLoading } = useFetch({
@@ -76,15 +67,6 @@ const Profile = () => {
   useEffect(() => {
     dispatch(setTitle(jp.profile));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setIsEdit(false);
-    }
-    if (profileData) {
-      dispatch(setName(profileData.data.name));
-    }
-  }, [isSuccess, profileData, dispatch]);
 
   const employeeNumber = [
     { value: "100", label: "100" },
@@ -126,62 +108,8 @@ const Profile = () => {
 
   const editHandler = () => setIsEdit(true);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    // console.log('post data',{
-    //   name: formData.get("name") as string || undefined,
-    //   industry_type_id: Number(formData.get("industry_type_id") as string) || undefined,
-    //   budget: Number(formData.get("budget") as string) || undefined,
-    //   starting: formData.get("starting") ? moment(formData.get("starting") as string).format("YYYY-MM-DD") : undefined,
-    //   staff: Number(formData.get("staff") as string) || undefined,
-    //   prefecture_id: Number(formData.get("prefecture_id") as string) || undefined,
-    //   company_des: formData.get("company_des") as string || undefined,
-    //   address: formData.get("address") as string || undefined,
-    // })
-    const jobData = {
-      name: (formData.get("name") as string) || undefined,
-      industry_type_id:
-        Number(formData.get("industry_type_id") as string) || undefined,
-      budget: Number(formData.get("budget") as string) || undefined,
-      starting: formData.get("starting")
-        ? moment(formData.get("starting") as string).format("YYYY-MM-DD")
-        : undefined,
-      staff: Number(formData.get("staff") as string) || undefined,
-      prefecture_id:
-        Number(formData.get("prefecture_id") as string) || undefined,
-      company_des: (formData.get("company_des") as string) || undefined,
-      address: (formData.get("address") as string) || undefined,
-    };
-
-    // Remove undefined properties
-    const cleanedJobData = Object.fromEntries(
-      Object.entries(jobData).filter(([_, value]) => value !== undefined)
-    );
-
-    mutate({
-      endpoint: apiRoutes.PROFILE,
-      body: cleanedJobData,
-      method: "PUT",
-    });
-  };
-
   useEffect(() => {
     if (data) {
-      // console.log('data',data)
-      // console.log('fetch data',{
-      //   name: data.data.name,
-      //   industry_type_id: {label: data.data.industry_type.name, value: data.data.industry_type.id},
-      //   budget: data.data.budget,
-      //   starting: data.data.starting,
-      //   staff: {label: data.data.staff, value: data.data.staff},
-      //   area: {label: data.data.prefecture.area_id, value: data.data.prefecture.area_id},
-      //   prefecture_id: {label: data.data.prefecture.name, value: data.data.prefecture.id},
-      //   photo: data.data.photo,
-      //   company_des: data.data.company_des,
-      //   address: data.data.address,
-      // })
       setFormData({
         name: data.data.name,
         industry_type_id: {
@@ -234,7 +162,6 @@ const Profile = () => {
               jobTypes={jobTypes}
               employeeNumber={employeeNumber}
               countries={areaList}
-              handleSubmit={handleSubmit}
               formData={formData}
               setFormData={setFormData}
               city={relativeArea}

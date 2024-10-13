@@ -65,7 +65,7 @@ const JobForm = ({
   const { token } = useSelector((state: RootState) => state.auth);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const { mutate, error, isSuccess } = usePost({
+  const { mutate, error, isSuccess,isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
   });
@@ -101,15 +101,6 @@ const JobForm = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const requiredFields = [
-      "job_title",
-      "job_types",
-      "prefecture_id",
-      "annual_salary",
-      "working_time",
-      "holiday_in_year",
-    ];
-    const isFormEmpty = requiredFields.some((field) => !formData.get(field));
     const jobData = {
       job_title: formData.get("job_title") as string,
       job_types: Number(formData.get("job_types") as string) || undefined,
@@ -126,10 +117,7 @@ const JobForm = ({
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
-    // if (isFormEmpty) {
-    //   setShowConfirmation(false);
-    //   return;
-    // }
+ 
     if (isEdit) {
       mutate({
         endpoint: `${apiRoutes.UPDATE_JOB}/${form.id}`,
@@ -143,7 +131,7 @@ const JobForm = ({
         method: "POST",
       });
     }
-    setShowConfirmation(false);
+
   };
 
   // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -168,6 +156,7 @@ const JobForm = ({
     }
     if (isSuccess) {
       onBack?.();
+      setShowConfirmation(false);
       setShowDetails && setShowDetails(false);
     }
   }, [error, isSuccess]);
@@ -456,6 +445,7 @@ const JobForm = ({
               <ConfirmationBox
                 message="送信してもよろしいですか？"
                 onCancel={handleCancel}
+                loading={isPending}
               />
             </div>
           </div>
