@@ -1,25 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./root";
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-    key: 'root',
-    storage,
-    whitelist: ['auth', 'navigation'],
+  key: "root",
+  storage,
+  whitelist: ["auth", "navigation"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: ['persist/PERSIST'], // Ignore this action for the check
-            },
-        })
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"], // Ignore this action for the check
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

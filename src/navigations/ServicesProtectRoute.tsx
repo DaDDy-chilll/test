@@ -7,11 +7,12 @@ type ProtectedPageProps = {
 };
 
 const ServicesProtectedPage = ({ children }: ProtectedPageProps) => {
-  const { user, token,verified } = useSelector((state: RootState) => state.auth);
+  const { user, token, verified } = useSelector(
+    (state: RootState) => state.auth,
+  );
   if (!user && !token && verified == null) {
     return <Navigate to={Routenames.LOGIN} />;
-  }
-  else if(user && token && verified == false){
+  } else if (user && token && verified == false) {
     return <Navigate to={Routenames.PROFILE_FORM} />;
   }
   return children;

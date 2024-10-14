@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import closeIcon from '@/assets/icons/close.svg';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import closeIcon from "@/assets/icons/close.svg";
 
 interface AlertProps {
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   title: string;
   description: string;
 }
@@ -29,16 +29,16 @@ const Alert: React.FC<AlertProps> = ({ type, title, description }) => {
 
   const getAlertStyles = () => {
     switch (type) {
-      case 'success':
-        return 'bg-green-100 border-green-400 text-green-700';
-      case 'error':
-        return 'bg-red-100 border-red-400 text-red-700';
-      case 'warning':
-        return 'bg-yellow-100 border-yellow-400 text-yellow-700';
-      case 'info':
-        return 'bg-blue-100 border-blue-400 text-blue-700';
+      case "success":
+        return "bg-green-100 border-green-400 text-green-700";
+      case "error":
+        return "bg-red-100 border-red-400 text-red-700";
+      case "warning":
+        return "bg-yellow-100 border-yellow-400 text-yellow-700";
+      case "info":
+        return "bg-blue-100 border-blue-400 text-blue-700";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -61,7 +61,10 @@ const Alert: React.FC<AlertProps> = ({ type, title, description }) => {
         <p className="font-bold text-sm px-6 pt-4">{title}</p>
         <p className="text-sm px-6 pb-4">{description}</p>
         <div className="h-1 mt-2">
-          <div className={`h-full ${type === 'success' ? 'bg-green-400' : type === 'error' ? 'bg-red-400' : type === 'warning' ? 'bg-yellow-400' : 'bg-blue-400'}`} style={{ width: `${progress}%`, transition: 'width 0.1s linear' }}></div>
+          <div
+            className={`h-full ${type === "success" ? "bg-green-400" : type === "error" ? "bg-red-400" : type === "warning" ? "bg-yellow-400" : "bg-blue-400"}`}
+            style={{ width: `${progress}%`, transition: "width 0.1s linear" }}
+          ></div>
         </div>
       </div>
     </motion.div>

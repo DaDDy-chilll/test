@@ -18,7 +18,7 @@ type Applicant = {
   m_preferred_jobs: [
     {
       job_type: number;
-    }
+    },
   ];
   m_language_exams: [
     {
@@ -28,12 +28,12 @@ type Applicant = {
       m_exam_levels: {
         level: string;
       };
-    }
+    },
   ];
   m_education: [
     {
       major: string;
-    }
+    },
   ];
   jobsPreference: {
     passport: string;
@@ -65,7 +65,7 @@ type Applicant = {
       schoolLevel: string;
       schoolName: string;
       year: string;
-    }
+    },
   ];
   workExperience: [
     {
@@ -79,7 +79,7 @@ type Applicant = {
       companyName: string;
       year: string;
       description: string;
-    }
+    },
   ];
 };
 
@@ -181,7 +181,7 @@ const ApplicantTable = ({
                         <div className="flex  items-center justify-start gap-1 cursor-pointer">
                           <p className="text-xs  text-white font-normal bg-primaryColor rounded-md px-2 py-1 inline-block">
                             {getJobTypeJp(
-                              applicant.m_preferred_jobs[0].job_type
+                              applicant.m_preferred_jobs[0].job_type,
                             )}
                           </p>
                           {applicant.m_preferred_jobs.length > 1 && (

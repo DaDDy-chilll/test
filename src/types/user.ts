@@ -12,7 +12,7 @@ export type UserProfile = {
     location: string;
     birthdate: string;
     gender: string;
-  },
+  };
   jobsPreference: {
     passport: string;
     salary: string;
@@ -22,12 +22,11 @@ export type UserProfile = {
     preferredJobAndArea: {
       jobTypes: string[];
       areas: string[];
-    },
-  },
-  languages:
-  {
+    };
+  };
+  languages: {
     level: string;
-  }[],
+  }[];
   education: [
     {
       schoolLevel: string;
@@ -44,7 +43,7 @@ export type UserProfile = {
       schoolName: string;
       year: string;
     },
-  ],
+  ];
   workExperience: [
     {
       position: string;
@@ -58,5 +57,5 @@ export type UserProfile = {
       year: string;
       description: string;
     },
-  ],
-}
+  ];
+};

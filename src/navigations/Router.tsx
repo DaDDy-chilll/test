@@ -14,7 +14,14 @@ import {
   ChangePassword,
   Otp,
 } from "@/screens";
-import { NotFound, Loading, VerifyMali, Guide,Error500,NoConnection } from "@/components";
+import {
+  NotFound,
+  Loading,
+  VerifyMali,
+  Guide,
+  Error500,
+  NoConnection,
+} from "@/components";
 
 const DashboardScreen = lazy(() => import("@/screens/DashboardScreen"));
 const Profile = lazy(() => import("@/screens/Profile"));

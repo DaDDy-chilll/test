@@ -12,7 +12,7 @@ import { useState } from "react";
 
 type useChatProps = {
   id: number | string | undefined;
-}
+};
 
 const useChat = ({ id }: useChatProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
@@ -67,14 +67,13 @@ const useChat = ({ id }: useChatProps) => {
 
   // }, [id]);
 
-
   useEffect(() => {
     setIsLoading(true);
     const chatsRef = collection(db, "chats");
     const q = query(
       chatsRef,
       where("company_id", "==", id), //company id
-      orderBy("last_message_timestamp", "desc")
+      orderBy("last_message_timestamp", "desc"),
     );
 
     const unsubscribe = onSnapshot(
@@ -90,18 +89,17 @@ const useChat = ({ id }: useChatProps) => {
       (error) => {
         console.error("Error fetching chats:", error);
         setError("Failed to fetch chats. Please try again.");
-      }
+      },
     );
 
     return () => unsubscribe();
-
   }, [id]);
 
-
   return {
-    chats, isLoading, error,
-
+    chats,
+    isLoading,
+    error,
   };
-}
+};
 
 export default useChat;

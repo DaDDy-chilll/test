@@ -18,7 +18,7 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { setName } from "@/store/features/NavigationSlice";
-import  useHandleError  from "@/hooks/useHandleError";
+import useHandleError from "@/hooks/useHandleError";
 import { ProfileFormErrorType } from "@/types/helperTypes";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -50,7 +50,7 @@ const ProfileForm = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const {
     ProfileFormHandleError,
-    photoError,
+    // photoError,
     companyNameError,
     industryTypeError,
     budgetStringError,
@@ -59,7 +59,7 @@ const ProfileForm = ({
     prefectureError,
     companyDesError,
     addressError,
-    resetProfileFormError
+    resetProfileFormError,
   } = useHandleError();
   const {
     mutate,
@@ -85,14 +85,13 @@ const ProfileForm = ({
     onSuccess: (data) => {
       setAvatarImage(
         "https://api.japanjob.exbrainedu.com/v1/file/photo/" +
-          data.data.filename
+          data.data.filename,
       );
       setFormData((prevData: any) => ({
         ...prevData,
         photo: data.data.filename,
       }));
-      queryClient.invalidateQueries({ queryKey: [QueryKey.PROFILE]});
-
+      queryClient.invalidateQueries({ queryKey: [QueryKey.PROFILE] });
     },
     onError: (error) => {
       console.error("Error uploading image:", error);
@@ -136,7 +135,7 @@ const ProfileForm = ({
 
     // Remove undefined properties
     const cleanedJobData = Object.fromEntries(
-      Object.entries(jobData).filter(([_, value]) => value !== undefined)
+      Object.entries(jobData).filter(([_, value]) => value !== undefined),
     );
 
     mutate({
@@ -158,13 +157,13 @@ const ProfileForm = ({
       setShowConfirmation(false);
       ProfileFormHandleError(error?.message as ProfileFormErrorType);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, profileData, dispatch, error]);
 
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(
-        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo
+        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo,
       );
     }
   }, [formData.photo]);
@@ -223,7 +222,7 @@ const ProfileForm = ({
             className="mt-1 block w-full bg-gray-100"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            error={companyNameError || ''}
+            error={companyNameError || ""}
           />
 
           <Select
@@ -243,7 +242,7 @@ const ProfileForm = ({
                 },
               });
             }}
-            error={industryTypeError || ''}
+            error={industryTypeError || ""}
           />
           <Input
             name="budget"
@@ -255,7 +254,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, budget: e.target.value })
             }
-            error={budgetStringError || ''}
+            error={budgetStringError || ""}
           />
           <Input
             name="address"
@@ -266,7 +265,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, address: e.target.value })
             }
-            error={addressError || ''}
+            error={addressError || ""}
           />
           <Select
             name="staff"
@@ -282,7 +281,7 @@ const ProfileForm = ({
                 staff: { label: e.target.labels, value: e.target.value },
               })
             }
-            error={staffError || ''}
+            error={staffError || ""}
           />
           <Select
             name="prefecture_id"
@@ -298,7 +297,7 @@ const ProfileForm = ({
                 area: { label: e.target.labels, value: e.target.value },
               })
             }
-            error={prefectureError || ''}
+            error={prefectureError || ""}
           />
           <DatePicker
             name="starting"
@@ -309,7 +308,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, starting: e.target.value })
             }
-            error={startingError || ''}
+            error={startingError || ""}
           />
           <Select
             disabled={formData.prefecture_id.value !== "" ? false : true}
@@ -322,7 +321,7 @@ const ProfileForm = ({
             onChange={(e) =>
               setFormData({ ...formData, prefecture_id: e.target.value })
             }
-            error={prefectureError || ''}
+            error={prefectureError || ""}
           />
           <span className="col-span-2">
             <Input
@@ -335,7 +334,7 @@ const ProfileForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, company_des: e.target.value })
               }
-              error={companyDesError || ''}
+              error={companyDesError || ""}
             />
           </span>
         </div>

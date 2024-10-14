@@ -3,7 +3,6 @@ import { Chat, Message } from "@/types/helperTypes";
 import { User } from "@/types/helperTypes";
 import MessageItem from "./MessageItem";
 
-
 type ChatViewProps = {
   messages: Message[];
   user: User | null;
@@ -19,17 +18,15 @@ const ChatView = ({
 }: ChatViewProps) => {
   return (
     <div className="overflow-y-auto px-3">
-      {
-        messages.map((message) => (
-          <MessageItem
-            key={message.id}
-            message={message}
-            currentUser={{ id: !!user?.id ? user?.id : null }}
-            messagesEndRef={messagesEndRef}
-            selectedChat={selectedChat}
-          />
-        ))
-      }
+      {messages.map((message) => (
+        <MessageItem
+          key={message.id}
+          message={message}
+          currentUser={{ id: !!user?.id ? user?.id : null }}
+          messagesEndRef={messagesEndRef}
+          selectedChat={selectedChat}
+        />
+      ))}
     </div>
   );
 };

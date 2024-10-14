@@ -19,13 +19,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
-  persistence: browserLocalPersistence
+  persistence: browserLocalPersistence,
 });
 
 // Alternatively, you can use getAuth for simpler cases
 // const auth = getAuth(app);
 // auth.setPersistence(browserLocalPersistence);
-
 
 const db = getFirestore(app);
 

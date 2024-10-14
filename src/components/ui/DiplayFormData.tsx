@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { jp } from "@/lang/jp";
-import defaultImage from '@/assets/images/default.png';
+import defaultImage from "@/assets/images/default.png";
 
 type formData = {
   name: string;
@@ -18,7 +18,7 @@ type Props = {
   setComplete?: (value: boolean) => void;
   navigator?: () => void;
 };
-const DiplayFormData = ({ formData, setComplete, navigator }: Props) => {
+const DiplayFormData = ({ setComplete, navigator }: Props) => {
   return (
     <motion.div
       key="complete"

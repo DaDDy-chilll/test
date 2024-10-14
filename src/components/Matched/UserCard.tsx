@@ -1,11 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import DefaultProfile from "@/assets/icons/default_user.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { QueryKey } from "@/utils/queryKey";
-import { apiRoutes } from "@/utils/apiRoutes";
-import { useEffect } from "react";
 import moment from "moment";
 import { jp } from "@/lang/jp";
 type UserCardProps = {
@@ -14,14 +9,13 @@ type UserCardProps = {
   jobType: { id: number | null; name: string } | null;
   likeorUnlikeHandler: (
     event: React.MouseEvent<HTMLButtonElement>,
-    user_id: number
+    user_id: number,
   ) => void;
 };
 
 const UserCard = ({
   handleShowDetail,
   matchedData,
-  jobType,
   likeorUnlikeHandler,
 }: UserCardProps) => {
   // const profile = `https://api.japanjob.exbrainedu.com/v1/file/photo/${matchedData.m_basicinfos.profile_path}` || null;
@@ -29,7 +23,7 @@ const UserCard = ({
   const cardClick = () => {
     handleShowDetail(matchedData.id);
   };
-  const { m_preferred_jobs, m_basicinfos } = matchedData;
+  const { m_basicinfos } = matchedData;
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
 
   return (
@@ -44,7 +38,7 @@ const UserCard = ({
       <div className="flex w-full h-full  flex-col items-center py-3 px-2">
         <img
           className="w-16 h-16 mb-3 rounded-full shadow-lg"
-          src={m_basicinfos.profile_path ?  profileImage :  DefaultProfile}
+          src={m_basicinfos.profile_path ? profileImage : DefaultProfile}
           alt={m_basicinfos.name}
           crossOrigin="anonymous"
         />
@@ -69,7 +63,7 @@ const UserCard = ({
             </span>
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.passport}:</p>
-              <p>{m_basicinfos.has_passport === 1 ? jp.yes :jp.no}</p>
+              <p>{m_basicinfos.has_passport === 1 ? jp.yes : jp.no}</p>
             </span>
           </div>
         </div>

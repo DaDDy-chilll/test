@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "validate": "npm run lint && npm run type-check",
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -60,6 +65,7 @@
     "the": "^1.0.2"
   },
   "devDependencies": {
+    "@axe-core/react": "^4.10.0",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.14.14",
     "@types/react": "^18.2.15",
@@ -72,11 +78,24 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.31",
+    "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.0.2",
+    "typescript": "^5.3.3",
     "vite": "^5.0.11",
     "vite-plugin-svgr": "^4.2.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "npm run lint:fix"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ],
+    "*": "npm run format"
   }
 }

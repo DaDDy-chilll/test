@@ -1,6 +1,4 @@
-
 const Guide = () => {
-  
   const videoUrl = "https://www.youtube.com/embed/6R4ioDuG2xY";
   return (
     <div className="w-full h-[90vh] p-4">

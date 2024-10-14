@@ -1,4 +1,3 @@
-import React from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -23,7 +22,6 @@ const JobDetailSkeleton = () => {
         <div className="flex flex-col gap-2 my-10">
           <Skeleton height={20} width={90} />
           <Skeleton height={10} width={200} />
-
         </div>
       </div>
     </SkeletonTheme>

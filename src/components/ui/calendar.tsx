@@ -17,7 +17,12 @@ type CalendarProps = {
   onDateSelect: (date: Date) => void;
 };
 
-const Calendar = ({ className, style = 0, selectedDate, onDateSelect }: CalendarProps) => {
+const Calendar = ({
+  className,
+  style = 0,
+  selectedDate,
+  onDateSelect,
+}: CalendarProps) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -31,8 +36,18 @@ const Calendar = ({ className, style = 0, selectedDate, onDateSelect }: Calendar
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const handlePrevMonth = () => {

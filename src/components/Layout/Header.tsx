@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import NotiItem from "../ui/NotiItem";
 import { jp } from "@/lang/jp";
-import { NavLink } from "react-router-dom";
 import Burgermenu from "@/assets/icons/Burgermenu";
 
 const Header = () => {
@@ -99,7 +98,7 @@ const Header = () => {
       </div>
       <div className="flex gap-5">
         <DropdownMenu>
-          <DropdownMenuTrigger className=" z-50">
+          <DropdownMenuTrigger className=" z-50" title="Notifications">
             <div>
               <svg
                 className="cursor-pointer hover:text-red-500"
@@ -128,7 +127,10 @@ const Header = () => {
               ))}
             <DropdownMenuSeparator />
             <div className="flex justify-end">
-              <button className="text-sm text-blue-500 flex items-center gap-2 m-2">
+              <button
+                title="See More"
+                className="text-sm text-blue-500 flex items-center gap-2 m-2"
+              >
                 See More
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

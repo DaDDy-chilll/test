@@ -1,5 +1,5 @@
 import React from "react";
-import {LOGO} from "@/assets";
+import { LOGO } from "@/assets";
 // import LOGO from "@/assets/images/LOGO.svg"
 import { Button } from "@/components";
 import { motion } from "framer-motion";

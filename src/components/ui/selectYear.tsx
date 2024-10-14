@@ -13,7 +13,7 @@ const SelectYear = ({ year, onYearSelect }: Props) => {
     years.push(
       <option value={i} key={`year-${i}`}>
         {i}
-      </option>
+      </option>,
     );
   }
 

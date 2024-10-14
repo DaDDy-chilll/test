@@ -14,7 +14,7 @@ interface SelectProps {
   className?: string;
   defaultOption?: string;
   name?: string;
-  value?: {label: string, value: string};
+  value?: { label: string; value: string };
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
   style?: number;
   register?: any;
@@ -31,25 +31,24 @@ const Select: React.FC<SelectProps> = ({
   className = "",
   defaultOption = "Choose an option",
   style = 0,
-  register,
   value,
   onChange,
   disabled = false,
   defaultValue = undefined,
-  error = '',
+  error = "",
 }) => {
   return (
     <div
       className={cn(
         "relative z-0 w-full mb-5 group flex flex-col items-start",
-        className
+        className,
       )}
     >
       <label
         htmlFor={id}
         className={cn(
           "peer-focus:font-medium absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6",
-          className
+          className,
         )}
       >
         {label}
@@ -59,13 +58,15 @@ const Select: React.FC<SelectProps> = ({
         name={name}
         value={value?.value}
         onChange={(e) => {
-          const selectedOption = options.find(option => option.value === e.target.value);
+          const selectedOption = options.find(
+            (option) => option.value === e.target.value,
+          );
           if (onChange && selectedOption) {
             onChange({
               target: {
                 value: selectedOption.value,
                 labels: selectedOption.label,
-              }
+              },
             } as any);
           }
         }}
@@ -80,14 +81,15 @@ const Select: React.FC<SelectProps> = ({
           {defaultOption}{" "}
         </option>
 
-        {options.filter((option) => option.label != defaultOption).map((option, index) =>{
-          return(
-            <option key={index} value={option.value} disabled={disabled} >
-            {option.label}
-          </option>
-          )
-        })}
-
+        {options
+          .filter((option) => option.label != defaultOption)
+          .map((option, index) => {
+            return (
+              <option key={index} value={option.value} disabled={disabled}>
+                {option.label}
+              </option>
+            );
+          })}
       </select>
 
       <div className={`absolute right-2  ${style === 0 ? "top-2" : "top-1"}`}>

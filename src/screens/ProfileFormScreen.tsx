@@ -73,7 +73,7 @@ const ProfileFormScreen = () => {
           jobTypesResponse.data.map((type: any) => ({
             value: type.id.toString(),
             label: type.job_type_jp,
-          }))
+          })),
         );
 
         const cityResponse = await fetchServer({
@@ -85,7 +85,7 @@ const ProfileFormScreen = () => {
           cityResponse.data.map((item: any) => ({
             label: item.area,
             value: item.id.toString(),
-          }))
+          })),
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -110,7 +110,7 @@ const ProfileFormScreen = () => {
     onSuccess: (data) => {
       setAvatarImage(
         "https://api.japanjob.exbrainedu.com/v1/file/photo/" +
-          data.data.filename
+          data.data.filename,
       );
       setFormData((prevData) => ({ ...prevData, photo: data.data.filename }));
     },
@@ -176,7 +176,7 @@ const ProfileFormScreen = () => {
 
   const handleSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
-    field: string
+    field: string,
   ) => {
     const selectedOption = e.target.value;
     setFormData({ ...formData, [field]: selectedOption });

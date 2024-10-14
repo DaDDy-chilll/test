@@ -1,7 +1,7 @@
 // import { useMutation } from "@tanstack/react-query";
 import { FormEvent, useEffect } from "react";
 
-import { Button,Input } from "@/components";
+import { Button, Input } from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
@@ -15,10 +15,14 @@ import { jp } from "@/lang/jp";
 import useHandleError from "@/hooks/useHandleError";
 const RegisterScreen = () => {
   const { onRegister, isRegisterPending, error } = useAuth();
-  const { emailError, passwordError, confirmPasswordError, authHandleError,resetAuthError } = useHandleError();
-  const { user, token } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const {
+    emailError,
+    passwordError,
+    confirmPasswordError,
+    authHandleError,
+    resetAuthError,
+  } = useHandleError();
+  const { user, token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +31,7 @@ const RegisterScreen = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    resetAuthError()
+    resetAuthError();
     const formData = new FormData(e.currentTarget);
     const registerProps: RegisterProps = {
       email: formData.get("email") as string,
@@ -39,7 +43,7 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (
@@ -119,7 +123,6 @@ const RegisterScreen = () => {
               </div>
             </motion.form>
           </div>
-        
         </div>
       </div>
     </div>

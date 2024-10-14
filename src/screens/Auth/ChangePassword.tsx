@@ -15,7 +15,7 @@ import { BeatLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useDispatch } from "react-redux";
-import { setToken ,setForgotPassword} from "@/store";
+import { setToken, setForgotPassword } from "@/store";
 import { ERROR_MESSAGE } from "@/constants/errorMessage";
 
 const ChangePassword: React.FC = () => {
@@ -27,8 +27,7 @@ const ChangePassword: React.FC = () => {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const { mutate, isPending, isSuccess, error, data } = usePost({ token });
-
+  const { mutate, isPending, isSuccess, error } = usePost({ token });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,15 +50,15 @@ const ChangePassword: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
-      dispatch(setToken({ token: null }));
-        dispatch(setForgotPassword(false))
+        dispatch(setToken({ token: null }));
+        dispatch(setForgotPassword(false));
         navigate(RouteName.LOGIN);
       }, 1000);
     }
     if (error) {
       console.log(error);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, error]);
 
   return (

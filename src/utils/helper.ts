@@ -1,5 +1,5 @@
 import axios from "axios";
-import RouteName from "@/navigations/routes"
+import RouteName from "@/navigations/routes";
 import { FetchServerType } from "../types/helperTypes";
 let result: any;
 
@@ -15,7 +15,7 @@ export const fetchServer = async ({
   token = null,
 }: FetchServerType) => {
   const urlEndPoint = endpoint || "";
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   try {
     if (method === "GET") {
       const { data } = await api.get(urlEndPoint);
@@ -30,7 +30,7 @@ export const fetchServer = async ({
       const { data } = await api.post(urlEndPoint, body, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       });
       result = data;
@@ -52,16 +52,16 @@ export const fetchServer = async ({
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");
           window.location.href = RouteName.LOGIN;
-        }else if (data.status == 500 || status == 500) {
+        } else if (data.status == 500 || status == 500) {
           window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };
         }
-      } else if (error.code = "ERR_NETWORK") {
-        window.location.href = RouteName.NETWORK_ERROR
+      } else if ((error.code = "ERR_NETWORK")) {
+        window.location.href = RouteName.NETWORK_ERROR;
       }
     } else {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }

@@ -27,12 +27,9 @@ const Input: React.FC<InputProps> = ({
   min,
   max,
 }) => {
-
-
-
   return (
     <div className="relative z-0 w-full mb-5 group">
-      <input  
+      <input
         type={type}
         name={name}
         id={name}
@@ -49,7 +46,7 @@ const Input: React.FC<InputProps> = ({
         className={cn(
           "cursor-pointer bg-white z-10 w-full py-1 peer-focus:w-auto peer-focus:py-0 peer-focus:font-medium absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-0 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6",
           className,
-          error && "border-red-500"
+          error && "border-red-500",
         )}
       >
         {label}

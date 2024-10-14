@@ -17,7 +17,6 @@ import useChat from "@/hooks/useChat";
 import moment from "moment";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
-import { format } from "date-fns";
 import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
@@ -28,25 +27,15 @@ import { Helmet } from "react-helmet-async";
 import DefaultUser from "@/assets/icons/default_user.svg";
 import { db } from "../firebaseConfig";
 import RouteName from "@/navigations/routes";
-import {
-  query,
-  where,
-  addDoc,
-  collection,
-  orderBy,
-  Timestamp,
-  doc,
-  setDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import { query, where, collection, onSnapshot } from "firebase/firestore";
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
 
 const currentDate = moment().format("YYYY-MM-DD");
 // const currentDate = "2024-10-07";
-const currentYear = moment().format("YYYY");
-const currentDay = moment().format("DD");
+// const currentYear = moment().format("YYYY");
+// const currentDay = moment().format("DD");
 
 // const TODAY = "2024-11-03";
 const monthNames = [
@@ -106,19 +95,20 @@ const DashboardScreen = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const scrollableRef = useRef<HTMLDivElement>(null);
-  const [activeDate, setActiveDate] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedDateData, setSelectedDateData] = useState<any>();
   const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
-    {}
+    {},
   );
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [hasTodayEvents, setHasTodayEvents] = useState<any>({
     date: "",
     events: null,
   });
+  // const [activeDate, setActiveDate] = useState<string | null>(null);
+  // const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   // const [selectedMonth,setSelectedMonth] = useState<number | string>();
   // const selectedMonth = useRef<string>(TODAY);
+  // const today = format(new Date(), "yyyy-MM-dd");
   const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
     endpoint: `${
       apiRoutes.DASHBOARD
@@ -127,11 +117,7 @@ const DashboardScreen = () => {
     key: QueryKey.DASHBOARD,
   });
 
-  const {
-    data: interviewData,
-    isLoading: isInterviewLoading,
-    refetch: refetchInterviewData,
-  } = useFetch({
+  const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
     endpoint: `${apiRoutes.INTERVIEW}?start_date=${currentDate}&end_date=${endOfYear}`,
     token: token as string,
     key: QueryKey.INTERVIEW,
@@ -157,14 +143,12 @@ const DashboardScreen = () => {
     };
   }, [dispatch]);
 
-  const today = format(new Date(), "yyyy-MM-dd");
-
   const data = useMemo(() => {
     if (!dashboardData) return [];
 
     return Object.entries(dashboardData?.data.matchings)
       .map(([key, value]) => {
-        const [year, month] = key.split("-");
+        const [_, month] = key.split("-");
         const monthIndex = parseInt(month) - 1;
         return {
           name: `${monthNames[monthIndex].id} 月`,
@@ -174,7 +158,7 @@ const DashboardScreen = () => {
       .sort(
         (a, b) =>
           monthNames.findIndex((month) => month.name === a.name) -
-          monthNames.findIndex((month) => month.name === b.name)
+          monthNames.findIndex((month) => month.name === b.name),
       );
   }, [dashboardData]);
 
@@ -191,7 +175,7 @@ const DashboardScreen = () => {
         messagesRef,
         where("chat_id", "==", chat.id),
         where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false)
+        where("read", "==", false),
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -218,25 +202,22 @@ const DashboardScreen = () => {
     };
   }, [chats, user?.id]);
 
-  const coverInterviews = useCallback(
-    (data: any) => {
-      if (!data) return [];
-      return Object.entries(data as any[]).flatMap(([date, interviews]) => {
-        return Object.entries(interviews as Record<string, any>).map(
-          ([key, value]) => {
-            return {
-              name: key,
-              user_photo: value[0].user_photo,
-              start_time: value[0].start_time,
-              end_time: value[0].end_time,
-              job_title: value[0].job_title,
-            };
-          }
-        );
-      });
-    },
-    []
-  );
+  const coverInterviews = useCallback((data: any) => {
+    if (!data) return [];
+    return Object.entries(data as any[]).flatMap(([_, interviews]) => {
+      return Object.entries(interviews as Record<string, any>).map(
+        ([key, value]) => {
+          return {
+            name: key,
+            user_photo: value[0].user_photo,
+            start_time: value[0].start_time,
+            end_time: value[0].end_time,
+            job_title: value[0].job_title,
+          };
+        },
+      );
+    });
+  }, []);
 
   useEffect(() => {
     if (upcomingInterviews) {
@@ -246,14 +227,14 @@ const DashboardScreen = () => {
         }
       });
     }
-  }, [upcomingInterviews,coverInterviews]);
+  }, [upcomingInterviews, coverInterviews]);
 
   return (
     <>
       <Helmet>
         <title>{jp.dashboard} - Japan Job</title>
       </Helmet>
-      {(isDashboardLoading) && (
+      {isDashboardLoading && (
         <Loading
           isLoading={isDashboardLoading}
           className="h-[calc(100vh-68px)]"
@@ -314,7 +295,7 @@ const DashboardScreen = () => {
                             {key}
                           </div>
                         );
-                      }
+                      },
                     )
                   )}
                 </div>
@@ -360,8 +341,11 @@ const DashboardScreen = () => {
             {isChatLoading ? (
               <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start ">
                 {Array.from({ length: 3 }, (_, index) => (
-                  <div key={index} className="flex items-center w-full p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300">
-                    <ChatSkeleton  />
+                  <div
+                    key={index}
+                    className="flex items-center w-full p-2 gap-x-2 border-b-2 border-gray-300 overflow-hidden cursor-pointer hover:bg-gray-300"
+                  >
+                    <ChatSkeleton />
                   </div>
                 ))}
               </div>
@@ -405,7 +389,7 @@ const DashboardScreen = () => {
                         </h1>
                         <p className="text-xs text-gray-500">
                           {moment(
-                            chat.last_message_timestamp.toDate()
+                            chat.last_message_timestamp.toDate(),
                           ).calendar()}
                         </p>
                       </div>

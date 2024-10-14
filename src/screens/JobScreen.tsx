@@ -3,7 +3,6 @@ import {
   Button,
   JobDetails,
   JobForm,
-  Loading,
   JobRowSkeleton,
   JobDetailSkeleton,
 } from "@/components";
@@ -76,7 +75,7 @@ const JobScreen = () => {
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];
     return jobs.filter((job: any) =>
-      job.job_title.toLowerCase().includes(search.toLowerCase())
+      job.job_title.toLowerCase().includes(search.toLowerCase()),
     );
   }, [jobs, search]);
 
@@ -110,7 +109,7 @@ const JobScreen = () => {
 
   const addHandler = () => {
     setForm(defaultForm);
-    setIsAdd(true)
+    setIsAdd(true);
   };
   const backHandler = () => {
     setIsAdd(false);
@@ -249,7 +248,7 @@ const JobScreen = () => {
                   {jobListLoading ? (
                     Array(5)
                       .fill(0)
-                      .map((item, index) => <JobRowSkeleton key={index} />)
+                      .map((_, index) => <JobRowSkeleton key={index} />)
                   ) : filteredJobs.length < 1 ? (
                     <tr>
                       <td colSpan={5}>

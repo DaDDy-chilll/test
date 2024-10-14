@@ -6,10 +6,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
-
 
 type LineChartProps = {
   data?: any[];
@@ -17,14 +15,14 @@ type LineChartProps = {
 const LineCharts = ({ data = [] }: LineChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart  data={data} >
+      <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="name"
           interval={0}
-          tick={{ fontSize: 10,  textAnchor: "end", }}
+          tick={{ fontSize: 10, textAnchor: "end" }}
         />
-        <YAxis tick={{ fontSize: 10,  textAnchor: "end", }} />
+        <YAxis tick={{ fontSize: 10, textAnchor: "end" }} />
         <Tooltip />
         {/* <Legend /> */}
         <Line

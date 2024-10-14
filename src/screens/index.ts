@@ -11,7 +11,6 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
 import Otp from "./Auth/Otp";
 
-
 export {
   ApplicantScreen,
   // MatchedScreend,

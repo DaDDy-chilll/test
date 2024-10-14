@@ -23,35 +23,37 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
           src={profileImage}
           alt={`${chat.jobfinder_name || "Unknown"}'s profile`}
           width="100%"
-          height="100%" 
+          height="100%"
           crossOrigin="anonymous"
         />
       </div>
       <div className="flex flex-col gap-1 w-4/5">
         <div className="flex items-center w-full justify-between">
           <div className="flex flex-col gap-1">
-          <p className="font-bold text-sm">{chat.jobfinder_name || "Unknown"}</p>
-          {chat.last_message && (
-          <p
-            className={`text-xs ${
-              unreadCount > 0 ? "text-black font-bold" : "text-gray-500"
-            }`}
-          >
-            {chat.last_message}
-          </p>
-        )}
+            <p className="font-bold text-sm">
+              {chat.jobfinder_name || "Unknown"}
+            </p>
+            {chat.last_message && (
+              <p
+                className={`text-xs ${
+                  unreadCount > 0 ? "text-black font-bold" : "text-gray-500"
+                }`}
+              >
+                {chat.last_message}
+              </p>
+            )}
           </div>
           <div className="flex flex-col items-end justify-center gap-2">
-          <p className="text-xs text-gray-400">
-          {chat.last_message_timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </p>
-        {unreadCount > 0 && (
-          <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
-        )}
+            <p className="text-xs text-gray-400">
+              {chat.last_message_timestamp
+                .toDate()
+                .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </p>
+            {unreadCount > 0 && (
+              <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
+            )}
+          </div>
         </div>
-        </div>
-       
-       
       </div>
     </div>
   );

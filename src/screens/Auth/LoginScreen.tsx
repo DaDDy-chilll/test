@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { LoginProps, AuthErrorType } from "@/types/helperTypes";
 import useAuth from "@/hooks/useAuth";
 import { BeatLoader } from "react-spinners";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
@@ -33,12 +33,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (user && token) {
-    if (!localStorage.getItem('isCompletedProfile') ) {
-      navigate(RouteName.PROFILE_FORM);
-    }else{
-    navigate(RouteName.DASHBOARD);
+      if (!localStorage.getItem("isCompletedProfile")) {
+        navigate(RouteName.PROFILE_FORM);
+      } else {
+        navigate(RouteName.DASHBOARD);
+      }
     }
-  }
   }, [user, token, navigate]);
 
   useEffect(() => {
@@ -55,40 +55,42 @@ const LoginScreen = () => {
       <div className="h-screen flex justify-center items-center">
         <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
           <div className="bg-white rounded-xl p-8">
-            <div className="flex items-center gap-3">
-              <div className="w-12">
-                <img src={logo} className="w-full" alt="Japan job logo" />
+            <header>
+              <div className="flex items-center gap-3">
+                <div className="w-12">
+                  <img src={logo} className="w-full" alt="Japan job logo" />
+                </div>
+                <h1 className="font-medium">JAPAN JOB</h1>
               </div>
-              <h1 className="font-medium">JAPAN JOB</h1>
-            </div>
-            <motion.div
-              className="text-center"
-              variants={headerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <h4 className="text-center text-2xl font-bold text-black my-10">
-                {jp.login}
-              </h4>
-            </motion.div>
-            <motion.form
-              className="space-y-8 w-full"
-              onSubmit={handleSubmit}
-              variants={formVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <div>
-                <Input
-                  name="email"
-                  type="email"
-                  label={jp.email}
-                  className="mt-1 block w-full"
-                  required={false}
-                  error={!!emailError ? emailError : ""}
-                />
-              </div>
-              <div>
+              <motion.div
+                className="text-center"
+                variants={headerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <h2 className="text-center text-2xl font-bold text-black my-10">
+                  {jp.login}
+                </h2>
+              </motion.div>
+            </header>
+            <main>
+              <motion.form
+                className="space-y-8 w-full"
+                onSubmit={handleSubmit}
+                variants={formVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <div>
+                  <Input
+                    name="email"
+                    type="email"
+                    label={jp.email}
+                    className="mt-1 block w-full"
+                    required={false}
+                    error={!!emailError ? emailError : ""}
+                  />
+                </div>
                 <Input
                   name="password"
                   type="password"
@@ -105,26 +107,26 @@ const LoginScreen = () => {
                     {jp.forgotPassword}
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <Button
-                  type="submit"
-                  disabled={false}
-                  className="w-full medium font-medium"
-                >
-                  {isLoginPending ? (
-                    <BeatLoader
-                      loading={isLoginPending}
-                      size={8}
-                      color={"#fff"}
-                    />
-                  ) : (
-                    jp.login
-                  )}
-                </Button>
-              </div>
-            </motion.form>
+                <div>
+                  <Button
+                    type="submit"
+                    disabled={false}
+                    className="w-full medium font-medium"
+                  >
+                    {isLoginPending ? (
+                      <BeatLoader
+                        loading={isLoginPending}
+                        size={8}
+                        color={"#fff"}
+                      />
+                    ) : (
+                      jp.login
+                    )}
+                  </Button>
+                </div>
+              </motion.form>
+            </main>
           </div>
         </div>
       </div>

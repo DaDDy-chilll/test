@@ -3,27 +3,25 @@ import { format, isToday } from "date-fns";
 import moment from "moment";
 import Holidays from "./Holidays";
 
-
 interface Event {
-count: number
-interviews:any
+  count: number;
+  interviews: any;
 }
 
 type CalendarCellProps = {
   day: Date;
   todaysEvents: Event;
   handleClick: (todaysEvents: Event) => void;
-  year:any
+  year: any;
 };
 
 const CalendarCell = ({
   day,
   todaysEvents,
   handleClick,
-  year
+  year,
 }: CalendarCellProps) => {
   const clickEvent = () => handleClick(todaysEvents);
-
 
   return (
     <div
@@ -32,15 +30,19 @@ const CalendarCell = ({
         {
           "border border-red-400 bg-[#E5D5D9]": isToday(day),
           "bg-[#E5D5D9]": !isToday(day),
-        }
+        },
       )}
       onClick={clickEvent}
     >
-      <div className={clsx("w-8  text-sm flex items-center justify-center mx-auto")}>
+      <div
+        className={clsx(
+          "w-8  text-sm flex items-center justify-center mx-auto",
+        )}
+      >
         {format(day, "d")}
       </div>
-    <Holidays date={moment(day).format("YYYY-MM-DD")} year={year} />
-      
+      <Holidays date={moment(day).format("YYYY-MM-DD")} year={year} />
+
       {todaysEvents.interviews && (
         <div className="flex items-center gap-1">
           <div className="bg-primaryColor w-2 h-2 rounded-full"></div>

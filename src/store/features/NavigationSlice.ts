@@ -1,11 +1,10 @@
 import { jp } from "@/lang/jp";
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const initialState = {
   title: jp.dashboard,
   sideBar: true,
-  name: localStorage.getItem("name") || "", 
+  name: localStorage.getItem("name") || "",
 };
 
 export const navigationSlice = createSlice({

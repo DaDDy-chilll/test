@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "allowJs": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -19,13 +20,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    
+
     /* Path Config */
     "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
+  "exclude": ["node_modules", "postcss.config.js", "tailwind.config.js"],
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -5,7 +5,6 @@ import {
   Pagination,
   Loading,
   MatchedApplicants,
-  Maintenance,
   UserProfileSkeleton,
 } from "@/components";
 import { useEffect, useState, useRef } from "react";
@@ -23,7 +22,6 @@ import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 
 const initialFilter: FilterType = {
   live_in_japan: "",
@@ -53,7 +51,7 @@ const ApplicantScreen = () => {
     if (currentPage > 0) params.append("page", currentPage.toString());
     return params.toString();
   };
-  const { data, isLoading, refetch, error } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [QueryKey.APPLICANTS, currentPage, filter],
     queryFn: () => {
       return fetchServer({
@@ -70,13 +68,7 @@ const ApplicantScreen = () => {
       !!filter.job_type,
   });
 
-  const {
-    data: jobTypes,
-    isLoading: isJobTypesLoading,
-    isError: isJobTypesError,
-    isSuccess: isJobTypesSuccess,
-    error: jobTypesError,
-  } = useFetch({
+  const { data: jobTypes, isLoading: isJobTypesLoading } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,

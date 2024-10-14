@@ -1,5 +1,5 @@
 import { colors } from "@/constants/color";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { BounceLoader } from "react-spinners";
 

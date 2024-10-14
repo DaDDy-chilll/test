@@ -54,7 +54,7 @@ export type AuthErrorType = {
     confirm_password?: {
       jp: string;
       mm: string;
-    }
+    },
   ];
 };
 
@@ -127,7 +127,7 @@ export type ProfileFormErrorType = {
     address?: {
       jp: string;
       mm: string;
-    }
+    },
   ];
 };
 
@@ -308,8 +308,8 @@ export interface User {
 
 export type ApplicantDetail = {
   id: string | number;
-  address:string;
-  email:string;
+  address: string;
+  email: string;
   m_basicinfos: {
     profile_path: string;
     name: string;
@@ -318,7 +318,7 @@ export type ApplicantDetail = {
     gender: number;
     has_passport: number;
     video_path: string;
-    phone:string;
+    phone: string;
   };
   m_prefer_areas: [
     {
@@ -326,14 +326,14 @@ export type ApplicantDetail = {
         area_id: number;
         name: string;
       };
-    }
+    },
   ];
   m_preferred_jobs: [
     {
-      m_job_types:{
-        job_type_jp:string
-      }
-    }
+      m_job_types: {
+        job_type_jp: string;
+      };
+    },
   ];
   m_prefer_other: {
     start_salary: number;
@@ -351,7 +351,7 @@ export type ApplicantDetail = {
       m_exams: {
         name_jp: string;
       };
-    }
+    },
   ];
   m_education: [
     {
@@ -360,7 +360,7 @@ export type ApplicantDetail = {
       academic_start_year: number;
       major: string;
       university_name: string;
-    }
+    },
   ];
   m_job_experiences: [
     {
@@ -370,6 +370,6 @@ export type ApplicantDetail = {
       description: string;
       start_year: string;
       end_year: string;
-    }
+    },
   ];
 };

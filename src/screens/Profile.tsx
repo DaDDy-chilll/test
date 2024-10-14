@@ -87,7 +87,7 @@ const Profile = () => {
             (prefecture: any) => ({
               label: prefecture.name,
               value: prefecture.id.toString(),
-            })
+            }),
           );
         }
         return acc;

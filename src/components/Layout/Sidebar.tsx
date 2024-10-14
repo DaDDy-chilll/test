@@ -271,16 +271,16 @@ const Sidebar = () => {
               {({ isActive }) => (
                 <div className="flex overflow-hidden">
                   <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`size-6 ${
-                    isActive
-                      ? "text-white"
-                      : "text-gray-900 group-hover:text-white"
-                  } transition-colors duration-100`}
-                  fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className={`size-6 ${
+                      isActive
+                        ? "text-white"
+                        : "text-gray-900 group-hover:text-white"
+                    } transition-colors duration-100`}
+                    fill="none"
                   >
                     <path
                       strokeLinecap="round"

@@ -1,7 +1,7 @@
 // import notfound from "@/assets/images/notfound.svg";
 import { Link } from "react-router-dom";
 import Routes from "@/navigations/routes";
-import notfound from '@/assets/images/404.svg'
+import notfound from "@/assets/images/404.svg";
 import { jp } from "@/lang/jp";
 const NotFound = () => {
   return (
@@ -12,7 +12,7 @@ const NotFound = () => {
           {jp.pageNotFound}
         </h1>
         <p className="text-lg font-light text-gray-500">
-        申し訳ありませんが、お探しのページは見つかりませんでした。
+          申し訳ありませんが、お探しのページは見つかりませんでした。
         </p>
         <Link
           to={Routes.DASHBOARD}

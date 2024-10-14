@@ -25,7 +25,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
       ref={messagesEndRef}
     >
       {!isCurrentUser && (
-        <img src={profileImage} crossOrigin="anonymous" alt="" className="w-5 h-5 rounded-full" />
+        <img
+          src={profileImage}
+          crossOrigin="anonymous"
+          alt=""
+          className="w-5 h-5 rounded-full"
+        />
       )}
 
       <div

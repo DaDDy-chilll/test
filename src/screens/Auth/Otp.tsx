@@ -27,7 +27,7 @@ const Otp: React.FC = () => {
 
   const handleChange = (
     element: ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (isNaN(Number(element.target.value))) return false;
 
@@ -43,7 +43,7 @@ const Otp: React.FC = () => {
 
   const handleBackspace = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (e.key === "Backspace" && index > 0 && otp[index] === "") {
       inputRefs.current[index - 1]?.focus();

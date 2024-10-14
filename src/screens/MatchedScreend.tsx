@@ -11,7 +11,7 @@ import {
   DefaultCard,
   UserProfileSkeleton,
 } from "@/components";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { jp } from "@/lang/jp";
@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
-import usePost from "@/hooks/usePost";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { CardSkeleton } from "@/components";
@@ -156,7 +155,7 @@ const MatchedScreend = () => {
 
   const likeorUnlikeHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
-    user_id: number
+    user_id: number,
   ) => {
     event.stopPropagation();
     const likeOrUnlike = event.currentTarget.name;
@@ -180,7 +179,6 @@ const MatchedScreend = () => {
   }, [jobNameTypeSuccess]);
 
   useEffect(() => {
-
     if (matchedDataSuccess && matchedData?.data?.users) {
       addMoreMatchedUsers(matchedData.data.users);
     }
@@ -192,13 +190,13 @@ const MatchedScreend = () => {
       setLimit(3);
       refetch();
     }
-  }, [jobType.id, liked,refetch]);
+  }, [jobType.id, liked, refetch]);
 
   useEffect(() => {
     if (page > 1 || limit > 3 || likeOrUnlikeSuccess) {
       refetch();
     }
-  }, [page, limit, likeOrUnlikeSuccess,refetch]);
+  }, [page, limit, likeOrUnlikeSuccess, refetch]);
 
   return (
     <>
@@ -263,7 +261,9 @@ const MatchedScreend = () => {
                 </svg>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className={` ${defaultJobType.length > 5 ? "overflow-y-auto h-[11rem]" : "overflow-y-hidden"}`}>
+            <DropdownMenuContent
+              className={` ${defaultJobType.length > 5 ? "overflow-y-auto h-[11rem]" : "overflow-y-hidden"}`}
+            >
               {defaultJobType.length > 0 &&
                 defaultJobType.map((item: { id: number; name: string }) => (
                   <DropdownMenuItem
@@ -371,7 +371,7 @@ const MatchedScreend = () => {
               </div>
             )}
           </div>
-          {(showDetail ||isDetailLoading) && (
+          {(showDetail || isDetailLoading) && (
             <motion.div
               key="matchDetail"
               className="absolute top-0 left-0 w-full h-full bg-gray-100 z-50"
@@ -381,7 +381,7 @@ const MatchedScreend = () => {
               exit="exit"
             >
               <span className="w-full h-full relative">
-              {isDetailLoading ? (
+                {isDetailLoading ? (
                   <UserProfileSkeleton />
                 ) : (
                   <MatchedApplicants
@@ -408,8 +408,6 @@ const MatchedScreend = () => {
                     />
                   </svg>
                 </button>
-
-               
               </span>
             </motion.div>
           )}

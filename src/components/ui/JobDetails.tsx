@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { jp } from "@/lang/jp";
 import moment from "moment";
 import { ConfirmationBox } from "@/components";
-import { useState } from "react";
 
 type formData = {
   name: string;
@@ -35,7 +34,6 @@ const JobDetails = ({
   showConfirmation,
   setShowConfirmation,
 }: Props) => {
-
   const clickBackEvent = () => backHandler && backHandler(false);
   const clickDeleteEvent = () => deleteHandler && deleteHandler();
   const clickEditEvent = () => {
@@ -85,7 +83,7 @@ const JobDetails = ({
           <InfoItem
             icon={<TimeIcon />}
             text={`${moment(data?.start_time, "HH:mm").format(
-              "hh:mm A"
+              "hh:mm A",
             )} - ${moment(data?.end_time, "HH:mm").format("hh:mm A")}`}
           />
           <InfoItem

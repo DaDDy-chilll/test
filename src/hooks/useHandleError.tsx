@@ -16,10 +16,10 @@ const useHandleError = () => {
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [companyNameError, setCompanyNameError] = useState<string | null>(null);
   const [industryTypeError, setIndustryTypeError] = useState<string | null>(
-    null
+    null,
   );
   const [budgetStringError, setBudgetStringError] = useState<string | null>(
-    null
+    null,
   );
   const [startingError, setStartingError] = useState<string | null>(null);
   const [staffError, setStaffError] = useState<string | null>(null);
@@ -71,13 +71,13 @@ const useHandleError = () => {
         }
         if (err?.name) {
           setCompanyNameError(
-            err?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME
+            err?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME,
           );
         }
         if (err?.industry_type_id) {
           setIndustryTypeError(
             err?.industry_type_id?.jp ??
-              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.budget) {
@@ -85,28 +85,28 @@ const useHandleError = () => {
         }
         if (err?.starting_year) {
           setStartingError(
-            err?.starting_year?.jp ?? ERROR_MESSAGE.INVALID_STARTING
+            err?.starting_year?.jp ?? ERROR_MESSAGE.INVALID_STARTING,
           );
         }
         if (err?.staff) {
           setStaffError(
-            err?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.prefecture_id) {
           setPrefectureError(
-            err?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE
+            err?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE,
           );
         }
         if (err?.company_description) {
           setCompanyDesError(
             err?.company_description?.jp ??
-              ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION
+              ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
           );
         }
         if (err?.address) {
           setAddressError(
-            err?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
       });
@@ -116,13 +116,13 @@ const useHandleError = () => {
       }
       if (error?.name) {
         setCompanyNameError(
-          error?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME
+          error?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME,
         );
       }
       if (error?.industry_type_id) {
         setIndustryTypeError(
           error?.industry_type_id?.jp ??
-            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.budget) {
@@ -133,22 +133,22 @@ const useHandleError = () => {
       }
       if (error?.staff) {
         setStaffError(
-          error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.prefecture_id) {
         setPrefectureError(
-          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE
+          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE,
         );
       }
       if (error?.company_des) {
         setCompanyDesError(
-          error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION
+          error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
         );
       }
       if (error?.address) {
         setAddressError(
-          error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
     }
@@ -162,28 +162,30 @@ const useHandleError = () => {
         }
         if (err?.job_types) {
           setJobTypeError(
-            err?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.prefecture_id) {
           setPrefectureError(
-            err?.prefecture_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.prefecture_id?.jp ??
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.annual_salary) {
           setSalary(
-            err?.annual_salary?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.annual_salary?.jp ??
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.working_time) {
           setWorkTimeError(
-            err?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            err?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.holiday_in_year) {
           setHolidayError(
             err?.holiday_in_year?.jp ??
-              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
         if (err?.start_time) {
@@ -194,7 +196,7 @@ const useHandleError = () => {
         }
         if (err?.job_des) {
           setCompanyDesError(
-            err?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION
+            err?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION,
           );
         }
       });
@@ -204,33 +206,35 @@ const useHandleError = () => {
       }
       if (error?.job_types) {
         setJobTypeError(
-          error?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.prefecture_id) {
         setPrefectureError(
-          error?.prefecture_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.prefecture_id?.jp ??
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.annual_salary) {
         setSalary(
-          error?.annual_salary?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.annual_salary?.jp ??
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.working_time) {
         setWorkTimeError(
-          error?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          error?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.holiday_in_year) {
         setHolidayError(
           error?.holiday_in_year?.jp ??
-            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
       if (error?.start_time) {
         setStartTimeError(
-          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_TIME
+          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_TIME,
         );
       }
       if (error?.end_time) {
@@ -238,7 +242,7 @@ const useHandleError = () => {
       }
       if (error?.job_des) {
         setCompanyDesError(
-          error?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION
+          error?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION,
         );
       }
     }

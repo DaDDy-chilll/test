@@ -51,11 +51,12 @@ export const authSlice = createSlice({
       state.forgotPassword = false;
       state.verified = null;
     },
-    setForgotPassword: (state, action) => { 
+    setForgotPassword: (state, action) => {
       state.forgotPassword = action.payload;
     },
   },
 });
 
-export const { setToken, removeToken, setForgotPassword, setVerified } = authSlice.actions;
+export const { setToken, removeToken, setForgotPassword, setVerified } =
+  authSlice.actions;
 export default authSlice.reducer;

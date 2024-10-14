@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Holiday from "date-holidays";
 import moment from "moment";
 
@@ -12,7 +12,7 @@ const Holidays = ({ date, year }: PropsType) => {
   const holidayForDate = holidays.filter(
     (day) =>
       moment(day.date).format("YYYY-MM-DD") ===
-      moment(date).format("YYYY-MM-DD")
+      moment(date).format("YYYY-MM-DD"),
   )[0];
   useEffect(() => {
     const hd = new Holiday("JP");
@@ -31,7 +31,7 @@ const Holidays = ({ date, year }: PropsType) => {
           .filter(
             (day) =>
               moment(day.date).format("YYYY-MM-DD") ===
-              moment(date).format("YYYY-MM-DD")
+              moment(date).format("YYYY-MM-DD"),
           )
           .map((holiday) => (
             <li
@@ -53,7 +53,7 @@ const Holidays = ({ date, year }: PropsType) => {
             .filter(
               (day) =>
                 moment(day.date).format("YYYY-MM-DD") ===
-                moment(date).format("YYYY-MM-DD")
+                moment(date).format("YYYY-MM-DD"),
             )
             .map((holiday, index) => (
               <p

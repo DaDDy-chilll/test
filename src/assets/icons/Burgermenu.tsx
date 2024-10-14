@@ -9,7 +9,7 @@ const Burgermenu = () => {
   const handleClick = () => dispatch(setSideBar());
 
   return (
-    <button onClick={handleClick}>
+    <button onClick={handleClick} title="Open menu">
       {sideBar ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

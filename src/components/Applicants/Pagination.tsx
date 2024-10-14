@@ -44,7 +44,7 @@ const Pagination = ({
 
       {/* Dynamically create page numbers */}
       {Array.from({ length: totalPages }, (_, index) => (
-          <button
+        <button
           key={index}
           onClick={() => goToPage(index + 1)}
           className={

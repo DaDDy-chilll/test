@@ -5,13 +5,12 @@ import {
   endOfMonth,
   format,
   getDay,
-  isToday,
   startOfMonth,
   subMonths,
   addMonths,
 } from "date-fns";
-import { useMemo, useState, useEffect, useCallback } from "react";
-import { CalendarCell, EventListItem, Loading,Holidays } from "@/components";
+import { useState, useEffect, useCallback } from "react";
+import { CalendarCell, EventListItem, Loading } from "@/components";
 import { jp } from "@/lang/jp";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
@@ -38,11 +37,7 @@ const CalendarScreen = () => {
     date: "",
     events: null,
   });
-  const {
-    data: eventsOfMonth,
-    isLoading: isEventsLoading,
-    refetch: refetchEvents,
-  } = useFetch({
+  const { data: eventsOfMonth, isLoading: isEventsLoading } = useFetch({
     endpoint: `${apiRoutes.INTERVIEW}?start_date=${startForMonth}&end_date=${endForMonth}`,
     token: token as string,
     key: QueryKey.INTERVIEW,
@@ -63,25 +58,22 @@ const CalendarScreen = () => {
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
-  const coverInterviews = useCallback(
-    (data: any) => {
-      if (!data) return [];
-      return Object.entries(data as any[]).flatMap(([date, interviews]) => {
-        return Object.entries(interviews as Record<string, any>).map(
-          ([key, value]) => {
-            return {
-              name: key,
-              user_photo: value[0].user_photo,
-              start_time: value[0].start_time,
-              end_time: value[0].end_time,
-              job_title: value[0].job_title,
-            };
-          }
-        );
-      });
-    },
-    []
-  );
+  const coverInterviews = useCallback((data: any) => {
+    if (!data) return [];
+    return Object.entries(data as any[]).flatMap(([_, interviews]) => {
+      return Object.entries(interviews as Record<string, any>).map(
+        ([key, value]) => {
+          return {
+            name: key,
+            user_photo: value[0].user_photo,
+            start_time: value[0].start_time,
+            end_time: value[0].end_time,
+            job_title: value[0].job_title,
+          };
+        },
+      );
+    });
+  }, []);
 
   useEffect(() => {
     dispatch(setTitle(jp.calendar));
@@ -95,10 +87,8 @@ const CalendarScreen = () => {
         }
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsOfMonth]);
-
-
 
   return (
     <>
@@ -115,7 +105,6 @@ const CalendarScreen = () => {
         exit="exit"
         className="w-full  grid grid-cols-3 gap-x-4 p-4"
       >
-        
         <div className="col-span-2 rounded-lg bg-[#F0F0F0] p-4 shadow-lg">
           <div className="mb-4">
             {/* Header with Month and Navigation Buttons */}
@@ -212,7 +201,7 @@ const CalendarScreen = () => {
           <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
           <div className="flex justify-between items-center">
             <p className="text-sm text-gray-500">
-              {selectedDate && selectedEvents.length > 0 
+              {selectedDate && selectedEvents.length > 0
                 ? format(selectedDate, "yyyy-MM-dd")
                 : format(new Date(), "yyyy-MM-dd")}
             </p>

@@ -1,11 +1,18 @@
-import { Button,Input,Select,Avatar, AvatarFallback, AvatarImage,DiplayFormData,DatePicker  } from "@/components";
+import {
+  Button,
+  Input,
+  Select,
+  Avatar,
+  AvatarImage,
+  DiplayFormData,
+  DatePicker,
+} from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { jp } from "@/lang/jp";
 import defaultImage from "@/assets/images/default.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 export interface UserFormData {
   name: string;
   salary: string;
@@ -19,7 +26,6 @@ export interface UserFormData {
 const UserFormScreen = () => {
   const [complete, setComplete] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },

@@ -14,7 +14,9 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
     const times = [];
     for (let hour = 1; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
-        times.push(`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`);
+        times.push(
+          `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`,
+        );
       }
     }
     return times;

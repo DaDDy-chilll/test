@@ -17,7 +17,6 @@ import {
 import { db } from "../firebaseConfig";
 import {
   ChatList,
-  Loading,
   AppointmentModel,
   ChatHeader,
   ChatView,
@@ -53,7 +52,7 @@ const ChatScreen = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
-    {}
+    {},
   );
 
   const [newMessage, setNewMessage] = useState("");
@@ -86,7 +85,7 @@ const ChatScreen = () => {
     const q = query(
       messagesRef,
       where("chat_id", "==", chatId),
-      orderBy("timestamp", "asc")
+      orderBy("timestamp", "asc"),
     );
 
     const unsubscribe = onSnapshot(
@@ -112,7 +111,7 @@ const ChatScreen = () => {
       },
       (error) => {
         console.error("Error fetching messages:", error);
-      }
+      },
     );
 
     return unsubscribe;
@@ -139,7 +138,7 @@ const ChatScreen = () => {
           last_message: newMessage.trim(),
           last_message_timestamp: Timestamp.now(),
         },
-        { merge: true }
+        { merge: true },
       );
       setNewMessage("");
       // Remove this line as it's no longer needed:
@@ -163,7 +162,7 @@ const ChatScreen = () => {
         messagesRef,
         where("chat_id", "==", chat.id),
         where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false)
+        where("read", "==", false),
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {

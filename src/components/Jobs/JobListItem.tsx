@@ -1,4 +1,3 @@
-
 import moment from "moment";
 
 type Job = {
@@ -28,7 +27,6 @@ type JobListItemProps = {
 };
 
 const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
-
   const date = moment(item.created_at).fromNow();
   // const handleShowDetails = () => {
   //   setShowDetails(true);
@@ -39,14 +37,11 @@ const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
       className="flex justify-start items-center gap-4 w-full cursor-pointer"
       onClick={() => setShowDetails(item.id)}
     >
-     
       <div className="flex justify-between items-center w-full">
         <div className="flex flex-col gap-1">
           <h1 className="text-md font-semibold">{item.job_title}</h1>
           <p className="text-xs text-gray-500">{city?.area || "No City"}</p>
-          <p className="text-sm text-gray-700">
-            {0} persons applied
-          </p>
+          <p className="text-sm text-gray-700">{0} persons applied</p>
         </div>
         <div className="flex flex-col items-end gap-6 ">
           <p className="text-sm font-semibold text-gray-700">

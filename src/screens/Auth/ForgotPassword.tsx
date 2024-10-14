@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import usePost from "@/hooks/usePost";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { BeatLoader } from "react-spinners";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Routenames from "@/navigations/routes";
 import { setToken } from "@/store";
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
 import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
 
@@ -20,10 +20,10 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const { mutate, isPending, isSuccess, error  } = usePost({});
-const {authHandleError,emailError,resetAuthError} = useHandleError()
+  const { mutate, isPending, isSuccess, error } = usePost({});
+  const { authHandleError, emailError, resetAuthError } = useHandleError();
   const onSubmit = () => {
-    resetAuthError()
+    resetAuthError();
     mutate({
       endpoint: apiRoutes.FORGOT_PASSWORD,
       body: { email },
@@ -31,18 +31,16 @@ const {authHandleError,emailError,resetAuthError} = useHandleError()
   };
   useEffect(() => {
     if (isSuccess) {
-   
-      dispatch(setToken({ token: null, email  }));
+      dispatch(setToken({ token: null, email }));
       navigate(Routenames.OTP);
     }
   }, [isSuccess]);
 
   useEffect(() => {
-    if(error){
+    if (error) {
       authHandleError(error?.message as AuthErrorType);
     }
   }, [error]);
-
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">
@@ -78,7 +76,7 @@ const {authHandleError,emailError,resetAuthError} = useHandleError()
               required={true}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              error={emailError ? emailError : ''}
+              error={emailError ? emailError : ""}
             />
           </div>
           <Button
@@ -102,7 +100,7 @@ const {authHandleError,emailError,resetAuthError} = useHandleError()
               {jp.login}
             </Link>{" "}
             {jp.page}
-          </h1> 
+          </h1>
         </motion.div>
       </div>
     </div>

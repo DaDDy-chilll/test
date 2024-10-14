@@ -31,7 +31,7 @@ module.exports = {
         textBlue: "#3083FF",
         background: "#fff",
         foreground: "#212128",
-        authbg :'#19171F',
+        authbg: "#19171F",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

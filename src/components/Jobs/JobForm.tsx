@@ -13,10 +13,10 @@ import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
-import Modal from "@/components/Chat/Modal";
 import { ConfirmationBox } from "@/components";
 import useHandleError from "@/hooks/useHandleError";
 import { JobFormErrorType } from "@/types/helperTypes";
+// import Modal from "@/components/Chat/Modal";
 
 type JobFormProps = {
   onBack?: () => void;
@@ -78,15 +78,15 @@ const JobForm = ({
     resetJobFormError,
   } = useHandleError();
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
+  // const [showErrorModal, setShowErrorModal] = useState(false);
   const { mutate, error, isSuccess, isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
   });
 
-  const handleCloseErrorModal = () => {
-    setShowErrorModal(false);
-  };
+  // const handleCloseErrorModal = () => {
+  //   setShowErrorModal(false);
+  // };
 
   const { data: jobType } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
@@ -174,7 +174,7 @@ const JobForm = ({
       setShowConfirmation(false);
       setShowDetails && setShowDetails(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
 
   // const getFieldLabel = (field: string): string => {

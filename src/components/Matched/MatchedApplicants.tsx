@@ -30,7 +30,9 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     <div className={`bg-gray-100 py-5 px-6 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
         <img
-          src={m_basicinfos.profile_path !== null ? profile_path : DefaultProfile}
+          src={
+            m_basicinfos.profile_path !== null ? profile_path : DefaultProfile
+          }
           alt="profile"
           className="w-16 h-16 rounded-full"
           crossOrigin="anonymous"
@@ -148,28 +150,24 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
         {/* column left */}
         <div className="space-y-7 flex flex-col gap-y-3 ">
           <div className="w-full h-auto p-2">
-          <h1 className="text-sm font-semibold mb-3">
-                  {jp.selfIntroduction}
-                </h1>
+            <h1 className="text-sm font-semibold mb-3">
+              {jp.selfIntroduction}
+            </h1>
             {video_path && m_basicinfos.video_path !== null ? (
               <>
-                
-                {isVideoLoading && (
-                  <Skeleton height={200} width={"100%"} />)
-                }
-                  <video
-                    src={video_path}
-                    className={`object-contain w-full h-48 ${isVideoLoading ? "hidden" : ""}`}
-                    crossOrigin="anonymous"
-                    controls
-                    onLoadStart={() => {
-                      setIsVideoLoading(true);
-                    }}
-                    onLoadedData={() => {
-                      setIsVideoLoading(false);
-                    }}
-                  ></video>
-              
+                {isVideoLoading && <Skeleton height={200} width={"100%"} />}
+                <video
+                  src={video_path}
+                  className={`object-contain w-full h-48 ${isVideoLoading ? "hidden" : ""}`}
+                  crossOrigin="anonymous"
+                  controls
+                  onLoadStart={() => {
+                    setIsVideoLoading(true);
+                  }}
+                  onLoadedData={() => {
+                    setIsVideoLoading(false);
+                  }}
+                ></video>
               </>
             ) : (
               <div className="text-xs text-center text-gray-500 flex items-center justify-center">

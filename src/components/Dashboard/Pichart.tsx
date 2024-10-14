@@ -39,7 +39,7 @@ const Pichart = ({ data = [], colors = [] }: any) => {
         dataKey="value"
       >
         <Tooltip />
-        {data.map((entry: any, index: number) => (
+        {data.map((_: any, index: number) => (
           <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
         ))}
       </Pie>
