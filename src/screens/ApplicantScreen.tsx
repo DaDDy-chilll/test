@@ -23,7 +23,7 @@ import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
-import  Skeleton  from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 
 const initialFilter: FilterType = {
   live_in_japan: "",

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/icons/logo.svg";
 import defaultImage from "@/assets/images/default.png";
 import { useMutation } from "@tanstack/react-query";
-import { setVerified,setName } from "@/store";
+import { setVerified, setName } from "@/store";
 import { useDispatch } from "react-redux";
 import useHandleError from "@/hooks/useHandleError";
 import { ProfileFormErrorType, ErrorType } from "@/types/helperTypes";
@@ -31,7 +31,7 @@ const ProfileFormScreen = () => {
   const dispatch = useDispatch();
   const { token, verified } = useSelector((state: RootState) => state.auth);
   const [avatarImage, setAvatarImage] = useState(defaultImage);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
   const [jobTypes, setJobTypes] = useState([]);
@@ -58,7 +58,7 @@ const ProfileFormScreen = () => {
     prefectureError,
     companyDesError,
     addressError,
-    resetProfileFormError
+    resetProfileFormError,
   } = useHandleError();
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const ProfileFormScreen = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    resetProfileFormError()
+    resetProfileFormError();
     try {
       const jobData = {
         name: formData.name,
@@ -145,7 +145,7 @@ const ProfileFormScreen = () => {
         address: formData.address,
         photo: formData.photo,
       };
-      setLoading(true)
+      setLoading(true);
       const response = await fetchServer({
         endpoint: apiRoutes.PROFILE,
         method: "PUT",
@@ -154,27 +154,25 @@ const ProfileFormScreen = () => {
       });
 
       if (response.success) {
-    
         if (verified == false) dispatch(setVerified(true));
         localStorage.setItem("isCompletedProfile", "true");
-        setLoading(false)
-        dispatch(setName(response.data.name))
+        setLoading(false);
+        dispatch(setName(response.data.name));
         navigate(RouteName.DASHBOARD);
       } else {
         console.error("Failed to update profile:", response.message);
       }
-    } catch (error:ErrorType | any) {
-      setError(error)
-      setLoading(false)
+    } catch (error: ErrorType | any) {
+      setError(error);
+      setLoading(false);
       console.error("Error updating profile:", error);
     }
   };
   // ... existing code ...
 
-useEffect(() => {
-  if(error)
-  ProfileFormHandleError(error?.message as ProfileFormErrorType)
-},[error])
+  useEffect(() => {
+    if (error) ProfileFormHandleError(error?.message as ProfileFormErrorType);
+  });
 
   const handleSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -206,16 +204,19 @@ useEffect(() => {
               <p>{jp.profilePhotoDescription}</p>
             </div>
             <label htmlFor="avatar-upload" className="cursor-pointer">
-              <div className={`w-[70px] h-[70px] rounded-full overflow-hidden ${photoError ? 'border border-red-500 p-1' : ''}`}>
-              <div className="w-full h-full object-cover ">
-              <img
-                  className="w-full h-full object-cover rounded-full"
-                  src={avatarImage}
-                  crossOrigin="anonymous"
-                  alt="Profile avatar"
-                />
-              </div>
-    
+              <div
+                className={`w-[70px] h-[70px] rounded-full overflow-hidden ${
+                  photoError ? "border border-red-500 p-1" : ""
+                }`}
+              >
+                <div className="w-full h-full object-cover ">
+                  <img
+                    className="w-full h-full object-cover rounded-full"
+                    src={avatarImage}
+                    crossOrigin="anonymous"
+                    alt="Profile avatar"
+                  />
+                </div>
               </div>
             </label>
             <input
@@ -234,11 +235,10 @@ useEffect(() => {
               type="text"
               label={jp.companyName}
               value={formData.name}
-              error={companyNameError || ''}
+              error={companyNameError || ""}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-            
             />
 
             <Select
@@ -249,7 +249,7 @@ useEffect(() => {
               defaultOption={jp.chooseIndustry}
               value={formData.industry_type_id}
               onChange={(e) => handleSelectChange(e, "industry_type_id")}
-              error={industryTypeError || ''}
+              error={industryTypeError || ""}
             />
             <Input
               name="budget"
@@ -257,7 +257,7 @@ useEffect(() => {
               label={jp.investmentAmount}
               placeholder="100000 "
               value={formData.budget}
-              error={budgetStringError || ''}
+              error={budgetStringError || ""}
               onChange={(e) =>
                 setFormData({ ...formData, budget: e.target.value })
               }
@@ -268,7 +268,7 @@ useEffect(() => {
               type="text"
               label={jp.undertake}
               value={formData.address}
-              error={addressError || ''}
+              error={addressError || ""}
               onChange={(e) =>
                 setFormData({ ...formData, address: e.target.value })
               }
@@ -281,7 +281,7 @@ useEffect(() => {
               options={employeeNumbers}
               defaultOption={jp.chooseEmployee}
               value={formData.staff}
-              error={staffError || ''}
+              error={staffError || ""}
               onChange={(e) => handleSelectChange(e, "staff")}
             />
 
@@ -292,7 +292,7 @@ useEffect(() => {
               options={countries}
               defaultOption={jp.chooseLocation}
               value={formData.prefecture_id}
-              error={prefectureError || ''}
+              error={prefectureError || ""}
               onChange={(e) => handleSelectChange(e, "prefecture_id")}
             />
 
@@ -304,7 +304,7 @@ useEffect(() => {
               onChange={(e) =>
                 setFormData({ ...formData, starting: e.target.value })
               }
-              error={startingError || ''}
+              error={startingError || ""}
             />
 
             <Input
@@ -316,7 +316,7 @@ useEffect(() => {
               onChange={(e) =>
                 setFormData({ ...formData, company_des: e.target.value })
               }
-              error={companyDesError || ''}
+              error={companyDesError || ""}
             />
           </div>
 

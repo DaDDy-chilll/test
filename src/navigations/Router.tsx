@@ -7,7 +7,7 @@ import ShareLayout from "@/lib/ShareLayout";
 import { AnimatePresence } from "framer-motion";
 import AuthShareLayout from "@/layouts/AuthShareLayout";
 import {
-  initialLanding,
+  InitialLanding,
   LoginScreen,
   RegisterScreen,
   ForgotPassword,
@@ -42,7 +42,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* initial landing route */}
-        <Route path={Routenames.INITIAL_LANDING} Component={initialLanding} />
+        <Route path={Routenames.INITIAL_LANDING} Component={InitialLanding} />
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />

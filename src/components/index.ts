@@ -24,7 +24,7 @@ import UserCard from "./Matched/UserCard";
 import ProfileForm from "./Profile/ProfileForm";
 import Alert from "./ui/alert";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import Calendar from "./ui/calendar";
 import { Checkbox } from "./ui/checkbox";
 import DatePicker from "./ui/DatePicker";
@@ -78,7 +78,6 @@ export {
   AvatarFallback,
   AvatarImage,
   Button,
-  buttonVariants,
   Calendar,
   CalendarCell,
   Checkbox,

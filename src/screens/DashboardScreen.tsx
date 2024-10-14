@@ -235,7 +235,7 @@ const DashboardScreen = () => {
         );
       });
     },
-    [data]
+    []
   );
 
   useEffect(() => {
@@ -246,7 +246,7 @@ const DashboardScreen = () => {
         }
       });
     }
-  }, [upcomingInterviews]);
+  }, [upcomingInterviews,coverInterviews]);
 
   return (
     <>

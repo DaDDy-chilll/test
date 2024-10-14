@@ -13,5 +13,8 @@ export const ERROR_MESSAGE = {
     INVALID_COMPANY_DESCRIPTION: "会社説明は必須です",
     INVALID_COMPANY_NAME: "会社名は必須です",
     INVALID_BUDGET: "予算は必須です",
-
+    INVALID_JOB_NAME:"無効な仕事名です",
+    INVALID_TIME:"無効な時間です",
+  INVALID_JOB_DESCRIPTION:"仕事の説明は必須です"
+    
 }

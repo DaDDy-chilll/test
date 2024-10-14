@@ -1,4 +1,8 @@
-import { AuthErrorType, ProfileFormErrorType } from "@/types/helperTypes";
+import {
+  AuthErrorType,
+  ProfileFormErrorType,
+  JobFormErrorType,
+} from "@/types/helperTypes";
 import { useState } from "react";
 import { ERROR_MESSAGE } from "@/constants/errorMessage";
 
@@ -22,6 +26,14 @@ const useHandleError = () => {
   const [prefectureError, setPrefectureError] = useState<string | null>(null);
   const [companyDesError, setCompanyDesError] = useState<string | null>(null);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const [jobNameError, setJobNameError] = useState<string | null>(null);
+  const [jobTypeError, setJobTypeError] = useState<string | null>(null);
+  const [salaryError, setSalary] = useState<string | null>(null);
+  const [workTimeError, setWorkTimeError] = useState<string | null>(null);
+  const [startTimeError, setStartTimeError] = useState<string | null>(null);
+  const [endTimeError, setEndTimeError] = useState<string | null>(null);
+  const [holidayError, setHolidayError] = useState<string | null>(null);
+
   const authHandleError = (error: AuthErrorType | null) => {
     if (error && error?.validation) {
       error.validation.forEach((err: any) => {
@@ -52,7 +64,6 @@ const useHandleError = () => {
   };
 
   const ProfileFormHandleError = (error: ProfileFormErrorType | null) => {
-    console.log("profile form error", error);
     if (error && error?.validation) {
       error.validation.forEach((err: any) => {
         if (err?.photo) {
@@ -70,9 +81,7 @@ const useHandleError = () => {
           );
         }
         if (err?.budget) {
-          setBudgetStringError(
-            err?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET
-          );
+          setBudgetStringError(err?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET);
         }
         if (err?.starting_year) {
           setStartingError(
@@ -106,10 +115,15 @@ const useHandleError = () => {
         setPhotoError(error?.photo?.jp ?? ERROR_MESSAGE.INVALID_PHOTO);
       }
       if (error?.name) {
-        setCompanyNameError(error?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME);
+        setCompanyNameError(
+          error?.name?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_NAME
+        );
       }
       if (error?.industry_type_id) {
-        setIndustryTypeError(error?.industry_type_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+        setIndustryTypeError(
+          error?.industry_type_id?.jp ??
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
       }
       if (error?.budget) {
         setBudgetStringError(error?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET);
@@ -118,16 +132,114 @@ const useHandleError = () => {
         setStartingError(error?.starting?.jp ?? ERROR_MESSAGE.INVALID_STARTING);
       }
       if (error?.staff) {
-        setStaffError(error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+        setStaffError(
+          error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
       }
       if (error?.prefecture_id) {
-        setPrefectureError(error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE);
+        setPrefectureError(
+          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE
+        );
       }
       if (error?.company_des) {
-        setCompanyDesError(error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION);
+        setCompanyDesError(
+          error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION
+        );
       }
       if (error?.address) {
-        setAddressError(error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION);
+        setAddressError(
+          error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+    }
+  };
+
+  const jobFormHandleError = (error: JobFormErrorType | null) => {
+    if (error && error?.validation) {
+      error.validation.forEach((err: any) => {
+        if (err?.job_title) {
+          setJobNameError(err?.job_title?.jp ?? ERROR_MESSAGE.INVALID_JOB_NAME);
+        }
+        if (err?.job_types) {
+          setJobTypeError(
+            err?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
+        }
+        if (err?.prefecture_id) {
+          setPrefectureError(
+            err?.prefecture_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
+        }
+        if (err?.annual_salary) {
+          setSalary(
+            err?.annual_salary?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
+        }
+        if (err?.working_time) {
+          setWorkTimeError(
+            err?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
+        }
+        if (err?.holiday_in_year) {
+          setHolidayError(
+            err?.holiday_in_year?.jp ??
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+          );
+        }
+        if (err?.start_time) {
+          setStartTimeError(err?.start_time?.jp ?? ERROR_MESSAGE.INVALID_TIME);
+        }
+        if (err?.end_time) {
+          setEndTimeError(err?.end_time?.jp ?? ERROR_MESSAGE.INVALID_TIME);
+        }
+        if (err?.job_des) {
+          setCompanyDesError(
+            err?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION
+          );
+        }
+      });
+    } else {
+      if (error?.job_title) {
+        setJobNameError(error?.job_title?.jp ?? ERROR_MESSAGE.INVALID_JOB_NAME);
+      }
+      if (error?.job_types) {
+        setJobTypeError(
+          error?.job_types?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+      if (error?.prefecture_id) {
+        setPrefectureError(
+          error?.prefecture_id?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+      if (error?.annual_salary) {
+        setSalary(
+          error?.annual_salary?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+      if (error?.working_time) {
+        setWorkTimeError(
+          error?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+      if (error?.holiday_in_year) {
+        setHolidayError(
+          error?.holiday_in_year?.jp ??
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION
+        );
+      }
+      if (error?.start_time) {
+        setStartTimeError(
+          error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_TIME
+        );
+      }
+      if (error?.end_time) {
+        setEndTimeError(error?.end_time?.jp ?? ERROR_MESSAGE.INVALID_TIME);
+      }
+      if (error?.job_des) {
+        setCompanyDesError(
+          error?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION
+        );
       }
     }
   };
@@ -164,6 +276,25 @@ const useHandleError = () => {
       setCompanyDesError(null);
       setAddressError(null);
       setPhotoError(null);
+    },
+    jobFormHandleError,
+    jobNameError,
+    jobTypeError,
+    salaryError,
+    workTimeError,
+    holidayError,
+    startTimeError,
+    endTimeError,
+    resetJobFormError: () => {
+      setJobNameError(null);
+      setJobTypeError(null);
+      setSalary(null);
+      setWorkTimeError(null);
+      setHolidayError(null);
+      setCompanyDesError(null);
+      setPrefectureError(null);
+      setStartTimeError(null);
+      setEndTimeError(null);
     },
   };
 };

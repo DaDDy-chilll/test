@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import { jp } from "@/lang/jp";
 import { Link } from "react-router-dom";
@@ -9,7 +10,6 @@ import Routenames from "@/navigations/routes";
 import { setToken } from "@/store";
 import { useDispatch } from "react-redux";
 import usePost from "@/hooks/usePost";
-import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { BeatLoader } from "react-spinners";
 import { useSelector } from "react-redux";

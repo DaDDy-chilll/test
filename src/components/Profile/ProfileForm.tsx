@@ -158,6 +158,7 @@ const ProfileForm = ({
       setShowConfirmation(false);
       ProfileFormHandleError(error?.message as ProfileFormErrorType);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, profileData, dispatch, error]);
 
   useEffect(() => {

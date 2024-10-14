@@ -4,10 +4,10 @@ import moment from "moment";
 
 type PropsType = {
   date: string;
-  year:string
+  year: string;
 };
 
-const Holidays = ({ date,year }: PropsType) => {
+const Holidays = ({ date, year }: PropsType) => {
   const [holidays, setHolidays] = useState<any[]>([]);
   const holidayForDate = holidays.filter(
     (day) =>
@@ -20,6 +20,7 @@ const Holidays = ({ date,year }: PropsType) => {
     setHolidays(holidaysList);
   }, [year]);
 
+  if (!holidayForDate?.name) return;
   return (
     <div
       data-tooltip-target="tooltip-default"
@@ -54,8 +55,11 @@ const Holidays = ({ date,year }: PropsType) => {
                 moment(day.date).format("YYYY-MM-DD") ===
                 moment(date).format("YYYY-MM-DD")
             )
-            .map((holiday,index) => (
-              <p key={index} className="text-xs text-gray-700 whitespace-nowrap my-2">
+            .map((holiday, index) => (
+              <p
+                key={index}
+                className="text-xs text-gray-700 whitespace-nowrap my-2"
+              >
                 {holiday.name}
               </p>
             ))}

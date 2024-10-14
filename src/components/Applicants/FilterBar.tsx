@@ -41,7 +41,7 @@ const FilterBar = ({
 
   return (
     <div
-      className={`bg-white justify-end text-secondaryColor p-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
+      className={`bg-white justify-end text-secondaryColor px-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
     >
       <div className="flex gap-2 items-center">
         <Checkbox
@@ -101,7 +101,6 @@ const FilterBar = ({
 
       <select
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
-        
         onChange={(e) => {
           setCurrentPage(1);
           setFilter({ ...filter, job_type: e.target.value });

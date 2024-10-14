@@ -129,9 +129,83 @@ export type ProfileFormErrorType = {
       mm: string;
     }
   ];
+};
 
-
-
+export type JobFormErrorType = {
+  job_title?: {
+    jp: string;
+    mm: string;
+  };
+  job_types?: {
+    jp: string;
+    mm: string;
+  };
+  prefecture_id?: {
+    jp: string;
+    mm: string;
+  };
+  annual_salary?: {
+    jp: string;
+    mm: string;
+  };
+  working_time?: {
+    jp: string;
+    mm: string;
+  };
+  holiday_in_year?: {
+    jp: string;
+    mm: string;
+  };
+  start_time?: {
+    jp: string;
+    mm: string;
+  };
+  end_time?: {
+    jp: string;
+    mm: string;
+  };
+  job_des?: {
+    jp: string;
+    mm: string;
+  };
+  validation?: [
+    job_title?: {
+      jp: string;
+      mm: string;
+    },
+    job_types?: {
+      jp: string;
+      mm: string;
+    },
+    prefecture_id?: {
+      jp: string;
+      mm: string;
+    },
+    annual_salary?: {
+      jp: string;
+      mm: string;
+    },
+    working_time?: {
+      jp: string;
+      mm: string;
+    },
+    holiday_in_year?: {
+      jp: string;
+      mm: string;
+    },
+    start_time?: {
+      jp: string;
+      mm: string;
+    },
+    end_time?: {
+      jp: string;
+      mm: string;
+    },
+    job_des?: {
+      jp: string;
+      mm: string;
+    },
+  ];
 };
 
 export type FilterType = {

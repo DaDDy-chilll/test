@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import logo from "@/assets/icons/logo.svg";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -5,7 +6,6 @@ import Input from "@/components/ui/Input";
 import { jp } from "@/lang/jp";
 import { Button } from "@/components/ui/button";
 import usePost from "@/hooks/usePost";
-import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { BeatLoader } from "react-spinners";
 import { useEffect,useState } from "react";

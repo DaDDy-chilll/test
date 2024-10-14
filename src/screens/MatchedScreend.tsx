@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
@@ -56,9 +57,7 @@ const MatchedScreend = () => {
   const {
     data: jobNameType,
     isLoading: jobNameTypeLoading,
-    isError: jobNameTypeError,
     isSuccess: jobNameTypeSuccess,
-    error: fetchError,
   } = useQuery({
     queryKey: [QueryKey.JOBS],
     queryFn: () =>
@@ -110,9 +109,7 @@ const MatchedScreend = () => {
   const {
     mutate: likeOrUnlikeMutate,
     isPending,
-    error,
     isSuccess: likeOrUnlikeSuccess,
-    data,
   } = useMutation({
     mutationFn: ({ endpoint, body }: any) => {
       return fetchServer({
@@ -183,10 +180,11 @@ const MatchedScreend = () => {
   }, [jobNameTypeSuccess]);
 
   useEffect(() => {
+
     if (matchedDataSuccess && matchedData?.data?.users) {
       addMoreMatchedUsers(matchedData.data.users);
     }
-  }, [matchedDataSuccess, matchedData?.data?.users?.length, jobType.id, liked]);
+  }, [matchedDataSuccess, matchedData?.data?.users, jobType.id, liked]);
 
   useEffect(() => {
     if (jobType.id) {
@@ -194,22 +192,22 @@ const MatchedScreend = () => {
       setLimit(3);
       refetch();
     }
-  }, [jobType.id, liked]);
+  }, [jobType.id, liked,refetch]);
 
   useEffect(() => {
     if (page > 1 || limit > 3 || likeOrUnlikeSuccess) {
       refetch();
     }
-  }, [page, limit, likeOrUnlikeSuccess]);
+  }, [page, limit, likeOrUnlikeSuccess,refetch]);
 
   return (
     <>
       <Helmet>
         <title>{jp.matches} - Japan Job</title>
       </Helmet>
-      {(isPending) && (
+      {(isPending || jobNameTypeLoading) && (
         <Loading
-          isLoading={isPending}
+          isLoading={isPending || jobNameTypeLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -433,4 +431,4 @@ const detailVariants = {
   exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
 };
 
-export default React.memo(MatchedScreend);
+export default MatchedScreend;

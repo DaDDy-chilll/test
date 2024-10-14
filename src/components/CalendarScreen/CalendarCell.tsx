@@ -24,6 +24,7 @@ const CalendarCell = ({
 }: CalendarCellProps) => {
   const clickEvent = () => handleClick(todaysEvents);
 
+
   return (
     <div
       className={clsx(
@@ -38,7 +39,8 @@ const CalendarCell = ({
       <div className={clsx("w-8  text-sm flex items-center justify-center mx-auto")}>
         {format(day, "d")}
       </div>
-      <Holidays date={moment(day).format("YYYY-MM-DD")} year={year} />
+    <Holidays date={moment(day).format("YYYY-MM-DD")} year={year} />
+      
       {todaysEvents.interviews && (
         <div className="flex items-center gap-1">
           <div className="bg-primaryColor w-2 h-2 rounded-full"></div>

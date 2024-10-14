@@ -9,9 +9,7 @@ import logo from "@/assets/icons/logo.svg";
 import eyeOpen from "@/assets/icons/eye-open.svg";
 import eyeClose from "@/assets/icons/eye-close.svg";
 import { motion } from "framer-motion";
-import Alert from "@/components/ui/alert";
 import usePost from "@/hooks/usePost";
-import { QueryKey } from "@/utils/queryKey";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { BeatLoader } from "react-spinners";
 import { useSelector } from "react-redux";
@@ -61,6 +59,7 @@ const ChangePassword: React.FC = () => {
     if (error) {
       console.log(error);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, error]);
 
   return (

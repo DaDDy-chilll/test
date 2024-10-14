@@ -47,7 +47,6 @@ const CalendarScreen = () => {
     token: token as string,
     key: QueryKey.INTERVIEW,
   });
-  const today = format(new Date(), "yyyy-MM-dd");
   const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const daysInMonth = eachDayOfInterval({
@@ -81,7 +80,7 @@ const CalendarScreen = () => {
         );
       });
     },
-    [selectedDate]
+    []
   );
 
   useEffect(() => {
@@ -96,6 +95,7 @@ const CalendarScreen = () => {
         }
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsOfMonth]);
 
 

@@ -1,4 +1,6 @@
-import LOGO from "@/assets/icons/LOGO";
+import React from "react";
+import {LOGO} from "@/assets";
+// import LOGO from "@/assets/images/LOGO.svg"
 import { Button } from "@/components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +13,7 @@ const textOne = "良いミャンマー人と、";
 const textTwo = "優良な日本企業のマッチングサイト";
 const textOneDuration = textOne.length * 0.1;
 
-const initialLanding = () => {
+const InitialLanding: React.FC = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const login = () => navigate(RouteName.LOGIN);
@@ -33,6 +35,7 @@ const initialLanding = () => {
           transition={{ duration: 0.5 }}
         >
           <LOGO />
+          {/* <img src={LOGO} alt="LOGO" className="w-full" /> */}
         </motion.div>
         <div className="text-2xl my-10 font-semibold">
           <div className="mb-1">
@@ -117,4 +120,4 @@ const buttonVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default initialLanding;
+export default InitialLanding;

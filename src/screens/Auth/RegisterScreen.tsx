@@ -13,9 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { jp } from "@/lang/jp";
 import useHandleError from "@/hooks/useHandleError";
-import Maintenance from "@/components/ui/Maintenance";
 const RegisterScreen = () => {
-  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const { onRegister, isRegisterPending, error } = useAuth();
   const { emailError, passwordError, confirmPasswordError, authHandleError,resetAuthError } = useHandleError();
   const { user, token } = useSelector(
@@ -41,6 +39,7 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (
