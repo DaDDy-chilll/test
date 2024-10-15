@@ -12,7 +12,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "validate": "npm run lint && npm run type-check",
     "format": "prettier --write . --ignore-path .prettierignore",
-    "prepare": "husky"
+    "prepare": "husky install && npm run format && lint-staged"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -43,6 +43,7 @@
     "npm": "^10.8.3",
     "quill": "^2.0.2",
     "react": "^18.2.0",
+    "react-datepicker": "^7.4.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",

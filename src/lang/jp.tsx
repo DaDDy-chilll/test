@@ -124,7 +124,7 @@ export const jp = {
   time: "時間",
   schedule: "スケジュール",
   date: "日付",
-  makeAppointment: "面接予定を作成する",
+  makeAppointment: "面接設定する",
   chooseCountry: "国を選択してください",
   selfIntroduction: "自己紹介ビデオ",
   preferredCities: "希望都市",
@@ -146,4 +146,5 @@ export const jp = {
   noConnection: "インターネット接続がありません",
   confirm: "確認",
   cancel: "キャンセル",
+  startTime: "開始時間",
 };

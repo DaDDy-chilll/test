@@ -1,21 +1,55 @@
 import { useState } from "react";
-import Select from "../ui/Select";
-import Calendar from "../ui/calendar";
+import { Select } from "@/components";
 import TimeSelect from "../ui/SelectTime";
 import { Button } from "../ui/button";
 import { jp } from "@/lang/jp";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Modal from "./Modal";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
   userId: number;
   jobId: number;
 };
+
+interface MeetingData {
+  user_id: number;
+  job_id: number;
+  date: string;
+  start_time: string;
+  end_time: string;
+  initial: boolean;
+}
+
+const meetingTypeOptions = [
+  { label: "直接面接", value: "direct" },
+  { label: "管理者サポート", value: "admin" },
+];
+
+const defaultDirectInterview = {
+  meetingType: {
+    label: meetingTypeOptions[0].label,
+    value: meetingTypeOptions[0].value,
+  },
+  date: "",
+  start_time: "",
+  end_time: "",
+};
+
+// const defaultAdminInterview = {
+//   meetingType: {
+//     label: meetingTypeOptions[1].label,
+//     value: meetingTypeOptions[1].value,
+//   },
+// };
 
 const AppointmentModel = ({
   setIsAppointmentModelOpen,
@@ -27,23 +61,15 @@ const AppointmentModel = ({
   const [startMeetingTime, setStartMeetingTime] = useState<string>("9:00");
   const [endMeetingTime, setEndMeetingTime] = useState<string>("9:00");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [interview, setInterview] = useState(defaultDirectInterview);
   const [currentMeetingData, setCurrentMeetingData] =
     useState<MeetingData | null>(null);
   const handleCloseModel = () => setIsAppointmentModelOpen(false);
   const [validationData, setValidationData] = useState<any>(null);
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-  };
-
-  interface MeetingData {
-    user_id: number;
-    job_id: number;
-    date: string;
-    start_time: string;
-    end_time: string;
-    initial: boolean;
-  }
-
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  // const handleDateSelect = (date: Date) => {
+  //   setSelectedDate(date);
+  // };
   const { mutate: postMeeting } = useMutation({
     mutationFn: (data: MeetingData) => {
       return fetchServer({
@@ -88,157 +114,408 @@ const AppointmentModel = ({
   return (
     <>
       <motion.div
-        className="bg-white absolute w-80 top-0 right-0 h-[calc(100vh-65px)] overflow-y-auto p-3 shadow-[-10px_0px_20px_-10px_rgba(0,0,0,0.3)] rounded-l-md"
+        className="bg-white flex flex-col justify-between absolute w-80 top-0 right-0 h-[calc(100vh-65px)] overflow-y-auto p-3 shadow-[-10px_0px_20px_-10px_rgba(0,0,0,0.3)] rounded-l-md"
         variants={modalVariants}
         initial="initial"
         animate="animate"
         exit="exit"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div>
+          <div className="flex items-center gap-2 justify-start">
             <svg
-              width="20"
-              height="22"
-              viewBox="0 0 20 22"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
             >
               <path
-                d="M10 13.166C9.69306 13.166 9.43576 13.0622 9.22813 12.8546C9.02049 12.6469 8.91667 12.3896 8.91667 12.0827C8.91667 11.7757 9.02049 11.5184 9.22813 11.3108C9.43576 11.1032 9.69306 10.9993 10 10.9993C10.3069 10.9993 10.5642 11.1032 10.7719 11.3108C10.9795 11.5184 11.0833 11.7757 11.0833 12.0827C11.0833 12.3896 10.9795 12.6469 10.7719 12.8546C10.5642 13.0622 10.3069 13.166 10 13.166ZM5.66667 13.166C5.35972 13.166 5.10243 13.0622 4.89479 12.8546C4.68715 12.6469 4.58333 12.3896 4.58333 12.0827C4.58333 11.7757 4.68715 11.5184 4.89479 11.3108C5.10243 11.1032 5.35972 10.9993 5.66667 10.9993C5.97361 10.9993 6.2309 11.1032 6.43854 11.3108C6.64618 11.5184 6.75 11.7757 6.75 12.0827C6.75 12.3896 6.64618 12.6469 6.43854 12.8546C6.2309 13.0622 5.97361 13.166 5.66667 13.166ZM14.3333 13.166C14.0264 13.166 13.7691 13.0622 13.5615 12.8546C13.3538 12.6469 13.25 12.3896 13.25 12.0827C13.25 11.7757 13.3538 11.5184 13.5615 11.3108C13.7691 11.1032 14.0264 10.9993 14.3333 10.9993C14.6403 10.9993 14.8976 11.1032 15.1052 11.3108C15.3128 11.5184 15.4167 11.7757 15.4167 12.0827C15.4167 12.3896 15.3128 12.6469 15.1052 12.8546C14.8976 13.0622 14.6403 13.166 14.3333 13.166ZM10 17.4993C9.69306 17.4993 9.43576 17.3955 9.22813 17.1879C9.02049 16.9803 8.91667 16.723 8.91667 16.416C8.91667 16.1091 9.02049 15.8518 9.22813 15.6441C9.43576 15.4365 9.69306 15.3327 10 15.3327C10.3069 15.3327 10.5642 15.4365 10.7719 15.6441C10.9795 15.8518 11.0833 16.1091 11.0833 16.416C11.0833 16.723 10.9795 16.9803 10.7719 17.1879C10.5642 17.3955 10.3069 17.4993 10 17.4993ZM5.66667 17.4993C5.35972 17.4993 5.10243 17.3955 4.89479 17.1879C4.68715 16.9803 4.58333 16.723 4.58333 16.416C4.58333 16.1091 4.68715 15.8518 4.89479 15.6441C5.10243 15.4365 5.35972 15.3327 5.66667 15.3327C5.97361 15.3327 6.2309 15.4365 6.43854 15.6441C6.64618 15.8518 6.75 16.1091 6.75 16.416C6.75 16.723 6.64618 16.9803 6.43854 17.1879C6.2309 17.3955 5.97361 17.4993 5.66667 17.4993ZM14.3333 17.4993C14.0264 17.4993 13.7691 17.3955 13.5615 17.1879C13.3538 16.9803 13.25 16.723 13.25 16.416C13.25 16.1091 13.3538 15.8518 13.5615 15.6441C13.7691 15.4365 14.0264 15.3327 14.3333 15.3327C14.6403 15.3327 14.8976 15.4365 15.1052 15.6441C15.3128 15.8518 15.4167 16.1091 15.4167 16.416C15.4167 16.723 15.3128 16.9803 15.1052 17.1879C14.8976 17.3955 14.6403 17.4993 14.3333 17.4993ZM2.41667 21.8327C1.82083 21.8327 1.31076 21.6205 0.886458 21.1962C0.462153 20.7719 0.25 20.2618 0.25 19.666V4.49935C0.25 3.90352 0.462153 3.39345 0.886458 2.96914C1.31076 2.54484 1.82083 2.33268 2.41667 2.33268H3.5V0.166016H5.66667V2.33268H14.3333V0.166016H16.5V2.33268H17.5833C18.1792 2.33268 18.6892 2.54484 19.1135 2.96914C19.5378 3.39345 19.75 3.90352 19.75 4.49935V19.666C19.75 20.2618 19.5378 20.7719 19.1135 21.1962C18.6892 21.6205 18.1792 21.8327 17.5833 21.8327H2.41667ZM2.41667 19.666H17.5833V8.83268H2.41667V19.666Z"
-                fill="#211E1E"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
               />
             </svg>
-            <p>{jp.calendar}</p>
+
+            <p className="text-sm font-semibold">{jp.calendar}</p>
           </div>
-          <Select
-            style={1}
-            className="w-20 py-0 mb-0"
-            label=""
-            options={[
-              { label: "1", value: "1" },
-              { label: "2", value: "2" },
-              { label: "3", value: "3" },
-            ]}
-            defaultOption="Today"
-          />
-        </div>
 
-        <div className="mt-3">
-          <Calendar
-            className="px-4"
-            style={1}
-            onDateSelect={handleDateSelect}
-            selectedDate={selectedDate}
-          />
-        </div>
+          <div className="flex items-center  gap-5 pl-3 mt-3">
+            <div className="w-[20px] h-[18px] bg-gray-300 rounded-full"></div>
+            <Select
+              label=""
+              options={meetingTypeOptions}
+              value={interview.meetingType}
+              onChange={(e) => {
+                setInterview({
+                  ...interview,
+                  meetingType: {
+                    label: e.target.labels as unknown as string,
+                    value: e.target.value,
+                  },
+                });
+              }}
+              defaultOption={interview.meetingType.label}
+              className="border-none  mb-0 tracking-wider font-semibold"
+            />
+          </div>
 
-        <div className="mt-3">
-          <div className="flex items-center justify-between mt-6">
-            <h1 className="text-xs font-bold flex items-center gap-3 ">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          <AnimatePresence mode="wait">
+            {interview.meetingType.value === "direct" && (
+              <motion.div
+                variants={interviewVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="mt-3 pl-5"
               >
-                <path
-                  d="M12.55 14.55L9 11V6H11V10.175L13.95 13.125L12.55 14.55ZM9 4V2H11V4H9ZM16 11V9H18V11H16ZM9 18V16H11V18H9ZM2 11V9H4V11H2ZM10 20C8.61667 20 7.31667 19.7375 6.1 19.2125C4.88333 18.6875 3.825 17.975 2.925 17.075C2.025 16.175 1.3125 15.1167 0.7875 13.9C0.2625 12.6833 0 11.3833 0 10C0 8.61667 0.2625 7.31667 0.7875 6.1C1.3125 4.88333 2.025 3.825 2.925 2.925C3.825 2.025 4.88333 1.3125 6.1 0.7875C7.31667 0.2625 8.61667 0 10 0C11.3833 0 12.6833 0.2625 13.9 0.7875C15.1167 1.3125 16.175 2.025 17.075 2.925C17.975 3.825 18.6875 4.88333 19.2125 6.1C19.7375 7.31667 20 8.61667 20 10C20 11.3833 19.7375 12.6833 19.2125 13.9C18.6875 15.1167 17.975 16.175 17.075 17.075C16.175 17.975 15.1167 18.6875 13.9 19.2125C12.6833 19.7375 11.3833 20 10 20ZM10 18C12.2333 18 14.125 17.225 15.675 15.675C17.225 14.125 18 12.2333 18 10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18Z"
-                  fill="#000"
-                />
-              </svg>
-              {jp.time}
-            </h1>
-            <TimeSelect onTimeSelect={setStartMeetingTime} dropStyle={1} />
-          </div>
-          <div className="flex items-center justify-between mt-6">
-            <h1 className="text-xs font-bold flex items-center gap-3 ">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                <div className="flex items-center justify-between mt-6">
+                  <div className="text-xs font-bold flex items-center gap-3 ">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+
+                    <p className="text-gray-500 text-sm">{jp.date}</p>
+                  </div>
+
+                  <div className="relative w-44">
+                    <DatePicker
+                      className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                      selected={
+                        interview.date
+                          ? moment(interview.date).toDate()
+                          : moment().toDate()
+                      }
+                      onChange={(date: Date | null) => {
+                        if (date) {
+                          setInterview({
+                            ...interview,
+                            date: moment(date).format(
+                              "YYYY-MM-DD",
+                            ) as unknown as string,
+                          });
+                          setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between mt-5 ">
+                  <div className="text-xs font-bold flex items-center gap-3 ">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+
+                    <p className="text-gray-500 text-sm">{jp.startTime}</p>
+                  </div>
+                  <div className="flex items-center gap-3 ">
+                    <TimeSelect
+                      onTimeSelect={setEndMeetingTime}
+                      dropStyle={1}
+                    />
+                    <TimeSelect
+                      onTimeSelect={setEndMeetingTime}
+                      dropStyle={1}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-start mt-5  gap-2">
+                  <p className="text-sm font-semibold text-secondaryColor">
+                    Zoom又は Meet リンク
+                  </p>
+                  <input
+                    type="url"
+                    name="url"
+                    id="url"
+                    className="w-full border-2 border-gray-900 rounded-md p-1 text-sm"
+                  />
+                </div>
+              </motion.div>
+            )}
+            {interview.meetingType.value === "admin" && (
+              <motion.div
+                variants={interviewVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="pl-5 flex flex-col gap-y-10 mt-3"
               >
-                <path
-                  d="M12.55 14.55L9 11V6H11V10.175L13.95 13.125L12.55 14.55ZM9 4V2H11V4H9ZM16 11V9H18V11H16ZM9 18V16H11V18H9ZM2 11V9H4V11H2ZM10 20C8.61667 20 7.31667 19.7375 6.1 19.2125C4.88333 18.6875 3.825 17.975 2.925 17.075C2.025 16.175 1.3125 15.1167 0.7875 13.9C0.2625 12.6833 0 11.3833 0 10C0 8.61667 0.2625 7.31667 0.7875 6.1C1.3125 4.88333 2.025 3.825 2.925 2.925C3.825 2.025 4.88333 1.3125 6.1 0.7875C7.31667 0.2625 8.61667 0 10 0C11.3833 0 12.6833 0.2625 13.9 0.7875C15.1167 1.3125 16.175 2.025 17.075 2.925C17.975 3.825 18.6875 4.88333 19.2125 6.1C19.7375 7.31667 20 8.61667 20 10C20 11.3833 19.7375 12.6833 19.2125 13.9C18.6875 15.1167 17.975 16.175 17.075 17.075C16.175 17.975 15.1167 18.6875 13.9 19.2125C12.6833 19.7375 11.3833 20 10 20ZM10 18C12.2333 18 14.125 17.225 15.675 15.675C17.225 14.125 18 12.2333 18 10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18Z"
-                  fill="#000"
-                />
-              </svg>
-              {jp.time}
-            </h1>
-            <TimeSelect onTimeSelect={setEndMeetingTime} dropStyle={1} />
-          </div>
+                <div>
+                  <h1 className="text-normal font-bold text-secondaryColor">
+                    第1希望時間
+                  </h1>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.date}</p>
+                    </div>
+
+                    <div className="relative w-44">
+                      <DatePicker
+                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                        selected={
+                          interview.date
+                            ? moment(interview.date).toDate()
+                            : moment().toDate()
+                        }
+                        onChange={(date: Date | null) => {
+                          if (date) {
+                            setInterview({
+                              ...interview,
+                              date: moment(date).format(
+                                "YYYY-MM-DD",
+                              ) as unknown as string,
+                            });
+                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-5 ">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.startTime}</p>
+                    </div>
+                    <div className="flex items-center gap-3 ">
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h1 className="text-normal font-bold text-secondaryColor">
+                    第2希望時間
+                  </h1>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.date}</p>
+                    </div>
+
+                    <div className="relative w-44">
+                      <DatePicker
+                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                        selected={
+                          interview.date
+                            ? moment(interview.date).toDate()
+                            : moment().toDate()
+                        }
+                        onChange={(date: Date | null) => {
+                          if (date) {
+                            setInterview({
+                              ...interview,
+                              date: moment(date).format(
+                                "YYYY-MM-DD",
+                              ) as unknown as string,
+                            });
+                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-5 ">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.startTime}</p>
+                    </div>
+                    <div className="flex items-center gap-3 ">
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h1 className="text-normal font-bold text-secondaryColor">
+                    第3希望時間
+                  </h1>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.date}</p>
+                    </div>
+
+                    <div className="relative w-44">
+                      <DatePicker
+                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                        selected={
+                          interview.date
+                            ? moment(interview.date).toDate()
+                            : moment().toDate()
+                        }
+                        onChange={(date: Date | null) => {
+                          if (date) {
+                            setInterview({
+                              ...interview,
+                              date: moment(date).format(
+                                "YYYY-MM-DD",
+                              ) as unknown as string,
+                            });
+                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-5 ">
+                    <div className="text-xs font-bold flex items-center gap-3 ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+
+                      <p className="text-gray-500 text-sm">{jp.startTime}</p>
+                    </div>
+                    <div className="flex items-center gap-3 ">
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                      <TimeSelect
+                        onTimeSelect={setEndMeetingTime}
+                        dropStyle={1}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="mt-3 bg-gray-300 flex flex-col gap-3 p-3 rounded-md">
-          <h1 className="text-lg font-semibold">{jp.schedule}</h1>
-          <div className="flex items-start gap-5">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 20 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 13.166C9.69306 13.166 9.43576 13.0622 9.22813 12.8546C9.02049 12.6469 8.91667 12.3896 8.91667 12.0827C8.91667 11.7757 9.02049 11.5184 9.22813 11.3108C9.43576 11.1032 9.69306 10.9993 10 10.9993C10.3069 10.9993 10.5642 11.1032 10.7719 11.3108C10.9795 11.5184 11.0833 11.7757 11.0833 12.0827C11.0833 12.3896 10.9795 12.6469 10.7719 12.8546C10.5642 13.0622 10.3069 13.166 10 13.166ZM5.66667 13.166C5.35972 13.166 5.10243 13.0622 4.89479 12.8546C4.68715 12.6469 4.58333 12.3896 4.58333 12.0827C4.58333 11.7757 4.68715 11.5184 4.89479 11.3108C5.10243 11.1032 5.35972 10.9993 5.66667 10.9993C5.97361 10.9993 6.2309 11.1032 6.43854 11.3108C6.64618 11.5184 6.75 11.7757 6.75 12.0827C6.75 12.3896 6.64618 12.6469 6.43854 12.8546C6.2309 13.0622 5.97361 13.166 5.66667 13.166ZM14.3333 13.166C14.0264 13.166 13.7691 13.0622 13.5615 12.8546C13.3538 12.6469 13.25 12.3896 13.25 12.0827C13.25 11.7757 13.3538 11.5184 13.5615 11.3108C13.7691 11.1032 14.0264 10.9993 14.3333 10.9993C14.6403 10.9993 14.8976 11.1032 15.1052 11.3108C15.3128 11.5184 15.4167 11.7757 15.4167 12.0827C15.4167 12.3896 15.3128 12.6469 15.1052 12.8546C14.8976 13.0622 14.6403 13.166 14.3333 13.166ZM10 17.4993C9.69306 17.4993 9.43576 17.3955 9.22813 17.1879C9.02049 16.9803 8.91667 16.723 8.91667 16.416C8.91667 16.1091 9.02049 15.8518 9.22813 15.6441C9.43576 15.4365 9.69306 15.3327 10 15.3327C10.3069 15.3327 10.5642 15.4365 10.7719 15.6441C10.9795 15.8518 11.0833 16.1091 11.0833 16.416C11.0833 16.723 10.9795 16.9803 10.7719 17.1879C10.5642 17.3955 10.3069 17.4993 10 17.4993ZM5.66667 17.4993C5.35972 17.4993 5.10243 17.3955 4.89479 17.1879C4.68715 16.9803 4.58333 16.723 4.58333 16.416C4.58333 16.1091 4.68715 15.8518 4.89479 15.6441C5.10243 15.4365 5.35972 15.3327 5.66667 15.3327C5.97361 15.3327 6.2309 15.4365 6.43854 15.6441C6.64618 15.8518 6.75 16.1091 6.75 16.416C6.75 16.723 6.64618 16.9803 6.43854 17.1879C6.2309 17.3955 5.97361 17.4993 5.66667 17.4993ZM14.3333 17.4993C14.0264 17.4993 13.7691 17.3955 13.5615 17.1879C13.3538 16.9803 13.25 16.723 13.25 16.416C13.25 16.1091 13.3538 15.8518 13.5615 15.6441C13.7691 15.4365 14.0264 15.3327 14.3333 15.3327C14.6403 15.3327 14.8976 15.4365 15.1052 15.6441C15.3128 15.8518 15.4167 16.1091 15.4167 16.416C15.4167 16.723 15.3128 16.9803 15.1052 17.1879C14.8976 17.3955 14.6403 17.4993 14.3333 17.4993ZM2.41667 21.8327C1.82083 21.8327 1.31076 21.6205 0.886458 21.1962C0.462153 20.7719 0.25 20.2618 0.25 19.666V4.49935C0.25 3.90352 0.462153 3.39345 0.886458 2.96914C1.31076 2.54484 1.82083 2.33268 2.41667 2.33268H3.5V0.166016H5.66667V2.33268H14.3333V0.166016H16.5V2.33268H17.5833C18.1792 2.33268 18.6892 2.54484 19.1135 2.96914C19.5378 3.39345 19.75 3.90352 19.75 4.49935V19.666C19.75 20.2618 19.5378 20.7719 19.1135 21.1962C18.6892 21.6205 18.1792 21.8327 17.5833 21.8327H2.41667ZM2.41667 19.666H17.5833V8.83268H2.41667V19.666Z"
-                fill="#211E1E"
-              />
-            </svg>
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold">{jp.date}</p>
-              <p className="text-sm">
-                {selectedDate
-                  ? selectedDate.toLocaleDateString()
-                  : "Not selected"}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-5">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.55 14.55L9 11V6H11V10.175L13.95 13.125L12.55 14.55ZM9 4V2H11V4H9ZM16 11V9H18V11H16ZM9 18V16H11V18H9ZM2 11V9H4V11H2ZM10 20C8.61667 20 7.31667 19.7375 6.1 19.2125C4.88333 18.6875 3.825 17.975 2.925 17.075C2.025 16.175 1.3125 15.1167 0.7875 13.9C0.2625 12.6833 0 11.3833 0 10C0 8.61667 0.2625 7.31667 0.7875 6.1C1.3125 4.88333 2.025 3.825 2.925 2.925C3.825 2.025 4.88333 1.3125 6.1 0.7875C7.31667 0.2625 8.61667 0 10 0C11.3833 0 12.6833 0.2625 13.9 0.7875C15.1167 1.3125 16.175 2.025 17.075 2.925C17.975 3.825 18.6875 4.88333 19.2125 6.1C19.7375 7.31667 20 8.61667 20 10C20 11.3833 19.7375 12.6833 19.2125 13.9C18.6875 15.1167 17.975 16.175 17.075 17.075C16.175 17.975 15.1167 18.6875 13.9 19.2125C12.6833 19.7375 11.3833 20 10 20ZM10 18C12.2333 18 14.125 17.225 15.675 15.675C17.225 14.125 18 12.2333 18 10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18Z"
-                fill="#000"
-              />
-            </svg>
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold">{jp.time}</p>
-              <p className="text-sm">{startMeetingTime.toString()}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-5">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.55 14.55L9 11V6H11V10.175L13.95 13.125L12.55 14.55ZM9 4V2H11V4H9ZM16 11V9H18V11H16ZM9 18V16H11V18H9ZM2 11V9H4V11H2ZM10 20C8.61667 20 7.31667 19.7375 6.1 19.2125C4.88333 18.6875 3.825 17.975 2.925 17.075C2.025 16.175 1.3125 15.1167 0.7875 13.9C0.2625 12.6833 0 11.3833 0 10C0 8.61667 0.2625 7.31667 0.7875 6.1C1.3125 4.88333 2.025 3.825 2.925 2.925C3.825 2.025 4.88333 1.3125 6.1 0.7875C7.31667 0.2625 8.61667 0 10 0C11.3833 0 12.6833 0.2625 13.9 0.7875C15.1167 1.3125 16.175 2.025 17.075 2.925C17.975 3.825 18.6875 4.88333 19.2125 6.1C19.7375 7.31667 20 8.61667 20 10C20 11.3833 19.7375 12.6833 19.2125 13.9C18.6875 15.1167 17.975 16.175 17.075 17.075C16.175 17.975 15.1167 18.6875 13.9 19.2125C12.6833 19.7375 11.3833 20 10 20ZM10 18C12.2333 18 14.125 17.225 15.675 15.675C17.225 14.125 18 12.2333 18 10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18Z"
-                fill="#000"
-              />
-            </svg>
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold">{jp.time}</p>
-              <p className="text-sm">{endMeetingTime.toString()}</p>
-            </div>
-          </div>
-        </div>
         <div className="flex justify-between items-center mt-10 ">
-          <Button variant="outline" onClick={handleCloseModel}>
-            Cancel
+          <Button
+            onClick={handleCloseModel}
+            className="bg-gray-500 text-white "
+          >
+            {jp.cancel}
           </Button>
           <Button
             onClick={() => handleMakeAppointment(true)}
             variant="destructive"
+            className="px-10"
           >
             {jp.makeAppointment}
           </Button>
@@ -270,13 +547,13 @@ const AppointmentModel = ({
               className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
               onClick={() => setShowConfirmModal(false)}
             >
-              Cancel
+              {jp.cancel}
             </button>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={handleConfirmRewrite}
             >
-              Confirm
+              {jp.confirm}
             </button>
           </div>
         </div>
@@ -289,6 +566,12 @@ const modalVariants = {
   initial: { opacity: 0, x: 100 },
   animate: { opacity: 1, x: 0, transition: { duration: 0.2 } },
   exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
+};
+
+const interviewVariants = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.2 } },
+  exit: { opacity: 0, y: 100, transition: { duration: 0.2 } },
 };
 
 export default AppointmentModel;

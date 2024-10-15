@@ -34,25 +34,17 @@ const ChatInput = ({
         onClick={handleSendMessage}
       >
         <svg
-          width="23"
-          height="23"
-          viewBox="0 0 23 23"
-          fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
         >
           <path
-            d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z"
-            stroke="#fff"
-            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-          />
-          <path
-            d="M10.11 13.6501L13.69 10.0601"
-            stroke="#fff"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
           />
         </svg>
       </button>

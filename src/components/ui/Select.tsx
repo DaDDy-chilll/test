@@ -70,7 +70,7 @@ const Select: React.FC<SelectProps> = ({
             } as any);
           }
         }}
-        className={`relative block font-normal outline-none  w-full text-sm text-black bg-transparent ${
+        className={`relative block font-normal outline-none  w-full text-sm text-black bg-transparent ${className} ${
           style === 0
             ? "border-0 border-b-2 py-2.5 px-0"
             : "border-none bg-gray-500  px-1 py-1.5 rounded-md"
@@ -99,7 +99,7 @@ const Select: React.FC<SelectProps> = ({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-6"
+          className="size-5"
         >
           <path
             strokeLinecap="round"

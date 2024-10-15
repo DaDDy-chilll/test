@@ -31,10 +31,10 @@ const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
   return (
     <div className="relative inline-block">
       <div
-        className="bg-gray-300 text-black text-sm px-3 py-1 rounded-full flex justify-between items-center cursor-pointer"
+        className={`bg-gray-300 text-black text-sm px-3 py-1 rounded-md flex justify-between items-center cursor-pointer ${dropStyle === 1 ? "w-20 text-sm" : "w-40 "}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="mr-2">{selectedTime}</span>
+        <span className="mr-2 ">{selectedTime}</span>
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
