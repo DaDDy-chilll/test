@@ -89,7 +89,7 @@ const Header = () => {
   ];
 
   return (
-    <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-16 z-50 bg-white">
+    <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">
       <div className="flex items-center gap-2 b">
         <span className="cursor-pointer mr-5  flex items-center justify-center">
           <Burgermenu />

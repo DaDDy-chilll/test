@@ -200,7 +200,7 @@ const ChatScreen = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className=" w-full h-[calc(100vh-65px)] grid grid-cols-8 grid-rows-9 gap-0.5 p-3 relative"
+        className=" w-full h-[calc(100vh-65px)] grid grid-cols-8 grid-rows-9 gap-0.5 px-3 relative"
       >
         {/* User Lists View */}
         <div className="bg-gray-100 col-span-2 row-span-9 overflow-hidden">
@@ -224,12 +224,12 @@ const ChatScreen = () => {
 
         {/* Header View */}
         <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2">
-          {selectedChat && (
-            <ChatHeader
-              selectedChat={selectedChat}
-              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
-            />
-          )}
+          {/* {selectedChat && ( */}
+          <ChatHeader
+            selectedChat={selectedChat}
+            setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+          />
+          {/* )} */}
         </div>
 
         {/* Chat View */}

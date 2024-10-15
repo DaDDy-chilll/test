@@ -3,10 +3,11 @@ import { useState } from "react";
 type TimeSelectProps = {
   onTimeSelect: (time: string) => void;
   dropStyle?: number;
+  time?: string;
 };
 
-const TimeSelect = ({ onTimeSelect, dropStyle }: TimeSelectProps) => {
-  const [selectedTime, setSelectedTime] = useState("09:00");
+const TimeSelect = ({ onTimeSelect, dropStyle, time }: TimeSelectProps) => {
+  const [selectedTime, setSelectedTime] = useState(time || "09:00");
   const [isOpen, setIsOpen] = useState(false);
 
   // Create a list of times in 30-minute intervals

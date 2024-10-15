@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Select } from "@/components";
+import { Select, InterviewDatePicker } from "@/components";
 import TimeSelect from "../ui/SelectTime";
 import { Button } from "../ui/button";
 import { jp } from "@/lang/jp";
@@ -35,13 +35,30 @@ const meetingTypeOptions = [
 ];
 
 const defaultDirectInterview = {
-  meetingType: {
-    label: meetingTypeOptions[0].label,
-    value: meetingTypeOptions[0].value,
+  meetingType: meetingTypeOptions[0].value,
+  date: moment().format("YYYY-MM-DD"),
+  start_time: "10:00",
+  end_time: "11:00",
+  url: "",
+};
+
+const defaultAdminInterview = {
+  meetingType: meetingTypeOptions[1].value,
+  option_one: {
+    date: moment().format("YYYY-MM-DD"),
+    start_time: "10:00",
+    end_time: "11:00",
   },
-  date: "",
-  start_time: "",
-  end_time: "",
+  option_two: {
+    date: moment().add(1, "days").format("YYYY-MM-DD"),
+    start_time: "10:00",
+    end_time: "11:00",
+  },
+  option_three: {
+    date: moment().add(2, "days").format("YYYY-MM-DD"),
+    start_time: "10:00",
+    end_time: "11:00",
+  },
 };
 
 // const defaultAdminInterview = {
@@ -62,53 +79,71 @@ const AppointmentModel = ({
   const [endMeetingTime, setEndMeetingTime] = useState<string>("9:00");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [interview, setInterview] = useState(defaultDirectInterview);
+  const [adminInterview, setAdminInterview] = useState(defaultAdminInterview);
   const [currentMeetingData, setCurrentMeetingData] =
     useState<MeetingData | null>(null);
   const handleCloseModel = () => setIsAppointmentModelOpen(false);
   const [validationData, setValidationData] = useState<any>(null);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [meetingType, setMeetingType] = useState<{
+    label: string;
+    value: string;
+  }>(meetingTypeOptions[0]);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   // const handleDateSelect = (date: Date) => {
   //   setSelectedDate(date);
   // };
-  const { mutate: postMeeting } = useMutation({
-    mutationFn: (data: MeetingData) => {
-      return fetchServer({
-        endpoint: `${apiRoutes.INTERVIEW}`,
-        method: "POST",
-        token: token,
-        body: data,
-      });
-    },
-    onSuccess: (responseData) => {
-      if (responseData.data) {
-        setValidationData(responseData.data);
-        setShowConfirmModal(true);
-      } else {
-        handleCloseModel();
-      }
-    },
-  });
+  // const { mutate: postMeeting } = useMutation({
+  //   mutationFn: (data: MeetingData) => {
+  //     return fetchServer({
+  //       endpoint: `${apiRoutes.INTERVIEW}`,
+  //       method: "POST",
+  //       token: token,
+  //       body: data,
+  //     });
+  //   },
+  //   onSuccess: (responseData) => {
+  //     if (responseData.data) {
+  //       setValidationData(responseData.data);
+  //       setShowConfirmModal(true);
+  //     } else {
+  //       handleCloseModel();
+  //     }
+  //   },
+  // });
 
-  const handleMakeAppointment = (isInitial: boolean) => {
-    const formattedDate = selectedDate
-      ? selectedDate.toISOString().split("T")[0]
-      : "";
-    const mettingdata: MeetingData = {
-      user_id: userId,
-      job_id: jobId,
-      date: formattedDate,
-      start_time: startMeetingTime,
-      end_time: endMeetingTime,
-      initial: isInitial,
-    };
-    setCurrentMeetingData(mettingdata);
-    postMeeting(mettingdata);
-  };
+  // const handleMakeAppointment = (isInitial: boolean) => {
+  //   const formattedDate = selectedDate
+  //     ? selectedDate.toISOString().split("T")[0]
+  //     : "";
+  //   const mettingdata: MeetingData = {
+  //     user_id: userId,
+  //     job_id: jobId,
+  //     date: formattedDate,
+  //     start_time: startMeetingTime,
+  //     end_time: endMeetingTime,
+  //     initial: isInitial,
+  //   };
+  //   setCurrentMeetingData(mettingdata);
+  //   postMeeting(mettingdata);
+  // };
   const handleConfirmRewrite = () => {
-    if (currentMeetingData) {
-      postMeeting({ ...currentMeetingData, initial: false });
+    // if (currentMeetingData) {
+    // postMeeting({ ...currentMeetingData, initial: false });
+    // }
+    if (meetingType.value === "admin") {
+      console.log("adminInterview", adminInterview);
+    } else {
+      if (interview.url === "") {
+        setShowConfirmModal(false);
+        setShowAlert(true);
+        return;
+      } else {
+        console.log("directInterview", interview);
+      }
     }
     setShowConfirmModal(false);
+    setIsAppointmentModelOpen(false);
   };
 
   return (
@@ -145,23 +180,20 @@ const AppointmentModel = ({
             <Select
               label=""
               options={meetingTypeOptions}
-              value={interview.meetingType}
+              value={meetingType}
               onChange={(e) => {
-                setInterview({
-                  ...interview,
-                  meetingType: {
-                    label: e.target.labels as unknown as string,
-                    value: e.target.value,
-                  },
+                setMeetingType({
+                  label: e.target.labels as unknown as string,
+                  value: e.target.value,
                 });
               }}
-              defaultOption={interview.meetingType.label}
+              defaultOption={meetingType.label}
               className="border-none  mb-0 tracking-wider font-semibold"
             />
           </div>
 
           <AnimatePresence mode="wait">
-            {interview.meetingType.value === "direct" && (
+            {meetingType.value === "direct" && (
               <motion.div
                 variants={interviewVariants}
                 initial="initial"
@@ -190,22 +222,18 @@ const AppointmentModel = ({
                   </div>
 
                   <div className="relative w-44">
-                    <DatePicker
-                      className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                    <InterviewDatePicker
                       selected={
                         interview.date
                           ? moment(interview.date).toDate()
                           : moment().toDate()
                       }
-                      onChange={(date: Date | null) => {
+                      setInterview={(date: Date | null) => {
                         if (date) {
                           setInterview({
                             ...interview,
-                            date: moment(date).format(
-                              "YYYY-MM-DD",
-                            ) as unknown as string,
+                            date: moment(date).format("YYYY-MM-DD"),
                           });
-                          setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
                         }
                       }}
                     />
@@ -233,12 +261,18 @@ const AppointmentModel = ({
                   </div>
                   <div className="flex items-center gap-3 ">
                     <TimeSelect
-                      onTimeSelect={setEndMeetingTime}
+                      onTimeSelect={(time) =>
+                        setInterview({ ...interview, start_time: time })
+                      }
                       dropStyle={1}
+                      time={interview.start_time}
                     />
                     <TimeSelect
-                      onTimeSelect={setEndMeetingTime}
+                      onTimeSelect={(time) =>
+                        setInterview({ ...interview, end_time: time })
+                      }
                       dropStyle={1}
+                      time={interview.end_time}
                     />
                   </div>
                 </div>
@@ -247,23 +281,29 @@ const AppointmentModel = ({
                   <p className="text-sm font-semibold text-secondaryColor">
                     Zoom又は Meet リンク
                   </p>
-                  <input
-                    type="url"
+                  <textarea
                     name="url"
                     id="url"
-                    className="w-full border-2 border-gray-900 rounded-md p-1 text-sm"
+                    rows={2}
+                    value={interview.url}
+                    onChange={(e) =>
+                      setInterview({ ...interview, url: e.target.value })
+                    }
+                    className="w-full border-2 border-gray-900 rounded-md p-1 text-sm  text-start max-h-40"
+                    required
                   />
                 </div>
               </motion.div>
             )}
-            {interview.meetingType.value === "admin" && (
+            {meetingType.value === "admin" && (
               <motion.div
                 variants={interviewVariants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="pl-5 flex flex-col gap-y-10 mt-3"
+                className="pl-5 flex flex-col gap-y-8 mt-3"
               >
+                {/*! Option One */}
                 <div>
                   <h1 className="text-normal font-bold text-secondaryColor">
                     第1希望時間
@@ -289,22 +329,21 @@ const AppointmentModel = ({
                     </div>
 
                     <div className="relative w-44">
-                      <DatePicker
-                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                      <InterviewDatePicker
                         selected={
-                          interview.date
-                            ? moment(interview.date).toDate()
+                          adminInterview.option_one.date
+                            ? moment(adminInterview.option_one.date).toDate()
                             : moment().toDate()
-                        }
-                        onChange={(date: Date | null) => {
+                        } // Ensure it's a Date object
+                        setInterview={(date: Date | null) => {
                           if (date) {
-                            setInterview({
-                              ...interview,
-                              date: moment(date).format(
-                                "YYYY-MM-DD",
-                              ) as unknown as string,
+                            setAdminInterview({
+                              ...adminInterview,
+                              option_one: {
+                                ...adminInterview.option_one,
+                                date: moment(date).format("YYYY-MM-DD"),
+                              },
                             });
-                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
                           }
                         }}
                       />
@@ -332,17 +371,36 @@ const AppointmentModel = ({
                     </div>
                     <div className="flex items-center gap-3 ">
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_one: {
+                              ...adminInterview.option_one,
+                              start_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_one.start_time}
                       />
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_one: {
+                              ...adminInterview.option_one,
+                              end_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_one.end_time}
                       />
                     </div>
                   </div>
                 </div>
 
+                {/*! Option Two */}
                 <div>
                   <h1 className="text-normal font-bold text-secondaryColor">
                     第2希望時間
@@ -368,22 +426,21 @@ const AppointmentModel = ({
                     </div>
 
                     <div className="relative w-44">
-                      <DatePicker
-                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                      <InterviewDatePicker
                         selected={
-                          interview.date
-                            ? moment(interview.date).toDate()
+                          adminInterview.option_two.date
+                            ? moment(adminInterview.option_two.date).toDate()
                             : moment().toDate()
-                        }
-                        onChange={(date: Date | null) => {
+                        } // Ensure it's a Date object
+                        setInterview={(date: Date | null) => {
                           if (date) {
-                            setInterview({
-                              ...interview,
-                              date: moment(date).format(
-                                "YYYY-MM-DD",
-                              ) as unknown as string,
+                            setAdminInterview({
+                              ...adminInterview,
+                              option_two: {
+                                ...adminInterview.option_two,
+                                date: moment(date).format("YYYY-MM-DD"),
+                              },
                             });
-                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
                           }
                         }}
                       />
@@ -411,17 +468,36 @@ const AppointmentModel = ({
                     </div>
                     <div className="flex items-center gap-3 ">
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_two: {
+                              ...adminInterview.option_two,
+                              start_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_two.start_time}
                       />
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_two: {
+                              ...adminInterview.option_two,
+                              end_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_two.end_time}
                       />
                     </div>
                   </div>
                 </div>
 
+                {/* Option Three */}
                 <div>
                   <h1 className="text-normal font-bold text-secondaryColor">
                     第3希望時間
@@ -447,22 +523,21 @@ const AppointmentModel = ({
                     </div>
 
                     <div className="relative w-44">
-                      <DatePicker
-                        className="w-full text-sm border rounded p-1 border-gray-500 font-semibold text-center"
+                      <InterviewDatePicker
                         selected={
-                          interview.date
-                            ? moment(interview.date).toDate()
+                          adminInterview.option_three.date
+                            ? moment(adminInterview.option_three.date).toDate()
                             : moment().toDate()
-                        }
-                        onChange={(date: Date | null) => {
+                        } // Ensure it's a Date object
+                        setInterview={(date: Date | null) => {
                           if (date) {
-                            setInterview({
-                              ...interview,
-                              date: moment(date).format(
-                                "YYYY-MM-DD",
-                              ) as unknown as string,
+                            setAdminInterview({
+                              ...adminInterview,
+                              option_three: {
+                                ...adminInterview.option_three,
+                                date: moment(date).format("YYYY-MM-DD"),
+                              },
                             });
-                            setIsDatePickerVisible(false); // Optionally close the date picker after selecting a date
                           }
                         }}
                       />
@@ -490,12 +565,30 @@ const AppointmentModel = ({
                     </div>
                     <div className="flex items-center gap-3 ">
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_three: {
+                              ...adminInterview.option_three,
+                              start_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_three.start_time}
                       />
                       <TimeSelect
-                        onTimeSelect={setEndMeetingTime}
+                        onTimeSelect={(time) =>
+                          setAdminInterview({
+                            ...adminInterview,
+                            option_three: {
+                              ...adminInterview.option_three,
+                              end_time: time,
+                            },
+                          })
+                        }
                         dropStyle={1}
+                        time={adminInterview.option_three.end_time}
                       />
                     </div>
                   </div>
@@ -513,7 +606,7 @@ const AppointmentModel = ({
             {jp.cancel}
           </Button>
           <Button
-            onClick={() => handleMakeAppointment(true)}
+            onClick={() => setShowConfirmModal(true)}
             variant="destructive"
             className="px-10"
           >
@@ -552,6 +645,20 @@ const AppointmentModel = ({
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={handleConfirmRewrite}
+            >
+              {jp.confirm}
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={showAlert} onClose={() => setShowAlert(false)}>
+        <div className="p-6">
+          <p className="mb-4">Need Zoom又は Meet リンク</p>
+          <div className="flex justify-end">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setShowAlert(false)}
             >
               {jp.confirm}
             </button>

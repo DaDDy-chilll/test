@@ -16,9 +16,9 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
   loading = false,
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <p className="text-lg mb-4 font-bold">{message}</p>
+    <div className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white pt-10 pb-8 px-14 space-y-8 rounded-lg shadow-lg">
+        <p className="text-lg mb-4 text-start">{message}</p>
         <div className="flex justify-end space-x-2">
           <button
             type="button"
@@ -30,7 +30,7 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
           <button
             type="submit"
             onClick={onConfirm}
-            className="px-4 py-2 bg-primaryColor flex items-center justify-center text-white rounded hover:bg-primaryColor/80"
+            className="px-4 py-2 bg-red-600 flex items-center justify-center text-white rounded hover:bg-primaryColor/80"
           >
             {loading ? <MoonLoader size={20} color="black" /> : jp.confirm}
           </button>

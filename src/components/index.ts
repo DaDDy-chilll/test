@@ -70,6 +70,8 @@ import JobDetailSkeleton from "./ui/skeleton/JobDetailSkeleton";
 import ProfileSkeleton from "./ui/skeleton/ProfileSkeleton";
 import Holidays from "./CalendarScreen/Holidays";
 import ConfirmationBox from "./ui/confirmationBox";
+import InterviewDatePicker from "./Chat/InterviewDatePicker";
+
 export {
   Alert,
   ApplicantTable,
@@ -144,4 +146,5 @@ export {
   ProfileSkeleton,
   Holidays,
   ConfirmationBox,
+  InterviewDatePicker,
 };

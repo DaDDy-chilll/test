@@ -129,12 +129,6 @@ const JobScreen = () => {
   };
 
   useEffect(() => {
-    if (fetchError) {
-      alert(fetchError.message);
-    }
-  }, [fetchError]);
-
-  useEffect(() => {
     dispatch(setTitle(jp.joblists));
   }, [dispatch]);
 
