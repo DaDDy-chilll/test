@@ -98,7 +98,7 @@ const CalendarScreen = () => {
       {isEventsLoading && (
         <Loading isLoading={isEventsLoading} className="h-[calc(100vh-68px)]" />
       )}
-      <motion.div
+      <motion.main
         variants={calendarVariants}
         initial="initial"
         animate="animate"
@@ -110,6 +110,7 @@ const CalendarScreen = () => {
             {/* Header with Month and Navigation Buttons */}
             <div className="flex items-center justify-center gap-4 mb-4">
               <button
+                title="前の月"
                 onClick={goToPreviousMonth}
                 className="bg-primaryColor text-white p-2 rounded hover:bg-primaryColor/30"
               >
@@ -136,6 +137,7 @@ const CalendarScreen = () => {
 
               <button
                 onClick={goToNextMonth}
+                title="次の月"
                 className="bg-primaryColor text-white p-2 rounded hover:bg-primaryColor/30"
               >
                 <svg
@@ -160,7 +162,7 @@ const CalendarScreen = () => {
               return (
                 <div
                   key={day}
-                  className="font-normal py-2 text-center bg-[#F6D5D5] text-secondaryColor rounded-md"
+                  className="font-normal py-2 text-center bg-[#F6D5D5] text-secondaryColor rounded-md select-none"
                 >
                   {day}
                 </div>
@@ -205,10 +207,10 @@ const CalendarScreen = () => {
                 ? format(selectedDate, "yyyy-MM-dd")
                 : format(new Date(), "yyyy-MM-dd")}
             </p>
-            <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
+            {/* <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
               <option value="all">All</option>
               <option value="JLPT N4">JLPT N4</option>
-            </select>
+            </select> */}
           </div>
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
             {selectedEvents.length > 0 ? (
@@ -226,7 +228,7 @@ const CalendarScreen = () => {
             )}
           </div>
         </div>
-      </motion.div>
+      </motion.main>
     </>
   );
 };

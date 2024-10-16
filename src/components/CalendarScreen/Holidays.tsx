@@ -24,7 +24,7 @@ const Holidays = ({ date, year }: PropsType) => {
   return (
     <div
       data-tooltip-target="tooltip-default"
-      className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer"
+      className="relative group py-2  flex flex-col items-start justify-center gap-1 cursor-pointer select-none"
     >
       <ul>
         {holidays

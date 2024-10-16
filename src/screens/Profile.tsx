@@ -145,7 +145,7 @@ const Profile = () => {
           className="h-[calc(100vh-68px)]"
         />
       )}
-      <div className="w-full flex justify-center px-10 pt-5">
+      <main className="w-full flex justify-center px-10 pt-5">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <ProfileSkeleton />
@@ -168,7 +168,7 @@ const Profile = () => {
             />
           )}
         </AnimatePresence>
-      </div>
+      </main>
     </>
   );
 };

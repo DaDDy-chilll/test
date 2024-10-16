@@ -209,7 +209,7 @@ const MatchedScreend = () => {
           className="h-[calc(100vh-68px)]"
         />
       )}
-      <motion.div
+      <motion.main
         variants={matchedVariants}
         initial="initial"
         animate="animate"
@@ -412,7 +412,7 @@ const MatchedScreend = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.main>
     </>
   );
 };

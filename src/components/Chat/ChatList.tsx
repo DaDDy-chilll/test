@@ -19,7 +19,10 @@ const ChatList: React.FC<ChatListProps> = ({
 }) => {
   return (
     <div className="flex-1 ">
-      <div className="flex flex-col h-[90vh]  p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">
+      <div
+        tabIndex={0}
+        className="flex flex-col h-[90vh]  p-6 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md"
+      >
         {chats.length === 0 ? (
           <div className="text-center text-sm text-gray-500 my-64">
             {jp.noChatFound}

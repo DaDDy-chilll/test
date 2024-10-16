@@ -195,7 +195,7 @@ const ChatScreen = () => {
       {/* {isLoading && (
         <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
       )} */}
-      <motion.div
+      <motion.main
         variants={chatVariants}
         initial="initial"
         animate="animate"
@@ -224,16 +224,16 @@ const ChatScreen = () => {
 
         {/* Header View */}
         <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2">
-          {/* {selectedChat && ( */}
-          <ChatHeader
-            selectedChat={selectedChat}
-            setIsAppointmentModelOpen={setIsAppointmentModelOpen}
-          />
-          {/* )} */}
+          {selectedChat && (
+            <ChatHeader
+              selectedChat={selectedChat}
+              setIsAppointmentModelOpen={setIsAppointmentModelOpen}
+            />
+          )}
         </div>
 
         {/* Chat View */}
-        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden border-l-2 border-gray-300 border-opacity-30 border-r-2 border-gray-300 border-opacity-30">
+        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden border-l-2  border-r-2 border-gray-300 border-opacity-30">
           {selectedChat ? (
             messages.length > 0 ? (
               <ChatView
@@ -297,7 +297,7 @@ const ChatScreen = () => {
             />
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.main>
     </>
   );
 };

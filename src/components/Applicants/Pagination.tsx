@@ -22,6 +22,7 @@ const Pagination = ({
   return (
     <div className="flex items-center justify-center gap-2 mt-3">
       <button
+        title="前へ"
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
         className="bg-secondaryColor rounded-md w-10 h-10 flex items-center justify-center text-white"
@@ -45,6 +46,7 @@ const Pagination = ({
       {/* Dynamically create page numbers */}
       {Array.from({ length: totalPages }, (_, index) => (
         <button
+          title={`${index + 1}ページ`}
           key={index}
           onClick={() => goToPage(index + 1)}
           className={
@@ -58,6 +60,7 @@ const Pagination = ({
       ))}
 
       <button
+        title="次へ"
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
         className="bg-secondaryColor rounded-md w-10 h-10 flex items-center justify-center text-white"

@@ -574,7 +574,7 @@ const AppointmentModel = ({
                             },
                           })
                         }
-                        dropStyle={1}
+                        dropStyle={2}
                         time={adminInterview.option_three.start_time}
                       />
                       <TimeSelect
@@ -587,7 +587,7 @@ const AppointmentModel = ({
                             },
                           })
                         }
-                        dropStyle={1}
+                        dropStyle={2}
                         time={adminInterview.option_three.end_time}
                       />
                     </div>

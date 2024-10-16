@@ -19,7 +19,11 @@ const ChatHeader = ({
   };
   return (
     <div className="flex items-center justify-between w-full h-full px-4 py-3 border-4 border-gray-300 rounded-sm border-opacity-30 shadow-sm">
-      <h1 className="text-normal font-bold flex items-center">
+      <h1
+        aria-label="チャット相手の名前"
+        title={selectedChat?.jobfinder_name}
+        className="text-normal font-bold flex items-center"
+      >
         {selectedChat?.jobfinder_name}
         <svg
           xmlns="http://www.w3.org/2000/svg"

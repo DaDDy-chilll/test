@@ -36,7 +36,7 @@ const CalendarCell = ({
     >
       <div
         className={clsx(
-          "w-8  text-sm flex items-center justify-center mx-auto",
+          "w-8  text-sm flex items-center justify-center mx-auto select-none",
         )}
       >
         {format(day, "d")}

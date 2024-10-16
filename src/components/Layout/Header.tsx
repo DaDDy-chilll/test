@@ -115,7 +115,7 @@ const Header = () => {
               </svg>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[500px] mr-2">
+          <DropdownMenuContent className="w-[450px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {defaultNoti

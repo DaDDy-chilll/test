@@ -32,7 +32,7 @@ const TimeSelect = ({ onTimeSelect, dropStyle, time }: TimeSelectProps) => {
   return (
     <div className="relative inline-block">
       <div
-        className={`bg-gray-300 text-black text-sm px-3 py-1 rounded-md flex justify-between items-center cursor-pointer ${dropStyle === 1 ? "w-20 text-sm" : "w-40 "}`}
+        className={`bg-gray-300 text-black text-sm px-3 py-1 rounded-md flex justify-between items-center cursor-pointer w-20 `}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="mr-2 ">{selectedTime}</span>
@@ -57,8 +57,8 @@ const TimeSelect = ({ onTimeSelect, dropStyle, time }: TimeSelectProps) => {
       {isOpen && (
         <ul
           className={`${
-            dropStyle === 1 ? "h-40 z-10" : "h-60 z-20"
-          } absolute top-full left-0 w-full overflow-y-auto bg-gray-300 text-black mt-1 rounded-lg shadow-lg z-10`}
+            dropStyle === 1 ? "  top-full" : " bottom-full"
+          } h-40 absolute  left-0 w-full overflow-y-auto bg-gray-300 text-black mt-1 rounded-lg shadow-lg z-10`}
         >
           {generateTimes().map((time) => (
             <li

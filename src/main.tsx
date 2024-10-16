@@ -7,7 +7,7 @@ import { Provider as AppProvider } from "react-redux";
 import React from "react";
 import { HelmetProvider } from "react-helmet-async";
 export const queryClient = new QueryClient();
-// import { initializeAxe } from "../axeConfig";
+import { initializeAxe } from "../axeConfig";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -22,10 +22,10 @@ const renderApp = () => (
     </AppProvider>
   </React.StrictMode>
 );
-root.render(renderApp());
-// if (import.meta.env.VITE_ENV !== "production") {
-//   initializeAxe(); // Initialize Axe with the custom config
-//   root.render(renderApp());
-// } else {
-//   root.render(renderApp());
-// }
+// root.render(renderApp());
+if (import.meta.env.VITE_ENV !== "production") {
+  initializeAxe(); // Initialize Axe with the custom config
+  root.render(renderApp());
+} else {
+  root.render(renderApp());
+}

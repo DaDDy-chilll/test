@@ -83,6 +83,8 @@ const FilterBar = ({
       </div>
 
       <select
+        aria-label="国"
+        title="国"
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
         onChange={(e) => {
           setCurrentPage(1);
@@ -100,6 +102,8 @@ const FilterBar = ({
       </select>
 
       <select
+        aria-label="職種"
+        title="職種"
         className="bg-secondaryColor text-white p-2 rounded-md text-sm w-fit cursor-pointer"
         onChange={(e) => {
           setCurrentPage(1);

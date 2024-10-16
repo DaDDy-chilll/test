@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     svgr(),
     visualizer({
-      open: true,
+      open: false,
       gzipSize: true,
       brotliSize: true,
     }),

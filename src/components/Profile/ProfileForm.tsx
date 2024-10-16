@@ -223,6 +223,7 @@ const ProfileForm = ({
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             error={companyNameError || ""}
+            required={false}
           />
 
           <Select
@@ -255,6 +256,7 @@ const ProfileForm = ({
               setFormData({ ...formData, budget: e.target.value })
             }
             error={budgetStringError || ""}
+            required={false}
           />
           <Input
             name="address"
@@ -266,6 +268,7 @@ const ProfileForm = ({
               setFormData({ ...formData, address: e.target.value })
             }
             error={addressError || ""}
+            required={false}
           />
           <Select
             name="staff"
@@ -323,7 +326,7 @@ const ProfileForm = ({
             }
             error={prefectureError || ""}
           />
-          <span className="col-span-2">
+          <span className="col-span-2 ">
             <Input
               name="company_des"
               type="text"
@@ -335,6 +338,7 @@ const ProfileForm = ({
                 setFormData({ ...formData, company_des: e.target.value })
               }
               error={companyDesError || ""}
+              required={false}
             />
           </span>
         </div>

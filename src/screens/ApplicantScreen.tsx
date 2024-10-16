@@ -145,7 +145,7 @@ const ApplicantScreen = () => {
           />
         </div>
       )}
-      <motion.div
+      <motion.main
         variants={applicantVariants}
         initial="initial"
         animate="animate"
@@ -220,7 +220,7 @@ const ApplicantScreen = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.main>
     </>
   );
 };

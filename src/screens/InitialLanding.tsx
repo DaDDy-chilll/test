@@ -25,7 +25,7 @@ const InitialLanding: React.FC = () => {
   }, [user, token, navigate]);
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <main className="h-screen flex items-center justify-center">
       <div className="text-center flex items-center justify-center flex-col">
         <motion.div
           className="flex items-center justify-center w-40"
@@ -37,7 +37,7 @@ const InitialLanding: React.FC = () => {
           <LOGO />
           {/* <img src={LOGO} alt="LOGO" className="w-full" /> */}
         </motion.div>
-        <div className="text-2xl my-10 font-semibold">
+        <h1 className="text-2xl my-10 font-semibold">
           <div className="mb-1">
             {textOne.split("").map((element, index) => (
               <motion.span
@@ -67,7 +67,7 @@ const InitialLanding: React.FC = () => {
               </motion.span>
             ))}
           </div>
-        </div>
+        </h1>
         <motion.div
           className="flex items-center justify-between w-full "
           variants={buttonVariants}
@@ -83,7 +83,7 @@ const InitialLanding: React.FC = () => {
           </Button>
         </motion.div>
       </div>
-    </div>
+    </main>
   );
 };
 

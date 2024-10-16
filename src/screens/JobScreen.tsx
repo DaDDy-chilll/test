@@ -178,7 +178,7 @@ const JobScreen = () => {
         />
       )} */}
       {!showDetails && !isAdd && !isEdit && (
-        <motion.div
+        <motion.main
           key="job-list"
           variants={jobVariants}
           initial="initial"
@@ -314,7 +314,7 @@ const JobScreen = () => {
               {jp.makeNewJobPost}
             </Button>
           </div>
-        </motion.div>
+        </motion.main>
       )}
 
       {showDetails && !isEdit && (

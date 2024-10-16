@@ -98,10 +98,9 @@ const useHandleError = () => {
             err?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE,
           );
         }
-        if (err?.company_description) {
+        if (err?.company_des) {
           setCompanyDesError(
-            err?.company_description?.jp ??
-              ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
+            err?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
           );
         }
         if (err?.address) {

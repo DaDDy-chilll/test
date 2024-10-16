@@ -240,7 +240,7 @@ const DashboardScreen = () => {
           className="h-[calc(100vh-68px)]"
         />
       )}
-      <motion.div
+      <motion.main
         variants={dashboardVariants}
         initial="initial"
         animate="animate"
@@ -248,17 +248,17 @@ const DashboardScreen = () => {
         className=" w-full h-[calc(100vh+10vh)] grid grid-cols-6 grid-rows-5 gap-2 p-2 overflow-hidden"
       >
         {/* Line Chart */}
-        <div className="bg-gray-100 col-span-6 row-span-2">
+        <section className="bg-gray-100 col-span-6 row-span-2">
           <div className="flex justify-between items-center mx-3 mt-3">
             <h1 className="text-lg font-semibold">{jp.matchList}</h1>
           </div>
           <div className="w-full h-full pr-10 pt-2 pb-16">
             <LineCharts data={data} />
           </div>
-        </div>
+        </section>
 
         {/* Meeting */}
-        <div className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-6 overflow-hidden">
+        <section className="bg-gray-100 col-span-3 col-start-1 row-start-3 row-end-6 overflow-hidden">
           <div className="w-full">
             <div className="flex items-start justify-between p-3">
               <div className="w-1/3 pl-3 h-[67vh]">
@@ -268,6 +268,7 @@ const DashboardScreen = () => {
                 <div
                   ref={scrollableRef}
                   className="overflow-y-auto h-[62vh] relative"
+                  tabIndex={0}
                 >
                   {isInterviewLoading ? (
                     <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start">
@@ -330,14 +331,17 @@ const DashboardScreen = () => {
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* New Messages */}
-        <div className="bg-gray-100 col-start-4 col-end-7 row-start-3 row-end-6">
+        <section className="bg-gray-100 col-start-4 col-end-7 row-start-3 row-end-6">
           <h1 className="text-lg font-semibold mx-3 px-5 pt-5">
             {jp.newMessages}
           </h1>
-          <div className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5">
+          <div
+            className="w-full h-[calc(100vh-300px)]  overflow-y-auto px-5"
+            tabIndex={0}
+          >
             {isChatLoading ? (
               <div className="flex flex-col gap-y-2 w-full h-full items-start justify-start ">
                 {Array.from({ length: 3 }, (_, index) => (
@@ -413,8 +417,8 @@ const DashboardScreen = () => {
               <p className="text-center text-gray-500 mt-10">{jp.noMessages}</p>
             )}
           </div>
-        </div>
-      </motion.div>
+        </section>
+      </motion.main>
     </>
   );
 };

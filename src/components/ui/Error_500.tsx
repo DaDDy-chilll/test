@@ -4,7 +4,7 @@ import internalServerError from "@/assets/images/500.svg";
 import { jp } from "@/lang/jp";
 const Error500 = () => {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center gap-y-10">
+    <main className="w-full h-screen flex flex-col items-center justify-center gap-y-10">
       <img src={internalServerError} alt="not found" width={300} />
       <div className="flex flex-col items-center justify-center gap-y-4">
         <h1 className="text-4xl font-normal text-secondaryColor">
@@ -23,7 +23,7 @@ const Error500 = () => {
           Go to Dashboard
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 
