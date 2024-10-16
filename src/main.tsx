@@ -22,10 +22,10 @@ const renderApp = () => (
     </AppProvider>
   </React.StrictMode>
 );
-// root.render(renderApp());
-if (import.meta.env.VITE_ENV !== "production") {
-  initializeAxe(); // Initialize Axe with the custom config
-  root.render(renderApp());
-} else {
-  root.render(renderApp());
-}
+root.render(renderApp());
+// if (import.meta.env.VITE_ENV !== "production") {
+//   initializeAxe(); // Initialize Axe with the custom config
+//   root.render(renderApp());
+// } else {
+//   root.render(renderApp());
+// }
