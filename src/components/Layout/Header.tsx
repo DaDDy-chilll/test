@@ -14,95 +14,27 @@ import Burgermenu from "@/assets/icons/Burgermenu";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
-import useChat from "@/hooks/useChat"
+import useChat from "@/hooks/useChat";
 import { setNotification } from "@/store";
 import { useDispatch } from "react-redux";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes";
+import { Chat } from "@/types/helperTypes";
 const Header = () => {
   const dispatch = useDispatch();
-  let {title,name,notification} = useSelector((state: RootState) => state.navigation);
-  let {user} = useSelector((state: RootState) => state.auth);
-  const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
-  const [noti, setNoti] =  useState<{ [key: string]: number }>(
-    {},
+  const navigate = useNavigate();
+  let { title, name, notification } = useSelector(
+    (state: RootState) => state.navigation
   );
-  const defaultNoti = [
-    {
-      id: 1,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title One",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 2,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Two",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 3,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Three",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 4,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Four",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 5,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Five",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 6,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Six",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 7,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Seven",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 8,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Eight",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 9,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Nine",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-    {
-      id: 10,
-      image: "https://via.placeholder.com/150",
-      title: "Notification Title Ten",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Tortor tortor nisi et id cras. Vel facilisis imperdiet bibendum odio elit. Eget amet in scelerisque nulla.",
-    },
-  ];
+  let { user } = useSelector((state: RootState) => state.auth);
+  const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  const [noti, setNoti] = useState<{ [key: string]: number }>({});
 
+  const handleChatClick = (chat: Chat) =>
+    navigate(RouteName.CHAT, { state: chat });
 
   const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
-
-  console.log('chatNoti',chatNoti);
 
   useEffect(() => {
     const messageListeners: any[] = [];
@@ -114,7 +46,7 @@ const Header = () => {
         messagesRef,
         where("chat_id", "==", chat.id),
         where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false),
+        where("read", "==", false)
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -128,7 +60,7 @@ const Header = () => {
           }
           return prev;
         });
-     
+
         // console.log('notification',noti);
         dispatch(setNotification(noti));
       });
@@ -140,7 +72,7 @@ const Header = () => {
     };
   }, [chats, user?.id]);
 
-  console.log('chatNoti',chatNoti);
+  console.log("chatNoti", chatNoti);
 
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">
@@ -168,31 +100,50 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {chatNoti.length > 0 && <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>}
+            {chatNoti.length > 0 && (
+              <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[450px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {chatNoti.length > 0 ?
-            chatNoti
-              .map((item) => (
+            {chatNoti.length > 0 ? (
+              chatNoti.map((item) => (
                 <DropdownMenuItem key={item.id}>
-                  <NotiItem item={{ name:item.jobfinder_name,image:item.jobfinder_profile_image,message:item.last_message,time:moment(
-                            item.last_message_timestamp.toDate(),
-                          ).calendar() }} />
+                  <NotiItem
+                    onClick={() => handleChatClick(item)}
+                    item={{
+                      name: item.jobfinder_name,
+                      image: item.jobfinder_profile_image,
+                      message: item.last_message,
+                      time: moment(
+                        item.last_message_timestamp.toDate()
+                      ).calendar(),
+                    }}
+                  />
                 </DropdownMenuItem>
               ))
-            :
-            <div className="flex flex-col w-full items-center justify-center gap-y-2 p-3 text-gray-500">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M9.143 17.082a24.248 24.248 0 0 0 3.844.148m-3.844-.148a23.856 23.856 0 0 1-5.455-1.31 8.964 8.964 0 0 0 2.3-5.542m3.155 6.852a3 3 0 0 0 5.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 0 0 3.536-1.003A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53" />
-</svg>
+            ) : (
+              <div className="flex flex-col w-full items-center justify-center gap-y-2 p-3 text-gray-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-12"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.143 17.082a24.248 24.248 0 0 0 3.844.148m-3.844-.148a23.856 23.856 0 0 1-5.455-1.31 8.964 8.964 0 0 0 2.3-5.542m3.155 6.852a3 3 0 0 0 5.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 0 0 3.536-1.003A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53"
+                  />
+                </svg>
 
-              <h1>{jp.noNotifications}</h1>
-            </div>
-            }
+                <h1>{jp.noNotifications}</h1>
+              </div>
+            )}
             <DropdownMenuSeparator />
-
           </DropdownMenuContent>
         </DropdownMenu>
         <div>
