@@ -11,10 +11,21 @@ import { RootState } from "@/store/store";
 import NotiItem from "../ui/NotiItem";
 import { jp } from "@/lang/jp";
 import Burgermenu from "@/assets/icons/Burgermenu";
-
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { useEffect, useState } from "react";
+import useChat from "@/hooks/useChat"
+import { setNotification } from "@/store";
+import { useDispatch } from "react-redux";
+import moment from "moment";
 const Header = () => {
-  let title = useSelector((state: RootState) => state.navigation.title);
-  const name = useSelector((state: RootState) => state.navigation.name);
+  const dispatch = useDispatch();
+  let {title,name,notification} = useSelector((state: RootState) => state.navigation);
+  let {user} = useSelector((state: RootState) => state.auth);
+  const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  const [noti, setNoti] =  useState<{ [key: string]: number }>(
+    {},
+  );
   const defaultNoti = [
     {
       id: 1,
@@ -88,6 +99,49 @@ const Header = () => {
     },
   ];
 
+
+  const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
+
+  console.log('chatNoti',chatNoti);
+
+  useEffect(() => {
+    const messageListeners: any[] = [];
+
+    chats.forEach((chat) => {
+      const messagesRef = collection(db, "messages");
+
+      const q = query(
+        messagesRef,
+        where("chat_id", "==", chat.id),
+        where("sender_id", "!=", Number(`2${user?.id}`)),
+        where("read", "==", false),
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const unreadCount = snapshot.docs.length;
+        setNoti((prev) => {
+          if (!prev[chat.id] || prev[chat.id] == 0) {
+            return {
+              ...prev,
+              [chat.id]: unreadCount,
+            };
+          }
+          return prev;
+        });
+     
+        // console.log('notification',noti);
+        dispatch(setNotification(noti));
+      });
+
+      messageListeners.push(unsubscribe);
+    });
+    return () => {
+      messageListeners.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [chats, user?.id]);
+
+  console.log('chatNoti',chatNoti);
+
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">
       <div className="flex items-center gap-2 b">
@@ -98,7 +152,7 @@ const Header = () => {
       </div>
       <div className="flex gap-5">
         <DropdownMenu>
-          <DropdownMenuTrigger className=" z-50" title="Notifications">
+          <DropdownMenuTrigger className=" z-50 relative" title="Notifications">
             <div>
               <svg
                 className="cursor-pointer hover:text-red-500"
@@ -114,43 +168,31 @@ const Header = () => {
                 />
               </svg>
             </div>
+            {chatNoti.length > 0 && <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[450px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {defaultNoti
-              .filter((item) => item.id < 4)
+            {chatNoti.length > 0 ?
+            chatNoti
               .map((item) => (
                 <DropdownMenuItem key={item.id}>
-                  <NotiItem item={item} />
+                  <NotiItem item={{ name:item.jobfinder_name,image:item.jobfinder_profile_image,message:item.last_message,time:moment(
+                            item.last_message_timestamp.toDate(),
+                          ).calendar() }} />
                 </DropdownMenuItem>
-              ))}
-            <DropdownMenuSeparator />
-            <div className="flex justify-end">
-              <button
-                title="See More"
-                className="text-sm text-blue-500 flex items-center gap-2 m-2"
-              >
-                See More
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
-                    clipRule="evenodd"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
+              ))
+            :
+            <div className="flex flex-col w-full items-center justify-center gap-y-2 p-3 text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9.143 17.082a24.248 24.248 0 0 0 3.844.148m-3.844-.148a23.856 23.856 0 0 1-5.455-1.31 8.964 8.964 0 0 0 2.3-5.542m3.155 6.852a3 3 0 0 0 5.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 0 0 3.536-1.003A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53" />
+</svg>
+
+              <h1>{jp.noNotifications}</h1>
             </div>
+            }
+            <DropdownMenuSeparator />
+
           </DropdownMenuContent>
         </DropdownMenu>
         <div>

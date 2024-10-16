@@ -147,4 +147,5 @@ export const jp = {
   confirm: "確認",
   cancel: "キャンセル",
   startTime: "開始時間",
+  noNotifications: "通知なし",
 };

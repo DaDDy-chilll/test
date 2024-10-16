@@ -21,7 +21,7 @@ import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
-import { setTitle } from "@/store";
+import { setTitle, setNotification } from "@/store";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import DefaultUser from "@/assets/icons/default_user.svg";
@@ -93,13 +93,14 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
+  const { notification } = useSelector((state: RootState) => state.navigation);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedDateData, setSelectedDateData] = useState<any>();
-  const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
-    {},
-  );
+  // const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
+  //   {},
+  // );
   const [hasTodayEvents, setHasTodayEvents] = useState<any>({
     date: "",
     events: null,
@@ -165,42 +166,42 @@ const DashboardScreen = () => {
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
 
-  useEffect(() => {
-    const messageListeners: any[] = [];
+  // useEffect(() => {
+  //   const messageListeners: any[] = [];
 
-    chats.forEach((chat) => {
-      const messagesRef = collection(db, "messages");
+  //   chats.forEach((chat) => {
+  //     const messagesRef = collection(db, "messages");
 
-      const q = query(
-        messagesRef,
-        where("chat_id", "==", chat.id),
-        where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false),
-      );
+  //     const q = query(
+  //       messagesRef,
+  //       where("chat_id", "==", chat.id),
+  //       where("sender_id", "!=", Number(`2${user?.id}`)),
+  //       where("read", "==", false),
+  //     );
 
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const unreadCount = snapshot.docs.length;
-        setUnreadCounts((prev) => {
-          if (!prev[chat.id] || prev[chat.id] == 0) {
-            return {
-              ...prev,
-              [chat.id]: unreadCount,
-            };
-          }
-          return prev;
-        });
-        // setUnreadCounts((prev) => ({
-        //   ...prev,
-        //   [chat.id]: unreadCount,
-        // }));
-      });
+  //     const unsubscribe = onSnapshot(q, (snapshot) => {
+  //       const unreadCount = snapshot.docs.length;
+  //       setUnreadCounts((prev) => {
+  //         if (!prev[chat.id] || prev[chat.id] == 0) {
+  //           return {
+  //             ...prev,
+  //             [chat.id]: unreadCount,
+  //           };
+  //         }
+  //         return prev;
+  //       });
+  //       // setUnreadCounts((prev) => ({
+  //       //   ...prev,
+  //       //   [chat.id]: unreadCount,
+  //       // }));
+  //     });
 
-      messageListeners.push(unsubscribe);
-    });
-    return () => {
-      messageListeners.forEach((unsubscribe) => unsubscribe());
-    };
-  }, [chats, user?.id]);
+  //     messageListeners.push(unsubscribe);
+  //   });
+  //   return () => {
+  //     messageListeners.forEach((unsubscribe) => unsubscribe());
+  //   };
+  // }, [chats, user?.id]);
 
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
@@ -228,6 +229,8 @@ const DashboardScreen = () => {
       });
     }
   }, [upcomingInterviews, coverInterviews]);
+
+
 
   return (
     <>
@@ -399,7 +402,7 @@ const DashboardScreen = () => {
                       </div>
                       <p
                         className={`text-xs  ${
-                          unreadCounts[chat.id] > 0
+                          notification[chat.id] > 0
                             ? "font-bold text-gray-900"
                             : "text-gray-500"
                         }`}
@@ -407,7 +410,7 @@ const DashboardScreen = () => {
                         {chat.last_message}
                       </p>
                     </div>
-                    {unreadCounts[chat.id] > 0 && (
+                    {notification[chat.id] > 0 && (
                       <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
                     )}
                   </div>

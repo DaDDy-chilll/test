@@ -1,21 +1,30 @@
+import DefaultUser from "@/assets/icons/default_user.svg";
 type ItemProps = {
   item: {
     image: string;
-    title: string;
-    description: string;
+    name: string;
+    message: string;
+    time: string;
   };
 };
 
 const NotiItem = ({ item }: ItemProps) => {
+  const profileImage = item.image ? `https://api.japanjob.exbrainedu.com/v1/file/photo/${item.image}` : DefaultUser;
+  console.log('profileImage',profileImage);
   return (
-    <div className="flex items-center justify-start gap-2">
-      <div className="w-32 rounded-full  overflow-hidden">
-        <img src={item.image} alt={item.title} />
+    <div className="flex items-center justify-between w-full">
+     <div className="flex items-center justify-start gap-3">
+     <div className="rounded-full  overflow-hidden">
+        <img src={profileImage || DefaultUser} alt={item.name} className="w-10 h-10 object-cover rounded-full" crossOrigin="anonymous" />
       </div>
-      <div>
-        <h3 className="text-sm font-medium">{item.title}</h3>
-        <p className="text-xs text-muted-foreground">{item.description}</p>
+      <div >
+        <h3 className="text-sm font-medium">{item.name}</h3>
+        <p className="text-xs text-muted-foreground">{item.message}</p>
       </div>
+     </div>
+     <div>
+      <p className="text-xs text-muted-foreground">{item.time}</p>
+     </div>
     </div>
   );
 };
