@@ -15,6 +15,7 @@ export const fetchServer = async ({
   token = null,
 }: FetchServerType) => {
   const urlEndPoint = endpoint || "";
+  console.log(urlEndPoint);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   try {
     if (method === "GET") {

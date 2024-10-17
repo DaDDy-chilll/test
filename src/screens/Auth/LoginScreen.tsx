@@ -53,87 +53,87 @@ const LoginScreen = () => {
 
   return (
     <>
-          <Helmet>
+      <Helmet>
         <title>{jp.login} - Japan Job</title>
       </Helmet>
-    <div className="bg-gray-200">
-      <div className="h-screen flex justify-center items-center">
-        <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
-          <div className="bg-white rounded-xl p-8">
-            <header>
-              <div className="flex items-center gap-3">
-                <div className="w-12">
-                  <img src={logo} className="w-full" alt="Japan job logo" />
+      <div className="bg-gray-200">
+        <div className="h-screen flex justify-center items-center">
+          <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
+            <div className="bg-white rounded-xl p-8">
+              <header>
+                <div className="flex items-center gap-3">
+                  <div className="w-12">
+                    <img src={logo} className="w-full" alt="Japan job logo" />
+                  </div>
+                  <h1 className="font-medium">JAPAN JOB</h1>
                 </div>
-                <h1 className="font-medium">JAPAN JOB</h1>
-              </div>
-              <motion.div
-                className="text-center"
-                variants={headerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <h2 className="text-center text-2xl font-bold text-black my-10">
-                  {jp.login}
-                </h2>
-              </motion.div>
-            </header>
-            <main>
-              <motion.form
-                className="space-y-8 w-full"
-                onSubmit={handleSubmit}
-                variants={formVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <div>
+                <motion.div
+                  className="text-center"
+                  variants={headerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <h2 className="text-center text-2xl font-bold text-black my-10">
+                    {jp.login}
+                  </h2>
+                </motion.div>
+              </header>
+              <main>
+                <motion.form
+                  className="space-y-8 w-full"
+                  onSubmit={handleSubmit}
+                  variants={formVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <div>
+                    <Input
+                      name="email"
+                      type="email"
+                      label={jp.email}
+                      className="mt-1 block w-full"
+                      required={false}
+                      error={!!emailError ? emailError : ""}
+                    />
+                  </div>
                   <Input
-                    name="email"
-                    type="email"
-                    label={jp.email}
+                    name="password"
+                    type="password"
+                    label={jp.password}
                     className="mt-1 block w-full"
                     required={false}
-                    error={!!emailError ? emailError : ""}
+                    error={!!passwordError ? passwordError : ""}
                   />
-                </div>
-                <Input
-                  name="password"
-                  type="password"
-                  label={jp.password}
-                  className="mt-1 block w-full"
-                  required={false}
-                  error={!!passwordError ? passwordError : ""}
-                />
-                <div className="flex justify-end">
-                  <div
-                    onClick={handleForgotPassword}
-                    className="text-xs text-end  text-gray-500 cursor-pointer"
-                  >
-                    {jp.forgotPassword}
+                  <div className="flex justify-end">
+                    <div
+                      onClick={handleForgotPassword}
+                      className="text-xs text-end  text-gray-500 cursor-pointer"
+                    >
+                      {jp.forgotPassword}
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <Button
-                    type="submit"
-                    disabled={false}
-                    className="w-full medium font-medium"
-                  >
-                    {isLoginPending ? (
-                      <BeatLoader
-                        loading={isLoginPending}
-                        size={8}
-                        color={"#fff"}
-                      />
-                    ) : (
-                      jp.login
-                    )}
-                  </Button>
-                </div>
-              </motion.form>
-            </main>
+                  <div>
+                    <Button
+                      type="submit"
+                      disabled={false}
+                      className="w-full medium font-medium"
+                    >
+                      {isLoginPending ? (
+                        <BeatLoader
+                          loading={isLoginPending}
+                          size={8}
+                          color={"#fff"}
+                        />
+                      ) : (
+                        jp.login
+                      )}
+                    </Button>
+                  </div>
+                </motion.form>
+              </main>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </>

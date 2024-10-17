@@ -27,6 +27,7 @@ export interface ApiRoutesType {
   DELETE_JOB: string;
   UPCOMING_INTERVIEW: string;
   UPLOAD_IMAGE: string;
+  PRIVACY_POLICY: string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -58,4 +59,5 @@ export const apiRoutes: ApiRoutesType = {
   DELETE_JOB: "/client/job/delete",
   UPCOMING_INTERVIEW: "/client/interview/upcoming",
   UPLOAD_IMAGE: "/file",
+  PRIVACY_POLICY: "/setting/privacy-policy",
 };
