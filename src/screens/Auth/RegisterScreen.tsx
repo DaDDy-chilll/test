@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { jp } from "@/lang/jp";
 import useHandleError from "@/hooks/useHandleError";
+import { Helmet } from "react-helmet";
 const RegisterScreen = () => {
   const { onRegister, isRegisterPending, error } = useAuth();
   const {
@@ -47,6 +48,10 @@ const RegisterScreen = () => {
   }, [error]);
 
   return (
+    <>
+     <Helmet>
+        <title>{jp.register} - Japan Job</title>
+      </Helmet>
     <main className="bg-gray-200">
       <div className="h-screen flex justify-center items-center">
         <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
@@ -126,6 +131,8 @@ const RegisterScreen = () => {
         </div>
       </div>
     </main>
+    </>
+
   );
 };
 

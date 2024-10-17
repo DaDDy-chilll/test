@@ -12,6 +12,7 @@ import { RootState } from "@/store/store";
 import useHandleError from "@/hooks/useHandleError";
 import { jp } from "@/lang/jp";
 import { setForgotPassword } from "@/store";
+import { Helmet } from "react-helmet";
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +52,10 @@ const LoginScreen = () => {
   };
 
   return (
+    <>
+          <Helmet>
+        <title>{jp.login} - Japan Job</title>
+      </Helmet>
     <div className="bg-gray-200">
       <div className="h-screen flex justify-center items-center">
         <div className="w-full sm:max-w-md bg-white rounded-xl p-8">
@@ -129,8 +134,9 @@ const LoginScreen = () => {
             </main>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
