@@ -16,4 +16,6 @@ export const ERROR_MESSAGE = {
   INVALID_JOB_NAME: "無効な仕事名です",
   INVALID_TIME: "無効な時間です",
   INVALID_JOB_DESCRIPTION: "仕事の説明は必須です",
+  INVALID_CHAIRMAN: "会社の代表者は必須です",
+  INVALID_PHONE_NUMBER: "無効な電話番号です",
 };

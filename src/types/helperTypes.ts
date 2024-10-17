@@ -91,7 +91,23 @@ export type ProfileFormErrorType = {
     jp: string;
     mm: string;
   };
-  address?: {
+  company_address?: {
+    jp: string;
+    mm: string;
+  };
+  undertake?: {
+    jp: string;
+    mm: string;
+  };
+  chairman?: {
+    jp: string;
+    mm: string;
+  };
+  email?: {
+    jp: string;
+    mm: string;
+  };
+  phone_number?: {
     jp: string;
     mm: string;
   };
@@ -124,7 +140,23 @@ export type ProfileFormErrorType = {
       jp: string;
       mm: string;
     },
-    address?: {
+    company_address?: {
+      jp: string;
+      mm: string;
+    },
+    undertake?: {
+      jp: string;
+      mm: string;
+    },
+    chairman?: {
+      jp: string;
+      mm: string;
+    },
+    email?: {
+      jp: string;
+      mm: string;
+    },
+    phone_number?: {
       jp: string;
       mm: string;
     },

@@ -13,6 +13,7 @@ import {
   ForgotPassword,
   ChangePassword,
   Otp,
+  PrivacyPolicy,
 } from "@/screens";
 import {
   NotFound,
@@ -107,6 +108,8 @@ const AnimatedRoutes = () => {
         <Route path={Routenames.NETWORK_ERROR} Component={NoConnection} />
         {/* Not found route */}
         <Route path={Routenames.SERVER_ERROR} Component={Error500} />
+        {/* Privacy policy */}
+        <Route path={Routenames.PRIVACY_POLICY} Component={PrivacyPolicy} />
       </Routes>
     </AnimatePresence>
   );

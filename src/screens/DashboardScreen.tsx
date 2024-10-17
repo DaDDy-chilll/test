@@ -230,8 +230,6 @@ const DashboardScreen = () => {
     }
   }, [upcomingInterviews, coverInterviews]);
 
-
-
   return (
     <>
       <Helmet>
@@ -402,7 +400,7 @@ const DashboardScreen = () => {
                       </div>
                       <p
                         className={`text-xs  ${
-                          (notification[chat.id] &&notification[chat.id] > 0)
+                          notification[chat.id] && notification[chat.id] > 0
                             ? "font-bold text-gray-900"
                             : "text-gray-500"
                         }`}
@@ -410,9 +408,11 @@ const DashboardScreen = () => {
                         {chat.last_message}
                       </p>
                     </div>
-                    {(notification[chat.id] && notification[chat.id] > 0 ) ? (
+                    {notification[chat.id] && notification[chat.id] > 0 ? (
                       <div className=" rounded-full bg-primaryColor h-2 w-2"></div>
-                    ):("")}
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })

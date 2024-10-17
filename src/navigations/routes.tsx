@@ -23,6 +23,7 @@ enum RouteName {
   ERROR = "/error",
   SERVER_ERROR = "/server_error",
   NETWORK_ERROR = "/network_error",
+  PRIVACY_POLICY = "/privacy_policy",
 }
 
 export default RouteName;

@@ -34,6 +34,8 @@ const annualSalary = [
   { value: "400", label: "~400万円" },
   { value: "500", label: "~500万円" },
   { value: "600", label: "~600万円" },
+  { value: "700", label: "~700万円" },
+  { value: "800", label: "800万円~" },
 ];
 
 const workingTime = [
@@ -336,8 +338,8 @@ const JobForm = ({
 
           <Select
             name="holiday_in_year"
-            label={jp.workHour}
-            id={jp.workHour}
+            label={jp.annualHoliday}
+            id={jp.annualHoliday}
             options={annualHoliday}
             className=""
             defaultOption={jp.chooseDays}

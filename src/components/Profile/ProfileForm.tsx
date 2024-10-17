@@ -58,7 +58,11 @@ const ProfileForm = ({
     staffError,
     prefectureError,
     companyDesError,
-    addressError,
+    companyAddressError,
+    chairmanError,
+    emailError,
+    phoneNumberError,
+    undertakeError,
     resetProfileFormError,
   } = useHandleError();
   const {
@@ -130,7 +134,8 @@ const ProfileForm = ({
       prefecture_id:
         Number(formData.get("prefecture_id") as string) || undefined,
       company_des: (formData.get("company_des") as string) || undefined,
-      address: (formData.get("address") as string) || undefined,
+      address: (formData.get("company_address") as string) || undefined,
+      undertake: (formData.get("undertake") as string) || undefined,
     };
 
     // Remove undefined properties
@@ -246,6 +251,33 @@ const ProfileForm = ({
             error={industryTypeError || ""}
           />
           <Input
+            name="email"
+            type="text"
+            placeholder={jp.email}
+            label={jp.email}
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            error={emailError || ""}
+            required={false}
+          />
+
+          <Input
+            name="phone_number"
+            type="text"
+            placeholder={jp.phoneNumber}
+            label={jp.phoneNumber}
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.phone_number}
+            onChange={(e) =>
+              setFormData({ ...formData, phone_number: e.target.value })
+            }
+            error={phoneNumberError || ""}
+            required={false}
+          />
+          <Input
             name="budget"
             type="number"
             label={jp.investmentAmount}
@@ -259,19 +291,43 @@ const ProfileForm = ({
             required={false}
           />
           <Input
-            name="address"
+            name="company_address"
+            type="text"
+            label={jp.companyAddress}
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.company_address}
+            onChange={(e) =>
+              setFormData({ ...formData, company_address: e.target.value })
+            }
+            error={companyAddressError || ""}
+            required={false}
+          />
+          <Input
+            name="chairman"
+            type="text"
+            label={jp.chairman}
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.chairman}
+            onChange={(e) =>
+              setFormData({ ...formData, chairman: e.target.value })
+            }
+            error={chairmanError || ""}
+            required={false}
+          />
+          <Input
+            name="undertake"
             type="text"
             label={jp.undertake}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.address}
+            value={formData.undertake}
             onChange={(e) =>
-              setFormData({ ...formData, address: e.target.value })
+              setFormData({ ...formData, undertake: e.target.value })
             }
-            error={addressError || ""}
+            error={undertakeError || ""}
             required={false}
           />
           <Select
-            name="staff"
+            name={jp.employeeNumber}
             label={jp.employeeNumber}
             id={jp.employeeNumber}
             options={employeeNumber}
@@ -326,7 +382,59 @@ const ProfileForm = ({
             }
             error={prefectureError || ""}
           />
-          <span className="col-span-2 ">
+          <Input
+            name="facebook"
+            type="text"
+            label={jp.facebook}
+            className="mt-1 block w-full bg-gray-100"
+            placeholder=""
+            value={formData.facebook}
+            onChange={(e) =>
+              setFormData({ ...formData, facebook: e.target.value })
+            }
+            // error={facebookError || ""}
+            required={false}
+          />
+          <Input
+            name="youtube"
+            type="text"
+            label={jp.youtube}
+            className="mt-1 block w-full bg-gray-100"
+            placeholder=""
+            value={formData.youtube}
+            onChange={(e) =>
+              setFormData({ ...formData, youtube: e.target.value })
+            }
+            // error={youtubeError || ""}
+            required={false}
+          />
+          <Input
+            name="website"
+            type="text"
+            label={jp.website}
+            className="mt-1 block w-full bg-gray-100"
+            placeholder=""
+            value={formData.website}
+            onChange={(e) =>
+              setFormData({ ...formData, website: e.target.value })
+            }
+            // error={companyDesError || ""}
+            required={false}
+          />
+          <Input
+            name="instagram"
+            type="text"
+            label={jp.instagram}
+            className="mt-1 block w-full bg-gray-100"
+            placeholder=""
+            value={formData.instagram}
+            onChange={(e) =>
+              setFormData({ ...formData, instagram: e.target.value })
+            }
+            // error={companyDesError || ""}
+            required={false}
+          />
+          <span className="col-span-2">
             <Input
               name="company_des"
               type="text"

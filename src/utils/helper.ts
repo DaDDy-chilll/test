@@ -19,6 +19,7 @@ export const fetchServer = async ({
   try {
     if (method === "GET") {
       const { data } = await api.get(urlEndPoint);
+      // console.log("data", data, urlEndPoint);
       result = data;
     } else if (method === "POST" && !file && !token) {
       const { data } = await api.post(urlEndPoint, body);
@@ -53,6 +54,7 @@ export const fetchServer = async ({
           localStorage.removeItem("persist:root");
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
+          console.log("server error", data.message);
           window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };

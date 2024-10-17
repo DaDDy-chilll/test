@@ -86,7 +86,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -122,7 +122,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
               </svg>
 
               <p className="text-sm">{m_basicinfos.phone}</p>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-2">
               <svg

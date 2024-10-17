@@ -25,7 +25,10 @@ const useHandleError = () => {
   const [staffError, setStaffError] = useState<string | null>(null);
   const [prefectureError, setPrefectureError] = useState<string | null>(null);
   const [companyDesError, setCompanyDesError] = useState<string | null>(null);
-  const [addressError, setAddressError] = useState<string | null>(null);
+  const [companyAddressError, setCompanyAddressError] = useState<string | null>(
+    null,
+  );
+  const [undertakeError, setUnderTakeError] = useState<string | null>(null);
   const [jobNameError, setJobNameError] = useState<string | null>(null);
   const [jobTypeError, setJobTypeError] = useState<string | null>(null);
   const [salaryError, setSalary] = useState<string | null>(null);
@@ -33,6 +36,8 @@ const useHandleError = () => {
   const [startTimeError, setStartTimeError] = useState<string | null>(null);
   const [endTimeError, setEndTimeError] = useState<string | null>(null);
   const [holidayError, setHolidayError] = useState<string | null>(null);
+  const [chairmanError, setChairmanError] = useState<string | null>(null);
+  const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
 
   const authHandleError = (error: AuthErrorType | null) => {
     if (error && error?.validation) {
@@ -103,9 +108,26 @@ const useHandleError = () => {
             err?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
           );
         }
-        if (err?.address) {
-          setAddressError(
-            err?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+        if (err?.company_address) {
+          setCompanyAddressError(
+            err?.company_address?.jp ??
+              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          );
+        }
+        if (err?.undertake) {
+          setUnderTakeError(
+            err?.undertake?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          );
+        }
+        if (err?.chairman) {
+          setChairmanError(err?.chairman?.jp ?? ERROR_MESSAGE.INVALID_CHAIRMAN);
+        }
+        if (err?.email) {
+          setEmailError(err?.email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL);
+        }
+        if (err?.phone_number) {
+          setPhoneNumberError(
+            err?.phone_number?.jp ?? ERROR_MESSAGE.INVALID_PHONE_NUMBER,
           );
         }
       });
@@ -145,9 +167,26 @@ const useHandleError = () => {
           error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
         );
       }
-      if (error?.address) {
-        setAddressError(
-          error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+      if (error?.company_address) {
+        setCompanyAddressError(
+          error?.company_address?.jp ??
+            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+        );
+      }
+      if (error?.undertake) {
+        setUnderTakeError(
+          error?.undertake?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+        );
+      }
+      if (error?.chairman) {
+        setChairmanError(error?.chairman?.jp ?? ERROR_MESSAGE.INVALID_CHAIRMAN);
+      }
+      if (error?.email) {
+        setEmailError(error?.email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL);
+      }
+      if (error?.phone_number) {
+        setPhoneNumberError(
+          error?.phone_number?.jp ?? ERROR_MESSAGE.INVALID_PHONE_NUMBER,
         );
       }
     }
@@ -268,7 +307,10 @@ const useHandleError = () => {
     prefectureError,
     companyDesError,
     photoError,
-    addressError,
+    companyAddressError,
+    undertakeError,
+    chairmanError,
+    phoneNumberError,
     resetProfileFormError: () => {
       setCompanyNameError(null);
       setIndustryTypeError(null);
@@ -277,8 +319,12 @@ const useHandleError = () => {
       setStaffError(null);
       setPrefectureError(null);
       setCompanyDesError(null);
-      setAddressError(null);
+      setCompanyAddressError(null);
+      setUnderTakeError(null);
       setPhotoError(null);
+      setChairmanError(null);
+      setEmailError(null);
+      setPhoneNumberError(null);
     },
     jobFormHandleError,
     jobNameError,

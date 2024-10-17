@@ -10,8 +10,6 @@ const initialState = {
   notification: {} as NotificationType,
 };
 
-
-
 export const navigationSlice = createSlice({
   name: "navigation",
   initialState,
@@ -26,7 +24,6 @@ export const navigationSlice = createSlice({
       state.name = action.payload;
     },
     setNotification: (state, action) => {
-      console.log('action',action);
       state.notification = action.payload;
     },
   },

@@ -26,7 +26,15 @@ const defaultFormData = {
   prefecture_id: { label: "", value: "" },
   photo: "",
   company_des: "",
-  address: "",
+  undertake: "",
+  company_address: "",
+  email: "",
+  phone: "",
+  chairman: "",
+  youtube: "",
+  instagram: "",
+  website: "",
+  facebook: "",
 };
 
 const Profile = () => {
@@ -119,17 +127,27 @@ const Profile = () => {
         budget: data.data.budget,
         starting: data.data.starting,
         staff: { label: data.data.staff, value: data.data.staff },
+        //todo: need to change
         area: {
           label: data.data.prefecture.area_id,
           value: data.data.prefecture.area_id,
         },
+        //todo: need to change
         prefecture_id: {
           label: data.data.prefecture.name,
           value: data.data.prefecture.id,
         },
         photo: data.data.photo,
         company_des: data.data.company_des,
-        address: data.data.address,
+        undertake: data.data.undertake,
+        company_address: data.data.company_address,
+        email: data.data.email,
+        phone: data.data.phone,
+        chairman: data.data.chairman,
+        youtube: data.data.youtube,
+        instagram: data.data.instagram,
+        website: data.data.website,
+        facebook: data.data.facebook,
       });
     }
   }, [data]);

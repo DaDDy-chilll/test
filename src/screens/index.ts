@@ -10,7 +10,7 @@ import ChatScreen from "./ChatScreen";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
 import Otp from "./Auth/Otp";
-
+import PrivacyPolicy from "./PrivacyPolicy";
 export {
   ApplicantScreen,
   // MatchedScreend,
@@ -23,4 +23,5 @@ export {
   ForgotPassword,
   ChangePassword,
   Otp,
+  PrivacyPolicy,
 };

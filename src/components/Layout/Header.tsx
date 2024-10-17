@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,23 +19,29 @@ import useChat from "@/hooks/useChat";
 import { setNotification } from "@/store";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { Chat } from "@/types/helperTypes";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   let { title, name, notification } = useSelector(
-    (state: RootState) => state.navigation
+    (state: RootState) => state.navigation,
   );
   let { user } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const [noti, setNoti] = useState<{ [key: string]: number }>({});
+  const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
 
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
 
-  const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
+  const handleProfileClick = () => {
+    if (location.pathname !== RouteName.PROFILE) {
+      navigate(RouteName.PROFILE);
+    }
+  };
 
   useEffect(() => {
     const messageListeners: any[] = [];
@@ -46,7 +53,7 @@ const Header = () => {
         messagesRef,
         where("chat_id", "==", chat.id),
         where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false)
+        where("read", "==", false),
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -72,8 +79,6 @@ const Header = () => {
     };
   }, [chats, user?.id]);
 
-  console.log("chatNoti", chatNoti);
-
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">
       <div className="flex items-center gap-2 b">
@@ -83,6 +88,13 @@ const Header = () => {
         <h1 className="text-xl text-gray-900 font-semibold">{title}</h1>
       </div>
       <div className="flex gap-5">
+        <div className="cursor-pointer" onClick={handleProfileClick}>
+          <p
+            className={` underline bg-none font-semibold ${location.pathname === RouteName.PROFILE ? "text-gray-500" : "text-primaryColor"}`}
+          >
+            {jp.myPage}
+          </p>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger className=" z-50 relative" title="Notifications">
             <div>
@@ -104,7 +116,7 @@ const Header = () => {
               <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[450px] z-50">
+          <DropdownMenuContent className="w-[350px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {chatNoti.length > 0 ? (
@@ -117,7 +129,7 @@ const Header = () => {
                       image: item.jobfinder_profile_image,
                       message: item.last_message,
                       time: moment(
-                        item.last_message_timestamp.toDate()
+                        item.last_message_timestamp.toDate(),
                       ).calendar(),
                     }}
                   />
@@ -146,6 +158,7 @@ const Header = () => {
             <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
+
         <div>
           <h1>{name}</h1>
         </div>
