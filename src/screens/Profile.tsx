@@ -22,19 +22,19 @@ const defaultFormData = {
   budget: "",
   starting: "",
   staff: { label: "", value: "" },
-  area: { label: "", value: "" },
-  prefecture_id: { label: "", value: "" },
+  area: "",
+  prefecture: "",
   photo: "",
   company_des: "",
-  undertake: "",
+  manager: "",
   company_address: "",
-  email: "",
-  phone: "",
-  chairman: "",
-  youtube: "",
-  instagram: "",
-  website: "",
-  facebook: "",
+  secondary_email: "",
+  phone_number: "",
+  ceo: "",
+  yt_url: "",
+  ig_url: "",
+  web_url: "",
+  fb_url: "",
 };
 
 const Profile = () => {
@@ -127,26 +127,21 @@ const Profile = () => {
         starting: data.data.starting,
         staff: { label: data.data.staff, value: data.data.staff },
         //todo: need to change
-        area: {
-          label: data.data.prefecture.area_id,
-          value: data.data.prefecture.area_id,
-        },
+        area: data.data.area,
         //todo: need to change
-        prefecture_id: {
-          label: data.data.prefecture.name,
-          value: data.data.prefecture.id,
-        },
+        prefecture: data.data.prefecture,
+
         photo: data.data.photo,
         company_des: data.data.company_des,
-        undertake: data.data.undertake,
-        company_address: data.data.company_address,
-        email: data.data.email,
-        phone: data.data.phone,
-        chairman: data.data.chairman,
-        youtube: data.data.youtube,
-        instagram: data.data.instagram,
-        website: data.data.website,
-        facebook: data.data.facebook,
+        manager: data.data.manager,
+        company_address: data.data.address,
+        secondary_email: data.data.secondary_email,
+        phone_number: data.data.phone_number,
+        ceo: data.data.ceo,
+        yt_url: data.data.yt_url,
+        ig_url: data.data.ig_url,
+        web_url: data.data.web_url,
+        fb_url: data.data.fb_url,
       });
     }
   }, [data]);
@@ -162,7 +157,7 @@ const Profile = () => {
           className="h-[calc(100vh-68px)]"
         />
       )}
-      <main className="w-full flex justify-center px-10 pt-5">
+      <main className="w-full flex justify-center ">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <ProfileSkeleton />

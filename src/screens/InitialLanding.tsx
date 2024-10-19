@@ -28,7 +28,7 @@ const InitialLanding: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{jp.japanJob} - Japan Job</title>
+        <title>Japan Job</title>
       </Helmet>
       <main className="h-screen flex items-center justify-center">
         <div className="text-center flex items-center justify-center flex-col">

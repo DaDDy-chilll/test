@@ -18,4 +18,6 @@ export const ERROR_MESSAGE = {
   INVALID_JOB_DESCRIPTION: "仕事の説明は必須です",
   INVALID_CHAIRMAN: "会社の代表者は必須です",
   INVALID_PHONE_NUMBER: "無効な電話番号です",
+  INVALID_LINK: "無効なリンクです",
+  INVALID_AREA: "無効なエリアです",
 };

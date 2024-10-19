@@ -38,6 +38,11 @@ const useHandleError = () => {
   const [holidayError, setHolidayError] = useState<string | null>(null);
   const [chairmanError, setChairmanError] = useState<string | null>(null);
   const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
+  const [facebookError, setFacebookError] = useState<string | null>(null);
+  const [youtubeError, setYoutubeError] = useState<string | null>(null);
+  const [instagramError, setInstagramError] = useState<string | null>(null);
+  const [websiteError, setWebsiteError] = useState<string | null>(null);
+  const [areaError, setAreaError] = useState<string | null>(null);
 
   const authHandleError = (error: AuthErrorType | null) => {
     if (error && error?.validation) {
@@ -88,15 +93,16 @@ const useHandleError = () => {
         if (err?.budget) {
           setBudgetStringError(err?.budget?.jp ?? ERROR_MESSAGE.INVALID_BUDGET);
         }
-        if (err?.starting_year) {
-          setStartingError(
-            err?.starting_year?.jp ?? ERROR_MESSAGE.INVALID_STARTING,
-          );
+        if (err?.starting) {
+          setStartingError(err?.starting?.jp ?? ERROR_MESSAGE.INVALID_STARTING);
         }
         if (err?.staff) {
           setStaffError(
             err?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
+        }
+        if (error?.area) {
+          setAreaError(error?.area?.jp ?? ERROR_MESSAGE.INVALID_AREA);
         }
         if (err?.prefecture_id) {
           setPrefectureError(
@@ -108,27 +114,40 @@ const useHandleError = () => {
             err?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
           );
         }
-        if (err?.company_address) {
+        if (err?.address) {
           setCompanyAddressError(
-            err?.company_address?.jp ??
-              ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+            err?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
-        if (err?.undertake) {
+        if (err?.manager) {
           setUnderTakeError(
-            err?.undertake?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+            err?.manager?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
           );
         }
-        if (err?.chairman) {
+        if (err?.ceo) {
           setChairmanError(err?.chairman?.jp ?? ERROR_MESSAGE.INVALID_CHAIRMAN);
         }
-        if (err?.email) {
-          setEmailError(err?.email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL);
+        if (err?.secondary_email) {
+          setEmailError(
+            err?.secondary_email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL,
+          );
         }
         if (err?.phone_number) {
           setPhoneNumberError(
             err?.phone_number?.jp ?? ERROR_MESSAGE.INVALID_PHONE_NUMBER,
           );
+        }
+        if (error?.fb_url) {
+          setFacebookError(error?.fb_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+        }
+        if (error?.yt_url) {
+          setYoutubeError(error?.yt_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+        }
+        if (error?.ig_url) {
+          setInstagramError(error?.ig_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+        }
+        if (error?.web_url) {
+          setWebsiteError(error?.web_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
         }
       });
     } else {
@@ -157,6 +176,9 @@ const useHandleError = () => {
           error?.staff?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
+      if (error?.area) {
+        setAreaError(error?.area?.jp ?? ERROR_MESSAGE.INVALID_AREA);
+      }
       if (error?.prefecture_id) {
         setPrefectureError(
           error?.prefecture_id?.jp ?? ERROR_MESSAGE.INVALID_PREFECTURE,
@@ -167,27 +189,40 @@ const useHandleError = () => {
           error?.company_des?.jp ?? ERROR_MESSAGE.INVALID_COMPANY_DESCRIPTION,
         );
       }
-      if (error?.company_address) {
+      if (error?.address) {
         setCompanyAddressError(
-          error?.company_address?.jp ??
-            ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          error?.address?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
-      if (error?.undertake) {
+      if (error?.manager) {
         setUnderTakeError(
-          error?.undertake?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          error?.manager?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
-      if (error?.chairman) {
-        setChairmanError(error?.chairman?.jp ?? ERROR_MESSAGE.INVALID_CHAIRMAN);
+      if (error?.ceo) {
+        setChairmanError(error?.ceo?.jp ?? ERROR_MESSAGE.INVALID_CHAIRMAN);
       }
-      if (error?.email) {
-        setEmailError(error?.email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL);
+      if (error?.secondary_email) {
+        setEmailError(
+          error?.secondary_email?.jp ?? ERROR_MESSAGE.INVALID_EMAIL,
+        );
       }
       if (error?.phone_number) {
         setPhoneNumberError(
           error?.phone_number?.jp ?? ERROR_MESSAGE.INVALID_PHONE_NUMBER,
         );
+      }
+      if (error?.fb_url) {
+        setFacebookError(error?.fb_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+      }
+      if (error?.yt_url) {
+        setYoutubeError(error?.yt_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+      }
+      if (error?.ig_url) {
+        setInstagramError(error?.ig_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
+      }
+      if (error?.web_url) {
+        setWebsiteError(error?.web_url?.jp ?? ERROR_MESSAGE.INVALID_LINK);
       }
     }
   };
@@ -311,6 +346,11 @@ const useHandleError = () => {
     undertakeError,
     chairmanError,
     phoneNumberError,
+    areaError,
+    facebookError,
+    youtubeError,
+    instagramError,
+    websiteError,
     resetProfileFormError: () => {
       setCompanyNameError(null);
       setIndustryTypeError(null);
@@ -325,6 +365,11 @@ const useHandleError = () => {
       setChairmanError(null);
       setEmailError(null);
       setPhoneNumberError(null);
+      setAreaError(null);
+      setFacebookError(null);
+      setYoutubeError(null);
+      setInstagramError(null);
+      setWebsiteError(null);
     },
     jobFormHandleError,
     jobNameError,

@@ -83,6 +83,10 @@ export type ProfileFormErrorType = {
     jp: string;
     mm: string;
   };
+  area?: {
+    jp: string;
+    mm: string;
+  };
   prefecture_id?: {
     jp: string;
     mm: string;
@@ -91,23 +95,39 @@ export type ProfileFormErrorType = {
     jp: string;
     mm: string;
   };
-  company_address?: {
+  address?: {
     jp: string;
     mm: string;
   };
-  undertake?: {
+  manager?: {
     jp: string;
     mm: string;
   };
-  chairman?: {
+  ceo?: {
     jp: string;
     mm: string;
   };
-  email?: {
+  secondary_email?: {
     jp: string;
     mm: string;
   };
   phone_number?: {
+    jp: string;
+    mm: string;
+  };
+  yt_url?: {
+    jp: string;
+    mm: string;
+  };
+  fb_url?: {
+    jp: string;
+    mm: string;
+  };
+  ig_url?: {
+    jp: string;
+    mm: string;
+  };
+  web_url?: {
     jp: string;
     mm: string;
   };
@@ -132,6 +152,10 @@ export type ProfileFormErrorType = {
       jp: string;
       mm: string;
     },
+    area?: {
+      jp: string;
+      mm: string;
+    },
     prefecture_id?: {
       jp: string;
       mm: string;
@@ -140,7 +164,7 @@ export type ProfileFormErrorType = {
       jp: string;
       mm: string;
     },
-    company_address?: {
+    address?: {
       jp: string;
       mm: string;
     },
@@ -148,7 +172,7 @@ export type ProfileFormErrorType = {
       jp: string;
       mm: string;
     },
-    chairman?: {
+    ceo?: {
       jp: string;
       mm: string;
     },

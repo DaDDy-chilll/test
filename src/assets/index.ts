@@ -6,7 +6,18 @@ import IDCard from "./icons/IDCard";
 import Message from "./icons/Message";
 import Work from "./icons/Work";
 import { LOGO } from "./icons/LOGO";
-
+import {
+  CEO,
+  Manager,
+  JobType,
+  Staff,
+  Location,
+  Money,
+  Youtube,
+  Facebook,
+  Instagram,
+  Website,
+} from "./icons/ProfileDetailIcons";
 export {
   DashboardIcon,
   Apartment,
@@ -16,4 +27,14 @@ export {
   Message,
   Work,
   LOGO,
+  CEO,
+  Manager,
+  JobType,
+  Staff,
+  Location,
+  Money,
+  Youtube,
+  Facebook,
+  Instagram,
+  Website,
 };

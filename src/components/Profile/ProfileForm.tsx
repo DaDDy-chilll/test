@@ -21,6 +21,7 @@ import { setName } from "@/store/features/NavigationSlice";
 import useHandleError from "@/hooks/useHandleError";
 import { ProfileFormErrorType } from "@/types/helperTypes";
 import { useQueryClient } from "@tanstack/react-query";
+import Skeleton from "react-loading-skeleton";
 
 type profileFormProps = {
   setIsEdit: (value: boolean) => void;
@@ -48,10 +49,9 @@ const ProfileForm = ({
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [phone, setPhone] = useState<string>("");
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const {
     ProfileFormHandleError,
-    // photoError,
     companyNameError,
     industryTypeError,
     budgetStringError,
@@ -59,11 +59,17 @@ const ProfileForm = ({
     staffError,
     prefectureError,
     companyDesError,
+    photoError,
     companyAddressError,
-    chairmanError,
-    emailError,
-    phoneNumberError,
     undertakeError,
+    chairmanError,
+    phoneNumberError,
+    areaError,
+    facebookError,
+    youtubeError,
+    instagramError,
+    websiteError,
+    emailError,
     resetProfileFormError,
   } = useHandleError();
   const {
@@ -78,8 +84,10 @@ const ProfileForm = ({
   });
   const { mutate: uploadImage } = useMutation({
     mutationFn: (file: File) => {
+      setImageLoading(true);
       const formData = new FormData();
       formData.append("file", file);
+      console.log(formData.get("file"));
       return fetchServer({
         endpoint: apiRoutes.UPLOAD_IMAGE,
         method: "POST",
@@ -99,6 +107,7 @@ const ProfileForm = ({
       queryClient.invalidateQueries({ queryKey: [QueryKey.PROFILE] });
     },
     onError: (error) => {
+      setImageLoading(true);
       console.error("Error uploading image:", error);
     },
     onSettled: () => {
@@ -118,50 +127,49 @@ const ProfileForm = ({
     setShowConfirmation(false);
   };
 
+  // console.log('jobData',jobData)
+
+  // console.log('avatarImage',avatarImage)
+
   const formatPhoneNumber = (value: string) => {
-    if (value && value.length > 0 && value.length < 11) {
-      const cleaned = value.replace(/^(\+)?|\D/g, "$1");
-      const normalized = cleaned.replace(/\s+/g, " ").trim();
-      if (normalized.startsWith("+")) {
-        const match = normalized.match(/^(\+\d{0,2})(\s?\d{0,4})(\s?\d{0,4})$/);
-        if (match) {
-          return [match[1], match[2], match[3]]
-            .filter(Boolean)
-            .join(" ")
-            .trim();
-        }
-      } else {
-        const match = normalized.match(/^(\d{0,3})(\s?\d{0,4})(\s?\d{0,4})$/);
-        if (match) {
-          return [match[1], match[2], match[3]]
-            .filter(Boolean)
-            .join(" ")
-            .trim();
-        }
-      }
-      return normalized;
+    const cleanedValue = value.replace(/\D/g, "");
+    if (cleanedValue.length <= 3) {
+      return cleanedValue;
+    } else if (cleanedValue.length <= 7) {
+      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3)}`;
+    } else if (cleanedValue.length <= 11) {
+      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3, 7)} ${cleanedValue.slice(7, 11)}`;
+    } else {
+      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3, 7)} ${cleanedValue.slice(7, 11)} ${cleanedValue.slice(11, 15)}`;
     }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetProfileFormError();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
+    // const form = e.target as HTMLFormElement;
+    // const formData = new FormData(form);
     const jobData = {
-      name: (formData.get("name") as string) || undefined,
-      industry_type_id:
-        Number(formData.get("industry_type_id") as string) || undefined,
-      budget: Number(formData.get("budget") as string) || undefined,
-      starting: formData.get("starting")
-        ? moment(formData.get("starting") as string).format("YYYY-MM-DD")
+      photo: (formData.photo as string) || undefined,
+      name: (formData.name as string) || undefined,
+      industry_type_id: Number(formData.industry_type_id.value) || undefined,
+      budget: Number(formData.budget) || undefined,
+      starting: formData.starting
+        ? moment(formData.starting).format("YYYY-MM-DD")
         : undefined,
-      staff: Number(formData.get("staff") as string) || undefined,
-      prefecture_id:
-        Number(formData.get("prefecture_id") as string) || undefined,
-      company_des: (formData.get("company_des") as string) || undefined,
-      address: (formData.get("company_address") as string) || undefined,
-      undertake: (formData.get("undertake") as string) || undefined,
+      staff: Number(formData.staff.value) || undefined,
+      prefecture: (formData.prefecture as string) || undefined,
+      company_des: (formData.company_des as string) || undefined,
+      address: (formData.company_address as string) || undefined,
+      manager: (formData.manager as string) || undefined,
+      phone_number: (formData.phone_number as string) || undefined,
+      yt_url: (formData.yt_url as string) || undefined,
+      fb_url: (formData.fb_url as string) || undefined,
+      web_url: (formData.web_url as string) || undefined,
+      ig_url: (formData.ig_url as string) || undefined,
+      ceo: (formData.ceo as string) || undefined,
+      secondary_email: (formData.secondary_email as string) || undefined,
+      area: (formData.area as string) || undefined,
     };
 
     // Remove undefined properties
@@ -198,7 +206,6 @@ const ProfileForm = ({
       );
     }
   }, [formData.photo]);
-
   return (
     <motion.div
       key="form"
@@ -226,11 +233,17 @@ const ProfileForm = ({
         </div>
         <label htmlFor="avatar-upload" className="cursor-pointer">
           <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
+            {imageLoading && (
+              <div className="w-full h-full flex items-center justify-center">
+                <Skeleton circle height={80} width={80} />
+              </div>
+            )}
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
               src={avatarImage}
               crossOrigin="anonymous"
               alt="Profile avatar"
+              onLoad={() => setImageLoading(false)}
             />
           </div>
         </label>
@@ -252,7 +265,12 @@ const ProfileForm = ({
             label={jp.companyName}
             className="mt-1 block w-full bg-gray-100"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={(e) =>
+              setFormData((prevData: any) => ({
+                ...prevData,
+                name: e.target.value,
+              }))
+            }
             error={companyNameError || ""}
             required={false}
           />
@@ -266,25 +284,28 @@ const ProfileForm = ({
             defaultOption={jp.chooseIndustry}
             value={formData.industry_type_id}
             onChange={(e) => {
-              setFormData({
-                ...formData,
+              setFormData((prevData: any) => ({
+                ...prevData,
                 industry_type_id: {
                   label: e.target?.labels,
                   value: e.target.value,
                 },
-              });
+              }));
             }}
             error={industryTypeError || ""}
           />
           <Input
-            name="email"
-            type="text"
-            placeholder={jp.email}
+            name="secondary_email"
+            type="email"
+            placeholder=""
             label={jp.email}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.email}
+            value={formData.secondary_email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                secondary_email: e.target.value,
+              }))
             }
             error={emailError || ""}
             required={false}
@@ -293,16 +314,17 @@ const ProfileForm = ({
           <Input
             name="phone_number"
             type="text"
-            placeholder="08x xxx xxxx xxxx"
+            placeholder="08x xxxx xxxx"
             label={jp.phoneNumber}
             className="mt-1 block w-full bg-gray-100"
-            value={formatPhoneNumber(formData.phone)}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                phone: e.target.value.replace(/\D/g, ""),
-              })
-            }
+            value={formatPhoneNumber(formData.phone_number)}
+            onChange={(e) => {
+              // const numericValue = e.target.value.replace(/[^\d+]/g, '');
+              setFormData((prevData: any) => ({
+                ...prevData,
+                phone_number: formatPhoneNumber(e.target.value),
+              }));
+            }}
             error={phoneNumberError || ""}
             required={false}
           />
@@ -314,7 +336,10 @@ const ProfileForm = ({
             placeholder="100000 $"
             value={formData.budget}
             onChange={(e) =>
-              setFormData({ ...formData, budget: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                budget: e.target.value,
+              }))
             }
             error={budgetStringError || ""}
             required={false}
@@ -324,39 +349,50 @@ const ProfileForm = ({
             type="text"
             label={jp.companyAddress}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.company_address}
+            value={
+              formData.company_address == "null" ? "" : formData.company_address
+            }
             onChange={(e) =>
-              setFormData({ ...formData, company_address: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                company_address: e.target.value,
+              }))
             }
             error={companyAddressError || ""}
             required={false}
           />
           <Input
-            name="chairman"
+            name="ceo"
             type="text"
             label={jp.chairman}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.chairman}
+            value={formData.ceo == "null" ? "" : formData.ceo}
             onChange={(e) =>
-              setFormData({ ...formData, chairman: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                ceo: e.target.value,
+              }))
             }
             error={chairmanError || ""}
             required={false}
           />
           <Input
-            name="undertake"
+            name="manager"
             type="text"
             label={jp.undertake}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.undertake}
+            value={formData.manager}
             onChange={(e) =>
-              setFormData({ ...formData, undertake: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                manager: e.target.value,
+              }))
             }
             error={undertakeError || ""}
             required={false}
           />
           <Select
-            name={jp.employeeNumber}
+            name="staff"
             label={jp.employeeNumber}
             id={jp.employeeNumber}
             options={employeeNumber}
@@ -364,28 +400,27 @@ const ProfileForm = ({
             defaultOption={jp.chooseEmployee}
             value={formData.staff}
             onChange={(e) =>
-              setFormData({
-                ...formData,
+              setFormData((prevData: any) => ({
+                ...prevData,
                 staff: { label: e.target.labels, value: e.target.value },
-              })
+              }))
             }
             error={staffError || ""}
           />
-          <Select
-            name="prefecture_id"
+          <Input
+            name="area"
+            type="text"
             label={jp.area}
-            id=""
-            options={countries}
-            className=""
-            defaultOption={jp.chooseLocation}
+            className="mt-1 block w-full bg-gray-100"
             value={formData.area}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                area: { label: e.target.labels, value: e.target.value },
-              })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                area: e.target.value,
+              }))
             }
-            error={prefectureError || ""}
+            error={areaError || ""}
+            required={false}
           />
           <DatePicker
             name="starting"
@@ -394,73 +429,90 @@ const ProfileForm = ({
             className="mt-1 block w-full"
             value={formData.starting}
             onChange={(e) =>
-              setFormData({ ...formData, starting: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                starting: e.target.value,
+              }))
             }
             error={startingError || ""}
           />
-          <Select
-            disabled={formData.prefecture_id.value !== "" ? false : true}
+          <Input
+            name="prefecture"
+            type="text"
             label={jp.city}
-            id="city"
-            options={city[formData.area.value]}
-            className=""
-            defaultOption={jp.chooseLocation}
-            value={formData.prefecture_id}
+            className="mt-1 block w-full bg-gray-100"
+            value={formData.prefecture}
             onChange={(e) =>
-              setFormData({ ...formData, prefecture_id: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                prefecture: e.target.value,
+              }))
             }
             error={prefectureError || ""}
+            required={false}
           />
           <Input
-            name="facebook"
-            type="text"
+            name="fb_url"
+            type="url"
             label={jp.facebook}
             className="mt-1 block w-full bg-gray-100"
             placeholder=""
-            value={formData.facebook}
+            value={formData.fb_url}
             onChange={(e) =>
-              setFormData({ ...formData, facebook: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                fb_url: e.target.value,
+              }))
             }
-            // error={facebookError || ""}
+            error={facebookError || ""}
             required={false}
           />
           <Input
-            name="youtube"
-            type="text"
+            name="yt_url"
+            type="url"
             label={jp.youtube}
             className="mt-1 block w-full bg-gray-100"
             placeholder=""
-            value={formData.youtube}
+            value={formData.yt_url}
             onChange={(e) =>
-              setFormData({ ...formData, youtube: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                yt_url: e.target.value,
+              }))
             }
-            // error={youtubeError || ""}
+            error={youtubeError || ""}
             required={false}
           />
           <Input
-            name="website"
-            type="text"
+            name="web_url"
+            type="url"
             label={jp.website}
             className="mt-1 block w-full bg-gray-100"
             placeholder=""
-            value={formData.website}
+            value={formData.web_url}
             onChange={(e) =>
-              setFormData({ ...formData, website: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                web_url: e.target.value,
+              }))
             }
-            // error={companyDesError || ""}
+            error={websiteError || ""}
             required={false}
           />
           <Input
-            name="instagram"
-            type="text"
+            name="ig_url"
+            type="url"
             label={jp.instagram}
             className="mt-1 block w-full bg-gray-100"
             placeholder=""
-            value={formData.instagram}
+            value={formData.ig_url}
             onChange={(e) =>
-              setFormData({ ...formData, instagram: e.target.value })
+              setFormData((prevData: any) => ({
+                ...prevData,
+                ig_url: e.target.value,
+              }))
             }
-            // error={companyDesError || ""}
+            error={instagramError || ""}
             required={false}
           />
           <span className="col-span-2">
@@ -472,7 +524,10 @@ const ProfileForm = ({
               placeholder="Company description"
               value={formData.company_des}
               onChange={(e) =>
-                setFormData({ ...formData, company_des: e.target.value })
+                setFormData((prevData: any) => ({
+                  ...prevData,
+                  company_des: e.target.value,
+                }))
               }
               error={companyDesError || ""}
               required={false}
