@@ -48,6 +48,7 @@ const ProfileForm = ({
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [phone, setPhone] = useState<string>("");
   const {
     ProfileFormHandleError,
     // photoError,
@@ -115,6 +116,31 @@ const ProfileForm = ({
 
   const handleCancel = () => {
     setShowConfirmation(false);
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    if (value && value.length > 0 && value.length < 11) {
+      const cleaned = value.replace(/^(\+)?|\D/g, "$1");
+      const normalized = cleaned.replace(/\s+/g, " ").trim();
+      if (normalized.startsWith("+")) {
+        const match = normalized.match(/^(\+\d{0,2})(\s?\d{0,4})(\s?\d{0,4})$/);
+        if (match) {
+          return [match[1], match[2], match[3]]
+            .filter(Boolean)
+            .join(" ")
+            .trim();
+        }
+      } else {
+        const match = normalized.match(/^(\d{0,3})(\s?\d{0,4})(\s?\d{0,4})$/);
+        if (match) {
+          return [match[1], match[2], match[3]]
+            .filter(Boolean)
+            .join(" ")
+            .trim();
+        }
+      }
+      return normalized;
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -267,12 +293,15 @@ const ProfileForm = ({
           <Input
             name="phone_number"
             type="text"
-            placeholder={jp.phoneNumber}
+            placeholder="08x xxx xxxx xxxx"
             label={jp.phoneNumber}
             className="mt-1 block w-full bg-gray-100"
-            value={formData.phone_number}
+            value={formatPhoneNumber(formData.phone)}
             onChange={(e) =>
-              setFormData({ ...formData, phone_number: e.target.value })
+              setFormData({
+                ...formData,
+                phone: e.target.value.replace(/\D/g, ""),
+              })
             }
             error={phoneNumberError || ""}
             required={false}

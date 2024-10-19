@@ -24,10 +24,13 @@ import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
-import { CardSkeleton } from "@/components";
+import { CardSkeleton, ConfirmationBox } from "@/components";
+import { useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes";
 
 const MatchedScreend = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { token } = useSelector((state: RootState) => state.auth);
   const [matchedUsers, setMatchedUsers] = useState<any>([]);
@@ -40,6 +43,7 @@ const MatchedScreend = () => {
   const [liked, setLiked] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(3);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [prevData, setPrevData] = useState<{
     jobId: number | null;
     like: boolean | null;
@@ -109,6 +113,7 @@ const MatchedScreend = () => {
     mutate: likeOrUnlikeMutate,
     isPending,
     isSuccess: likeOrUnlikeSuccess,
+    data: likeOrUnlikeData,
   } = useMutation({
     mutationFn: ({ endpoint, body }: any) => {
       return fetchServer({
@@ -168,6 +173,11 @@ const MatchedScreend = () => {
     }
   };
 
+  const handleCancelConfirmation = () => {
+    setShowConfirmation(false);
+    navigate(RouteName.CHAT);
+  };
+
   useEffect(() => {
     dispatch(setTitle(jp.matches));
   }, [dispatch]);
@@ -193,6 +203,9 @@ const MatchedScreend = () => {
   }, [jobType.id, liked, refetch]);
 
   useEffect(() => {
+    if (likeOrUnlikeSuccess && liked) {
+      setShowConfirmation(true);
+    }
     if (page > 1 || limit > 3 || likeOrUnlikeSuccess) {
       refetch();
     }
@@ -207,6 +220,13 @@ const MatchedScreend = () => {
         <Loading
           isLoading={isPending || jobNameTypeLoading}
           className="h-[calc(100vh-68px)]"
+        />
+      )}
+      {showConfirmation && (
+        <ConfirmationBox
+          message={jp.goToChat}
+          onConfirm={handleCancelConfirmation}
+          onCancel={() => setShowConfirmation(false)}
         />
       )}
       <motion.main

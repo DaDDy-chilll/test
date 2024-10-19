@@ -184,6 +184,7 @@ const ChatScreen = () => {
 
   useEffect(() => scrollToBottom(), [messages]);
   useEffect(() => {
+    console.log("navChat", navChat);
     if (navChat) handleChatSelect(navChat);
   }, [navChat]);
 

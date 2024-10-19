@@ -47,7 +47,6 @@ const Profile = () => {
     key: QueryKey.PROFILE,
     token: token as string,
   });
-
   const { data: jobType, isLoading: isJobTypesLoading } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,

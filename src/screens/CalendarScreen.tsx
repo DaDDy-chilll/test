@@ -21,7 +21,7 @@ import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
-const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const startForMonth = moment().startOf("month").format("YYYY-MM-DD");
 const endForMonth = moment().endOf("month").format("YYYY-MM-DD");
 const today = moment().format("YYYY-MM-DD");
@@ -48,10 +48,9 @@ const CalendarScreen = () => {
     start: firstDayOfMonth,
     end: lastDayOfMonth,
   });
-  const startingDayIndex =
-    getDay(firstDayOfMonth) === 0 ? 6 : getDay(firstDayOfMonth) - 1; // Adjusting the starting index
+  const startingDayIndex = getDay(firstDayOfMonth); // Adjusting the starting index
   const endingDayIndex =
-    getDay(lastDayOfMonth) === 0 ? 0 : 7 - getDay(lastDayOfMonth);
+    getDay(lastDayOfMonth) === 0 ? 0 : 6 - getDay(lastDayOfMonth);
 
   const handleCellClick = (todaysEvents: Event, dateKey: string) => {
     setSelectedDate(dateKey);

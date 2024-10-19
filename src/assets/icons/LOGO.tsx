@@ -1,5 +1,5 @@
 import React from "react";
-export const LOGO: React.FC = () => {
+export const LOGO: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       width="181"
@@ -8,6 +8,7 @@ export const LOGO: React.FC = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
+      {...props}
     >
       <rect width="191" height="184" fill="url(#pattern0_1950_3491)" />
       <defs>

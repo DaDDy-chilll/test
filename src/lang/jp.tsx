@@ -156,4 +156,8 @@ export const jp = {
   website: "Website URL",
   instagram: "Instagram URL",
   youtube: "Youtube URL",
+  initialLanding: "初期画面",
+  privacyPolicy: "プライバシーポリシー",
+  japanJob: "日本ジョブ",
+  goToChat: "チャットに行く",
 };
