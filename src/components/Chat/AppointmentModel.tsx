@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select, InterviewDatePicker } from "@/components";
 import TimeSelect from "../ui/SelectTime";
 import { Button } from "../ui/button";
@@ -11,9 +11,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Modal from "./Modal";
 import moment from "moment";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import  useHandleError  from "@/hooks/useHandleError";
+import { AuthErrorType } from "@/types/helperTypes";
 type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
   userId: number;
@@ -23,10 +23,23 @@ type AppointmentModelProps = {
 interface MeetingData {
   user_id: number;
   job_id: number;
-  date: string;
+  direct?:{
+    date: string;
   start_time: string;
   end_time: string;
-  initial: boolean;
+  zoom_link: string;
+  },
+  req_admin?:{
+    first_date: string;
+    first_start_time: string;
+    first_end_time: string;
+    second_date: string;
+    second_start_time: string;
+    second_end_time: string;
+    third_date: string;
+    third_start_time: string;
+    third_end_time: string;
+  }
 }
 
 const meetingTypeOptions = [
@@ -61,12 +74,6 @@ const defaultAdminInterview = {
   },
 };
 
-// const defaultAdminInterview = {
-//   meetingType: {
-//     label: meetingTypeOptions[1].label,
-//     value: meetingTypeOptions[1].value,
-//   },
-// };
 
 const AppointmentModel = ({
   setIsAppointmentModelOpen,
@@ -74,77 +81,92 @@ const AppointmentModel = ({
   jobId,
 }: AppointmentModelProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  const [startMeetingTime, setStartMeetingTime] = useState<string>("9:00");
-  const [endMeetingTime, setEndMeetingTime] = useState<string>("9:00");
+  const { authHandleError,emailError } = useHandleError();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [interview, setInterview] = useState(defaultDirectInterview);
   const [adminInterview, setAdminInterview] = useState(defaultAdminInterview);
-  const [currentMeetingData, setCurrentMeetingData] =
-    useState<MeetingData | null>(null);
-  const handleCloseModel = () => setIsAppointmentModelOpen(false);
   const [validationData, setValidationData] = useState<any>(null);
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  
+  const handleCloseModel = () => setIsAppointmentModelOpen(false);
   const [meetingType, setMeetingType] = useState<{
     label: string;
     value: string;
   }>(meetingTypeOptions[0]);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  // const handleDateSelect = (date: Date) => {
-  //   setSelectedDate(date);
-  // };
-  // const { mutate: postMeeting } = useMutation({
-  //   mutationFn: (data: MeetingData) => {
-  //     return fetchServer({
-  //       endpoint: `${apiRoutes.INTERVIEW}`,
-  //       method: "POST",
-  //       token: token,
-  //       body: data,
-  //     });
-  //   },
-  //   onSuccess: (responseData) => {
-  //     if (responseData.data) {
-  //       setValidationData(responseData.data);
-  //       setShowConfirmModal(true);
-  //     } else {
-  //       handleCloseModel();
-  //     }
-  //   },
-  // });
+  const { mutate: postMeeting,isPending:postMeetingPending,error } = useMutation({
+    mutationFn: (data: MeetingData) => {
+      return fetchServer({
+        endpoint: `${apiRoutes.INTERVIEW}`,
+        method: "POST",
+        token: token,
+        body: data,
+      });
+    },
+    onSuccess: (responseData) => {
+      console.log("responseData", responseData);
+      if (responseData.data) {
+        setValidationData(responseData.data);
+        setShowConfirmModal(true);
+      } else {
+        handleCloseModel();
+      }
+    },
+    onError: (error) => {
+      setValidationData(error.message);
+      authHandleError(error?.message as AuthErrorType);
+      // setShowConfirmModal(true);
+      console.log("error", error);
+    },
+  });
 
-  // const handleMakeAppointment = (isInitial: boolean) => {
-  //   const formattedDate = selectedDate
-  //     ? selectedDate.toISOString().split("T")[0]
-  //     : "";
-  //   const mettingdata: MeetingData = {
-  //     user_id: userId,
-  //     job_id: jobId,
-  //     date: formattedDate,
-  //     start_time: startMeetingTime,
-  //     end_time: endMeetingTime,
-  //     initial: isInitial,
-  //   };
-  //   setCurrentMeetingData(mettingdata);
-  //   postMeeting(mettingdata);
-  // };
   const handleConfirmRewrite = () => {
-    // if (currentMeetingData) {
-    // postMeeting({ ...currentMeetingData, initial: false });
-    // }
     if (meetingType.value === "admin") {
-      console.log("adminInterview", adminInterview);
+      const meetingData: MeetingData = {
+        user_id: userId,
+        job_id: jobId,
+        req_admin:{
+          first_date: adminInterview.option_one.date,
+          first_start_time: adminInterview.option_one.start_time,
+          first_end_time: adminInterview.option_one.end_time,
+          second_date: adminInterview.option_two.date,
+          second_start_time: adminInterview.option_two.start_time,
+          second_end_time: adminInterview.option_two.end_time,
+          third_date: adminInterview.option_three.date,
+          third_start_time: adminInterview.option_three.start_time,
+          third_end_time: adminInterview.option_three.end_time,
+        }
+      };
+      postMeeting(meetingData);
     } else {
       if (interview.url === "") {
         setShowConfirmModal(false);
         setShowAlert(true);
         return;
       } else {
-        console.log("directInterview", interview);
+        const meetingData: MeetingData = {
+          user_id: userId,
+          job_id: jobId,
+          direct:{
+            date: interview.date,
+          start_time: interview.start_time,
+          end_time: interview.end_time,
+          zoom_link: interview.url,
+          }
+        };
+        postMeeting(meetingData);
       }
     }
     setShowConfirmModal(false);
     setIsAppointmentModelOpen(false);
   };
+
+  console.log("emailError", emailError,error);
+
+
+  useEffect(() => {
+    if (error) authHandleError(error as AuthErrorType);
+  }, [error, authHandleError]);
+
 
   return (
     <>
@@ -634,6 +656,9 @@ const AppointmentModel = ({
               <p>終了時間: {validationData.end_time}</p>
             </div>
           )}
+          {
+            emailError && <p className="text-red-500">{emailError}</p>
+          }
 
           <div className="flex justify-end">
             <button

@@ -74,12 +74,12 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <CEO className="size-7" />,
             label: jp.chairman,
-            value: data?.ceo,
+              value: data?.ceo || "",
           },
           {
             icon: <Manager className="size-7" />,
             label: jp.undertake,
-            value: data?.manager,
+            value: data?.manager || "",
           },
           {
             icon: <JobType className="size-7" />,
@@ -94,27 +94,27 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <Money className="size-7" />,
             label: jp.investmentAmount,
-            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "",
+            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "¥0",
           },
           {
             icon: <Phone className="size-7" />,
             label: jp.phoneNumber,
-            value: data?.phone_number,
+            value: data?.phone_number || "",
           },
           {
             icon: <Location className="size-7" />,
             label: `${jp.city} / ${jp.area}`,
-            value: `${data?.prefecture} / ${data?.area}`,
+            value: `${data?.prefecture || ""} / ${data?.area || ""}`,
           },
           {
             icon: <CompanyAddress className="size-7" />,
             label: jp.companyAddress,
-            value: data?.address,
+            value: data?.address || "",
           },
           {
             icon: <CompanyDescription className="size-7" />,
             label: jp.companyDescription,
-            value: data?.company_des,
+            value: data?.company_des || "",
           },
         ].map((item, index) => (
           <div

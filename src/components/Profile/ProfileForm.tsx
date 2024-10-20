@@ -132,6 +132,7 @@ const ProfileForm = ({
   // console.log('avatarImage',avatarImage)
 
   const formatPhoneNumber = (value: string) => {
+    if(!value) return value;
     const cleanedValue = value.replace(/\D/g, "");
     if (cleanedValue.length <= 3) {
       return cleanedValue;

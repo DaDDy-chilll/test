@@ -48,8 +48,8 @@ export const fetchServer = async ({
     if (axios.isAxiosError(error)) {
       if (error.response) {
         const { data, status } = error.response;
-        // console.log("error-", error.response, data.status, status);
         if (data.status == 400 || status == 400) {
+          console.log("error-", error.response, data.status, status);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");
