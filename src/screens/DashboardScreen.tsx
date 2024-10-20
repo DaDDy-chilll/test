@@ -236,7 +236,6 @@ const DashboardScreen = () => {
                     upcomingInterviews &&
                     Object.entries(upcomingInterviews).map(
                       ([key, value], index: number) => {
-                        console.log("key", key, currentDate, currentDate > key);
                         return (
                           <div
                             key={index}

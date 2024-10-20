@@ -84,7 +84,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <JobType className="size-7" />,
             label: jp.industry,
-            value: data?.industry_type.name || "不明",
+            value: data?.industry_type.name || "",
           },
           {
             icon: <Staff className="size-7" />,
@@ -94,7 +94,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <Money className="size-7" />,
             label: jp.investmentAmount,
-            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "¥0",
+            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "",
           },
           {
             icon: <Phone className="size-7" />,
@@ -104,7 +104,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <Location className="size-7" />,
             label: `${jp.city} / ${jp.area}`,
-            value: `${data?.prefecture || ""} / ${data?.area || ""}`,
+            value: data?.prefecture || data?.area ? `${data?.prefecture || ""} / ${data?.area || ""}` : '',
           },
           {
             icon: <CompanyAddress className="size-7" />,
@@ -119,12 +119,12 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
         ].map((item, index) => (
           <div
             key={index}
-            className="flex items-center gap-5 bg-white p-3 rounded-lg shadow-sm h-24"
+            className={`flex items-center gap-5 bg-white p-3 rounded-lg shadow-sm h-24 `}
           >
-            <div className="size-6">{item.icon}</div>
+            <div>{item.icon}</div>
             <div className="flex flex-col gap-y-1">
-              <p className="text-sm text-gray-500">{item.label}</p>
-              <p className="font-semibold text-gray-800">{item.value}</p>
+              <p className={`${item.value ? "text-sm text-gray-500" : "text-lg text-gray-900"}`}>{item.label}</p>
+              {item.value && <p className="font-semibold text-gray-800">{item.value}</p>}
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Chat } from "@/types/helperTypes";
-
+import DefaultUser from "@/assets/icons/default_user.svg";
 interface ChatItemProps {
   chat: Chat;
   onSelect: (chat: Chat) => void;
@@ -10,7 +10,7 @@ interface ChatItemProps {
 
 const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
-
+console.log(chat.jobfinder_profile_image)
   const handleClick = () => onSelect(chat);
 
   return (
@@ -20,7 +20,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
     >
       <div className="w-10 h-10 rounded-full overflow-hidden">
         <img
-          src={profileImage}
+          src={chat.jobfinder_profile_image ? profileImage : DefaultUser}
           alt={`${chat.jobfinder_name || "Unknown"}'s profile`}
           width="100%"
           height="100%"
