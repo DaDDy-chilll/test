@@ -161,4 +161,6 @@ export const jp = {
   japanJob: "日本ジョブ",
   goToChat: "チャットに行く",
   industry: "業種",
+  create: "作成",
+  update: "アップデート",
 };

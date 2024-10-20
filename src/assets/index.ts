@@ -6,8 +6,8 @@ import IDCard from "./icons/IDCard";
 import Message from "./icons/Message";
 import Work from "./icons/Work";
 import { LOGO } from "./icons/LOGO";
+import CEO from "./icons/CEO"; //
 import {
-  CEO,
   Manager,
   JobType,
   Staff,
@@ -17,6 +17,9 @@ import {
   Facebook,
   Instagram,
   Website,
+  Phone,
+  CompanyAddress,
+  CompanyDescription,
 } from "./icons/ProfileDetailIcons";
 export {
   DashboardIcon,
@@ -37,4 +40,7 @@ export {
   Facebook,
   Instagram,
   Website,
+  Phone,
+  CompanyAddress,
+  CompanyDescription,
 };

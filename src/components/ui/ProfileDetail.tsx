@@ -13,6 +13,9 @@ import {
   Facebook,
   Instagram,
   Website,
+  Phone,
+  CompanyAddress,
+  CompanyDescription,
 } from "@/assets";
 type formData = {
   name: string;
@@ -32,6 +35,7 @@ type Props = {
 
 const ProfileDetail = ({ editHandler, data }: Props) => {
   const clickEditEvent = () => editHandler && editHandler(true);
+
   return (
     <motion.div
       key="complete"
@@ -68,7 +72,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full ">
         {[
           {
-            icon: <CEO className="size-6" />,
+            icon: <CEO className="size-7" />,
             label: jp.chairman,
             value: data?.ceo,
           },
@@ -88,14 +92,29 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             value: `${data?.staff || 0}人`,
           },
           {
+            icon: <Money className="size-7" />,
+            label: jp.investmentAmount,
+            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "",
+          },
+          {
+            icon: <Phone className="size-7" />,
+            label: jp.phoneNumber,
+            value: data?.phone_number,
+          },
+          {
             icon: <Location className="size-7" />,
             label: `${jp.city} / ${jp.area}`,
             value: `${data?.prefecture} / ${data?.area}`,
           },
           {
-            icon: <Money className="size-7" />,
-            label: jp.investmentAmount,
-            value: data?.budget ? `¥${data.budget.toLocaleString()}` : "未指定",
+            icon: <CompanyAddress className="size-7" />,
+            label: jp.companyAddress,
+            value: data?.address,
+          },
+          {
+            icon: <CompanyDescription className="size-7" />,
+            label: jp.companyDescription,
+            value: data?.company_des,
           },
         ].map((item, index) => (
           <div
@@ -111,7 +130,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-6 w-full ">
+      {/* <div className="grid grid-cols-2 md:grid-cols-2 gap-6 w-full ">
         <div className="w-full max-w-3xl flex flex-col gap-y-1">
           <h2 className="font-bold text-lg text-gray-800 mb-3">{jp.address}</h2>
           <p className="flex items-center gap-5 bg-white p-6 rounded-lg shadow-sm  overflow-x-auto">
@@ -127,30 +146,30 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             {data?.company_des}
           </p>
         </div>
-      </div>
+      </div> */}
 
       <div className="w-full max-w-3xl items-center justify-center flex gap-x-10 pt-8 py-10">
         {data?.fb_url && (
-          <a href={data?.fb_url} target="_blank" className="">
-            <Facebook className="size-10" />
+          <a href={data?.fb_url} target="_blank">
+            <Facebook className="size-10 text-gray-500 hover:text-primaryColor transition-all duration-500 ease-in-out" />
           </a>
         )}
 
         {data?.yt_url && (
           <a href={data?.yt_url} target="_blank" className="">
-            <Youtube className="size-12" />
+            <Youtube className="size-12 text-gray-500 hover:text-primaryColor transition-all duration-500 ease-in-out" />
           </a>
         )}
 
         {data?.ig_url && (
           <a href={data?.ig_url} target="_blank" className="">
-            <Instagram className="size-10" />
+            <Instagram className="size-10 text-gray-500 hover:text-primaryColor transition-all duration-500 ease-in-out" />
           </a>
         )}
 
         {data?.web_url && (
           <a href={data?.web_url} target="_blank" className="">
-            <Website className="size-12" />
+            <Website className="size-12 text-gray-500 hover:text-primaryColor transition-all duration-500 ease-in-out" />
           </a>
         )}
       </div>

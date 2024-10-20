@@ -537,19 +537,48 @@ const ProfileForm = ({
 
         <div className="flex justify-between w-full px-10 mr-10 mt-5">
           <button
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-blue-600 hover:text-blue-800 font-medium flex gap-x-1"
             onClick={() => setIsEdit(false)}
             type="button"
           >
-            ← {jp.back}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              />
+            </svg>
+            {jp.back}
           </button>
           <Button
             variant="destructive"
-            className="font-medium w-44"
+            className="font-medium w-44 flex gap-x-2"
             type="button"
             onClick={() => setShowConfirmation(true)}
           >
-            {jp.finish}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m4.5 12.75 6 6 9-13.5"
+              />
+            </svg>
+
+            {jp.update}
           </Button>
         </div>
         {showConfirmation && (

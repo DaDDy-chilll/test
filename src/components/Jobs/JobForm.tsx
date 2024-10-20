@@ -448,18 +448,48 @@ const JobForm = ({
 
         <div className="flex justify-between w-full pb-3 px-10 mr-10">
           <button
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-blue-600 hover:text-blue-800 font-medium flex gap-x-1"
             onClick={onBack}
           >
-            ← {jp.back}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              />
+            </svg>
+
+            {jp.back}
           </button>
           <Button
             type="button"
             variant="destructive"
-            className="font-medium w-44"
+            className="font-medium w-32 flex items-center gap-x-2"
             onClick={() => setShowConfirmation(true)}
           >
-            {jp.finish}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+              />
+            </svg>
+
+            {jp.create}
           </Button>
         </div>
         {showConfirmation && (

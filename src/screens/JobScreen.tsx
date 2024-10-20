@@ -21,6 +21,8 @@ import { Helmet } from "react-helmet-async";
 import { colors } from "@/constants/color";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
+import eyeOpenWhite from "@/assets/icons/eye-open-white.svg";
+
 const defaultForm = {
   id: null,
   job_title: "",
@@ -292,10 +294,21 @@ const JobScreen = () => {
                             <td className="px-6 py-4">
                               <button
                                 onClick={() => handleJobDetails(item.id)}
+                                className="text-xs text-white bg-primaryColor rounded-md px-2 py-1 hover:bg-secondaryColor"
+                              >
+                                <img
+                                  src={eyeOpenWhite}
+                                  alt="eye"
+                                  className="w-4 h-4 mr-2 inline-block text-gray-500"
+                                />
+                                {jp.view}
+                              </button>
+                              {/* <button
+                               
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                               >
                                 {jp.viewDetails}
-                              </button>
+                              </button> */}
                             </td>
                           </tr>
                         );
@@ -308,9 +321,24 @@ const JobScreen = () => {
           <div className="flex justify-end items-center mt-4 ">
             <Button
               variant="destructive"
-              className="px-10"
+              className="px-5 flex gap-x-3"
               onClick={addHandler}
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+
               {jp.makeNewJobPost}
             </Button>
           </div>

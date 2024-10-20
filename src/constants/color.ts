@@ -4,4 +4,5 @@ export const colors = {
   bgLight: "#F5F5F5",
   bgDark: "#121212",
   third: "#c4c7c7",
+  icon: "#595959",
 };
