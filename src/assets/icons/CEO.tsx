@@ -1,3 +1,4 @@
+import React from "react";
 const CEO: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
@@ -12,4 +13,5 @@ const CEO: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default CEO;

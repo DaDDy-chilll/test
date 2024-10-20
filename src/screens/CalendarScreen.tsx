@@ -20,6 +20,8 @@ import { RootState } from "@/store/store";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
+import { fetchServer } from "@/utils/helper";
+import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const startForMonth = moment().startOf("month").format("YYYY-MM-DD");
@@ -37,11 +39,30 @@ const CalendarScreen = () => {
     date: "",
     events: null,
   });
-  const { data: eventsOfMonth, isLoading: isEventsLoading } = useFetch({
-    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startForMonth}&end_date=${endForMonth}`,
-    token: token as string,
-    key: QueryKey.INTERVIEW,
+  const {
+    data: eventsOfMonth,
+    isLoading: isEventsLoading,
+    refetch,
+  } = useQuery({
+    queryKey: [QueryKey.INTERVIEW, currentDate],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.INTERVIEW}?start_date=${moment(currentDate).startOf("month").format("YYYY-MM-DD")}&end_date=${moment(currentDate).endOf("month").format("YYYY-MM-DD")}`,
+        token: token as string,
+        method: "GET",
+      });
+    },
+    enabled: !!token && !!currentDate,
   });
+  // const { data: eventsOfMonth, isLoading: isEventsLoading } = useFetch({
+
+  //   enabled: !!token && !!currentDate,
+
+  // });
+
+  useEffect(() => {
+    refetch();
+  }, [currentDate]);
   const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const daysInMonth = eachDayOfInterval({
@@ -57,21 +78,26 @@ const CalendarScreen = () => {
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
+  console.log(
+    "currentDate",
+    moment(currentDate).startOf("month").format("YYYY-MM-DD"),
+  );
+
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
-    return Object.entries(data as any[]).flatMap(([_, interviews]) => {
-      return Object.entries(interviews as Record<string, any>).map(
-        ([key, value]) => {
+    return Object.entries(data.interviews || {}).flatMap(
+      ([name, interviews]) => {
+        return (interviews as any[]).map((interview) => {
           return {
-            name: key,
-            user_photo: value[0].user_photo,
-            start_time: value[0].start_time,
-            end_time: value[0].end_time,
-            job_title: value[0].job_title,
+            name,
+            user_photo: interview.user_photo,
+            start_time: interview.start_time,
+            end_time: interview.end_time,
+            job_title: interview.job_title,
           };
-        },
-      );
-    });
+        });
+      },
+    );
   }, []);
 
   useEffect(() => {

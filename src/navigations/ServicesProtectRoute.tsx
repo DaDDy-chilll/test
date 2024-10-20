@@ -11,7 +11,7 @@ const ServicesProtectedPage = ({ children }: ProtectedPageProps) => {
     (state: RootState) => state.auth,
   );
   if (!user && !token && verified == null) {
-    return <Navigate to={Routenames.LOGIN} />;
+    return <Navigate to={Routenames.INITIAL_LANDING} />;
   } else if (user && token && verified == false) {
     return <Navigate to={Routenames.PROFILE_FORM} />;
   }

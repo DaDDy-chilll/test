@@ -15,12 +15,11 @@ export const fetchServer = async ({
   token = null,
 }: FetchServerType) => {
   const urlEndPoint = endpoint || "";
-  console.log(urlEndPoint);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  console.log("urlEndPoint", urlEndPoint);
   try {
     if (method === "GET") {
       const { data } = await api.get(urlEndPoint);
-      // console.log("data", data, urlEndPoint);
       result = data;
     } else if (method === "POST" && !file && !token) {
       const { data } = await api.post(urlEndPoint, body);
@@ -49,7 +48,7 @@ export const fetchServer = async ({
       if (error.response) {
         const { data, status } = error.response;
         if (data.status == 400 || status == 400) {
-          console.log("error-", error.response, data.status, status);
+          // console.log("error-", error.response, data.status, status);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");

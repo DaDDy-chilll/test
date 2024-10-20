@@ -22,7 +22,6 @@ const CalendarCell = ({
   year,
 }: CalendarCellProps) => {
   const clickEvent = () => handleClick(todaysEvents);
-
   return (
     <div
       className={clsx(

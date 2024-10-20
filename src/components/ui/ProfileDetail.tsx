@@ -74,7 +74,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <CEO className="size-7" />,
             label: jp.chairman,
-              value: data?.ceo || "",
+            value: data?.ceo || "",
           },
           {
             icon: <Manager className="size-7" />,

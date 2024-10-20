@@ -63,7 +63,7 @@ const Otp: React.FC = () => {
       dispatch(setToken({ token: data?.data?.token, email: null }));
       setTimeout(() => {
         navigate(Routenames.CHANGE_PASSWORD);
-      }, 1000);
+      }, 500);
     }
   }, [isSuccess, data]);
 

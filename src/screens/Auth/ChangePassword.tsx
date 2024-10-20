@@ -53,7 +53,7 @@ const ChangePassword: React.FC = () => {
         dispatch(setToken({ token: null }));
         dispatch(setForgotPassword(false));
         navigate(RouteName.LOGIN);
-      }, 1000);
+      }, 500);
     }
     if (error) {
       console.log(error);

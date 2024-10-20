@@ -163,4 +163,6 @@ export const jp = {
   industry: "業種",
   create: "作成",
   update: "アップデート",
+  start: "開始",
+  end: "終了",
 };

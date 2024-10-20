@@ -68,7 +68,6 @@ const Header = () => {
           return prev;
         });
 
-        // console.log('notification',noti);
         dispatch(setNotification(noti));
       });
 

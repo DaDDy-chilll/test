@@ -19,7 +19,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { Helmet } from "react-helmet-async";
 import { colors } from "@/constants/color";
-import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import eyeOpenWhite from "@/assets/icons/eye-open-white.svg";
 
@@ -43,7 +42,6 @@ const JobScreen = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
-  const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -86,27 +84,6 @@ const JobScreen = () => {
 
   const editHandler = () => {
     setIsEdit(true);
-  };
-
-  const deleteJob = useMutation({
-    mutationFn: () => {
-      return fetchServer({
-        endpoint: `${apiRoutes.DELETE_JOB}/${jobDetail?.data.id}`,
-        method: "DELETE",
-        token: token,
-      });
-    },
-    onSuccess: () => {
-      setShowConfirmation(false);
-      setShowDetails(false);
-      setIsEdit(false);
-      setIsAdd(false);
-      queryClient.invalidateQueries({ queryKey: [QueryKey.JOBS] });
-    },
-  });
-
-  const deleteHandler = () => {
-    deleteJob.mutate();
   };
 
   const addHandler = () => {
@@ -173,12 +150,7 @@ const JobScreen = () => {
       <Helmet>
         <title>{jp.joblists} - Japan Job</title>
       </Helmet>
-      {/* {deleteJob.isPending && (
-        <Loading
-          isLoading={deleteJob.isPending}
-          className="h-[calc(100vh-68px)] z-40"
-        />
-      )} */}
+
       {!showDetails && !isAdd && !isEdit && (
         <motion.main
           key="job-list"
@@ -356,12 +328,14 @@ const JobScreen = () => {
             <JobDetails
               backHandler={handleBack}
               editHandler={editHandler}
-              deleteHandler={deleteHandler}
               data={jobDetail?.data}
               setFormData={setForm}
-              loading={deleteJob.isPending}
               showConfirmation={showConfirmation}
               setShowConfirmation={setShowConfirmation}
+              setShowDetails={setShowDetails}
+              setIsEdit={setIsEdit}
+              setIsAdd={setIsAdd}
+              token={token}
             />
           )}
         </motion.div>

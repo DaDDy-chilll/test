@@ -172,9 +172,11 @@ const JobForm = ({
       jobFormHandleError(error?.message as JobFormErrorType);
     }
     if (isSuccess) {
-      onBack?.();
-      setShowConfirmation(false);
-      setShowDetails && setShowDetails(false);
+      setTimeout(() => {
+        onBack?.();
+        setShowConfirmation(false);
+        setShowDetails && setShowDetails(false);
+      }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
@@ -499,6 +501,7 @@ const JobForm = ({
                 message="送信してもよろしいですか？"
                 onCancel={handleCancel}
                 loading={isPending}
+                isSuccess={isSuccess}
               />
             </div>
           </div>

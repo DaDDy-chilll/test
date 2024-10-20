@@ -59,7 +59,6 @@ const useHandleError = () => {
       });
     } else {
       if (error?.email) {
-        // console.log("email", error?.email.jp);
         setEmailError(error?.email?.jp ?? null);
       }
       if (error?.password) {

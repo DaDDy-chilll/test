@@ -9,7 +9,7 @@ import { RootState } from "@/store/store";
 import RouteName from "@/navigations/routes";
 import { useEffect } from "react";
 import { jp } from "@/lang/jp";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 const textOne = "良いミャンマー人と、";
 const textTwo = "優良な日本企業のマッチングサイト";
 const textOneDuration = textOne.length * 0.1;
@@ -22,7 +22,6 @@ const InitialLanding: React.FC = () => {
 
   useEffect(() => {
     if (user && token) navigate(RouteName.DASHBOARD);
-    else navigate(RouteName.INITIAL_LANDING);
   }, [user, token, navigate]);
 
   return (

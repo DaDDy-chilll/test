@@ -68,7 +68,7 @@ const useAuth = () => {
     dispatch(removeToken());
     dispatch(setName(""));
     setError(null);
-    navigate("/");
+    navigate(RouteName.INITIAL_LANDING);
   };
 
   return {

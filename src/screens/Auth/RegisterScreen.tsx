@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { jp } from "@/lang/jp";
 import useHandleError from "@/hooks/useHandleError";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 const RegisterScreen = () => {
   const { onRegister, isRegisterPending, error } = useAuth();
   const {

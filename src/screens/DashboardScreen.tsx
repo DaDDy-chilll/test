@@ -98,18 +98,10 @@ const DashboardScreen = () => {
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedDateData, setSelectedDateData] = useState<any>();
-  // const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
-  //   {},
-  // );
   const [hasTodayEvents, setHasTodayEvents] = useState<any>({
     date: "",
     events: null,
   });
-  // const [activeDate, setActiveDate] = useState<string | null>(null);
-  // const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  // const [selectedMonth,setSelectedMonth] = useState<number | string>();
-  // const selectedMonth = useRef<string>(TODAY);
-  // const today = format(new Date(), "yyyy-MM-dd");
   const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
     endpoint: `${
       apiRoutes.DASHBOARD
@@ -119,7 +111,7 @@ const DashboardScreen = () => {
   });
 
   const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
-    endpoint: `${apiRoutes.INTERVIEW}?start_date=${currentDate}&end_date=${endOfYear}`,
+    endpoint: `${apiRoutes.INTERVIEW}?start_date=${startOfYear}&end_date=${endOfYear}`,
     token: token as string,
     key: QueryKey.INTERVIEW,
   });
@@ -166,58 +158,21 @@ const DashboardScreen = () => {
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
 
-  // useEffect(() => {
-  //   const messageListeners: any[] = [];
-
-  //   chats.forEach((chat) => {
-  //     const messagesRef = collection(db, "messages");
-
-  //     const q = query(
-  //       messagesRef,
-  //       where("chat_id", "==", chat.id),
-  //       where("sender_id", "!=", Number(`2${user?.id}`)),
-  //       where("read", "==", false),
-  //     );
-
-  //     const unsubscribe = onSnapshot(q, (snapshot) => {
-  //       const unreadCount = snapshot.docs.length;
-  //       setUnreadCounts((prev) => {
-  //         if (!prev[chat.id] || prev[chat.id] == 0) {
-  //           return {
-  //             ...prev,
-  //             [chat.id]: unreadCount,
-  //           };
-  //         }
-  //         return prev;
-  //       });
-  //       // setUnreadCounts((prev) => ({
-  //       //   ...prev,
-  //       //   [chat.id]: unreadCount,
-  //       // }));
-  //     });
-
-  //     messageListeners.push(unsubscribe);
-  //   });
-  //   return () => {
-  //     messageListeners.forEach((unsubscribe) => unsubscribe());
-  //   };
-  // }, [chats, user?.id]);
-
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
-    return Object.entries(data as any[]).flatMap(([_, interviews]) => {
-      return Object.entries(interviews as Record<string, any>).map(
-        ([key, value]) => {
+    return Object.entries(data.interviews || {}).flatMap(
+      ([name, interviews]) => {
+        return (interviews as any[]).map((interview) => {
           return {
-            name: key,
-            user_photo: value[0].user_photo,
-            start_time: value[0].start_time,
-            end_time: value[0].end_time,
-            job_title: value[0].job_title,
+            name,
+            user_photo: interview.user_photo,
+            start_time: interview.start_time,
+            end_time: interview.end_time,
+            job_title: interview.job_title,
           };
-        },
-      );
-    });
+        });
+      },
+    );
   }, []);
 
   useEffect(() => {
@@ -281,13 +236,16 @@ const DashboardScreen = () => {
                     upcomingInterviews &&
                     Object.entries(upcomingInterviews).map(
                       ([key, value], index: number) => {
+                        console.log("key", key, currentDate, currentDate > key);
                         return (
                           <div
                             key={index}
                             className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer ${
                               key === selectedDate || key === currentDate
                                 ? "bg-primaryColor text-white"
-                                : "bg-gray-200 text-secondaryColor"
+                                : currentDate > key
+                                  ? "bg-gray-300 text-gray-400"
+                                  : "bg-gray-200 text-secondaryColor"
                             }`}
                             onClick={() => {
                               setSelectedDate(key);

@@ -2,6 +2,12 @@ import { motion } from "framer-motion";
 import { jp } from "@/lang/jp";
 import moment from "moment";
 import { ConfirmationBox } from "@/components";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { fetchServer } from "@/utils/helper";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { QueryKey } from "@/utils/queryKey";
+import { useEffect } from "react";
 
 type formData = {
   name: string;
@@ -19,23 +25,53 @@ type Props = {
   deleteHandler?: () => void;
   data?: any;
   setFormData?: (value: any) => void;
-  loading?: boolean;
   showConfirmation?: boolean;
   setShowConfirmation: (value: boolean) => void;
+  token?: string | null;
+  setShowDetails: (value: boolean) => void;
+  setIsEdit: (value: boolean) => void;
+  setIsAdd: (value: boolean) => void;
 };
 
 const JobDetails = ({
   backHandler,
   editHandler,
-  deleteHandler,
+  // deleteHandler,
   setFormData,
   data,
-  loading,
   showConfirmation,
   setShowConfirmation,
+  token,
+  setShowDetails,
+  setIsEdit,
+  setIsAdd,
 }: Props) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: deleteJob,
+    isPending: loading,
+    isSuccess: success,
+  } = useMutation({
+    mutationFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.DELETE_JOB}/${data.id}`,
+        method: "DELETE",
+        token: token,
+      });
+    },
+    onSuccess: () => {
+      setTimeout(() => {
+        setShowConfirmation(false);
+        setShowDetails(false);
+        setIsEdit(false);
+        setIsAdd(false);
+      }, 500);
+      queryClient.invalidateQueries({ queryKey: [QueryKey.JOBS] });
+    },
+  });
+
   const clickBackEvent = () => backHandler && backHandler(false);
-  const clickDeleteEvent = () => deleteHandler && deleteHandler();
+  const clickDeleteEvent = () => deleteJob();
   const clickEditEvent = () => {
     editHandler && editHandler(true);
     setFormData && setFormData((prev: any) => ({ ...prev, id: data.id }));
@@ -107,10 +143,24 @@ const JobDetails = ({
 
         <div className="flex justify-between items-center">
           <button
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
             onClick={clickBackEvent}
           >
-            ← {jp.back}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              />
+            </svg>
+            {jp.back}
           </button>
           <div className="flex gap-4">
             <button
@@ -138,6 +188,7 @@ const JobDetails = ({
               onCancel={handleCancel}
               onConfirm={handleDelete}
               loading={loading}
+              isSuccess={success}
             />
           </div>
         </div>

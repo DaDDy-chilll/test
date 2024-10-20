@@ -12,7 +12,7 @@ import { RootState } from "@/store/store";
 import useHandleError from "@/hooks/useHandleError";
 import { jp } from "@/lang/jp";
 import { setForgotPassword } from "@/store";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

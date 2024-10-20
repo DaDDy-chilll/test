@@ -71,6 +71,7 @@ import ProfileSkeleton from "./ui/skeleton/ProfileSkeleton";
 import Holidays from "./CalendarScreen/Holidays";
 import ConfirmationBox from "./ui/confirmationBox";
 import InterviewDatePicker from "./Chat/InterviewDatePicker";
+import Modal from "@/components/Chat/Modal";
 
 export {
   Alert,
@@ -118,6 +119,7 @@ export {
   Maintenance,
   MatchedApplicants,
   MessageItem,
+  Modal,
   NotFound,
   NotiItem,
   Pagination,

@@ -87,7 +87,6 @@ const ProfileForm = ({
       setImageLoading(true);
       const formData = new FormData();
       formData.append("file", file);
-      console.log(formData.get("file"));
       return fetchServer({
         endpoint: apiRoutes.UPLOAD_IMAGE,
         method: "POST",
@@ -127,12 +126,8 @@ const ProfileForm = ({
     setShowConfirmation(false);
   };
 
-  // console.log('jobData',jobData)
-
-  // console.log('avatarImage',avatarImage)
-
   const formatPhoneNumber = (value: string) => {
-    if(!value) return value;
+    if (!value) return value;
     const cleanedValue = value.replace(/\D/g, "");
     if (cleanedValue.length <= 3) {
       return cleanedValue;
@@ -187,8 +182,10 @@ const ProfileForm = ({
 
   useEffect(() => {
     if (isSuccess) {
-      setShowConfirmation(false);
-      setIsEdit(false);
+      setTimeout(() => {
+        setShowConfirmation(false);
+        setIsEdit(false);
+      }, 500);
     }
     if (profileData) {
       dispatch(setName(profileData.data.name));
@@ -589,6 +586,7 @@ const ProfileForm = ({
                 message="送信してもよろしいですか？"
                 onCancel={handleCancel}
                 loading={isPending}
+                isSuccess={isSuccess}
               />
             </div>
           </div>

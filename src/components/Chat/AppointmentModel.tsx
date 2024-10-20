@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Select, InterviewDatePicker } from "@/components";
+import { Select, InterviewDatePicker, ConfirmationBox } from "@/components";
 import TimeSelect from "../ui/SelectTime";
 import { Button } from "../ui/button";
 import { jp } from "@/lang/jp";
@@ -12,8 +12,9 @@ import { RootState } from "@/store/store";
 import Modal from "./Modal";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import  useHandleError  from "@/hooks/useHandleError";
+import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
+import { MoonLoader } from "react-spinners";
 type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
   userId: number;
@@ -23,13 +24,13 @@ type AppointmentModelProps = {
 interface MeetingData {
   user_id: number;
   job_id: number;
-  direct?:{
+  direct?: {
     date: string;
-  start_time: string;
-  end_time: string;
-  zoom_link: string;
-  },
-  req_admin?:{
+    start_time: string;
+    end_time: string;
+    zoom_link: string;
+  };
+  req_admin?: {
     first_date: string;
     first_start_time: string;
     first_end_time: string;
@@ -39,7 +40,7 @@ interface MeetingData {
     third_date: string;
     third_start_time: string;
     third_end_time: string;
-  }
+  };
 }
 
 const meetingTypeOptions = [
@@ -74,26 +75,29 @@ const defaultAdminInterview = {
   },
 };
 
-
 const AppointmentModel = ({
   setIsAppointmentModelOpen,
   userId,
   jobId,
 }: AppointmentModelProps) => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const { authHandleError,emailError } = useHandleError();
+  const { authHandleError, emailError, resetAuthError } = useHandleError();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [interview, setInterview] = useState(defaultDirectInterview);
   const [adminInterview, setAdminInterview] = useState(defaultAdminInterview);
-  const [validationData, setValidationData] = useState<any>(null);
-  
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const handleCloseModel = () => setIsAppointmentModelOpen(false);
   const [meetingType, setMeetingType] = useState<{
     label: string;
     value: string;
   }>(meetingTypeOptions[0]);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const { mutate: postMeeting,isPending:postMeetingPending,error } = useMutation({
+  const {
+    mutate: postMeeting,
+    isPending,
+    error,
+    isSuccess,
+  } = useMutation({
     mutationFn: (data: MeetingData) => {
       return fetchServer({
         endpoint: `${apiRoutes.INTERVIEW}`,
@@ -102,21 +106,6 @@ const AppointmentModel = ({
         body: data,
       });
     },
-    onSuccess: (responseData) => {
-      console.log("responseData", responseData);
-      if (responseData.data) {
-        setValidationData(responseData.data);
-        setShowConfirmModal(true);
-      } else {
-        handleCloseModel();
-      }
-    },
-    onError: (error) => {
-      setValidationData(error.message);
-      authHandleError(error?.message as AuthErrorType);
-      // setShowConfirmModal(true);
-      console.log("error", error);
-    },
   });
 
   const handleConfirmRewrite = () => {
@@ -124,7 +113,7 @@ const AppointmentModel = ({
       const meetingData: MeetingData = {
         user_id: userId,
         job_id: jobId,
-        req_admin:{
+        req_admin: {
           first_date: adminInterview.option_one.date,
           first_start_time: adminInterview.option_one.start_time,
           first_end_time: adminInterview.option_one.end_time,
@@ -134,11 +123,12 @@ const AppointmentModel = ({
           third_date: adminInterview.option_three.date,
           third_start_time: adminInterview.option_three.start_time,
           third_end_time: adminInterview.option_three.end_time,
-        }
+        },
       };
       postMeeting(meetingData);
     } else {
       if (interview.url === "") {
+        setAlertMessage("Zoom又は Meet リンクを入力してください");
         setShowConfirmModal(false);
         setShowAlert(true);
         return;
@@ -146,27 +136,36 @@ const AppointmentModel = ({
         const meetingData: MeetingData = {
           user_id: userId,
           job_id: jobId,
-          direct:{
+          direct: {
             date: interview.date,
-          start_time: interview.start_time,
-          end_time: interview.end_time,
-          zoom_link: interview.url,
-          }
+            start_time: interview.start_time,
+            end_time: interview.end_time,
+            zoom_link: interview.url,
+          },
         };
         postMeeting(meetingData);
       }
     }
+  };
+  const handleCancel = () => {
     setShowConfirmModal(false);
-    setIsAppointmentModelOpen(false);
   };
 
-  console.log("emailError", emailError,error);
-
-
   useEffect(() => {
-    if (error) authHandleError(error as AuthErrorType);
-  }, [error, authHandleError]);
+    if (error) {
+      authHandleError(error?.message as AuthErrorType);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+    }
 
+    if (isSuccess) {
+      setTimeout(() => {
+        setShowConfirmModal(false);
+      }, 500);
+      setIsAppointmentModelOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isSuccess]);
 
   return (
     <>
@@ -623,67 +622,75 @@ const AppointmentModel = ({
         <div className="flex justify-between items-center mt-10 ">
           <Button
             onClick={handleCloseModel}
-            className="bg-gray-500 text-white "
+            className="bg-gray-500 text-white flex items-center gap-2"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+
             {jp.cancel}
           </Button>
           <Button
             onClick={() => setShowConfirmModal(true)}
             variant="destructive"
-            className="px-10"
+            className="px-5 flex items-center gap-2"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+
             {jp.makeAppointment}
           </Button>
         </div>
       </motion.div>
 
-      <Modal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-      >
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-4">予約の上書き確認</h2>
-          <p className="mb-4">
-            この予約は既に存在します。上書きしてもよろしいですか？
-          </p>
-
-          {/* Add validation data display */}
-          {validationData && (
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">既存の予約:</h3>
-              <p>日付: {validationData.date}</p>
-              <p>開始時間: {validationData.start_time}</p>
-              <p>終了時間: {validationData.end_time}</p>
-            </div>
-          )}
-          {
-            emailError && <p className="text-red-500">{emailError}</p>
-          }
-
-          <div className="flex justify-end">
-            <button
-              className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
-              onClick={() => setShowConfirmModal(false)}
-            >
-              {jp.cancel}
-            </button>
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
-              onClick={handleConfirmRewrite}
-            >
-              {jp.confirm}
-            </button>
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <ConfirmationBox
+              message="送信してもよろしいですか？"
+              onCancel={handleCancel}
+              loading={isPending}
+              onConfirm={handleConfirmRewrite}
+              isSuccess={isSuccess}
+            />
           </div>
         </div>
-      </Modal>
+      )}
 
       <Modal isOpen={showAlert} onClose={() => setShowAlert(false)}>
         <div className="p-6">
-          <p className="mb-4">Need Zoom又は Meet リンク</p>
+          <p className="mb-4">{alertMessage || emailError}</p>
           <div className="flex justify-end">
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
-              onClick={() => setShowAlert(false)}
+              onClick={() => {
+                resetAuthError();
+                setShowAlert(false);
+                setAlertMessage("");
+              }}
             >
               {jp.confirm}
             </button>
