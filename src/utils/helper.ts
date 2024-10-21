@@ -4,7 +4,7 @@ import { FetchServerType } from "../types/helperTypes";
 let result: any;
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_URL,
+  baseURL: "https://api.japanjob.exbrainedu.com/v1",
 });
 
 export const fetchServer = async ({
@@ -49,13 +49,14 @@ export const fetchServer = async ({
         const { data, status } = error.response;
         // console.log("error-", error.response, data.status, status);
         if (data.status == 400 || status == 400) {
+        console.log("error-", error.response, data.status, status);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
-          // console.log("server error----", error.response, data.status, status);
-          window.location.href = RouteName.SERVER_ERROR;
+          console.log("server error", data.message);
+          // window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };
         }

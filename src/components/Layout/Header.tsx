@@ -121,49 +121,50 @@ const Header = () => {
   console.log(combinedNotifications);
 
   // update favicon
-  useEffect(() => {
-    const updateFavicon = () => {
-      const favicon = document.getElementById("favicon") as HTMLLinkElement;
-      const notificationCount = combinedNotifications.length;
+  // useEffect(() => {
+  //   const updateFavicon = () => {
+  //     const favicon = document.getElementById("favicon") as HTMLLinkElement;
+  //     const notificationCount = combinedNotifications.length;
 
-      if (notificationCount > 0) {
-        const canvas = document.createElement("canvas");
-        canvas.width = 32;
-        canvas.height = 32;
-        const ctx = canvas.getContext("2d");
+  //     if (notificationCount > 0) {
+  //       const canvas = document.createElement('canvas');
+  //       canvas.width = 32;
+  //       canvas.height = 32;
+  //       const ctx = canvas.getContext('2d');
+        
+  //       if (ctx) {
+  //         // Draw the original favicon
+  //         const img = new Image();
+  //         img.src = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
+  //         img.onload = () => {
+  //           ctx.drawImage(img, 0, 0, 32, 32);
 
-        if (ctx) {
-          // Draw the original favicon
-          const img = new Image();
-          img.src = "./src/assets/icons/JapanJobLogo.png"; // Update this path to your actual favicon
-          img.onload = () => {
-            ctx.drawImage(img, 0, 0, 32, 32);
+  //           // Draw the notification badge
+  //           ctx.beginPath();
+  //           ctx.arc(24, 8, 8, 0, 2 * Math.PI);
+  //           ctx.fillStyle = 'red';
+  //           ctx.fill();
 
-            // Draw the notification badge
-            ctx.beginPath();
-            ctx.arc(24, 8, 8, 0, 2 * Math.PI);
-            ctx.fillStyle = "red";
-            ctx.fill();
+  //           // Draw the notification count
+  //           ctx.font = 'bold 12px Arial';
+  //           ctx.fillStyle = 'white';
+  //           ctx.textAlign = 'center';
+  //           ctx.textBaseline = 'middle';
+  //           ctx.fillText(notificationCount.toString(), 24, 8);
 
-            // Draw the notification count
-            ctx.font = "bold 12px Arial";
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(notificationCount.toString(), 24, 8);
+  //           // Update the favicon
+  //           favicon.href = canvas.toDataURL('image/png');
+  //         };
+  //       }
+  //     } else {
+  //       // Reset to the original favicon
+  //       favicon.href = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
+  //     }
+  //   };
 
-            // Update the favicon
-            favicon.href = canvas.toDataURL("image/png");
-          };
-        }
-      } else {
-        // Reset to the original favicon
-        favicon.href = "./src/assets/icons/JapanJobLogo.png"; // Update this path to your actual favicon
-      }
-    };
+  //   updateFavicon();
+  // }, [combinedNotifications]);
 
-    updateFavicon();
-  }, [combinedNotifications]);
 
   useEffect(() => {
     const messageListeners: any[] = [];
