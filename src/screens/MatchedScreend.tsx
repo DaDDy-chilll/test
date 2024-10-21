@@ -440,7 +440,7 @@ const MatchedScreend = () => {
           )}
         </AnimatePresence>
       </motion.main>
-      {defaultJobType.length === 0 && (
+      {(defaultJobType.length === 0 && jobNameTypeSuccess) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white w-[36%] h-[30%] pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
             <p className="mb-4">{jp.createJobFirst}</p>
