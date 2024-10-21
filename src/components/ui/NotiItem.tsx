@@ -11,8 +11,11 @@ type ItemProps = {
 
 const NotiItem = ({ item, onClick }: ItemProps) => {
   const profileImage = item.image
-    ? `https://api.japanjob.exbrainedu.com/v1/file/photo/${item.image}`
+    ? item.image.startsWith("http")
+      ? item.image
+      : `https://api.japanjob.exbrainedu.com/v1/file/photo/${item.image}`
     : DefaultUser;
+
   return (
     <div className="flex items-center justify-between w-full" onClick={onClick}>
       <div className="flex items-center justify-start gap-3">

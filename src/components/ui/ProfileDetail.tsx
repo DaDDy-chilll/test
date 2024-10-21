@@ -104,7 +104,10 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           {
             icon: <Location className="size-7" />,
             label: `${jp.city} / ${jp.area}`,
-            value: data?.prefecture || data?.area ? `${data?.prefecture || ""} / ${data?.area || ""}` : '',
+            value:
+              data?.prefecture || data?.area
+                ? `${data?.prefecture || ""} / ${data?.area || ""}`
+                : "",
           },
           {
             icon: <CompanyAddress className="size-7" />,
@@ -123,8 +126,14 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
           >
             <div>{item.icon}</div>
             <div className="flex flex-col gap-y-1">
-              <p className={`${item.value ? "text-sm text-gray-500" : "text-lg text-gray-900"}`}>{item.label}</p>
-              {item.value && <p className="font-semibold text-gray-800">{item.value}</p>}
+              <p
+                className={`${item.value ? "text-sm text-gray-500" : "text-lg text-gray-900"}`}
+              >
+                {item.label}
+              </p>
+              {item.value && (
+                <p className="font-semibold text-gray-800">{item.value}</p>
+              )}
             </div>
           </div>
         ))}

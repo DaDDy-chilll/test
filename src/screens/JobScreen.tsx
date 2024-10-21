@@ -19,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { Helmet } from "react-helmet-async";
 import { colors } from "@/constants/color";
-import { useQueryClient } from "@tanstack/react-query";
+
 import eyeOpenWhite from "@/assets/icons/eye-open-white.svg";
 
 const defaultForm = {

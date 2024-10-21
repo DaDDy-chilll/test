@@ -28,6 +28,7 @@ export interface ApiRoutesType {
   UPCOMING_INTERVIEW: string;
   UPLOAD_IMAGE: string;
   PRIVACY_POLICY: string;
+  NOTIFICATION: string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -60,4 +61,5 @@ export const apiRoutes: ApiRoutesType = {
   UPCOMING_INTERVIEW: "/client/interview/upcoming",
   UPLOAD_IMAGE: "/file",
   PRIVACY_POLICY: "/setting/privacy-policy",
+  NOTIFICATION: "/client/auth/company-notification",
 };

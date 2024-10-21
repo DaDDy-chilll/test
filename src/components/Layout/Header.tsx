@@ -19,20 +19,70 @@ import useChat from "@/hooks/useChat";
 import { setNotification } from "@/store";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { apiRoutes } from "@/utils/apiRoutes";
+import { fetchServer } from "@/utils/helper";
+import { QueryKey } from "@/utils/queryKey";
+import { useMemo } from "react";
+export interface Notification {
+  id: number;
+  title: string;
+  photo: string;
+  description: string;
+  type: string;
+  created_at: string;
+
+}
+import { useNavigate, useLocation } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { Chat } from "@/types/helperTypes";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { token } = useSelector((state: RootState) => state.auth);
+  const wsURL = `wss://api.japanjob.exbrainedu.com/ws/?token=${token}&type=client`;
+
+
+
   let { title, name, notification } = useSelector(
     (state: RootState) => state.navigation,
   );
   let { user } = useSelector((state: RootState) => state.auth);
   const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
   const [noti, setNoti] = useState<{ [key: string]: number }>({});
+  const [hasApiNotification, setHasApiNotification] = useState(false);
   const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
+
+
+  // websocket connection
+  useEffect(() => {
+    const ws = new WebSocket(wsURL);
+ 
+    ws.onopen = () => {
+      console.log("WebSocket is open now.");
+    };
+    ws.onmessage = (event) => {
+      console.log(event);
+      setHasApiNotification(true);
+      console.log(hasApiNotification);
+    };
+
+  }, []);   
+
+  // fetch notification
+  const { data: apiNotification, isLoading: apiNotificationLoading } = useQuery({
+    queryKey: [QueryKey.NOTIFICATION],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.NOTIFICATION}`,
+        method: "GET",
+        token: token,
+      });
+    },
+  
+  });
+  console.log(apiNotification);
 
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
@@ -42,6 +92,36 @@ const Header = () => {
       navigate(RouteName.PROFILE);
     }
   };
+  useEffect(() => {
+    console.log(hasApiNotification);
+  }, [hasApiNotification]);
+
+  const combinedNotifications = useMemo(() => {
+    const chatNotifications = chatNoti.map(chat => ({
+      id: chat.id,
+      type: 'chat',
+      name: chat.jobfinder_name,
+      image: chat.jobfinder_profile_image,
+      message: chat.last_message,
+      time: moment(chat.last_message_timestamp.toDate()).fromNow(),
+      timestamp: chat.last_message_timestamp.toDate().getTime(),
+    }));
+
+    const apiNotifications = apiNotification?.data?.map((noti: Notification) => ({
+      id: noti.id,
+      type: 'api',
+      name: noti.title,
+      image: noti.photo,
+      message: noti.description,
+      time: moment(noti.created_at).fromNow(),
+      timestamp: moment(noti.created_at).valueOf(),
+    })) || [];
+    return [...chatNotifications, ...apiNotifications].sort((a, b) => 
+      b.timestamp - a.timestamp
+  );
+  }, [chatNoti, apiNotification]);
+
+  console.log(combinedNotifications);
 
   useEffect(() => {
     const messageListeners: any[] = [];
@@ -95,7 +175,7 @@ const Header = () => {
           </p>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger className=" z-50 relative" title="Notifications">
+          <DropdownMenuTrigger onClick={() => setHasApiNotification(false)} className=" z-50 relative" title="Notifications">
             <div>
               <svg
                 className="cursor-pointer hover:text-red-500"
@@ -111,25 +191,23 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {chatNoti.length > 0 && (
+            {chatNoti.length || hasApiNotification && (
               <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
             )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[350px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {chatNoti.length > 0 ? (
-              chatNoti.map((item) => (
+            {combinedNotifications.length > 0 ? (
+              combinedNotifications.map((item) => (
                 <DropdownMenuItem key={item.id}>
                   <NotiItem
                     onClick={() => handleChatClick(item)}
                     item={{
-                      name: item.jobfinder_name,
-                      image: item.jobfinder_profile_image,
-                      message: item.last_message,
-                      time: moment(
-                        item.last_message_timestamp.toDate(),
-                      ).calendar(),
+                      name: item.name,
+                      image: item.image,
+                      message: item.message,
+                      time: item.time,
                     }}
                   />
                 </DropdownMenuItem>

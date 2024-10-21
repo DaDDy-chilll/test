@@ -16,4 +16,5 @@ export enum QueryKey {
   INTERVIEW = "interview",
   UPCOMING_INTERVIEW = "upcomingInterview",
   PRIVACY_POLICY = "privacyPolicy",
+  NOTIFICATION = "notification",
 }
