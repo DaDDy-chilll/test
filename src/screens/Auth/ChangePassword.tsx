@@ -56,7 +56,7 @@ const ChangePassword: React.FC = () => {
       }, 500);
     }
     if (error) {
-      console.log(error);
+      // console.log(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, error]);

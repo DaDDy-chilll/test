@@ -58,12 +58,10 @@ const Header = () => {
     const ws = new WebSocket(wsURL);
 
     ws.onopen = () => {
-      console.log("WebSocket is open now.");
+      // console.log("WebSocket is open now.");
     };
     ws.onmessage = (event) => {
-      console.log(event);
       setHasApiNotification(true);
-      console.log(hasApiNotification);
       queryClient.invalidateQueries({ queryKey: [QueryKey.NOTIFICATION] });
     };
   }, []);
@@ -81,7 +79,6 @@ const Header = () => {
       },
     },
   );
-  console.log(apiNotification);
 
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
@@ -91,9 +88,9 @@ const Header = () => {
       navigate(RouteName.PROFILE);
     }
   };
-  useEffect(() => {
-    console.log(hasApiNotification);
-  }, [hasApiNotification]);
+  // useEffect(() => {
+  //   console.log(hasApiNotification);
+  // }, [hasApiNotification]);
 
   const combinedNotifications = useMemo(() => {
     const chatNotifications = chatNoti.map((chat) => ({

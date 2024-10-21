@@ -90,7 +90,7 @@ const CalendarScreen = () => {
   // );
 
   const handleEventClick = (event: Event) => {
-    console.log(event);
+    // console.log(event);
     navigate(RouteName.CHAT);
   };
 

@@ -16,7 +16,6 @@ export const fetchServer = async ({
 }: FetchServerType) => {
   const urlEndPoint = endpoint || "";
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  console.log("urlEndPoint", urlEndPoint);
   try {
     if (method === "GET") {
       const { data } = await api.get(urlEndPoint);
@@ -49,13 +48,13 @@ export const fetchServer = async ({
         const { data, status } = error.response;
         // console.log("error-", error.response, data.status, status);
         if (data.status == 400 || status == 400) {
-        console.log("error-", error.response, data.status, status);
+        // console.log("error-", error.response, data.status, status);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
-          console.log("server error", data.message);
+          // console.log("server error", data.message);
           window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };
@@ -64,7 +63,7 @@ export const fetchServer = async ({
         window.location.href = RouteName.NETWORK_ERROR;
       }
     } else {
-      console.log(error);
+      // console.log(error);
       throw error;
     }
   }
