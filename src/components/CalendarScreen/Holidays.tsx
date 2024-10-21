@@ -40,14 +40,14 @@ const Holidays = ({ date, year }: PropsType) => {
             >
               <p className="text-[.8rem] tracking-widest font-light">
                 {/* {holiday.name} */}
-                {holiday.name.length < 4
+                {holiday.name.length <= 4
                   ? holiday.name
                   : `${holiday.name.slice(0, 4)}...`}
               </p>
             </li>
           ))}
       </ul>
-      {holidayForDate?.name.length > 3 && (
+      {holidayForDate?.name.length > 4 && (
         <div className="absolute invisible group-hover:visible z-50 bg-white border border-gray-200 rounded-sm  p-2 mt-1  left-10 ml-2">
           {holidays
             .filter(
