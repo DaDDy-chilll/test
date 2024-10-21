@@ -56,7 +56,7 @@ export const fetchServer = async ({
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
           console.log("server error", data.message);
-          // window.location.href = RouteName.SERVER_ERROR;
+          window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };
         }
