@@ -39,7 +39,7 @@ const defaultFormData = {
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const {  } = useSelector((state: RootState) => state.auth);
+  const { token} = useSelector((state: RootState) => state.auth);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(defaultFormData);
   const { data, isLoading } = useFetch({
