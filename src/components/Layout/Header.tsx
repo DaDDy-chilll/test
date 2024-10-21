@@ -31,7 +31,6 @@ export interface Notification {
   description: string;
   type: string;
   created_at: string;
-
 }
 import { useNavigate, useLocation } from "react-router-dom";
 import RouteName from "@/navigations/routes";
@@ -43,8 +42,6 @@ const Header = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const wsURL = `wss://api.japanjob.exbrainedu.com/ws/?token=${token}&type=client`;
 
-
-
   let { title, name, notification } = useSelector(
     (state: RootState) => state.navigation,
   );
@@ -54,11 +51,10 @@ const Header = () => {
   const [hasApiNotification, setHasApiNotification] = useState(false);
   const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
 
-
   // websocket connection
   useEffect(() => {
     const ws = new WebSocket(wsURL);
- 
+
     ws.onopen = () => {
       console.log("WebSocket is open now.");
     };
@@ -67,21 +63,21 @@ const Header = () => {
       setHasApiNotification(true);
       console.log(hasApiNotification);
     };
-
-  }, []);   
+  }, []);
 
   // fetch notification
-  const { data: apiNotification, isLoading: apiNotificationLoading } = useQuery({
-    queryKey: [QueryKey.NOTIFICATION],
-    queryFn: () => {
-      return fetchServer({
-        endpoint: `${apiRoutes.NOTIFICATION}`,
-        method: "GET",
-        token: token,
-      });
+  const { data: apiNotification, isLoading: apiNotificationLoading } = useQuery(
+    {
+      queryKey: [QueryKey.NOTIFICATION],
+      queryFn: () => {
+        return fetchServer({
+          endpoint: `${apiRoutes.NOTIFICATION}`,
+          method: "GET",
+          token: token,
+        });
+      },
     },
-  
-  });
+  );
   console.log(apiNotification);
 
   const handleChatClick = (chat: Chat) =>
@@ -97,9 +93,9 @@ const Header = () => {
   }, [hasApiNotification]);
 
   const combinedNotifications = useMemo(() => {
-    const chatNotifications = chatNoti.map(chat => ({
+    const chatNotifications = chatNoti.map((chat) => ({
       id: chat.id,
-      type: 'chat',
+      type: "chat",
       name: chat.jobfinder_name,
       image: chat.jobfinder_profile_image,
       message: chat.last_message,
@@ -107,18 +103,19 @@ const Header = () => {
       timestamp: chat.last_message_timestamp.toDate().getTime(),
     }));
 
-    const apiNotifications = apiNotification?.data?.map((noti: Notification) => ({
-      id: noti.id,
-      type: 'api',
-      name: noti.title,
-      image: noti.photo,
-      message: noti.description,
-      time: moment(noti.created_at).fromNow(),
-      timestamp: moment(noti.created_at).valueOf(),
-    })) || [];
-    return [...chatNotifications, ...apiNotifications].sort((a, b) => 
-      b.timestamp - a.timestamp
-  );
+    const apiNotifications =
+      apiNotification?.data?.map((noti: Notification) => ({
+        id: noti.id,
+        type: "api",
+        name: noti.title,
+        image: noti.photo,
+        message: noti.description,
+        time: moment(noti.created_at).fromNow(),
+        timestamp: moment(noti.created_at).valueOf(),
+      })) || [];
+    return [...chatNotifications, ...apiNotifications].sort(
+      (a, b) => b.timestamp - a.timestamp,
+    );
   }, [chatNoti, apiNotification]);
 
   console.log(combinedNotifications);
@@ -126,48 +123,47 @@ const Header = () => {
   // update favicon
   useEffect(() => {
     const updateFavicon = () => {
-      const favicon = document.getElementById('favicon') as HTMLLinkElement;
+      const favicon = document.getElementById("favicon") as HTMLLinkElement;
       const notificationCount = combinedNotifications.length;
 
       if (notificationCount > 0) {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = 32;
         canvas.height = 32;
-        const ctx = canvas.getContext('2d');
-        
+        const ctx = canvas.getContext("2d");
+
         if (ctx) {
           // Draw the original favicon
           const img = new Image();
-          img.src = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
+          img.src = "./src/assets/icons/JapanJobLogo.png"; // Update this path to your actual favicon
           img.onload = () => {
             ctx.drawImage(img, 0, 0, 32, 32);
 
             // Draw the notification badge
             ctx.beginPath();
             ctx.arc(24, 8, 8, 0, 2 * Math.PI);
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = "red";
             ctx.fill();
 
             // Draw the notification count
-            ctx.font = 'bold 12px Arial';
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
+            ctx.font = "bold 12px Arial";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
             ctx.fillText(notificationCount.toString(), 24, 8);
 
             // Update the favicon
-            favicon.href = canvas.toDataURL('image/png');
+            favicon.href = canvas.toDataURL("image/png");
           };
         }
       } else {
         // Reset to the original favicon
-        favicon.href = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
+        favicon.href = "./src/assets/icons/JapanJobLogo.png"; // Update this path to your actual favicon
       }
     };
 
     updateFavicon();
   }, [combinedNotifications]);
-
 
   useEffect(() => {
     const messageListeners: any[] = [];
@@ -221,7 +217,11 @@ const Header = () => {
           </p>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger onClick={() => setHasApiNotification(false)} className=" z-50 relative" title="Notifications">
+          <DropdownMenuTrigger
+            onClick={() => setHasApiNotification(false)}
+            className=" z-50 relative"
+            title="Notifications"
+          >
             <div>
               <svg
                 className="cursor-pointer hover:text-red-500"
@@ -237,9 +237,10 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {chatNoti.length || hasApiNotification && (
-              <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
-            )}
+            {chatNoti.length ||
+              (hasApiNotification && (
+                <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
+              ))}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[350px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>

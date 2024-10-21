@@ -124,6 +124,9 @@ const MatchedScreend = () => {
       });
     },
     onSuccess: () => {
+      if (liked) {
+        setShowConfirmation(true);
+      }
       queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
     },
   });
@@ -178,6 +181,10 @@ const MatchedScreend = () => {
     navigate(RouteName.CHAT);
   };
 
+  const handleNavigateToJob = () => {
+    navigate(RouteName.JOBS);
+  };
+
   useEffect(() => {
     dispatch(setTitle(jp.matches));
   }, [dispatch]);
@@ -203,9 +210,9 @@ const MatchedScreend = () => {
   }, [jobType.id, liked, refetch]);
 
   useEffect(() => {
-    if (likeOrUnlikeSuccess && liked) {
-      setShowConfirmation(true);
-    }
+    // if (likeOrUnlikeSuccess && liked) {
+    //   setShowConfirmation(true);
+    // }
     if (page > 1 || limit > 3 || likeOrUnlikeSuccess) {
       refetch();
     }
@@ -433,6 +440,21 @@ const MatchedScreend = () => {
           )}
         </AnimatePresence>
       </motion.main>
+      {defaultJobType.length === 0 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[36%] h-[30%] pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
+            <p className="mb-4">{jp.createJobFirst}</p>
+            <div className="flex justify-end">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded"
+                onClick={handleNavigateToJob}
+              >
+                {jp.confirm}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
 import moment from "moment";
 import {
@@ -23,13 +24,18 @@ import { setTitle } from "@/store";
 import { fetchServer } from "@/utils/helper";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes";
+
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const startForMonth = moment().startOf("month").format("YYYY-MM-DD");
 const endForMonth = moment().endOf("month").format("YYYY-MM-DD");
 const today = moment().format("YYYY-MM-DD");
+
 const CalendarScreen = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvents, setSelectedEvents] = useState<any[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -78,10 +84,15 @@ const CalendarScreen = () => {
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
-  console.log(
-    "currentDate",
-    moment(currentDate).startOf("month").format("YYYY-MM-DD"),
-  );
+  // console.log(
+  //   "currentDate",
+  //   moment(currentDate).startOf("month").format("YYYY-MM-DD"),
+  // );
+
+  const handleEventClick = (event: Event) => {
+    console.log(event);
+    navigate(RouteName.CHAT);
+  };
 
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
@@ -240,11 +251,23 @@ const CalendarScreen = () => {
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
             {selectedEvents.length > 0 ? (
               selectedEvents.map((event: Event, index: number) => {
-                return <EventListItem key={index} event={event} />;
+                return (
+                  <EventListItem
+                    key={index}
+                    event={event}
+                    onClick={() => handleEventClick(event)}
+                  />
+                );
               })
             ) : hasTodayEvents.events ? (
               hasTodayEvents.events.map((event: Event, index: number) => {
-                return <EventListItem key={index} event={event} />;
+                return (
+                  <EventListItem
+                    key={index}
+                    event={event}
+                    onClick={() => handleEventClick(event)}
+                  />
+                );
               })
             ) : (
               <p className="text-center text-gray-500 mt-10">

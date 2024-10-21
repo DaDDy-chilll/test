@@ -165,4 +165,5 @@ export const jp = {
   update: "アップデート",
   start: "開始",
   end: "終了",
+  createJobFirst: "まずジョブを作成してください",
 };

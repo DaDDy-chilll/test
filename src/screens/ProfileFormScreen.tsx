@@ -21,6 +21,7 @@ import { ProfileFormErrorType, ErrorType } from "@/types/helperTypes";
 import { BeatLoader } from "react-spinners";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
+import { Modal } from "@/components";
 
 const employeeNumber = [
   { value: "100", label: "100" },
@@ -39,6 +40,8 @@ const ProfileFormScreen = () => {
   const [error, setError] = useState<ErrorType | null>(null);
   const [jobTypes, setJobTypes] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -138,6 +141,8 @@ const ProfileFormScreen = () => {
       setFormData((prevData) => ({ ...prevData, photo: data.data.filename }));
     },
     onError: (error) => {
+      setAlertMessage(error.message);
+      setShowAlert(true);
       console.error("Error uploading image:", error);
       setImageLoading(false);
     },
@@ -231,344 +236,363 @@ const ProfileFormScreen = () => {
   };
 
   return (
-    <div className="bg-gray-200 min-h-screen flex items-center justify-center">
-      <motion.div
-        className="w-full max-w-4xl bg-white rounded-xl p-8 shadow-lg"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-12">
-            <img src={logo} className="w-full" alt="Japan job logo" />
-          </div>
-          <h1 className="font-medium text-2xl">{jp.completeProfile}</h1>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex justify-between w-full mb-6">
-            <div className="space-y-1">
-              <h2 className="sub-title text-black">{jp.profilePhoto}</h2>
-              <p>{jp.profilePhotoDescription}</p>
+    <>
+      <div className="bg-gray-200 min-h-screen flex items-center justify-center py-5">
+        <motion.div
+          className="w-full max-w-4xl bg-white rounded-xl p-8 shadow-lg"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-12">
+              <img src={logo} className="w-full" alt="Japan job logo" />
             </div>
-            <label htmlFor="avatar-upload" className="cursor-pointer">
-              <div
-                className={`w-[70px] h-[70px] rounded-full overflow-hidden ${
-                  photoError ? "border border-red-500 p-1" : ""
-                }`}
-              >
-                <div className="w-full h-full object-cover ">
-                  {imageLoading && (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Skeleton circle height={80} width={80} />
-                    </div>
-                  )}
-                  <img
-                    className="w-full h-full object-cover rounded-full"
-                    src={avatarImage}
-                    crossOrigin="anonymous"
-                    alt="Profile avatar"
-                    onLoad={() => setImageLoading(false)}
-                  />
-                </div>
-              </div>
-            </label>
-            <input
-              id="avatar-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageUpload}
-              disabled={isUploading}
-            />
+            <h1 className="font-medium text-2xl">{jp.completeProfile}</h1>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            <Input
-              name="name"
-              type="text"
-              placeholder={jp.companyName}
-              label={jp.companyName}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  name: e.target.value,
-                }))
-              }
-              error={companyNameError || ""}
-              required={false}
-            />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex justify-between w-full mb-6">
+              <div className="space-y-1">
+                <h2 className="sub-title text-black">{jp.profilePhoto}</h2>
+                <p>{jp.profilePhotoDescription}</p>
+              </div>
+              <label htmlFor="avatar-upload" className="cursor-pointer">
+                <div
+                  className={`w-[70px] h-[70px] rounded-full overflow-hidden ${
+                    photoError ? "border border-red-500 p-1" : ""
+                  }`}
+                >
+                  <div className="w-full h-full object-cover ">
+                    {imageLoading && (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Skeleton circle height={80} width={80} />
+                      </div>
+                    )}
+                    <img
+                      className="w-full h-full object-cover rounded-full"
+                      src={avatarImage}
+                      crossOrigin="anonymous"
+                      alt="Profile avatar"
+                      onLoad={() => setImageLoading(false)}
+                    />
+                  </div>
+                </div>
+              </label>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+                disabled={isUploading}
+              />
+            </div>
 
-            <Select
-              name="industry_type_id"
-              label={jp.jobArea}
-              id={jp.jobArea}
-              options={jobTypes}
-              className=""
-              defaultOption={jp.chooseIndustry}
-              value={formData.industry_type_id}
-              onChange={(e) => {
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  industry_type_id: {
-                    label: e.target?.labels,
-                    value: e.target.value,
-                  },
-                }));
-              }}
-              error={industryTypeError || ""}
-            />
-            <Input
-              name="secondary_email"
-              type="email"
-              placeholder=""
-              label={jp.email}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.secondary_email}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  secondary_email: e.target.value,
-                }))
-              }
-              error={emailError || ""}
-              required={false}
-            />
-
-            <Input
-              name="phone_number"
-              type="text"
-              placeholder="08x xxxx xxxx"
-              label={jp.phoneNumber}
-              className="mt-1 block w-full bg-gray-100"
-              value={formatPhoneNumber(formData.phone_number)}
-              onChange={(e) => {
-                // const numericValue = e.target.value.replace(/[^\d+]/g, '');
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  phone_number: formatPhoneNumber(e.target.value),
-                }));
-              }}
-              error={phoneNumberError || ""}
-              required={false}
-            />
-            <Input
-              name="budget"
-              type="number"
-              label={jp.investmentAmount}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder="100000 $"
-              value={formData.budget}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  budget: e.target.value,
-                }))
-              }
-              error={budgetStringError || ""}
-              required={false}
-            />
-            <Input
-              name="company_address"
-              type="text"
-              label={jp.companyAddress}
-              className="mt-1 block w-full bg-gray-100"
-              value={
-                formData.company_address == "null"
-                  ? ""
-                  : formData.company_address
-              }
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  company_address: e.target.value,
-                }))
-              }
-              error={companyAddressError || ""}
-              required={false}
-            />
-            <Input
-              name="ceo"
-              type="text"
-              label={jp.chairman}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.ceo == "null" ? "" : formData.ceo}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  ceo: e.target.value,
-                }))
-              }
-              error={chairmanError || ""}
-              required={false}
-            />
-            <Input
-              name="manager"
-              type="text"
-              label={jp.undertake}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.manager}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  manager: e.target.value,
-                }))
-              }
-              error={undertakeError || ""}
-              required={false}
-            />
-            <Select
-              name="staff"
-              label={jp.employeeNumber}
-              id={jp.employeeNumber}
-              options={employeeNumber}
-              className=""
-              defaultOption={jp.chooseEmployee}
-              value={formData.staff}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  staff: { label: e.target.labels, value: e.target.value },
-                }))
-              }
-              error={staffError || ""}
-            />
-            <Input
-              name="area"
-              type="text"
-              label={jp.area}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.area}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  area: e.target.value,
-                }))
-              }
-              error={areaError || ""}
-              required={false}
-            />
-            <DatePicker
-              name="starting"
-              type="date"
-              label={jp.establishment}
-              className="mt-1 block w-full"
-              value={formData.starting}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  starting: e.target.value,
-                }))
-              }
-              error={startingError || ""}
-            />
-            <Input
-              name="prefecture"
-              type="text"
-              label={jp.city}
-              className="mt-1 block w-full bg-gray-100"
-              value={formData.prefecture}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  prefecture: e.target.value,
-                }))
-              }
-              error={prefectureError || ""}
-              required={false}
-            />
-            <Input
-              name="fb_url"
-              type="url"
-              label={jp.facebook}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder=""
-              value={formData.fb_url}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  fb_url: e.target.value,
-                }))
-              }
-              error={facebookError || ""}
-              required={false}
-            />
-            <Input
-              name="yt_url"
-              type="url"
-              label={jp.youtube}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder=""
-              value={formData.yt_url}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  yt_url: e.target.value,
-                }))
-              }
-              error={youtubeError || ""}
-              required={false}
-            />
-            <Input
-              name="web_url"
-              type="url"
-              label={jp.website}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder=""
-              value={formData.web_url}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  web_url: e.target.value,
-                }))
-              }
-              error={websiteError || ""}
-              required={false}
-            />
-            <Input
-              name="ig_url"
-              type="url"
-              label={jp.instagram}
-              className="mt-1 block w-full bg-gray-100"
-              placeholder=""
-              value={formData.ig_url}
-              onChange={(e) =>
-                setFormData((prevData: any) => ({
-                  ...prevData,
-                  ig_url: e.target.value,
-                }))
-              }
-              error={instagramError || ""}
-              required={false}
-            />
-            <span className="col-span-2">
+            <div className="grid grid-cols-2 gap-6">
               <Input
-                name="company_des"
+                name="name"
                 type="text"
-                label={jp.companyDescription}
+                placeholder={jp.companyName}
+                label={jp.companyName}
                 className="mt-1 block w-full bg-gray-100"
-                placeholder="Company description"
-                value={formData.company_des}
+                value={formData.name}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
-                    company_des: e.target.value,
+                    name: e.target.value,
                   }))
                 }
-                error={companyDesError || ""}
+                error={companyNameError || ""}
                 required={false}
               />
-            </span>
-          </div>
 
-          <Button type="submit" className="w-full">
-            {loading ? <BeatLoader color="#fff" size={5} /> : jp.finish}
-          </Button>
-        </form>
-      </motion.div>
-    </div>
+              <Select
+                name="industry_type_id"
+                label={jp.jobArea}
+                id={jp.jobArea}
+                options={jobTypes}
+                className=""
+                defaultOption={jp.chooseIndustry}
+                value={formData.industry_type_id}
+                onChange={(e) => {
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    industry_type_id: {
+                      label: e.target?.labels,
+                      value: e.target.value,
+                    },
+                  }));
+                }}
+                error={industryTypeError || ""}
+              />
+              <Input
+                name="secondary_email"
+                type="email"
+                placeholder=""
+                label={jp.email}
+                className="mt-1 block w-full bg-gray-100"
+                value={formData.secondary_email}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    secondary_email: e.target.value,
+                  }))
+                }
+                error={emailError || ""}
+                required={false}
+              />
+
+              <Input
+                name="phone_number"
+                type="text"
+                placeholder="08x xxxx xxxx"
+                label={jp.phoneNumber}
+                className="mt-1 block w-full bg-gray-100"
+                value={formatPhoneNumber(formData.phone_number)}
+                onChange={(e) => {
+                  // const numericValue = e.target.value.replace(/[^\d+]/g, '');
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    phone_number: formatPhoneNumber(e.target.value),
+                  }));
+                }}
+                error={phoneNumberError || ""}
+                required={false}
+              />
+              <Input
+                name="budget"
+                type="number"
+                label={jp.investmentAmount}
+                className="mt-1 block w-full bg-gray-100"
+                placeholder="100000 $"
+                value={formData.budget}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    budget: e.target.value,
+                  }))
+                }
+                error={budgetStringError || ""}
+                required={false}
+              />
+              <Input
+                name="company_address"
+                type="text"
+                label={jp.companyAddress}
+                className="mt-1 block w-full bg-gray-100"
+                value={
+                  formData.company_address == "null"
+                    ? ""
+                    : formData.company_address
+                }
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    company_address: e.target.value,
+                  }))
+                }
+                error={companyAddressError || ""}
+                required={false}
+              />
+              <Input
+                name="ceo"
+                type="text"
+                label={jp.chairman}
+                className="mt-1 block w-full bg-gray-100"
+                value={formData.ceo == "null" ? "" : formData.ceo}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    ceo: e.target.value,
+                  }))
+                }
+                error={chairmanError || ""}
+                required={false}
+              />
+              <Input
+                name="manager"
+                type="text"
+                label={jp.undertake}
+                className="mt-1 block w-full bg-gray-100"
+                value={formData.manager}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    manager: e.target.value,
+                  }))
+                }
+                error={undertakeError || ""}
+                required={false}
+              />
+              <Select
+                name="staff"
+                label={jp.employeeNumber}
+                id={jp.employeeNumber}
+                options={employeeNumber}
+                className=""
+                defaultOption={jp.chooseEmployee}
+                value={formData.staff}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    staff: { label: e.target.labels, value: e.target.value },
+                  }))
+                }
+                error={staffError || ""}
+              />
+              <Input
+                name="area"
+                type="text"
+                label={jp.area}
+                className="mt-1 block w-full bg-gray-100"
+                value={formData.area}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    area: e.target.value,
+                  }))
+                }
+                error={areaError || ""}
+                required={false}
+              />
+              <DatePicker
+                name="starting"
+                type="date"
+                label={jp.establishment}
+                className="mt-1 block w-full"
+                value={formData.starting}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    starting: e.target.value,
+                  }))
+                }
+                error={startingError || ""}
+              />
+              <Input
+                name="prefecture"
+                type="text"
+                label={jp.city}
+                className="mt-1 block w-full bg-gray-100"
+                value={formData.prefecture}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    prefecture: e.target.value,
+                  }))
+                }
+                error={prefectureError || ""}
+                required={false}
+              />
+              <Input
+                name="fb_url"
+                type="url"
+                label={jp.facebook}
+                className="mt-1 block w-full bg-gray-100"
+                placeholder=""
+                value={formData.fb_url}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    fb_url: e.target.value,
+                  }))
+                }
+                error={facebookError || ""}
+                required={false}
+              />
+              <Input
+                name="yt_url"
+                type="url"
+                label={jp.youtube}
+                className="mt-1 block w-full bg-gray-100"
+                placeholder=""
+                value={formData.yt_url}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    yt_url: e.target.value,
+                  }))
+                }
+                error={youtubeError || ""}
+                required={false}
+              />
+              <Input
+                name="web_url"
+                type="url"
+                label={jp.website}
+                className="mt-1 block w-full bg-gray-100"
+                placeholder=""
+                value={formData.web_url}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    web_url: e.target.value,
+                  }))
+                }
+                error={websiteError || ""}
+                required={false}
+              />
+              <Input
+                name="ig_url"
+                type="url"
+                label={jp.instagram}
+                className="mt-1 block w-full bg-gray-100"
+                placeholder=""
+                value={formData.ig_url}
+                onChange={(e) =>
+                  setFormData((prevData: any) => ({
+                    ...prevData,
+                    ig_url: e.target.value,
+                  }))
+                }
+                error={instagramError || ""}
+                required={false}
+              />
+              <span className="col-span-2">
+                <Input
+                  name="company_des"
+                  type="text"
+                  label={jp.companyDescription}
+                  className="mt-1 block w-full bg-gray-100"
+                  placeholder="Company description"
+                  value={formData.company_des}
+                  onChange={(e) =>
+                    setFormData((prevData: any) => ({
+                      ...prevData,
+                      company_des: e.target.value,
+                    }))
+                  }
+                  error={companyDesError || ""}
+                  required={false}
+                />
+              </span>
+            </div>
+
+            <Button type="submit" className="w-full">
+              {loading ? <BeatLoader color="#fff" size={5} /> : jp.finish}
+            </Button>
+          </form>
+        </motion.div>
+      </div>
+
+      <Modal isOpen={showAlert} onClose={() => setShowAlert(false)}>
+        <div className="p-6">
+          <p className="mb-4">{alertMessage}</p>
+          <div className="flex justify-end">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                setShowAlert(false);
+                setAlertMessage("");
+              }}
+            >
+              {jp.confirm}
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
 

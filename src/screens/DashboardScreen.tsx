@@ -234,8 +234,13 @@ const DashboardScreen = () => {
                     </div>
                   ) : (
                     upcomingInterviews &&
-                    Object.entries(upcomingInterviews).map(
-                      ([key, value], index: number) => {
+                    Object.entries(upcomingInterviews)
+                      .sort((a, b) => {
+                        return (
+                          new Date(a[0]).getTime() - new Date(b[0]).getTime()
+                        );
+                      })
+                      .map(([key, value], index: number) => {
                         return (
                           <div
                             key={index}
@@ -254,8 +259,7 @@ const DashboardScreen = () => {
                             {key}
                           </div>
                         );
-                      },
-                    )
+                      })
                   )}
                 </div>
               </div>

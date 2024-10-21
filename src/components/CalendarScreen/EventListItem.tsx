@@ -4,16 +4,20 @@ import { useState } from "react";
 import { jp } from "@/lang/jp";
 type EventListItemProps = {
   event: Event;
+  onClick?: () => void | null;
 };
 
-const EventListItem = ({ event }: EventListItemProps) => {
+const EventListItem = ({ event, onClick }: EventListItemProps) => {
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
     setImageError(true);
   };
   return (
-    <div className="flex items-center gap-2 border-b border-gray-400  mx-5 px-2 py-3">
+    <div
+      className={`flex items-center gap-2 border-b border-gray-400  mx-5 px-2 py-3 hover:bg-gray-300 cursor-pointer transition-all duration-100 ${onClick ? "active:scale-90" : ""}`}
+      onClick={onClick}
+    >
       <img
         src={!event.user_photo || imageError ? DefaultUser : event.user_photo}
         alt="user"
