@@ -4,7 +4,7 @@ import { FetchServerType } from "../types/helperTypes";
 let result: any;
 
 const api = axios.create({
-  baseURL: "https://api.japanjob.exbrainedu.com/v1",
+  baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
 export const fetchServer = async ({

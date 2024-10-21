@@ -23,12 +23,13 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { fetchServer } from "@/utils/helper";
 import { QueryKey } from "@/utils/queryKey";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 export interface Notification {
   id: number;
   title: string;
   photo: string;
-  description: string;
+  description_company: string;
   type: string;
   created_at: string;
 }
@@ -37,6 +38,7 @@ import RouteName from "@/navigations/routes";
 import { Chat } from "@/types/helperTypes";
 const Header = () => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
   const { token } = useSelector((state: RootState) => state.auth);
@@ -62,11 +64,12 @@ const Header = () => {
       console.log(event);
       setHasApiNotification(true);
       console.log(hasApiNotification);
+      queryClient.invalidateQueries({ queryKey: [QueryKey.NOTIFICATION] });
     };
   }, []);
 
   // fetch notification
-  const { data: apiNotification, isLoading: apiNotificationLoading } = useQuery(
+  const { data: apiNotification} = useQuery(
     {
       queryKey: [QueryKey.NOTIFICATION],
       queryFn: () => {
@@ -109,7 +112,7 @@ const Header = () => {
         type: "api",
         name: noti.title,
         image: noti.photo,
-        message: noti.description,
+        message: noti.description_company,
         time: moment(noti.created_at).fromNow(),
         timestamp: moment(noti.created_at).valueOf(),
       })) || [];
@@ -118,7 +121,7 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
-  console.log(combinedNotifications);
+
 
   // update favicon
   // useEffect(() => {
