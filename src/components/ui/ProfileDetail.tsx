@@ -61,8 +61,8 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
       </div>
 
       <div className="text-center">
-        <h1 className="font-bold text-2xl my-3 text-gray-800">
-          {data?.name || jp.companyName}
+        <h1 className="font-bold text-2xl my-3 text-red-800">
+          {data?.name || jp.companyName}wsdfawefw
         </h1>
         <p className="text-gray-600">
           {data?.secondary_email || "メールアドレス"}
