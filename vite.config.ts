@@ -9,11 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
-    visualizer({
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    visualizer(),
   ],
   resolve: {
     alias: {

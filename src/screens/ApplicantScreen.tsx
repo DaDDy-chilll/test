@@ -22,6 +22,8 @@ import { QueryKey } from "@/utils/queryKey";
 import { AppDispatch } from "@/store/store";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes";
 
 const initialFilter: FilterType = {
   live_in_japan: "",
@@ -32,6 +34,7 @@ const ApplicantScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
+  const navigate = useNavigate();
   const applicantID = location.state;
   const { token } = useSelector((state: RootState) => state.auth);
   const [filter, setFilter] = useState<FilterType>(initialFilter);
@@ -197,8 +200,36 @@ const ApplicantScreen = () => {
                   className="h-full w-full overflow-y-auto"
                 />
               )}
-
               <button
+                className="text-blue-600 hover:text-blue-800 font-medium flex gap-x-1 absolute bottom-1 left-3 "
+                onClick={() => {
+                  if (applicantID) {
+                    setSelectedApplicantId(null);
+                    navigate(RouteName.CHAT, { state: applicantID });
+                  } else {
+                    setIsDetail(false);
+                  }
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  className="size-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                  />
+                </svg>
+
+                {jp.back}
+              </button>
+
+              {/* <button
                 onClick={() => setIsDetail(false)}
                 className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
               >
@@ -216,7 +247,7 @@ const ApplicantScreen = () => {
                     d="M15.75 19.5 8.25 12l7.5-7.5"
                   />
                 </svg>
-              </button>
+              </button> */}
             </motion.div>
           )}
         </AnimatePresence>

@@ -304,7 +304,7 @@ const MatchedScreend = () => {
           </DropdownMenu>
         </div>
         <AnimatePresence>
-          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-150px)] overflow-y-auto auto-rows-[350px]">
+          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-120px)] overflow-y-auto auto-rows-[350px]">
             {isLoading ? (
               <>
                 <CardSkeleton />
@@ -414,9 +414,31 @@ const MatchedScreend = () => {
                   <MatchedApplicants
                     applicantDetail={applicantDetail?.data}
                     className="h-full w-full overflow-y-auto"
+                    onBack={handleCloseDetail}
                   />
                 )}
                 <button
+                  className="text-blue-600 hover:text-blue-800 font-medium flex gap-x-1 absolute bottom-3 left-3 "
+                  onClick={handleCloseDetail}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                    />
+                  </svg>
+
+                  {jp.back}
+                </button>
+                {/* <button
                   onClick={handleCloseDetail}
                   className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
                 >
@@ -434,13 +456,13 @@ const MatchedScreend = () => {
                       d="M15.75 19.5 8.25 12l7.5-7.5"
                     />
                   </svg>
-                </button>
+                </button> */}
               </span>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.main>
-      {(defaultJobType.length === 0 && jobNameTypeSuccess) && (
+      {defaultJobType.length === 0 && jobNameTypeSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white w-[36%] h-[30%] pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
             <p className="mb-4">{jp.createJobFirst}</p>

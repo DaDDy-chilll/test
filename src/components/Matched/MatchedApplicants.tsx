@@ -9,9 +9,14 @@ import NoVideo from "@/assets/images/no-video.svg";
 type MatchProps = {
   className?: string;
   applicantDetail: ApplicantDetail;
+  onBack?: () => void;
 };
 
-const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
+const MatchedApplicants = ({
+  className,
+  applicantDetail,
+  onBack,
+}: MatchProps) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
   const {
@@ -27,7 +32,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
 
   return (
-    <div className={`bg-gray-100 py-5 px-6 shadow-md ${className}`}>
+    <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
         <img
           src={
@@ -385,6 +390,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
           </div>
         </div>
       </div>
+      <div></div>
     </div>
   );
 };

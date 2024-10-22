@@ -19,6 +19,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { Helmet } from "react-helmet-async";
 import { colors } from "@/constants/color";
+import { useLocation, useNavigate } from "react-router-dom";
+import RouteName from "@/navigations/routes";
 
 import eyeOpenWhite from "@/assets/icons/eye-open-white.svg";
 
@@ -28,8 +30,8 @@ const defaultForm = {
   job_type: { label: "", value: "" },
   prefecture_id: { label: "", value: "" },
   annual_salary: { label: "", value: "" },
-  working_time: { label: "", value: "" },
-  holiday_in_year: { label: "", value: "" },
+  working_time: "",
+  holiday_in_year: "",
   start_time: "",
   end_time: "",
   job_des: "",
@@ -40,6 +42,9 @@ const defaultForm = {
 const JobScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  let jobID = location.state;
   const { token } = useSelector((state: RootState) => state.auth);
   const [search, setSearch] = useState("");
   const [showDetails, setShowDetails] = useState(false);
@@ -101,15 +106,25 @@ const JobScreen = () => {
   };
 
   const handleBack = (value: boolean) => {
-    setForm(defaultForm);
-    setShowDetails(value);
-    setIsEdit(false);
-    setIsAdd(false);
+    if (jobID) {
+      navigate(RouteName.CHAT, { state: jobID });
+    } else {
+      setForm(defaultForm);
+      setShowDetails(value);
+      setIsEdit(false);
+      setIsAdd(false);
+    }
   };
 
   useEffect(() => {
     dispatch(setTitle(jp.joblists));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (jobID) {
+      handleJobDetails(jobID.job_id);
+    }
+  }, [jobID]);
 
   useEffect(() => {
     if (jobDetail?.data) {
@@ -124,18 +139,14 @@ const JobScreen = () => {
           label: jobDetail?.data.prefecture.name,
           value: jobDetail?.data.prefecture_id,
         },
-        holiday_in_year: {
-          label: jobDetail?.data?.holiday_in_year || 150,
-          value: jobDetail?.data?.holiday_in_year || 150,
-        },
+        holiday_in_year: jobDetail?.data?.holiday_in_year || 150,
+
         annual_salary: {
           label: jobDetail?.data.annual_salary,
           value: jobDetail?.data.annual_salary,
         },
-        working_time: {
-          label: jobDetail?.data.working_time,
-          value: jobDetail?.data.working_time,
-        },
+        working_time: jobDetail?.data.working_time,
+
         start_time: jobDetail?.data.start_time,
         end_time: jobDetail?.data.end_time,
         job_des: jobDetail?.data.job_des,

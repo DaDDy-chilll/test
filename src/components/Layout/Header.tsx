@@ -67,18 +67,16 @@ const Header = () => {
   }, []);
 
   // fetch notification
-  const { data: apiNotification} = useQuery(
-    {
-      queryKey: [QueryKey.NOTIFICATION],
-      queryFn: () => {
-        return fetchServer({
-          endpoint: `${apiRoutes.NOTIFICATION}`,
-          method: "GET",
-          token: token,
-        });
-      },
+  const { data: apiNotification } = useQuery({
+    queryKey: [QueryKey.NOTIFICATION],
+    queryFn: () => {
+      return fetchServer({
+        endpoint: `${apiRoutes.NOTIFICATION}`,
+        method: "GET",
+        token: token,
+      });
     },
-  );
+  });
 
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
@@ -118,8 +116,6 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
-
-
   // update favicon
   // useEffect(() => {
   //   const updateFavicon = () => {
@@ -131,7 +127,7 @@ const Header = () => {
   //       canvas.width = 32;
   //       canvas.height = 32;
   //       const ctx = canvas.getContext('2d');
-        
+
   //       if (ctx) {
   //         // Draw the original favicon
   //         const img = new Image();
@@ -164,7 +160,6 @@ const Header = () => {
 
   //   updateFavicon();
   // }, [combinedNotifications]);
-
 
   useEffect(() => {
     const messageListeners: any[] = [];

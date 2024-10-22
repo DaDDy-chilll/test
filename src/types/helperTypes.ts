@@ -282,6 +282,7 @@ export interface Chat {
   id: string;
   job_id: string;
   company_id: string;
+  job_title: string;
   jobfinder_id: string;
   company_name: string;
   jobfinder_name: string;

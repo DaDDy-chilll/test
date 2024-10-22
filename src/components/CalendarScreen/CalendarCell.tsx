@@ -13,6 +13,7 @@ type CalendarCellProps = {
   todaysEvents: Event;
   handleClick: (todaysEvents: Event) => void;
   year: any;
+  isWeekend?: boolean;
 };
 
 const CalendarCell = ({
@@ -20,6 +21,7 @@ const CalendarCell = ({
   todaysEvents,
   handleClick,
   year,
+  isWeekend = false,
 }: CalendarCellProps) => {
   const clickEvent = () => handleClick(todaysEvents);
   return (
@@ -27,8 +29,10 @@ const CalendarCell = ({
       className={clsx(
         "h-20 flex flex-col rounded-md items-center justify-center  active:scale-90 transition-all duration-100 cursor-pointer ",
         {
-          "border border-red-400 bg-[#E5D5D9]": isToday(day),
-          "bg-[#E5D5D9]": !isToday(day),
+          "border border-red-400 ": isToday(day),
+          // "bg-[#E5D5D9]": !isToday(day),
+          "bg-white": !isWeekend,
+          "bg-[#E5D5D9] ": isWeekend,
         },
       )}
       onClick={clickEvent}

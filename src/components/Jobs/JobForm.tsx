@@ -251,7 +251,7 @@ const JobForm = ({
           <Input
             name="job_title"
             type="text"
-            placeholder={jp.jobName}
+            placeholder=""
             label={jp.jobName}
             className="mt-1 block w-full bg-gray-100"
             value={form.job_title}
@@ -320,7 +320,19 @@ const JobForm = ({
             error={salaryError || ""}
           />
 
-          <Select
+          <Input
+            name="working_time"
+            type="text"
+            placeholder=""
+            label={jp.workHour}
+            className="mt-1 block w-full bg-gray-100"
+            value={form.working_time}
+            onChange={(e) => setForm({ ...form, working_time: e.target.value })}
+            required={false}
+            error={workTimeError || ""}
+          />
+
+          {/* <Select
             name="working_time"
             label={jp.workHour}
             id={jp.workHour}
@@ -336,8 +348,23 @@ const JobForm = ({
               })
             }
             error={workTimeError || ""}
+          /> */}
+
+          <Input
+            name="holiday_in_year"
+            type="text"
+            placeholder=""
+            label={jp.annualHoliday}
+            className="mt-1 block w-full bg-gray-100"
+            value={form.holiday_in_year}
+            onChange={(e) =>
+              setForm({ ...form, holiday_in_year: e.target.value })
+            }
+            required={false}
+            error={holidayError || ""}
           />
 
+          {/* 
           <Select
             name="holiday_in_year"
             label={jp.annualHoliday}
@@ -357,7 +384,7 @@ const JobForm = ({
               })
             }
             error={holidayError || ""}
-          />
+          /> */}
 
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">

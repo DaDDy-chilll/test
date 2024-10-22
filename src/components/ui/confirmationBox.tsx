@@ -19,7 +19,7 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
 }) => {
   return (
     <div className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white w-[36%] h-[30%] pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
+      <div className="bg-white w-full h-full max-w-lg max-h-52 pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
         <p className="text-lg mb-4 text-start">{message}</p>
         <div className="flex justify-end space-x-2">
           <button

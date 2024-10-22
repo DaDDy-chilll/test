@@ -76,21 +76,16 @@ const CalendarScreen = () => {
     end: lastDayOfMonth,
   });
   const startingDayIndex = getDay(firstDayOfMonth); // Adjusting the starting index
-  const endingDayIndex =
-    getDay(lastDayOfMonth) === 0 ? 0 : 6 - getDay(lastDayOfMonth);
+  // const endingDayIndex =
+  //   getDay(lastDayOfMonth) === 0 ? 0 : 6 - getDay(lastDayOfMonth);
+  const endingDayIndex = (7 - getDay(lastDayOfMonth) - 1) % 7;
 
   const handleCellClick = (todaysEvents: Event, dateKey: string) => {
     setSelectedDate(dateKey);
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
-  // console.log(
-  //   "currentDate",
-  //   moment(currentDate).startOf("month").format("YYYY-MM-DD"),
-  // );
-
   const handleEventClick = (event: Event) => {
-    // console.log(event);
     navigate(RouteName.CHAT);
   };
 
@@ -123,7 +118,6 @@ const CalendarScreen = () => {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsOfMonth]);
 
   return (
@@ -198,23 +192,25 @@ const CalendarScreen = () => {
               return (
                 <div
                   key={day}
-                  className="font-normal py-2 text-center bg-[#F6D5D5] text-secondaryColor rounded-md select-none"
+                  className={`font-normal py-2 text-center ${day == "Sun" || day == "Sat" ? "bg-[#F6D5D5]" : "bg-white"} text-secondaryColor rounded-md select-none`}
                 >
                   {day}
                 </div>
               );
             })}
             {Array.from({ length: startingDayIndex }).map((_, index) => {
+              const isWeekend = (index + 1) % 7 === 0 || index % 7 === 0;
               return (
                 <div
                   key={`empty-${index}`}
-                  className="p-2 bg-[#E5D5D9] rounded-md text-center "
+                  className={`p-2 ${isWeekend ? "bg-[#E5D5D9]" : "bg-white"} rounded-md text-center`}
                 />
               );
             })}
             {daysInMonth.map((day, index) => {
               const dateKey = format(day, "yyyy-MM-dd");
               const todaysEvents = eventsOfMonth?.data[dateKey] || [];
+              const dayName = format(day, "EEE");
               return (
                 <CalendarCell
                   key={index}
@@ -222,14 +218,17 @@ const CalendarScreen = () => {
                   todaysEvents={todaysEvents}
                   handleClick={() => handleCellClick(todaysEvents, dateKey)}
                   year={moment(currentDate).year()}
+                  isWeekend={dayName == "Sun" || dayName == "Sat"}
                 />
               );
             })}
             {Array.from({ length: endingDayIndex }).map((_, index) => {
+              const trailingDay = (getDay(lastDayOfMonth) + index + 1) % 7;
+              const isWeekend = trailingDay === 0 || trailingDay === 6;
               return (
                 <div
-                  key={`empty-${index}`}
-                  className="p-2 bg-[#E5D5D9] rounded-md text-center "
+                  key={`empty-trailing-${index}`}
+                  className={`p-2 ${isWeekend ? "bg-[#E5D5D9]" : "bg-white"} rounded-md text-center`}
                 />
               );
             })}
