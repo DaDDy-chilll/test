@@ -32,6 +32,7 @@ export interface Notification {
   description_company: string;
   type: string;
   created_at: string;
+  user_id:number;
 }
 import { useNavigate, useLocation } from "react-router-dom";
 import RouteName from "@/navigations/routes";
@@ -78,8 +79,14 @@ const Header = () => {
     },
   });
 
-  const handleChatClick = (chat: Chat) =>
-    navigate(RouteName.CHAT, { state: chat });
+  const handleChatClick = (item: any) => {
+    if(item.type === 'chat'){
+      navigate(RouteName.CHAT, { state: item });
+    }else if(item.type === 'api'){
+      navigate(RouteName.APPLICANTS,{state:item});
+    }
+  }
+
 
   const handleProfileClick = () => {
     if (location.pathname !== RouteName.PROFILE) {
@@ -94,8 +101,13 @@ const Header = () => {
     const chatNotifications = chatNoti.map((chat) => ({
       id: chat.id,
       type: "chat",
+      job_id:chat.job_id,
+      job_title:chat.job_title,
       name: chat.jobfinder_name,
-      image: chat.jobfinder_profile_image,
+      jobfinder_name:chat.jobfinder_name,
+      image:chat.jobfinder_profile_image,
+      jobfinder_profile_image: chat.jobfinder_profile_image,
+      jobfinder_id:chat.jobfinder_id,
       message: chat.last_message,
       time: moment(chat.last_message_timestamp.toDate()).fromNow(),
       timestamp: chat.last_message_timestamp.toDate().getTime(),
@@ -105,6 +117,7 @@ const Header = () => {
       apiNotification?.data?.map((noti: Notification) => ({
         id: noti.id,
         type: "api",
+        jobfinder_id:noti.user_id,
         name: noti.title,
         image: noti.photo,
         message: noti.description_company,
@@ -233,10 +246,15 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {chatNoti.length ||
+            {
+              chatNoti.length > 0 && (
+                <div className="w-2 h-2 flex justify-center items-center text-sm text-white bg-red-500 rounded-full absolute -top-1 -right-1 p-2">{chatNoti.length}</div>
+              ) ||
+              
               (hasApiNotification && (
                 <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
-              ))}
+              ))
+              }
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[350px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
@@ -244,16 +262,17 @@ const Header = () => {
             {combinedNotifications.length > 0 ? (
               combinedNotifications.map((item) => (
                 <DropdownMenuItem key={item.id}>
-                  <NotiItem
-                    onClick={() => handleChatClick(item)}
-                    item={{
-                      name: item.name,
-                      image: item.image,
-                      message: item.message,
-                      time: item.time,
-                    }}
-                  />
-                </DropdownMenuItem>
+                <NotiItem
+                  onClick={() => handleChatClick(item)}
+                  item={{
+                    name: item.name,
+                    image: item.image,
+                    message: item.message,
+                    time: item.time,
+             
+                  }}
+                />
+              </DropdownMenuItem>
               ))
             ) : (
               <div className="flex flex-col w-full items-center justify-center gap-y-2 p-3 text-gray-500">

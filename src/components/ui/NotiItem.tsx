@@ -5,12 +5,13 @@ type ItemProps = {
     name: string;
     message: string;
     time: string;
+
   };
   onClick: () => void;
 };
 
 const NotiItem = ({ item, onClick }: ItemProps) => {
-  const profileImage = item.image
+  const profileImage = item.image 
     ? item.image.startsWith("http")
       ? item.image
       : `https://api.japanjob.exbrainedu.com/v1/file/photo/${item.image}`

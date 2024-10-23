@@ -23,6 +23,7 @@ const ChatHeader = ({
     navigate(RouteName.JOBS, { state: selectedChat });
   };
 
+
   return (
     <div className="flex items-center justify-between w-full h-full px-4 py-3 border-4 border-gray-300 rounded-sm border-opacity-30 shadow-sm">
       <div className="flex items-center gap-x-3">
