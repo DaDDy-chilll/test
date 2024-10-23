@@ -201,8 +201,8 @@ const JobScreen = () => {
               />
             </div>
           </div>
-          <div className="py-4 space-y-4 h-[72vh] px-10 overflow-y-scroll">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <div className="py-4 space-y-4 h-[72vh]  overflow-y-scroll">
+            <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>

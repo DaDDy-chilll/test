@@ -14,7 +14,7 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
 
   return (
     <div
-      className={`flex items-center gap-3 mx-2 py-2 h-15 rounded-md cursor-pointer overflow-hidden`}
+      className={`flex items-center gap-3 mx-2 py-2 h-16 rounded-md cursor-pointer overflow-hidden`}
       onClick={handleClick}
     >
       <div className="w-10 h-10 rounded-full overflow-hidden">
@@ -38,7 +38,9 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
                   unreadCount > 0 ? "text-black font-bold" : "text-gray-500"
                 }`}
               >
-                {chat.last_message}
+                {chat.last_message.length > 18
+                  ? `${chat.last_message.slice(0, 15)}...`
+                  : chat.last_message}
               </p>
             )}
           </div>

@@ -114,11 +114,11 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             label: jp.companyAddress,
             value: data?.address || "",
           },
-          {
-            icon: <CompanyDescription className="size-7" />,
-            label: jp.companyDescription,
-            value: data?.company_des || "",
-          },
+          // {
+          //   icon: <CompanyDescription className="size-7" />,
+          //   label: jp.companyDescription,
+          //   value: data?.company_des || "",
+          // },
         ].map((item, index) => (
           <div
             key={index}
@@ -139,23 +139,16 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
         ))}
       </div>
 
-      {/* <div className="grid grid-cols-2 md:grid-cols-2 gap-6 w-full ">
-        <div className="w-full max-w-3xl flex flex-col gap-y-1">
-          <h2 className="font-bold text-lg text-gray-800 mb-3">{jp.address}</h2>
-          <p className="flex items-center gap-5 bg-white p-6 rounded-lg shadow-sm  overflow-x-auto">
-            {data?.address}
-          </p>
-        </div>
-
-        <div className="w-full max-w-3xl flex flex-col gap-y-1">
+      <div className=" md:grid-cols-2 gap-6 w-full">
+        <div className="w-full flex flex-col gap-y-1">
           <h2 className="font-bold text-lg text-gray-800 mb-3">
             {jp.companyDescription}
           </h2>
-          <p className="flex items-center gap-5 bg-white p-6 rounded-lg shadow-sm  overflow-x-auto">
+          <p className="flex items-center gap-5 bg-white p-6 rounded-lg shadow-sm  overflow-x-auto text-sm">
             {data?.company_des}
           </p>
         </div>
-      </div> */}
+      </div>
 
       <div className="w-full max-w-3xl items-center justify-center flex gap-x-10 pt-8 py-10">
         {data?.fb_url && (

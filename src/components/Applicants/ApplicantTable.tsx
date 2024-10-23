@@ -104,7 +104,7 @@ const ApplicantTable = ({
   return (
     <div className="relative overflow-y-auto h-[calc(100vh-190px)]">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-white z-40">
+        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400 sticky top-0 bg-gray-50 z-40">
           <tr>
             <th scope="col" className=" py-3 text-start pl-5">
               {jp.id}
@@ -115,7 +115,7 @@ const ApplicantTable = ({
             <th scope="col" className=" py-3 text-start">
               {jp.preferJob}
             </th>
-            <th scope="col" className=" py-3 text-start w-[15%]">
+            <th scope="col" className=" py-3 text-start w-[10%]">
               {jp.address}
             </th>
             <th scope="col" className=" py-3 text-start">
