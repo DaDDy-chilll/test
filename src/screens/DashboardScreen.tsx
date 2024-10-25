@@ -95,7 +95,10 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { notification } = useSelector((state: RootState) => state.navigation);
-  const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  const { chats, isLoading: isChatLoading } = useChat({
+    id: user?.id,
+    limit: 5,
+  });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedDateData, setSelectedDateData] = useState<any>();

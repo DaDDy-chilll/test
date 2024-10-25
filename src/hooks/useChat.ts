@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import {
   query,
@@ -5,85 +6,52 @@ import {
   collection,
   orderBy,
   onSnapshot,
+  limit as firestoreLimit,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { Chat } from "@/types/helperTypes";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type useChatProps = {
   id: number | string | undefined;
+  limit?: number | null;
 };
 
-const useChat = ({ id }: useChatProps) => {
+let isEnd = false;
+let END_LIMIT = 0;
+let LIMIT = 10;
+const useChat = ({ id, limit }: useChatProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  // useEffect(() => {
-
-  //   if (id) {
-  //     const chatsRef = collection(db, "chats");
-  //     const q = query(chatsRef, where("company_id", "==", id),orderBy("last_message_timestamp", "desc"));
-
-  //     const unsubscribe = onSnapshot(q, (snapshot) => {
-  //       const chatIds = snapshot.docs.map(doc => doc.id);
-
-  //       if (chatIds.length > 0) {
-  //         const fetchedChats: Chat[] = [];
-  //         const messageListeners: any[] = [];
-  //         snapshot.forEach((doc) => {
-  //           fetchedChats.push({ id: doc.id, ...doc.data() } as Chat);
-  //         });
-  //         setChats(fetchedChats);
-  //         chats.forEach((chat) => {
-  //           const messagesRef = collection(db, "messages");
-  //           const q = query(
-  //             messagesRef,
-  //             where("chat_id", "==", chat.id),
-  //             where("sender_id", "!=", Number(`2${id}`)),
-  //             where("read", "==", false)
-  //           );
-
-  //           const unsubscribe = onSnapshot(q, (snapshot) => {
-  //             const unreadCount = snapshot.docs.length;
-  //             setUnreadCounts((prev) => ({
-  //               ...prev,
-  //               [chat.id]: unreadCount,
-  //             }));
-  //           });
-
-  //           messageListeners.push(unsubscribe);
-  //         });
-  //         setIsLoading(false)
-  //         return () => messageListeners.forEach(unsubscribe => unsubscribe());
-  //       } else {
-  //         setIsLoading(false)
-  //         setUnreadCounts({});
-  //       }
-  //     });
-
-  //     return () => unsubscribe();
-  //   }
-
-  // }, [id]);
+  const [refetching, setRefetching] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!id) return;
     setIsLoading(true);
+    getChats();
+  }, [id]);
+
+  const getChats = () => {
     const chatsRef = collection(db, "chats");
     const q = query(
       chatsRef,
       where("company_id", "==", id), //company id
       orderBy("last_message_timestamp", "desc"),
+      firestoreLimit(limit || LIMIT),
     );
 
     const unsubscribe = onSnapshot(
       q,
       (querySnapshot) => {
         const fetchedChats: Chat[] = [];
-        querySnapshot.forEach((doc) => {
-          fetchedChats.push({ id: doc.id, ...doc.data() } as Chat);
-        });
+        querySnapshot.forEach((doc) =>
+          fetchedChats.push({ id: doc.id, ...doc.data() } as Chat),
+        );
         setChats(fetchedChats);
+        console.log("fetchedChats", fetchedChats.length, LIMIT);
+        if (fetchedChats.length !== LIMIT) isEnd = true;
+        else isEnd = false;
         setIsLoading(false);
       },
       (error) => {
@@ -91,14 +59,26 @@ const useChat = ({ id }: useChatProps) => {
         setError("Failed to fetch chats. Please try again.");
       },
     );
-
+    setRefetching(false);
     return () => unsubscribe();
-  }, [id]);
+  };
+
+  const refetch = () => {
+    if (!id || refetching || isEnd) return;
+    setRefetching(true);
+    setIsLoading(true);
+    // setChats([]);
+    LIMIT += 5;
+    getChats();
+  };
 
   return {
     chats,
     isLoading,
     error,
+    refetch,
+    refetching,
+    isEnd,
   };
 };
 

@@ -13,6 +13,7 @@ import {
   doc,
   setDoc,
   onSnapshot,
+  limit,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import {
@@ -42,37 +43,31 @@ import { Helmet } from "react-helmet-async";
 // };
 
 // const parsedId = parsedUser.id;
-
+let MESSAGES_LIMIT = 30;
 const ChatScreen = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
   const navChat = location.state;
-  // const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>(
-    {},
-  );
-
   const [newMessage, setNewMessage] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
-
   const [isAppointmentModelOpen, setIsAppointmentModelOpen] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // const messageLimit = useRef<number>(MESSAGES_LIMIT)
 
-  // const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
-  // const [newJobTitle, setNewJobTitle] = useState("");
-  // const queryClient = useQueryClient();
-  // const [chatId, setChatId] = useState();
-  // const [selectedJobId, setSelectedJobId] = useState<number | 1>(1);
-
-  const { chats, isLoading } = useChat({ id: user?.id });
+  const {
+    chats,
+    isLoading,
+    refetch,
+    refetching: isRefetching,
+    isEnd,
+  } = useChat({ id: user?.id });
   useEffect(() => {
     dispatch(setTitle(jp.chat));
   }, [dispatch]);
 
   //Handle Chat Select
-
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
@@ -148,43 +143,11 @@ const ChatScreen = () => {
     }
   };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollToBottom = () =>
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  useEffect(() => {
-    const messageListeners: any[] = [];
-
-    chats.forEach((chat) => {
-      const messagesRef = collection(db, "messages");
-
-      const q = query(
-        messagesRef,
-        where("chat_id", "==", chat.id),
-        where("sender_id", "!=", Number(`2${user?.id}`)),
-        where("read", "==", false),
-      );
-
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const unreadCount = snapshot.docs.length;
-
-        setUnreadCounts((prev) => ({
-          ...prev,
-          [chat.id]: unreadCount,
-        }));
-      });
-
-      messageListeners.push(unsubscribe);
-    });
-
-    return () => {
-      messageListeners.forEach((unsubscribe) => unsubscribe());
-    };
-  }, [chats, user?.id]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
 
   useEffect(() => scrollToBottom(), [messages]);
   useEffect(() => {
-    
     if (navChat) handleChatSelect(navChat);
   }, [navChat]);
 
@@ -218,7 +181,9 @@ const ChatScreen = () => {
               chats={chats}
               onSelectChat={handleChatSelect}
               selectedChat={selectedChat}
-              unreadCounts={unreadCounts}
+              refetch={refetch}
+              isRefetching={isRefetching}
+              isEnd={isEnd}
             />
           )}
         </div>
@@ -242,6 +207,7 @@ const ChatScreen = () => {
                 user={user}
                 messagesEndRef={messagesEndRef}
                 selectedChat={selectedChat}
+                limit={MESSAGES_LIMIT}
               />
             ) : (
               <div className="flex flex-col justify-center items-center h-full ">
