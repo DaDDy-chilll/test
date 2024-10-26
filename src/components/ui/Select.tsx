@@ -82,15 +82,15 @@ const Select: React.FC<SelectProps> = ({
         </option>
 
         {options &&
-        options
-          .filter((option) => option.label != defaultOption)
-          .map((option, index) => {
-            return (
-              <option key={index} value={option.value} disabled={disabled}>
-                {option.label}
-              </option>
-            );
-          })}
+          options
+            .filter((option) => option.label != defaultOption)
+            .map((option, index) => {
+              return (
+                <option key={index} value={option.value} disabled={disabled}>
+                  {option.label}
+                </option>
+              );
+            })}
       </select>
 
       <div className={`absolute right-2  ${style === 0 ? "top-2" : "top-1"}`}>

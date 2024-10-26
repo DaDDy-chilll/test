@@ -28,7 +28,7 @@ const defaultForm = {
   id: null,
   job_title: "",
   job_type: { label: "", value: "" },
-  area:{label:"",value:""},
+  area: { label: "", value: "" },
   prefecture_id: { label: "", value: "" },
   annual_salary: { label: "", value: "" },
   working_time: "",
@@ -136,7 +136,10 @@ const JobScreen = () => {
           label: jobDetail?.data.job_type.job_type_jp,
           value: jobDetail?.data.job_types,
         },
-        area:{label:jobDetail?.data.area,value:jobDetail?.data.area},
+        area: {
+          label: jobDetail?.data.area_id,
+          value: jobDetail?.data.area_id,
+        },
         prefecture_id: {
           label: jobDetail?.data.prefecture.name,
           value: jobDetail?.data.prefecture_id,

@@ -49,7 +49,6 @@ const useChat = ({ id, limit }: useChatProps) => {
           fetchedChats.push({ id: doc.id, ...doc.data() } as Chat),
         );
         setChats(fetchedChats);
-        console.log("fetchedChats", fetchedChats.length, LIMIT);
         if (fetchedChats.length !== LIMIT) isEnd = true;
         else isEnd = false;
         setIsLoading(false);

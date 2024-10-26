@@ -92,9 +92,6 @@ const Header = () => {
       navigate(RouteName.PROFILE);
     }
   };
-  // useEffect(() => {
-  //   console.log(hasApiNotification);
-  // }, [hasApiNotification]);
 
   const combinedNotifications = useMemo(() => {
     const chatNotifications = chatNoti.map((chat) => ({
@@ -207,6 +204,7 @@ const Header = () => {
       messageListeners.forEach((unsubscribe) => unsubscribe());
     };
   }, [chats, user?.id]);
+
 
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">

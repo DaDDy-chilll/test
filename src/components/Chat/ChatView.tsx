@@ -23,7 +23,6 @@ const ChatView = ({
   const [showGoToTop, setShowGoToTop] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
 
-  // console.log('messages',messages.length)
   useEffect(() => {
     const handleScroll = () => {
       if (messagesRef.current) {
@@ -31,7 +30,6 @@ const ChatView = ({
         const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
         const isNearTop = scrollTop <= 100;
 
-        // console.log('message length',messages.length,limit)
         // if(isNearTop && !isEnd ){
         //   refetch()
         //   if(messages.length !== limit){

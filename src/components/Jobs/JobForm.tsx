@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { jp } from "@/lang/jp";
-import { useState,useCallback,useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import usePost from "@/hooks/usePost";
@@ -82,7 +82,7 @@ const JobForm = ({
   } = useHandleError();
   const [showConfirmation, setShowConfirmation] = useState(false);
   // const [showErrorModal, setShowErrorModal] = useState(false);
-  const [response,setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<any>(null);
   const { mutate, error, isSuccess, isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
@@ -116,61 +116,64 @@ const JobForm = ({
   //     label: type.area,
   //   })) || [];
 
-
-    useEffect(() => {
-      if (city && "data" in city) {
-        setResponse(city.data);
-      }
-    }, [city]);
-
+  useEffect(() => {
+    if (city && "data" in city) {
+      setResponse(city.data);
+    }
+  }, [city]);
 
   const transformAreaData = useCallback(
-      (data: any | null) => {
-        if (data) {
-          const areaList = data?.map((item: any) => ({
-            label: item.area,
-            value: item.id.toString(),
-          }));
-          const relativeArea = data?.reduce((acc: any, item: any) => {
-            if (item.m_prefectures.length > 0) {
-              acc[item.id.toString()] = item.m_prefectures.map(
-                  (prefecture: any) => ({
-                    label: prefecture.name,
-                    value: prefecture.id.toString(),
-                  })
-              );
-            }
-            return acc;
-          }, {});
-          return { areaList, relativeArea };
-        }
-      },
-      [response]
+    (data: any | null) => {
+      if (data) {
+        const areaList = data?.map((item: any) => ({
+          label: item.area,
+          value: item.id.toString(),
+        }));
+        const relativeArea = data?.reduce((acc: any, item: any) => {
+          if (item.m_prefectures.length > 0) {
+            acc[item.id.toString()] = item.m_prefectures.map(
+              (prefecture: any) => ({
+                label: prefecture.name,
+                value: prefecture.id.toString(),
+              }),
+            );
+          }
+          return acc;
+        }, {});
+        return { areaList, relativeArea };
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [response],
   );
   const { areaList, relativeArea } = useMemo(() => {
     if (city && "data" in city) {
       return (
-          transformAreaData(city.data) || {
-            areaList: [],
-            relativeArea: {},
-          }
+        transformAreaData(city.data) || {
+          areaList: [],
+          relativeArea: {},
+        }
       );
     } else return { areaList: [], relativeArea: {} };
   }, [city, transformAreaData]);
-
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetJobFormError();
     const formData = new FormData(e.target as HTMLFormElement);
+
     const jobData = {
       job_title: formData.get("job_title") as string,
       job_types: Number(formData.get("job_types") as string) || undefined,
       job_des: form.job_des,
-      area:Number(formData.get("area") as string) || undefined,
+      area_id: Number(formData.get("area") as string) || undefined,
       prefecture_id:
         Number(formData.get("prefecture_id") as string) || undefined,
-      working_time:0,
+      working_time:
+        calculateWorkingTime(
+          formData.get("start_time") as string,
+          formData.get("end_time") as string,
+        ) || undefined,
       annual_salary:
         Number(formData.get("annual_salary") as string) || undefined,
       start_time: formData.get("start_time") as string,
@@ -180,8 +183,6 @@ const JobForm = ({
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
-
-    console.log('jobData',jobData)
 
     if (isEdit) {
       mutate({
@@ -196,6 +197,13 @@ const JobForm = ({
         method: "POST",
       });
     }
+  };
+
+  const calculateWorkingTime = (startTime: string, endTime: string) => {
+    const start = new Date(`1970-01-01T${startTime}:00`);
+    const end = new Date(`1970-01-01T${endTime}:00`);
+    const diff = end.getTime() - start.getTime();
+    return parseInt(((diff - 3600000) / (1000 * 60 * 60)) as unknown as string);
   };
 
   // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -215,7 +223,6 @@ const JobForm = ({
 
   useEffect(() => {
     if (error) {
-      console.log('error',error)
       setShowConfirmation(false);
       // setShowErrorModal(true);
       jobFormHandleError(error?.message as JobFormErrorType);
@@ -229,7 +236,6 @@ const JobForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
-
 
   return (
     <motion.div
@@ -309,16 +315,20 @@ const JobForm = ({
             error={areaError || ""}
           />
 
-<Select
-disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
+          <Select
             name="prefecture_id"
+            // disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
             label={jp.prefecture}
             id={jp.prefecture}
             options={form.area.value && relativeArea[form.area.value]}
             className=""
             defaultOption={jp.chooseLocation}
             value={form.prefecture_id}
-            defaultValue={relativeArea[form.area.value] > 0 ? relativeArea[form.area.value][0].value : ""}
+            defaultValue={
+              relativeArea[form.area.value] > 0
+                ? relativeArea[form.area.value][0].value
+                : ""
+            }
             onChange={(e) =>
               setForm({
                 ...form,
@@ -352,9 +362,6 @@ disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
             error={salaryError || ""}
           />
 
-
-
-
           <Input
             name="holiday_in_year"
             type="text"
@@ -363,7 +370,10 @@ disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
             className="mt-1 block w-full bg-gray-100"
             value={form.holiday_in_year}
             onChange={(e) =>
-              setForm({ ...form, holiday_in_year: e.target.value.replace(/\D/g, '') })
+              setForm({
+                ...form,
+                holiday_in_year: e.target.value.replace(/\D/g, ""),
+              })
             }
             required={false}
             error={holidayError || ""}
@@ -449,7 +459,7 @@ disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
                   [{ header: [1, 2, false] }],
                   ["bold", "italic", "underline", "strike"],
                   [{ list: "ordered" }, { list: "bullet" }],
-                  [{ color: ['blackBright'] }, { background: [] }],
+                  [{ color: ["blackBright"] }, { background: [] }],
                   [{ align: [] }],
                   ["clean"],
                 ],

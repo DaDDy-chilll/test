@@ -224,9 +224,9 @@ export type JobFormErrorType = {
     jp: string;
     mm: string;
   };
-  area?:{
-    jp:string,
-    mm:string,
+  area?: {
+    jp: string;
+    mm: string;
   };
   validation?: [
     job_title?: {
@@ -369,7 +369,7 @@ export interface User {
   id: string | number;
   email: string;
   name: string;
-  code:string;
+  code: string;
 }
 
 export type ApplicantDetail = {

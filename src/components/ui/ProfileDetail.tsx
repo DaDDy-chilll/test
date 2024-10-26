@@ -36,8 +36,6 @@ type Props = {
 const ProfileDetail = ({ editHandler, data }: Props) => {
   const clickEditEvent = () => editHandler && editHandler(true);
 
-
-  console.log('data',data)
   return (
     <motion.div
       key="complete"
@@ -64,7 +62,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
 
       <div className="text-center">
         <h1 className="font-bold text-2xl my-3 text-gray-800">
-          {data?.name || jp.companyName} {data?.code ? `(${data?.code})`:""}
+          {data?.name || jp.companyName} {data?.code ? `(${data?.code})` : ""}
         </h1>
         <p className="text-gray-600">
           {data?.secondary_email || "メールアドレス"}

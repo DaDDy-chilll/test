@@ -399,7 +399,7 @@ const useHandleError = () => {
       setPrefectureError(null);
       setStartTimeError(null);
       setEndTimeError(null);
-      setAreaError(null)
+      setAreaError(null);
     },
   };
 };
