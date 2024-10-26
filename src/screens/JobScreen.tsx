@@ -28,6 +28,7 @@ const defaultForm = {
   id: null,
   job_title: "",
   job_type: { label: "", value: "" },
+  area:{label:"",value:""},
   prefecture_id: { label: "", value: "" },
   annual_salary: { label: "", value: "" },
   working_time: "",
@@ -135,6 +136,7 @@ const JobScreen = () => {
           label: jobDetail?.data.job_type.job_type_jp,
           value: jobDetail?.data.job_types,
         },
+        area:{label:jobDetail?.data.area,value:jobDetail?.data.area},
         prefecture_id: {
           label: jobDetail?.data.prefecture.name,
           value: jobDetail?.data.prefecture_id,
@@ -206,7 +208,7 @@ const JobScreen = () => {
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className=" py-3">
                       {jp.jobTitle}
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -263,7 +265,7 @@ const JobScreen = () => {
                           >
                             <th
                               scope="row"
-                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                              className=" py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                               {item.job_title}
                             </th>

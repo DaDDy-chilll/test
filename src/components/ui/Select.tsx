@@ -81,7 +81,8 @@ const Select: React.FC<SelectProps> = ({
           {defaultOption}{" "}
         </option>
 
-        {options
+        {options &&
+        options
           .filter((option) => option.label != defaultOption)
           .map((option, index) => {
             return (

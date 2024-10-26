@@ -35,9 +35,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      const { token, email, id, name } = action.payload;
+      const { token, email, id, name,code } = action.payload;
       state.token = token;
-      state.user = { email, id, name };
+      state.user = { email, id, name,code };
     },
     setVerified: (state, action) => {
       state.verified = action.payload;

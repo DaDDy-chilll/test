@@ -224,6 +224,10 @@ export type JobFormErrorType = {
     jp: string;
     mm: string;
   };
+  area?:{
+    jp:string,
+    mm:string,
+  };
   validation?: [
     job_title?: {
       jp: string;
@@ -258,6 +262,10 @@ export type JobFormErrorType = {
       mm: string;
     },
     job_des?: {
+      jp: string;
+      mm: string;
+    },
+    area?: {
       jp: string;
       mm: string;
     },
@@ -361,6 +369,7 @@ export interface User {
   id: string | number;
   email: string;
   name: string;
+  code:string;
 }
 
 export type ApplicantDetail = {

@@ -272,6 +272,11 @@ const useHandleError = () => {
             err?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION,
           );
         }
+        if (err?.area) {
+          setAreaError(
+            err?.area?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          );
+        }
       });
     } else {
       if (error?.job_title) {
@@ -316,6 +321,11 @@ const useHandleError = () => {
       if (error?.job_des) {
         setCompanyDesError(
           error?.job_des?.jp ?? ERROR_MESSAGE.INVALID_JOB_DESCRIPTION,
+        );
+      }
+      if (error?.area) {
+        setAreaError(
+          error?.area?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
         );
       }
     }
@@ -389,6 +399,7 @@ const useHandleError = () => {
       setPrefectureError(null);
       setStartTimeError(null);
       setEndTimeError(null);
+      setAreaError(null)
     },
   };
 };

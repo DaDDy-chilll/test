@@ -2,6 +2,7 @@
 node_modules
 # .github
 .env
+.idea
 .vite
 .vscode
 note.txt

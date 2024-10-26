@@ -117,6 +117,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (data) {
+      console.log('data',data)
       setFormData({
         name: data.data.name,
         industry_type_id: {

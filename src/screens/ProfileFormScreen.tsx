@@ -487,7 +487,7 @@ const ProfileFormScreen = () => {
               />
               <Input
                 name="fb_url"
-                type="url"
+                type="text"
                 label={jp.facebook}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
@@ -503,7 +503,7 @@ const ProfileFormScreen = () => {
               />
               <Input
                 name="yt_url"
-                type="url"
+                type="text"
                 label={jp.youtube}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
@@ -519,7 +519,7 @@ const ProfileFormScreen = () => {
               />
               <Input
                 name="web_url"
-                type="url"
+                type="text"
                 label={jp.website}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
@@ -535,7 +535,7 @@ const ProfileFormScreen = () => {
               />
               <Input
                 name="ig_url"
-                type="url"
+                type="text"
                 label={jp.instagram}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""

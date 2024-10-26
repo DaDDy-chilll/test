@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { jp } from "@/lang/jp";
-import { useState } from "react";
+import { useState,useCallback,useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import usePost from "@/hooks/usePost";
@@ -38,19 +38,19 @@ const annualSalary = [
   { value: "800", label: "800万円~" },
 ];
 
-const workingTime = [
-  { value: "7", label: "7時間" },
-  { value: "8", label: "8時間" },
-  { value: "9", label: "9時間" },
-  { value: "10", label: "10時間" },
-];
-
-const annualHoliday = [
-  { value: "120", label: "120日" },
-  { value: "130", label: "130日" },
-  { value: "140", label: "140日" },
-  { value: "150", label: "150日" },
-];
+// const workingTime = [
+//   { value: "7", label: "7時間" },
+//   { value: "8", label: "8時間" },
+//   { value: "9", label: "9時間" },
+//   { value: "10", label: "10時間" },
+// ];
+//
+// const annualHoliday = [
+//   { value: "120", label: "120日" },
+//   { value: "130", label: "130日" },
+//   { value: "140", label: "140日" },
+//   { value: "150", label: "150日" },
+// ];
 
 const benefits = [
   { value: "support_home", label: jp.supportHouse },
@@ -77,10 +77,12 @@ const JobForm = ({
     endTimeError,
     prefectureError,
     companyDesError,
+    areaError,
     resetJobFormError,
   } = useHandleError();
   const [showConfirmation, setShowConfirmation] = useState(false);
   // const [showErrorModal, setShowErrorModal] = useState(false);
+  const [response,setResponse] = useState<any>(null);
   const { mutate, error, isSuccess, isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
@@ -108,11 +110,54 @@ const JobForm = ({
       label: type.job_type_jp,
     })) || [];
 
-  const countries =
-    city?.data.map((type: any) => ({
-      value: type.id.toString(),
-      label: type.area,
-    })) || [];
+  // const countries =
+  //   city?.data.map((type: any) => ({
+  //     value: type.id.toString(),
+  //     label: type.area,
+  //   })) || [];
+
+
+    useEffect(() => {
+      if (city && "data" in city) {
+        setResponse(city.data);
+      }
+    }, [city]);
+
+
+  const transformAreaData = useCallback(
+      (data: any | null) => {
+        if (data) {
+          const areaList = data?.map((item: any) => ({
+            label: item.area,
+            value: item.id.toString(),
+          }));
+          const relativeArea = data?.reduce((acc: any, item: any) => {
+            if (item.m_prefectures.length > 0) {
+              acc[item.id.toString()] = item.m_prefectures.map(
+                  (prefecture: any) => ({
+                    label: prefecture.name,
+                    value: prefecture.id.toString(),
+                  })
+              );
+            }
+            return acc;
+          }, {});
+          return { areaList, relativeArea };
+        }
+      },
+      [response]
+  );
+  const { areaList, relativeArea } = useMemo(() => {
+    if (city && "data" in city) {
+      return (
+          transformAreaData(city.data) || {
+            areaList: [],
+            relativeArea: {},
+          }
+      );
+    } else return { areaList: [], relativeArea: {} };
+  }, [city, transformAreaData]);
+
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,11 +167,12 @@ const JobForm = ({
       job_title: formData.get("job_title") as string,
       job_types: Number(formData.get("job_types") as string) || undefined,
       job_des: form.job_des,
+      area:Number(formData.get("area") as string) || undefined,
       prefecture_id:
         Number(formData.get("prefecture_id") as string) || undefined,
+      working_time:0,
       annual_salary:
         Number(formData.get("annual_salary") as string) || undefined,
-      working_time: Number(formData.get("working_time") as string) || undefined,
       start_time: formData.get("start_time") as string,
       end_time: formData.get("end_time") as string,
       holiday_in_year:
@@ -134,6 +180,8 @@ const JobForm = ({
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
     };
+
+    console.log('jobData',jobData)
 
     if (isEdit) {
       mutate({
@@ -167,6 +215,7 @@ const JobForm = ({
 
   useEffect(() => {
     if (error) {
+      console.log('error',error)
       setShowConfirmation(false);
       // setShowErrorModal(true);
       jobFormHandleError(error?.message as JobFormErrorType);
@@ -181,45 +230,6 @@ const JobForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
 
-  // const getFieldLabel = (field: string): string => {
-  //   switch (field) {
-  //     case "job_des":
-  //       return jp.jobDescription;
-  //     case "prefecture_id":
-  //       return jp.jobLocation;
-  //     case "annual_salary":
-  //       return jp.annualSalary;
-  //     case "working_time":
-  //       return jp.annualHoliday;
-  //     case "job_types":
-  //       return jp.jobType;
-  //     default:
-  //       return field;
-  //   }
-  // };
-  // const renderErrorMessage = () => {
-  //   if (typeof error?.message === "object" && "validation" in error.message) {
-  //     return (
-  //       <ul className="list-disc pl-5">
-  //         {(error.message as { validation: any[] }).validation.map(
-  //           (validationError: any, index: number) => (
-  //             <li key={index}>
-  //               {Object.entries(validationError).map(([field, messages]) => (
-  //                 <div key={field}>
-  //                   <span className="font-semibold mr-1">
-  //                     {getFieldLabel(field)}
-  //                   </span>
-  //                   {(messages as Record<string, string>).jp}
-  //                 </div>
-  //               ))}
-  //             </li>
-  //           )
-  //         )}
-  //       </ul>
-  //     );
-  //   }
-  //   return <p>{JSON.stringify(error?.message)}</p>;
-  // };
 
   return (
     <motion.div
@@ -279,14 +289,36 @@ const JobForm = ({
           />
 
           <Select
+            name="area"
+            label={jp.area}
+            id={jp.area}
+            options={areaList}
+            className=""
+            defaultOption={jp.chooseLocation}
+            value={form.area}
+            defaultValue={areaList.length > 0 ? areaList[0].value : ""}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                area: {
+                  label: e.target.labels,
+                  value: e.target.value,
+                },
+              })
+            }
+            error={areaError || ""}
+          />
+
+<Select
+disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
             name="prefecture_id"
-            label={jp.jobLocation}
-            id={jp.jobLocation}
-            options={countries}
+            label={jp.prefecture}
+            id={jp.prefecture}
+            options={form.area.value && relativeArea[form.area.value]}
             className=""
             defaultOption={jp.chooseLocation}
             value={form.prefecture_id}
-            defaultValue={countries.length > 0 ? countries[0].value : ""}
+            defaultValue={relativeArea[form.area.value] > 0 ? relativeArea[form.area.value][0].value : ""}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -320,35 +352,8 @@ const JobForm = ({
             error={salaryError || ""}
           />
 
-          <Input
-            name="working_time"
-            type="text"
-            placeholder=""
-            label={jp.workHour}
-            className="mt-1 block w-full bg-gray-100"
-            value={form.working_time}
-            onChange={(e) => setForm({ ...form, working_time: e.target.value })}
-            required={false}
-            error={workTimeError || ""}
-          />
 
-          {/* <Select
-            name="working_time"
-            label={jp.workHour}
-            id={jp.workHour}
-            options={workingTime}
-            className=""
-            defaultOption={jp.chooseTime}
-            value={form.working_time}
-            defaultValue={workingTime[0].value}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                working_time: { label: e.target.labels, value: e.target.value },
-              })
-            }
-            error={workTimeError || ""}
-          /> */}
+
 
           <Input
             name="holiday_in_year"
@@ -358,33 +363,11 @@ const JobForm = ({
             className="mt-1 block w-full bg-gray-100"
             value={form.holiday_in_year}
             onChange={(e) =>
-              setForm({ ...form, holiday_in_year: e.target.value })
+              setForm({ ...form, holiday_in_year: e.target.value.replace(/\D/g, '') })
             }
             required={false}
             error={holidayError || ""}
           />
-
-          {/* 
-          <Select
-            name="holiday_in_year"
-            label={jp.annualHoliday}
-            id={jp.annualHoliday}
-            options={annualHoliday}
-            className=""
-            defaultOption={jp.chooseDays}
-            value={form.holiday_in_year}
-            defaultValue={annualHoliday[0].value}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                holiday_in_year: {
-                  label: e.target.labels,
-                  value: e.target.value,
-                },
-              })
-            }
-            error={holidayError || ""}
-          /> */}
 
           <div className="flex flex-row gap-x-10 relative">
             <p className="text-xs text-gray-500 absolute -top-5 left-0">
@@ -414,7 +397,7 @@ const JobForm = ({
               error={endTimeError || ""}
             />
           </div>
-          <div className="col-span-2 w-full ">
+          <div className="w-full ">
             <p className="text-xs text-gray-500 mb-3">{jp.benefits}</p>
             <div className="flex flex-row gap-x-10">
               {benefits.map((benefit, index) => (
@@ -466,7 +449,7 @@ const JobForm = ({
                   [{ header: [1, 2, false] }],
                   ["bold", "italic", "underline", "strike"],
                   [{ list: "ordered" }, { list: "bullet" }],
-                  [{ color: [] }, { background: [] }],
+                  [{ color: ['blackBright'] }, { background: [] }],
                   [{ align: [] }],
                   ["clean"],
                 ],

@@ -216,7 +216,7 @@ const Header = () => {
         </span>
         <h1 className="text-xl text-gray-900 font-semibold">{title}</h1>
       </div>
-      <div className="flex gap-5">
+      <div className="flex gap-5 items-center">
         <div className="cursor-pointer" onClick={handleProfileClick}>
           <p
             className={` underline bg-none font-semibold ${location.pathname === RouteName.PROFILE ? "text-gray-500" : "text-primaryColor"}`}
@@ -295,8 +295,9 @@ const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div>
+        <div className="text-end">
           <h1>{name}</h1>
+          <p className="text-xs text-gray-500">{user?.code ? user.code : ""}</p>
         </div>
       </div>
     </nav>
