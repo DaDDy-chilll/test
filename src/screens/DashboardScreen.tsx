@@ -95,13 +95,9 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { notification } = useSelector((state: RootState) => state.navigation);
-  const {
-    chats,
-    isLoading: isChatLoading,
-    isEnd,
-  } = useChat({
+  const { chats, isLoading: isChatLoading } = useChat({
     id: user?.id,
-    limit: 10,
+    limit: 11,
   });
   const scrollableRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -346,7 +342,7 @@ const DashboardScreen = () => {
                 ))}
               </div>
             ) : chats.length > 0 ? (
-              chats.map((chat, index) => {
+              chats.slice(0, 10).map((chat, index) => {
                 const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
 
                 return (
@@ -434,7 +430,7 @@ const DashboardScreen = () => {
               </div>
             )}
           </div>
-          {!isEnd && (
+          {chats.length > 10 && (
             <div className="flex justify-end items-center px-3 py-1">
               <button
                 className="hover:text-gray-900 text-gray-600 text-sm flex "

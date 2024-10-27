@@ -52,7 +52,10 @@ const useChat = ({ id, limit }: useChatProps) => {
         setChats(fetchedChats);
         if (fetchedChats.length !== LIMIT) {
           isEnd = true;
-        } else isEnd = false;
+        } else {
+          isEnd = false;
+          hasMore = true;
+        }
         setIsLoading(false);
       },
       (error) => {
