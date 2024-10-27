@@ -118,30 +118,30 @@ const Profile = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        name: data.data.name || '',
+        name: data.data.name || "",
         industry_type_id: {
-          label: data.data.industry_type.name || '',
-          value: data.data.industry_type.id || '',
+          label: data.data.industry_type.name || "",
+          value: data.data.industry_type.id || "",
         },
-        budget: data.data.budget || '',
-        starting: data.data.starting || '',
-        staff: { label: data.data.staff || '', value: data.data.staff || '' },
+        budget: data.data.budget || "",
+        starting: data.data.starting || "",
+        staff: { label: data.data.staff || "", value: data.data.staff || "" },
         //todo: need to change
-        area: data.data.area || '',
+        area: data.data.area || "",
         //todo: need to change
-        prefecture: data.data.prefecture || '',
+        prefecture: data.data.prefecture || "",
 
-        photo: data.data.photo || '',
-        company_des: data.data.company_des || '',
-        manager: data.data.manager || '',
-        company_address: data.data.address || '',
-        secondary_email: data.data.secondary_email || '',
-        phone_number: data.data.phone_number || '',
-        ceo: data.data.ceo || '',
-        yt_url: data.data.yt_url || '',
-        ig_url: data.data.ig_url || '',
-        web_url: data.data.web_url || '',
-        fb_url: data.data.fb_url || '',
+        photo: data.data.photo || "",
+        company_des: data.data.company_des || "",
+        manager: data.data.manager || "",
+        company_address: data.data.address || "",
+        secondary_email: data.data.secondary_email || "",
+        phone_number: data.data.phone_number || "",
+        ceo: data.data.ceo || "",
+        yt_url: data.data.yt_url || "",
+        ig_url: data.data.ig_url || "",
+        web_url: data.data.web_url || "",
+        fb_url: data.data.fb_url || "",
       });
     }
   }, [data]);

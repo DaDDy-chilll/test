@@ -296,7 +296,7 @@ const ProfileFormScreen = () => {
                 placeholder={jp.companyName}
                 label={jp.companyName}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.name || ''}
+                value={formData.name || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -314,7 +314,7 @@ const ProfileFormScreen = () => {
                 options={jobTypes}
                 className=""
                 defaultOption={jp.chooseIndustry}
-                value={formData.industry_type_id || ''}
+                value={formData.industry_type_id || ""}
                 onChange={(e) => {
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -332,7 +332,7 @@ const ProfileFormScreen = () => {
                 placeholder=""
                 label={jp.email}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.secondary_email || ''}
+                value={formData.secondary_email || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -349,7 +349,7 @@ const ProfileFormScreen = () => {
                 placeholder="08x xxxx xxxx"
                 label={jp.phoneNumber}
                 className="mt-1 block w-full bg-gray-100"
-                value={formatPhoneNumber(formData.phone_number) || ''}
+                value={formatPhoneNumber(formData.phone_number) || ""}
                 onChange={(e) => {
                   // const numericValue = e.target.value.replace(/[^\d+]/g, '');
                   setFormData((prevData: any) => ({
@@ -366,7 +366,7 @@ const ProfileFormScreen = () => {
                 label={jp.investmentAmount}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder="100000 $"
-                value={formData.budget || ''}
+                value={formData.budget || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -384,7 +384,7 @@ const ProfileFormScreen = () => {
                 value={
                   formData.company_address == "null"
                     ? ""
-                    : formData.company_address || ''
+                    : formData.company_address || ""
                 }
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
@@ -400,7 +400,7 @@ const ProfileFormScreen = () => {
                 type="text"
                 label={jp.chairman}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.ceo == "null" ? "" : formData.ceo || ''}
+                value={formData.ceo == "null" ? "" : formData.ceo || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -415,7 +415,7 @@ const ProfileFormScreen = () => {
                 type="text"
                 label={jp.undertake}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.manager || ''}
+                value={formData.manager || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -432,7 +432,7 @@ const ProfileFormScreen = () => {
                 options={employeeNumber}
                 className=""
                 defaultOption={jp.chooseEmployee}
-                value={formData.staff || ''}
+                value={formData.staff || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -446,7 +446,7 @@ const ProfileFormScreen = () => {
                 type="text"
                 label={jp.area}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.area || ''}
+                value={formData.area || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -461,7 +461,7 @@ const ProfileFormScreen = () => {
                 type="date"
                 label={jp.establishment}
                 className="mt-1 block w-full"
-                value={formData.starting || ''}
+                value={formData.starting || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -475,7 +475,7 @@ const ProfileFormScreen = () => {
                 type="text"
                 label={jp.city}
                 className="mt-1 block w-full bg-gray-100"
-                value={formData.prefecture || ''}
+                value={formData.prefecture || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -491,7 +491,7 @@ const ProfileFormScreen = () => {
                 label={jp.facebook}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
-                value={formData.fb_url || ''}
+                value={formData.fb_url || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -507,7 +507,7 @@ const ProfileFormScreen = () => {
                 label={jp.youtube}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
-                value={formData.yt_url || ''}
+                value={formData.yt_url || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -523,7 +523,7 @@ const ProfileFormScreen = () => {
                 label={jp.website}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
-                value={formData.web_url || ''}
+                value={formData.web_url || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -539,7 +539,7 @@ const ProfileFormScreen = () => {
                 label={jp.instagram}
                 className="mt-1 block w-full bg-gray-100"
                 placeholder=""
-                value={formData.ig_url || ''}
+                value={formData.ig_url || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({
                     ...prevData,
@@ -556,7 +556,7 @@ const ProfileFormScreen = () => {
                   label={jp.companyDescription}
                   className="mt-1 block w-full bg-gray-100"
                   placeholder="Company description"
-                  value={formData.company_des || ''}
+                  value={formData.company_des || ""}
                   onChange={(e) =>
                     setFormData((prevData: any) => ({
                       ...prevData,

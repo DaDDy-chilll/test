@@ -41,6 +41,7 @@ const ApplicantScreen = () => {
   const isInitialRender = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
+  const [error,setError] = useState<string | null>(null)
   // const [applicantDetail,setApplicantDetail] = useState<UserProfile>()
   const [selectedApplicantId, setSelectedApplicantId] = useState<
     number | string | null
@@ -89,7 +90,7 @@ const ApplicantScreen = () => {
   //   token: token as string,
   // });
 
-  const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
+  const { data: applicantDetail, isLoading: isDetailLoading,error:applicantDetailError } = useQuery({
     queryKey: [QueryKey.APPLICANT_DETAIL, selectedApplicantId],
     queryFn: () => {
       if (!selectedApplicantId) return [];
@@ -134,6 +135,18 @@ const ApplicantScreen = () => {
       handleDetail(applicantID.jobfinder_id);
     }
   }, [applicantID]);
+
+  useEffect(() => {
+    if(applicantDetailError){
+      setIsDetail(false);
+      setSelectedApplicantId(null);
+      const errorResponse = applicantDetailError as any;
+    if (errorResponse.status === 404 && errorResponse.message?.email?.jp) {
+      setError(errorResponse.message.email.jp);
+    }
+      
+    }
+  },[applicantDetailError])
 
   return (
     <>

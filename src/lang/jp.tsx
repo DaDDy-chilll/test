@@ -169,4 +169,5 @@ export const jp = {
   refetching: "更新中",
   noMoreChats: "チャットはありません",
   loadMoreChats: "もっと読み込む",
+  seeMore:"もっと見る"
 };

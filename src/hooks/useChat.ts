@@ -17,7 +17,8 @@ type useChatProps = {
   limit?: number | null;
 };
 
-let isEnd = false;
+let isEnd:boolean | null = null;
+let hasMore:boolean | null = null;
 let END_LIMIT = 0;
 let LIMIT = 10;
 const useChat = ({ id, limit }: useChatProps) => {
@@ -49,8 +50,9 @@ const useChat = ({ id, limit }: useChatProps) => {
           fetchedChats.push({ id: doc.id, ...doc.data() } as Chat),
         );
         setChats(fetchedChats);
-        if (fetchedChats.length !== LIMIT) isEnd = true;
-        else isEnd = false;
+        if (fetchedChats.length !== LIMIT) {
+          isEnd = true
+        }else isEnd = false;
         setIsLoading(false);
       },
       (error) => {
@@ -67,7 +69,7 @@ const useChat = ({ id, limit }: useChatProps) => {
     setRefetching(true);
     setIsLoading(true);
     // setChats([]);
-    LIMIT += 5;
+    LIMIT += 10;
     getChats();
   };
 
@@ -78,6 +80,7 @@ const useChat = ({ id, limit }: useChatProps) => {
     refetch,
     refetching,
     isEnd,
+    hasMore
   };
 };
 

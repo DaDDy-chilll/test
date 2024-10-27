@@ -5,6 +5,7 @@ import {
   JobForm,
   JobRowSkeleton,
   JobDetailSkeleton,
+  ConfirmationBox
 } from "@/components";
 import { useMemo, useState, useEffect } from "react";
 import { apiRoutes } from "@/utils/apiRoutes";
@@ -40,6 +41,17 @@ const defaultForm = {
   support_home_rent: "",
 };
 
+interface ErrorResponse {
+  error:boolean
+  status: number;
+  message: {
+    email?: {
+      jp: string;
+      mm:string;
+    };
+  };
+}
+
 const JobScreen = () => {
   // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
@@ -53,7 +65,8 @@ const JobScreen = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [error,setError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const {
     data,
     error: fetchError,
@@ -64,7 +77,7 @@ const JobScreen = () => {
     key: QueryKey.JOBS,
   });
 
-  const { data: jobDetail, isLoading: jobDetailLoading } = useQuery({
+  const { data: jobDetail, isLoading: jobDetailLoading,error:jobDetailError } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
     queryFn: () => {
       return fetchServer({
@@ -74,6 +87,7 @@ const JobScreen = () => {
       });
     },
     enabled: !!selectedJobId && showDetails,
+
   });
 
   const jobs = useMemo(() => data?.data || [], [data]);
@@ -160,6 +174,18 @@ const JobScreen = () => {
       });
     }
   }, [jobDetail]);
+
+  useEffect(() => {
+    if(jobDetailError){
+      setShowDetails(false);
+      setSelectedJobId(null);
+      const errorResponse = jobDetailError as any;
+    if (errorResponse.status === 404 && errorResponse.message?.email?.jp) {
+      setError(errorResponse.message.email.jp);
+    }
+      
+    }
+  },[jobDetailError])
 
   return (
     <>
@@ -368,6 +394,11 @@ const JobScreen = () => {
           />
         </div>
       )}
+      {
+        error && (
+          <ConfirmationBox message={error} onConfirm={() => setError(null)} />
+        )
+      }
     </>
   );
 };

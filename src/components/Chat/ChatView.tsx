@@ -83,7 +83,7 @@ const ChatView = ({
       {showGoToBottom && (
         <div className="sticky bottom-5 w-full  z-50 text-center">
           <button
-            className="bg-primaryColor text-white rounded-full p-2"
+            className="bg-primaryColor text-white rounded-full p-2 shadow-md"
             onClick={scrollToBottom}
           >
             <svg

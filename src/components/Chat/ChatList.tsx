@@ -11,7 +11,7 @@ interface ChatListProps {
   selectedChat: Chat | null;
   refetch: () => void;
   isRefetching: boolean;
-  isEnd: boolean;
+  isEnd: boolean | null;
 }
 
 const ChatList: React.FC<ChatListProps> = ({

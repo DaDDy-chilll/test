@@ -4,16 +4,16 @@ import { MoonLoader } from "react-spinners";
 import { Modal } from "@/components";
 interface ConfirmationBoxProps {
   message: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
+  onConfirm?: () => void | null;
+  onCancel?: () => void | null;
   loading?: boolean;
   isSuccess?: boolean;
 }
 
 const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
   message,
-  onConfirm,
-  onCancel,
+  onConfirm=null,
+  onCancel=null,
   loading = false,
   isSuccess = false,
 }) => {
@@ -22,14 +22,21 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
       <div className="bg-white w-full h-full max-w-lg max-h-52 pt-10 pb-8 px-14 flex flex-col justify-between rounded-lg shadow-lg">
         <p className="text-lg mb-4 text-start">{message}</p>
         <div className="flex justify-end space-x-2">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-          >
-            {jp.cancel}
-          </button>
-          <button
+          {
+            onCancel && ( 
+              <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            >
+              {jp.cancel}
+            </button>
+            )
+          }
+        
+        {
+          onConfirm && (
+            <button
             type="submit"
             onClick={onConfirm}
             className="px-4 py-2 bg-red-600 flex items-center justify-center text-white rounded hover:bg-primaryColor/80"
@@ -55,6 +62,9 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
               jp.confirm
             )}
           </button>
+          )
+        }
+   
         </div>
       </div>
     </div>

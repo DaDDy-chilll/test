@@ -520,6 +520,7 @@ const JobForm = ({
               <ConfirmationBox
                 message="送信してもよろしいですか？"
                 onCancel={handleCancel}
+                onConfirm={()=>{}}
                 loading={isPending}
                 isSuccess={isSuccess}
               />

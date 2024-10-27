@@ -205,7 +205,6 @@ const Header = () => {
     };
   }, [chats, user?.id]);
 
-
   return (
     <nav className="flex sticky items-center px-5 justify-between w-full top-0 h-14 z-50 bg-white">
       <div className="flex items-center gap-2 b">

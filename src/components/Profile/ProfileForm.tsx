@@ -119,8 +119,6 @@ const ProfileForm = ({
     },
   });
 
-
-
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -597,6 +595,7 @@ const ProfileForm = ({
                 <ConfirmationBox
                   message="送信してもよろしいですか？"
                   onCancel={handleCancel}
+                  onConfirm={() => {}}
                   loading={isPending}
                   isSuccess={isSuccess}
                 />
