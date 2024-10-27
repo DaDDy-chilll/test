@@ -169,5 +169,10 @@ export const jp = {
   refetching: "更新中",
   noMoreChats: "チャットはありません",
   loadMoreChats: "もっと読み込む",
-  seeMore:"もっと見る"
+  seeMore: "もっと見る",
+  meetingDate: "面接日",
+  meetingStartTime: "面接開始時間",
+  meetingEndTime: "面接終了時間",
+  meetingInProgress: "会議進行中",
+  meetingEnded: "会議終了",
 };

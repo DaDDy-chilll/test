@@ -5,7 +5,7 @@ import {
   JobForm,
   JobRowSkeleton,
   JobDetailSkeleton,
-  ConfirmationBox
+  ConfirmationBox,
 } from "@/components";
 import { useMemo, useState, useEffect } from "react";
 import { apiRoutes } from "@/utils/apiRoutes";
@@ -42,12 +42,12 @@ const defaultForm = {
 };
 
 interface ErrorResponse {
-  error:boolean
+  error: boolean;
   status: number;
   message: {
     email?: {
       jp: string;
-      mm:string;
+      mm: string;
     };
   };
 }
@@ -65,7 +65,7 @@ const JobScreen = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
-  const [error,setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const {
     data,
@@ -77,7 +77,11 @@ const JobScreen = () => {
     key: QueryKey.JOBS,
   });
 
-  const { data: jobDetail, isLoading: jobDetailLoading,error:jobDetailError } = useQuery({
+  const {
+    data: jobDetail,
+    isLoading: jobDetailLoading,
+    error: jobDetailError,
+  } = useQuery({
     queryKey: [QueryKey.JOB_DETAILS, selectedJobId],
     queryFn: () => {
       return fetchServer({
@@ -87,7 +91,6 @@ const JobScreen = () => {
       });
     },
     enabled: !!selectedJobId && showDetails,
-
   });
 
   const jobs = useMemo(() => data?.data || [], [data]);
@@ -176,16 +179,15 @@ const JobScreen = () => {
   }, [jobDetail]);
 
   useEffect(() => {
-    if(jobDetailError){
+    if (jobDetailError) {
       setShowDetails(false);
       setSelectedJobId(null);
       const errorResponse = jobDetailError as any;
-    if (errorResponse.status === 404 && errorResponse.message?.email?.jp) {
-      setError(errorResponse.message.email.jp);
+      if (errorResponse.status === 404 && errorResponse.message?.email?.jp) {
+        setError(errorResponse.message.email.jp);
+      }
     }
-      
-    }
-  },[jobDetailError])
+  }, [jobDetailError]);
 
   return (
     <>
@@ -394,11 +396,9 @@ const JobScreen = () => {
           />
         </div>
       )}
-      {
-        error && (
-          <ConfirmationBox message={error} onConfirm={() => setError(null)} />
-        )
-      }
+      {error && (
+        <ConfirmationBox message={error} onConfirm={() => setError(null)} />
+      )}
     </>
   );
 };

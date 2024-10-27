@@ -72,6 +72,7 @@ import Holidays from "./CalendarScreen/Holidays";
 import ConfirmationBox from "./ui/confirmationBox";
 import InterviewDatePicker from "./Chat/InterviewDatePicker";
 import Modal from "@/components/Chat/Modal";
+import MeetingAlert from "./ui/MeetingAlert";
 
 export {
   Alert,
@@ -119,6 +120,7 @@ export {
   Maintenance,
   MatchedApplicants,
   MessageItem,
+  MeetingAlert,
   Modal,
   NotFound,
   NotiItem,

@@ -66,7 +66,6 @@ const CalendarScreen = () => {
 
   // });
 
-
   useEffect(() => {
     refetch();
   }, [currentDate]);

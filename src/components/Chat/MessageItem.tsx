@@ -1,6 +1,6 @@
 import React from "react";
 import { Message, Chat } from "@/types/helperTypes";
-import moment from 'moment'
+import moment from "moment";
 interface MessageItemProps {
   message: Message;
   currentUser: { id: number | string | null };
@@ -39,7 +39,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
         }`}
       >
         <p className="text-sm">{message.content}</p>
-        <p className={`text-[.7rem] text-gray-900 w-full ${isCurrentUser ? "text-end":"text-start"} `}>{moment(message.timestamp.seconds).format('LT')}</p>
+        <p
+          className={`text-[.7rem] text-gray-900 w-full ${isCurrentUser ? "text-end" : "text-start"} `}
+        >
+          {moment(message.timestamp.seconds).format("LT")}
+        </p>
       </div>
     </div>
   );

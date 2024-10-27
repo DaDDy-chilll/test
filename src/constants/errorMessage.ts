@@ -20,5 +20,4 @@ export const ERROR_MESSAGE = {
   INVALID_PHONE_NUMBER: "無効な電話番号です・",
   INVALID_LINK: "無効なリンクです・",
   INVALID_AREA: "無効なエリアです・",
-  
 };

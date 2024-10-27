@@ -29,6 +29,7 @@ export interface ApiRoutesType {
   UPLOAD_IMAGE: string;
   PRIVACY_POLICY: string;
   NOTIFICATION: string;
+  FIND_INTERVIEW: string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -62,4 +63,5 @@ export const apiRoutes: ApiRoutesType = {
   UPLOAD_IMAGE: "/file",
   PRIVACY_POLICY: "/setting/privacy-policy",
   NOTIFICATION: "/client/auth/company-notification",
+  FIND_INTERVIEW: "/client/interview/find",
 };

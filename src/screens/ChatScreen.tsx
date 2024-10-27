@@ -23,6 +23,7 @@ import {
   ChatView,
   ChatInput,
   ChatSkeleton,
+  MeetingAlert,
 } from "@/components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -34,15 +35,6 @@ import { useDispatch } from "react-redux";
 import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
 
-// company id
-// const currentUser = {
-//   id: 1,
-// };
-// const parsedUser = {
-//   id: 21,
-// };
-
-// const parsedId = parsedUser.id;
 let MESSAGES_LIMIT = 30;
 const ChatScreen = () => {
   const dispatch = useDispatch();
@@ -189,7 +181,7 @@ const ChatScreen = () => {
         </div>
 
         {/* Header View */}
-        <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2">
+        <div className="bg-gray-100 col-start-3 col-end-9 row-start-1 row-end-2 relative">
           {selectedChat && (
             <ChatHeader
               selectedChat={selectedChat}
@@ -199,7 +191,7 @@ const ChatScreen = () => {
         </div>
 
         {/* Chat View */}
-        <div className="bg-gray-100 col-start-3 col-end-9  row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden border-l-2  border-r-2 border-gray-300 border-opacity-30">
+        <div className="bg-gray-100 col-start-3 col-end-9   row-start-2 flex flex-col justify-end row-end-9 relative overflow-hidden border-l-2  border-r-2 border-gray-300 border-opacity-30">
           {selectedChat ? (
             messages.length > 0 ? (
               <ChatView

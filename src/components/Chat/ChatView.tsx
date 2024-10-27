@@ -69,7 +69,7 @@ const ChatView = ({
     });
   };
   return (
-    <div className="overflow-y-auto px-3 relative" ref={messagesRef}>
+    <div className="overflow-y-auto px-3" ref={messagesRef}>
       {messages.map((message) => (
         <MessageItem
           key={message.id}

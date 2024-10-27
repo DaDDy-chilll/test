@@ -95,7 +95,11 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { notification } = useSelector((state: RootState) => state.navigation);
-  const { chats, isLoading: isChatLoading, isEnd } = useChat({
+  const {
+    chats,
+    isLoading: isChatLoading,
+    isEnd,
+  } = useChat({
     id: user?.id,
     limit: 10,
   });
@@ -107,8 +111,9 @@ const DashboardScreen = () => {
     events: null,
   });
   const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
-    endpoint: `${apiRoutes.DASHBOARD
-      }?start_date=${startOfYear.toString()}&end_date=${endOfYear.toString()}`,
+    endpoint: `${
+      apiRoutes.DASHBOARD
+    }?start_date=${startOfYear.toString()}&end_date=${endOfYear.toString()}`,
     token: token as string,
     key: QueryKey.DASHBOARD,
   });
@@ -161,7 +166,7 @@ const DashboardScreen = () => {
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
 
-  const handleSeeMore = () => navigate(RouteName.CHAT)
+  const handleSeeMore = () => navigate(RouteName.CHAT);
 
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
@@ -189,7 +194,6 @@ const DashboardScreen = () => {
       });
     }
   }, [upcomingInterviews, coverInterviews]);
-
 
   return (
     <>
@@ -250,12 +254,13 @@ const DashboardScreen = () => {
                         return (
                           <div
                             key={index}
-                            className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer ${key === selectedDate || key === currentDate
+                            className={`w-full h-10 rounded-md flex items-center justify-center mb-2 cursor-pointer ${
+                              key === selectedDate || key === currentDate
                                 ? "bg-primaryColor text-white"
                                 : currentDate > key
                                   ? "bg-gray-300 text-gray-400"
                                   : "bg-gray-200 text-secondaryColor"
-                              }`}
+                            }`}
                             onClick={() => {
                               setSelectedDate(key);
                               setSelectedDateData(coverInterviews(value));
@@ -385,10 +390,11 @@ const DashboardScreen = () => {
                         </p>
                       </div>
                       <p
-                        className={`text-xs  ${notification[chat.id] && notification[chat.id] > 0
+                        className={`text-xs  ${
+                          notification[chat.id] && notification[chat.id] > 0
                             ? "font-bold text-gray-900"
                             : "text-gray-500"
-                          }`}
+                        }`}
                       >
                         {chat.last_message.length > 53
                           ? `${chat.last_message.slice(0, 50)}...`
@@ -428,20 +434,30 @@ const DashboardScreen = () => {
               </div>
             )}
           </div>
-          {
-            (!isEnd  ) && (
-              <div className="flex justify-end items-center px-3 py-1">
-                <button className="hover:text-gray-900 text-gray-600 text-sm flex " onClick={handleSeeMore}>
-                  {jp.seeMore}
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                  </svg>
-
-                </button>
-              </div>
-            )
-          }
-
+          {!isEnd && (
+            <div className="flex justify-end items-center px-3 py-1">
+              <button
+                className="hover:text-gray-900 text-gray-600 text-sm flex "
+                onClick={handleSeeMore}
+              >
+                {jp.seeMore}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
         </section>
       </motion.main>
     </>

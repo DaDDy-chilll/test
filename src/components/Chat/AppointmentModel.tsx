@@ -15,6 +15,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
 import { MoonLoader } from "react-spinners";
+import { QueryKey } from "@/utils/queryKey";
+import { useQueryClient } from "@tanstack/react-query";
+
 type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
   userId: number;
@@ -80,6 +83,7 @@ const AppointmentModel = ({
   userId,
   jobId,
 }: AppointmentModelProps) => {
+  const queryClient = useQueryClient();
   const { token } = useSelector((state: RootState) => state.auth);
   const { authHandleError, emailError, resetAuthError } = useHandleError();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -104,6 +108,11 @@ const AppointmentModel = ({
         method: "POST",
         token: token,
         body: data,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKey.USER_INTERVIEW],
       });
     },
   });
