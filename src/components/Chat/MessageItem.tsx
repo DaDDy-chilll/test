@@ -1,6 +1,8 @@
 import React from "react";
 import { Message, Chat } from "@/types/helperTypes";
 import moment from "moment";
+import DefaultUser from "@/assets/icons/default_user.svg";
+
 interface MessageItemProps {
   message: Message;
   currentUser: { id: number | string | null };
@@ -26,7 +28,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
     >
       {!isCurrentUser && (
         <img
-          src={profileImage}
+          src={selectedChat.jobfinder_profile_image ? profileImage : DefaultUser}
           crossOrigin="anonymous"
           alt=""
           className="w-5 h-5 rounded-full"

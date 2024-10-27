@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { Chat, Message } from "@/types/helperTypes";
 import { User } from "@/types/helperTypes";
 import MessageItem from "./MessageItem";
-
 type ChatViewProps = {
   messages: Message[];
   user: User | null;
