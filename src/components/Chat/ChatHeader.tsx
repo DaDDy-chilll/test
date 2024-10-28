@@ -30,7 +30,6 @@ const ChatHeader = ({
   const [meetingError, setMeetingError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const dateNow = moment().format("MM/DD/YYYY");
   const timeNow = moment().format("HH:mm");
 
   const buildQueryString = () => {
@@ -49,6 +48,7 @@ const ChatHeader = ({
       selectedChat?.job_id,
     ],
     queryFn: () => {
+      setIsMeetingAlertOpen(false);
       return fetchServer({
         endpoint: `${apiRoutes.FIND_INTERVIEW}?${buildQueryString()}`,
         method: "GET",

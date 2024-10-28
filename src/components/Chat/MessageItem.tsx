@@ -28,7 +28,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
     >
       {!isCurrentUser && (
         <img
-          src={selectedChat.jobfinder_profile_image ? profileImage : DefaultUser}
+          src={
+            selectedChat.jobfinder_profile_image ? profileImage : DefaultUser
+          }
           crossOrigin="anonymous"
           alt=""
           className="w-5 h-5 rounded-full"
@@ -44,7 +46,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
         <p
           className={`text-[.7rem] text-gray-900 w-full ${isCurrentUser ? "text-end" : "text-start"} `}
         >
-          {moment(message.timestamp.seconds).format("LT")}
+          {moment(message.timestamp.seconds * 1000).format("hh:mm A")}
         </p>
       </div>
     </div>
