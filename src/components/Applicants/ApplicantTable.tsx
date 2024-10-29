@@ -5,6 +5,7 @@ import { TableRowSkeleton } from "@/components";
 type Applicant = {
   id: string;
   profileImage: string;
+  code: string;
   m_basicinfos: {
     name: string;
     location: string;
@@ -101,6 +102,7 @@ const ApplicantTable = ({
     return jobType ? jobType.job_type_jp : "Unknown";
   };
 
+
   return (
     <div className="relative overflow-y-auto h-[calc(100vh-190px)]">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -164,9 +166,9 @@ const ApplicantTable = ({
                   scope="row"
                   className=" py-2 text-start font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <p className="text-xs">{applicant.m_basicinfos.name}</p>
-                  <p className="text-xs font-light text-gray-500">
-                    {applicant.m_basicinfos.user_id}
+                  <p className="text-sm">{applicant.m_basicinfos.name}</p>
+                  <p className="text-xs font-light text-gray-600">
+                    {applicant.code}
                   </p>
                 </th>
 
