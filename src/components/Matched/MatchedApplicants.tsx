@@ -20,6 +20,7 @@ const MatchedApplicants = ({
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
   const {
+    code,
     m_basicinfos,
     m_education,
     m_job_experiences,
@@ -30,6 +31,9 @@ const MatchedApplicants = ({
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
+
+
+  console.log('code', code)
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
@@ -45,6 +49,8 @@ const MatchedApplicants = ({
         <div className="flex flex-col gap-y-4">
           <div className="flex items-center justify-start">
             <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
+            <span className="text-xl text-gray-500">・</span>
+            <h1 className="text-lg">{code}</h1>
             <span className="text-xl">・</span>
             <div className="flex items-center gap-2">
               {m_basicinfos.gender === 0 ? (

@@ -104,6 +104,7 @@ const ChatHeader = ({
         setMeetingStatus(meetingMoment.fromNow());
         setIsMeetingEnded(false);
       }
+      setIsMeetingAlertOpen(true)
     }
     if (error) {
       setMeetingError(error.message);

@@ -376,6 +376,7 @@ export type ApplicantDetail = {
   id: string | number;
   address: string;
   email: string;
+  code: string;
   m_basicinfos: {
     profile_path: string;
     name: string;

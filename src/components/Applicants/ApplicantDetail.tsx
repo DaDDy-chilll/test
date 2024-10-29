@@ -20,6 +20,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     m_prefer_other,
   } = applicantDetail;
   const profile_path = m_basicinfos.profile_path;
+
   return (
     <div className={`bg-gray-100 pt-2 pb-5 px-14 shadow-md ${className}`}>
       <div className="flex items-center gap-x-10 my-3 ">
