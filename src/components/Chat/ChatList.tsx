@@ -66,18 +66,14 @@ const ChatList: React.FC<ChatListProps> = ({
                 {jp.refetching}...
               </div>
             )}
-            {isEnd ? (
-              <div className="text-center text-xs text-gray-500 mt-2">
-                {jp.noMoreChats}
-              </div>
-            ) : (
-              <div
-                className="text-center text-xs text-blue-600 underline tracking-wider mt-2 cursor-pointer"
-                onClick={refetch}
-              >
-                {jp.loadMoreChats}
-              </div>
-            )}
+            {!isEnd && (
+               <div
+               className="text-center text-xs text-blue-600 underline tracking-wider mt-2 cursor-pointer"
+               onClick={refetch}
+             >
+               {jp.loadMoreChats}
+             </div>
+            ) }
           </>
         )}
       </div>
