@@ -49,9 +49,13 @@ const MatchedApplicants = ({
         <div className="flex flex-col gap-y-4">
           <div className="flex items-center justify-start">
             <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
+            {code &&(
+              <>
+                <span className="text-xl text-gray-500">・</span>
+                <h1 className="text-normal">{code}</h1>
+              </>
+            )}
             <span className="text-xl text-gray-500">・</span>
-            <h1 className="text-lg">{code}</h1>
-            <span className="text-xl">・</span>
             <div className="flex items-center gap-2">
               {m_basicinfos.gender === 0 ? (
                 <p className="text-sm">{jp.male}</p>
@@ -59,6 +63,7 @@ const MatchedApplicants = ({
                 <p className="text-sm">{jp.female}</p>
               )}
             </div>
+        
           </div>
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-2">
