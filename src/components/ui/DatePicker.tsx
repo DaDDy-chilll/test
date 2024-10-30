@@ -14,6 +14,18 @@ interface DatePickerProps {
   required?: boolean;
 }
 
+/**
+ * This component is used to render a date picker with various styles and states.
+ * @param value - The initial value of the date picker
+ * @param error - Optional error message to display
+ * @param name - The name attribute for the input element
+ * @param label - The label for the date picker
+ * @param className - Additional class names for styling
+ * @param placeholder - Optional placeholder text for the input element
+ * @param onChange - Optional callback function when the date value changes
+ * @param required - Optional boolean to mark the input as required
+ * @returns A styled DatePicker component
+ */
 const DatePicker: React.FC<DatePickerProps> = ({
   value,
   error,
@@ -26,6 +38,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState("");
 
+  /**
+   * This useEffect hook is used to update the input value when the value prop changes.
+   * @param value - The initial value of the date picker
+   */
   useEffect(() => {
     if (value) {
       const momentDate = moment(value, [
@@ -41,6 +57,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
     }
   }, [value]);
 
+  /**
+   * This function is used to handle the change event of the input element.
+   * @param e - The change event of the input element
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     const formattedDate = moment(newValue).format("YYYY-MM-DD");

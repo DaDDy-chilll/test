@@ -7,6 +7,17 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
+/**
+ * This function is used to fetch data from the server based on the provided parameters.
+ * @author PSK
+ * @param {Object} params - The parameters for the fetch request.
+ * @param {string} params.endpoint - The endpoint to fetch data from.
+ * @param {string} params.method - The HTTP method to use for the request.
+ * @param {Object} [params.body] - The body of the request, if applicable.
+ * @param {boolean} [params.file] - Indicates if the request includes a file.
+ * @param {string} [params.token] - The authorization token, if applicable.
+ * @returns {Promise<any>} The result of the fetch request.
+ */
 export const fetchServer = async ({
   endpoint,
   method,
@@ -46,9 +57,7 @@ export const fetchServer = async ({
     if (axios.isAxiosError(error)) {
       if (error.response) {
         const { data, status } = error.response;
-        // console.log("error-", error.response, data.status, status);
         if (data.status == 400 || status == 400) {
-          // console.log("error-", error.response, data.status, status);
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
           localStorage.removeItem("persist:root");
@@ -63,7 +72,6 @@ export const fetchServer = async ({
         window.location.href = RouteName.NETWORK_ERROR;
       }
     } else {
-      // console.log(error);
       throw error;
     }
   }

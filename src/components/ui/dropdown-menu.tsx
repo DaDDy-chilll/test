@@ -10,6 +10,15 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
 const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
 
+/**
+ * This component is used to render a sub trigger for the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param inset - Optional boolean to add inset styling
+ * @param children - The content to be displayed inside the sub trigger
+ * @param props - Additional props for the SubTrigger component
+ * @returns A styled DropdownMenuSubTrigger component
+ */
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
@@ -32,6 +41,13 @@ const DropdownMenuSubTrigger = React.forwardRef<
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName;
 
+/**
+ * This component is used to render the sub content for the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the SubContent component
+ * @returns A styled DropdownMenuSubContent component
+ */
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
@@ -48,6 +64,14 @@ const DropdownMenuSubContent = React.forwardRef<
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName;
 
+/**
+ * This component is used to render the content for the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param sideOffset - Optional offset for the side of the content
+ * @param props - Additional props for the Content component
+ * @returns A styled DropdownMenuContent component
+ */
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
@@ -66,6 +90,14 @@ const DropdownMenuContent = React.forwardRef<
 ));
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
 
+/**
+ * This component is used to render an item in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param inset - Optional boolean to add inset styling
+ * @param props - Additional props for the Item component
+ * @returns A styled DropdownMenuItem component
+ */
 const DropdownMenuItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
@@ -84,6 +116,15 @@ const DropdownMenuItem = React.forwardRef<
 ));
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
 
+/**
+ * This component is used to render a checkbox item in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param children - The content to be displayed inside the checkbox item
+ * @param checked - The checked state of the checkbox item
+ * @param props - Additional props for the CheckboxItem component
+ * @returns A styled DropdownMenuCheckboxItem component
+ */
 const DropdownMenuCheckboxItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
@@ -108,6 +149,14 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 
+/**
+ * This component is used to render a radio item in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param children - The content to be displayed inside the radio item
+ * @param props - Additional props for the RadioItem component
+ * @returns A styled DropdownMenuRadioItem component
+ */
 const DropdownMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
@@ -130,6 +179,14 @@ const DropdownMenuRadioItem = React.forwardRef<
 ));
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName;
 
+/**
+ * This component is used to render a label in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param inset - Optional boolean to add inset styling
+ * @param props - Additional props for the Label component
+ * @returns A styled DropdownMenuLabel component
+ */
 const DropdownMenuLabel = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
@@ -148,6 +205,13 @@ const DropdownMenuLabel = React.forwardRef<
 ));
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
 
+/**
+ * This component is used to render a separator in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the Separator component
+ * @returns A styled DropdownMenuSeparator component
+ */
 const DropdownMenuSeparator = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
@@ -160,6 +224,13 @@ const DropdownMenuSeparator = React.forwardRef<
 ));
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
+/**
+ * This component is used to render a shortcut in the dropdown menu.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the Shortcut component
+ * @returns A styled DropdownMenuShortcut component
+ */
 const DropdownMenuShortcut = ({
   className,
   ...props

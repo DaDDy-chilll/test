@@ -16,6 +16,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
+
+/**
+ * Otp component for handling OTP input and verification
+ * @component
+ * @returns {JSX.Element} The rendered component
+ * @autor PSK
+ */
 const Otp: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +32,13 @@ const Otp: React.FC = () => {
   const { mutate, isPending, isSuccess, error, data } = usePost({});
   const { resetAuthError, otpError, authHandleError } = useHandleError();
 
+  /**
+   * Handles change event for OTP input fields
+   * @param {ChangeEvent<HTMLInputElement>} element - The change event object
+   * @param {number} index - The index of the input field
+   * @returns {boolean} False if the input is not a number
+   * @autor PSK
+   */
   const handleChange = (
     element: ChangeEvent<HTMLInputElement>,
     index: number,
@@ -41,6 +55,12 @@ const Otp: React.FC = () => {
     }
   };
 
+  /**
+   * Handles backspace event for OTP input fields
+   * @param {React.KeyboardEvent<HTMLInputElement>} e - The keyboard event object
+   * @param {number} index - The index of the input field
+   * @autor PSK
+   */
   const handleBackspace = (
     e: React.KeyboardEvent<HTMLInputElement>,
     index: number,
@@ -50,6 +70,10 @@ const Otp: React.FC = () => {
     }
   };
 
+  /**
+   * Submits the OTP for verification
+   * @autor PSK
+   */
   const onSubmit = () => {
     resetAuthError();
     mutate({
@@ -58,6 +82,10 @@ const Otp: React.FC = () => {
     });
   };
 
+  /**
+   * useEffect hook to handle success state
+   * @autor PSK
+   */
   useEffect(() => {
     if (isSuccess) {
       dispatch(setToken({ token: data?.data?.token, email: null }));
@@ -67,6 +95,10 @@ const Otp: React.FC = () => {
     }
   }, [isSuccess, data]);
 
+  /**
+   * useEffect hook to handle error state
+   * @autor PSK
+   */
   useEffect(() => {
     if (error) {
       authHandleError(error?.message as AuthErrorType);
@@ -158,11 +190,19 @@ const Otp: React.FC = () => {
   );
 };
 
+/**
+ * Animation variants for header
+ * @autor PSK
+ */
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for form
+ * @autor PSK
+ */
 const formVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 0.2 } },

@@ -16,12 +16,23 @@ import { useDispatch } from "react-redux";
 import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
 
+/**
+ * ForgotPassword component handles the forgot password functionality.
+ * It allows users to reset their password by providing their email.
+ * @author PSK
+ */
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const { mutate, isPending, isSuccess, error } = usePost({});
   const { authHandleError, emailError, resetAuthError } = useHandleError();
+
+  /**
+   * This function is used to handle the form submission for password reset.
+   * It triggers the mutate function to call the forgot password API.
+   * @author PSK
+   */
   const onSubmit = () => {
     resetAuthError();
     mutate({
@@ -29,6 +40,12 @@ const ForgotPassword = () => {
       body: { email },
     });
   };
+
+  /**
+   * useEffect hook to handle the success state of the password reset request.
+   * It navigates the user to the OTP page and sets the token in the store.
+   * @author PSK
+   */
   useEffect(() => {
     if (isSuccess) {
       dispatch(setToken({ token: null, email }));
@@ -36,10 +53,13 @@ const ForgotPassword = () => {
     }
   }, [isSuccess]);
 
+  /**
+   * useEffect hook to handle the error state of the password reset request.
+   * It calls the authHandleError function to display the error message.
+   * @author PSK
+   */
   useEffect(() => {
-    if (error) {
-      authHandleError(error?.message as AuthErrorType);
-    }
+    if (error) authHandleError(error?.message as AuthErrorType);
   }, [error]);
 
   return (
@@ -107,11 +127,19 @@ const ForgotPassword = () => {
   );
 };
 
+/**
+ * Animation variants for the header.
+ * @author PSK
+ */
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for the form.
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 0.2 } },

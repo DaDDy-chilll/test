@@ -36,7 +36,6 @@ export interface Notification {
 }
 import { useNavigate, useLocation } from "react-router-dom";
 import RouteName from "@/navigations/routes";
-import { Chat } from "@/types/helperTypes";
 const Header = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -49,25 +48,15 @@ const Header = () => {
     (state: RootState) => state.navigation,
   );
   let { user } = useSelector((state: RootState) => state.auth);
-  const { chats, isLoading: isChatLoading } = useChat({ id: user?.id });
+  const { chats } = useChat({ id: user?.id });
   const [noti, setNoti] = useState<{ [key: string]: number }>({});
   const [hasApiNotification, setHasApiNotification] = useState(false);
   const chatNoti = chats.filter((chat) => notification[chat.id] === 1);
 
-  // websocket connection
-  useEffect(() => {
-    const ws = new WebSocket(wsURL);
-
-    ws.onopen = () => {
-      // console.log("WebSocket is open now.");
-    };
-    ws.onmessage = (event) => {
-      setHasApiNotification(true);
-      queryClient.invalidateQueries({ queryKey: [QueryKey.NOTIFICATION] });
-    };
-  }, []);
-
-  // fetch notification
+  /**
+   * This Query is used to get notification data from server
+   * @author PSK
+   */
   const { data: apiNotification } = useQuery({
     queryKey: [QueryKey.NOTIFICATION],
     queryFn: () => {
@@ -79,6 +68,11 @@ const Header = () => {
     },
   });
 
+  /**
+   * This function is used to handle the chat click and navigate to the chat page or applicant page
+   * @params item ["chat", "api"]
+   * @author PSK
+   */
   const handleChatClick = (item: any) => {
     if (item.type === "chat") {
       navigate(RouteName.CHAT, { state: item });
@@ -87,12 +81,20 @@ const Header = () => {
     }
   };
 
+  /**
+   * This function is used to handle the profile click and navigate to the profile page
+   * @author PSK
+   */
   const handleProfileClick = () => {
     if (location.pathname !== RouteName.PROFILE) {
       navigate(RouteName.PROFILE);
     }
   };
 
+  /**
+   * This function is used to handle the combined notifications of chat and api
+   * @author PSK
+   */
   const combinedNotifications = useMemo(() => {
     const chatNotifications = chatNoti.map((chat) => ({
       id: chat.id,
@@ -125,57 +127,29 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
-  // update favicon
-  // useEffect(() => {
-  //   const updateFavicon = () => {
-  //     const favicon = document.getElementById("favicon") as HTMLLinkElement;
-  //     const notificationCount = combinedNotifications.length;
+  /**
+   * This Effect is used to handle the websocket connection
+   * @author PSK
+   */
+  useEffect(() => {
+    const ws = new WebSocket(wsURL);
+    ws.onopen = () => {
+      // console.log("WebSocket is open now.");
+    };
+    ws.onmessage = () => {
+      setHasApiNotification(true);
+      queryClient.invalidateQueries({ queryKey: [QueryKey.NOTIFICATION] });
+    };
+  }, []);
 
-  //     if (notificationCount > 0) {
-  //       const canvas = document.createElement('canvas');
-  //       canvas.width = 32;
-  //       canvas.height = 32;
-  //       const ctx = canvas.getContext('2d');
-
-  //       if (ctx) {
-  //         // Draw the original favicon
-  //         const img = new Image();
-  //         img.src = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
-  //         img.onload = () => {
-  //           ctx.drawImage(img, 0, 0, 32, 32);
-
-  //           // Draw the notification badge
-  //           ctx.beginPath();
-  //           ctx.arc(24, 8, 8, 0, 2 * Math.PI);
-  //           ctx.fillStyle = 'red';
-  //           ctx.fill();
-
-  //           // Draw the notification count
-  //           ctx.font = 'bold 12px Arial';
-  //           ctx.fillStyle = 'white';
-  //           ctx.textAlign = 'center';
-  //           ctx.textBaseline = 'middle';
-  //           ctx.fillText(notificationCount.toString(), 24, 8);
-
-  //           // Update the favicon
-  //           favicon.href = canvas.toDataURL('image/png');
-  //         };
-  //       }
-  //     } else {
-  //       // Reset to the original favicon
-  //       favicon.href = './src/assets/icons/JapanJobLogo.png'; // Update this path to your actual favicon
-  //     }
-  //   };
-
-  //   updateFavicon();
-  // }, [combinedNotifications]);
-
+  /**
+   * This Effect is used to handle the unread messages from firebase
+   * @author PSK
+   */
   useEffect(() => {
     const messageListeners: any[] = [];
-
     chats.forEach((chat) => {
       const messagesRef = collection(db, "messages");
-
       const q = query(
         messagesRef,
         where("chat_id", "==", chat.id),
@@ -194,15 +168,12 @@ const Header = () => {
           }
           return prev;
         });
-
         dispatch(setNotification(noti));
       });
 
       messageListeners.push(unsubscribe);
     });
-    return () => {
-      messageListeners.forEach((unsubscribe) => unsubscribe());
-    };
+    return () => messageListeners.forEach((unsubscribe) => unsubscribe());
   }, [chats, user?.id]);
 
   return (

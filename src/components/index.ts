@@ -22,13 +22,10 @@ import DefaultCard from "./Matched/DefaultCard";
 import MatchedApplicants from "./Matched/MatchedApplicants";
 import UserCard from "./Matched/UserCard";
 import ProfileForm from "./Profile/ProfileForm";
-import Alert from "./ui/alert";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
-import Calendar from "./ui/calendar";
 import { Checkbox } from "./ui/checkbox";
 import DatePicker from "./ui/DatePicker";
-import DiplayFormData from "./ui/DiplayFormData";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -47,11 +44,11 @@ import {
   DropdownMenuRadioGroup,
 } from "./ui/dropdown-menu";
 import Input from "./ui/Input";
-import JobDetails from "./ui/JobDetails";
+import JobDetails from "./Jobs/JobDetails";
 import Loading from "./ui/Loading";
 import Maintenance from "./ui/Maintenance";
 import NotiItem from "./ui/NotiItem";
-import ProfileDetail from "./ui/ProfileDetail";
+import ProfileDetail from "./Profile/ProfileDetail";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import RealTimeInput from "./ui/RealTimeInput";
 import Select from "./ui/Select";
@@ -73,16 +70,15 @@ import ConfirmationBox from "./ui/confirmationBox";
 import InterviewDatePicker from "./Chat/InterviewDatePicker";
 import Modal from "@/components/Chat/Modal";
 import MeetingAlert from "./ui/MeetingAlert";
+import DiplayFormData from "./ui/DiplayFormData";
 
 export {
-  Alert,
   ApplicantTable,
   AppointmentModel,
   Avatar,
   AvatarFallback,
   AvatarImage,
   Button,
-  Calendar,
   CalendarCell,
   Checkbox,
   ChatHeader,
@@ -92,7 +88,6 @@ export {
   ChatView,
   DatePicker,
   DefaultCard,
-  DiplayFormData,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -108,6 +103,7 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  DiplayFormData,
   EventListItem,
   FilterBar,
   Header,

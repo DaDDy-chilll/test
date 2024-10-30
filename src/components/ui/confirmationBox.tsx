@@ -1,7 +1,6 @@
-import Reactfrom from "react";
 import { jp } from "@/lang/jp";
 import { MoonLoader } from "react-spinners";
-import { Modal } from "@/components";
+
 interface ConfirmationBoxProps {
   message: string;
   onConfirm?: () => void | null;
@@ -10,6 +9,16 @@ interface ConfirmationBoxProps {
   isSuccess?: boolean;
 }
 
+/**
+ * This component is used to render a confirmation box with a message and optional confirm/cancel buttons.
+ * @author PSK
+ * @param message - The message to display in the confirmation box
+ * @param onConfirm - Optional callback function when the confirm button is clicked
+ * @param onCancel - Optional callback function when the cancel button is clicked
+ * @param loading - Optional boolean to show a loading spinner
+ * @param isSuccess - Optional boolean to show a success icon
+ * @returns A styled ConfirmationBox component
+ */
 const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
   message,
   onConfirm = null,

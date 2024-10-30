@@ -13,6 +13,7 @@ import defaultImage from "@/assets/images/default.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 export interface UserFormData {
   name: string;
   salary: string;
@@ -23,9 +24,15 @@ export interface UserFormData {
   additionalInfo: string;
   description: string;
 }
+
+/**
+ * UserFormScreen component renders the user form and handles form submission.
+ * @author PSK
+ */
 const UserFormScreen = () => {
   const [complete, setComplete] = useState(false);
   const navigate = useNavigate();
+
   const countries = [
     { value: "Tokyo", label: "Tokyo" },
     { value: "Osaka", label: "Osaka" },
@@ -46,20 +53,15 @@ const UserFormScreen = () => {
     { value: "21-30", label: "21-30" },
     { value: "31-40", label: "31-40" },
   ];
-  // const [form, setForm] = useState<UserFormData>({
-  //   name: "",
-  //   salary: "",
-  //   experience: "",
-  //   location: "",
-  //   companyType: "",
-  //   jobTitle: "",
-  //   additionalInfo: "",
-  //   description: "",
-  // });
 
+  /**
+   * This function navigates to the dashboard.
+   * @author PSK
+   */
   const handleNavigate = () => {
     navigate("/dashboard");
   };
+
   return (
     <div className="flex h-screen items-center justify-center bg-gray-200 overflow-hidden">
       <div className="flex w-2/3 shadow-md bg-white">
@@ -182,6 +184,10 @@ const UserFormScreen = () => {
   );
 };
 
+/**
+ * Animation variants for the form.
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0, x: -100 },
   visible: { opacity: 1, x: 0, transition: { delay: 0.2, duration: 0.3 } },

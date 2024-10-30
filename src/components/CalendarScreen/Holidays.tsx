@@ -14,6 +14,11 @@ const Holidays = ({ date, year }: PropsType) => {
       moment(day.date).format("YYYY-MM-DD") ===
       moment(date).format("YYYY-MM-DD"),
   )[0];
+
+  /**
+   * This Effect is used to set the holidays list of the year.
+   * @author PSK
+   */
   useEffect(() => {
     const hd = new Holiday("JP");
     const holidaysList = hd.getHolidays(year);

@@ -1,9 +1,16 @@
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
+/**
+ * This component is used to render a checkbox with various styles and states.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param onChange - Callback function when the checkbox state changes
+ * @param props - Additional props for the Checkbox component
+ * @returns A styled Checkbox component
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {

@@ -30,7 +30,6 @@ const CalendarCell = ({
         "h-20 flex flex-col rounded-md items-center justify-center  active:scale-90 transition-all duration-100 cursor-pointer ",
         {
           "border border-red-400 ": isToday(day),
-          // "bg-[#E5D5D9]": !isToday(day),
           "bg-white": !isWeekend,
           "bg-[#E5D5D9] ": isWeekend,
         },

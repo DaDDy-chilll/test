@@ -41,19 +41,12 @@ const defaultForm = {
   support_home_rent: "",
 };
 
-interface ErrorResponse {
-  error: boolean;
-  status: number;
-  message: {
-    email?: {
-      jp: string;
-      mm: string;
-    };
-  };
-}
-
+/**
+ * JobScreen component
+ * @returns JSX.Element
+ * @author PSK
+ */
 const JobScreen = () => {
-  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -67,16 +60,22 @@ const JobScreen = () => {
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const {
-    data,
-    error: fetchError,
-    isLoading: jobListLoading,
-  } = useFetch({
+  /**
+   * Fetch job list data
+   * @returns job list data
+   * @author PSK
+   */
+  const { data, isLoading: jobListLoading } = useFetch({
     endpoint: apiRoutes.JOBS,
     token: token as string,
     key: QueryKey.JOBS,
   });
 
+  /**
+   * Fetch job details data
+   * @returns job details data
+   * @author PSK
+   */
   const {
     data: jobDetail,
     isLoading: jobDetailLoading,
@@ -102,27 +101,55 @@ const JobScreen = () => {
     );
   }, [jobs, search]);
 
+  /**
+   * Handle search input change
+   * @param e - React.ChangeEvent<HTMLInputElement>
+   * @author PSK
+   */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearch(e.target.value);
 
+  /**
+   * Edit handler
+   * @author PSK
+   */
   const editHandler = () => {
     setIsEdit(true);
   };
 
+  /**
+   * Add handler
+   * @author PSK
+   */
   const addHandler = () => {
     setForm(defaultForm);
     setIsAdd(true);
   };
+
+  /**
+   * Back handler
+   * @author PSK
+   */
   const backHandler = () => {
     setIsAdd(false);
     setIsEdit(false);
   };
 
+  /**
+   * Handle job details
+   * @param id - number
+   * @author PSK
+   */
   const handleJobDetails = (id: number) => {
     setShowDetails(true);
     setSelectedJobId(id);
   };
 
+  /**
+   * Handle back action
+   * @param value - boolean
+   * @author PSK
+   */
   const handleBack = (value: boolean) => {
     if (jobID) {
       navigate(RouteName.CHAT, { state: jobID });
@@ -134,16 +161,28 @@ const JobScreen = () => {
     }
   };
 
+  /**
+   * Set page title on component mount
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.joblists));
   }, [dispatch]);
 
+  /**
+   * Fetch job details if jobID is available
+   * @author PSK
+   */
   useEffect(() => {
     if (jobID) {
       handleJobDetails(jobID.job_id);
     }
   }, [jobID]);
 
+  /**
+   * Set form data when jobDetail changes
+   * @author PSK
+   */
   useEffect(() => {
     if (jobDetail?.data) {
       setForm({
@@ -162,13 +201,11 @@ const JobScreen = () => {
           value: jobDetail?.data.prefecture_id,
         },
         holiday_in_year: jobDetail?.data?.holiday_in_year || 150,
-
         annual_salary: {
           label: jobDetail?.data.annual_salary,
           value: jobDetail?.data.annual_salary,
         },
         working_time: jobDetail?.data.working_time,
-
         start_time: jobDetail?.data.start_time,
         end_time: jobDetail?.data.end_time,
         job_des: jobDetail?.data.job_des,
@@ -178,6 +215,10 @@ const JobScreen = () => {
     }
   }, [jobDetail]);
 
+  /**
+   * Handle job detail error
+   * @author PSK
+   */
   useEffect(() => {
     if (jobDetailError) {
       setShowDetails(false);
@@ -319,12 +360,6 @@ const JobScreen = () => {
                                 />
                                 {jp.view}
                               </button>
-                              {/* <button
-                               
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                              >
-                                {jp.viewDetails}
-                              </button> */}
                             </td>
                           </tr>
                         );
@@ -403,12 +438,20 @@ const JobScreen = () => {
   );
 };
 
+/**
+ * Job list animation variants
+ * @author PSK
+ */
 const jobVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
+/**
+ * Form animation variants
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0, x: -100 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },

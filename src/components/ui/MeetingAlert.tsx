@@ -1,5 +1,4 @@
 import { jp } from "@/lang/jp";
-import React from "react";
 import moment from "moment";
 
 type MeetingAlertProps = {

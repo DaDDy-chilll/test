@@ -6,6 +6,12 @@ type ProtectedPageProps = {
   children: React.ReactNode;
 };
 
+/**
+ * This function is used to protect routes based on user authentication and verification status
+ * @param {ProtectedPageProps} children - The child components to render if the user is authenticated and verified
+ * @returns {React.ReactNode} - The child components or a navigation component to redirect the user
+ * @author PSK
+ */
 const ServicesProtectedPage = ({ children }: ProtectedPageProps) => {
   const { user, token, verified } = useSelector(
     (state: RootState) => state.auth,

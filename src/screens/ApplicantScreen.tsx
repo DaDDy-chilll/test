@@ -30,8 +30,8 @@ const initialFilter: FilterType = {
   gender: "",
   job_type: "",
 };
+
 const ApplicantScreen = () => {
-  // if(import.meta.env.VITE_MAINTENANCE_MODE) return <Maintenance />
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,11 +41,15 @@ const ApplicantScreen = () => {
   const isInitialRender = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isDetail, setIsDetail] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  // const [applicantDetail,setApplicantDetail] = useState<UserProfile>()
   const [selectedApplicantId, setSelectedApplicantId] = useState<
     number | string | null
   >(null);
+
+  /**
+   * This function builds the query string based on the current filter and page
+   * @returns {string} The query string
+   * @author PSK
+   */
   const buildQueryString = () => {
     const params = new URLSearchParams();
     if (filter.live_in_japan !== "")
@@ -55,6 +59,12 @@ const ApplicantScreen = () => {
     if (currentPage > 0) params.append("page", currentPage.toString());
     return params.toString();
   };
+
+  /**
+   * Fetches the list of applicants based on the current filter and page
+   * @returns {object} The list of applicants
+   * @author PSK
+   */
   const { data, isLoading, refetch } = useQuery({
     queryKey: [QueryKey.APPLICANTS, currentPage, filter],
     queryFn: () => {
@@ -72,24 +82,22 @@ const ApplicantScreen = () => {
       !!filter.job_type,
   });
 
+  /**
+   * Fetches the list of job types
+   * @returns {object} The list of job types
+   * @author PSK
+   */
   const { data: jobTypes, isLoading: isJobTypesLoading } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
 
-  // const {
-  //   data: languages,
-  //   isLoading: isLanguagesLoading,
-  //   isError: isLanguagesError,
-  //   isSuccess: isLanguagesSuccess,
-  //   error: languagesError,
-  // } = useFetch({
-  //   endpoint: apiRoutes.LANGUAGE,
-  //   key: QueryKey.LANGUAGES,
-  //   token: token as string,
-  // });
-
+  /**
+   * Fetches the details of a selected applicant
+   * @returns {object} The details of the selected applicant
+   * @author PSK
+   */
   const {
     data: applicantDetail,
     isLoading: isDetailLoading,
@@ -106,16 +114,25 @@ const ApplicantScreen = () => {
     },
     enabled: !!selectedApplicantId && isDetail,
   });
+
   const applicants = data?.data.users || [];
 
+  /**
+   * Handles the selection of an applicant to view details
+   * @param {string} id - The ID of the selected applicant
+   * @author PSK
+   */
   const handleDetail = (id: string) => {
     setSelectedApplicantId(id);
     setIsDetail(true);
   };
 
+  /**
+   * useEffect to refetch data when token, currentPage, or filter changes
+   * @author PSK
+   */
   useEffect(() => {
     if (isInitialRender.current) {
-      // First run
       isInitialRender.current = false;
     }
 
@@ -130,24 +147,32 @@ const ApplicantScreen = () => {
     }
   }, [currentPage, filter, refetch, token]);
 
+  /**
+   * useEffect to set the title of the page
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.applicant));
   }, [dispatch]);
 
+  /**
+   * useEffect to handle applicant detail when applicantID changes
+   * @author PSK
+   */
   useEffect(() => {
     if (applicantID) {
       handleDetail(applicantID.jobfinder_id);
     }
   }, [applicantID]);
 
+  /**
+   * useEffect to handle errors in fetching applicant details
+   * @author PSK
+   */
   useEffect(() => {
     if (applicantDetailError) {
       setIsDetail(false);
       setSelectedApplicantId(null);
-      const errorResponse = applicantDetailError as any;
-      if (errorResponse.status === 404 && errorResponse.message?.email?.jp) {
-        setError(errorResponse.message.email.jp);
-      }
     }
   }, [applicantDetailError]);
 
@@ -244,26 +269,6 @@ const ApplicantScreen = () => {
 
                 {jp.back}
               </button>
-
-              {/* <button
-                onClick={() => setIsDetail(false)}
-                className="absolute top-3 left-3  bg-white w-10 h-10 rounded-full flex justify-center items-center text-secondaryColor"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 19.5 8.25 12l7.5-7.5"
-                  />
-                </svg>
-              </button> */}
             </motion.div>
           )}
         </AnimatePresence>

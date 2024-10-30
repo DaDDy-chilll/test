@@ -18,6 +18,13 @@ type Props = {
   setComplete?: (value: boolean) => void;
   navigator?: () => void;
 };
+
+/**
+ * This component is used to display form data
+ * @param {Props} props - The properties passed to the component
+ * @returns {JSX.Element} The rendered component
+ * @autor PSK
+ */
 const DiplayFormData = ({ setComplete, navigator }: Props) => {
   return (
     <motion.div
@@ -124,6 +131,10 @@ const DiplayFormData = ({ setComplete, navigator }: Props) => {
   );
 };
 
+/**
+ * Animation variants for the form
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0, x: 100 },
   visible: { opacity: 1, x: 0, transition: { delay: 0.2, duration: 0.3 } },

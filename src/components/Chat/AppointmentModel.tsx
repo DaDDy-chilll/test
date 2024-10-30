@@ -14,7 +14,6 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import useHandleError from "@/hooks/useHandleError";
 import { AuthErrorType } from "@/types/helperTypes";
-import { MoonLoader } from "react-spinners";
 import { QueryKey } from "@/utils/queryKey";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -96,6 +95,11 @@ const AppointmentModel = ({
     value: string;
   }>(meetingTypeOptions[0]);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  /**
+   * This Mutation is used to post the meeting data.
+   * @author PSK
+   */
   const {
     mutate: postMeeting,
     isPending,
@@ -117,6 +121,10 @@ const AppointmentModel = ({
     },
   });
 
+  /**
+   * This function is used to confirm the meeting data.
+   * @author PSK
+   */
   const handleConfirmRewrite = () => {
     if (meetingType.value === "admin") {
       const meetingData: MeetingData = {
@@ -156,10 +164,12 @@ const AppointmentModel = ({
       }
     }
   };
-  const handleCancel = () => {
-    setShowConfirmModal(false);
-  };
+  const handleCancel = () => setShowConfirmModal(false);
 
+  /**
+   * This Effect is used to handle the error and success of the mutation.
+   * @author PSK
+   */
   useEffect(() => {
     if (error) {
       authHandleError(error?.message as AuthErrorType);
@@ -168,9 +178,7 @@ const AppointmentModel = ({
     }
 
     if (isSuccess) {
-      setTimeout(() => {
-        setShowConfirmModal(false);
-      }, 500);
+      setTimeout(() => setShowConfirmModal(false), 500);
       setIsAppointmentModelOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

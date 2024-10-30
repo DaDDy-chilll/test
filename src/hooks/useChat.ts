@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { Chat } from "@/types/helperTypes";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 type useChatProps = {
   id: number | string | undefined;
@@ -19,20 +19,34 @@ type useChatProps = {
 
 let isEnd: boolean | null = null;
 let hasMore: boolean | null = null;
-let END_LIMIT = 0;
 let LIMIT = 10;
+
+/**
+ * Custom hook for fetching chat messages.
+ * @param {useChatProps} param0 - The chat parameters including id and limit.
+ * @returns {object} - Contains chats, loading state, error, refetch function, refetching state, isEnd, and hasMore.
+ * @author PSK
+ */
 const useChat = ({ id, limit }: useChatProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [refetching, setRefetching] = useState<boolean>(false);
 
+  /**
+   * Effect hook to fetch chats when id changes.
+   * @author PSK
+   */
   useEffect(() => {
     if (!id) return;
     setIsLoading(true);
     getChats();
   }, [id]);
 
+  /**
+   * Function to fetch chat messages from Firestore.
+   * @author PSK
+   */
   const getChats = () => {
     const chatsRef = collection(db, "chats");
     const q = query(
@@ -67,6 +81,10 @@ const useChat = ({ id, limit }: useChatProps) => {
     return () => unsubscribe();
   };
 
+  /**
+   * Function to refetch chat messages with increased limit.
+   * @author PSK
+   */
   const refetch = () => {
     if (!id || refetching || isEnd) return;
     setRefetching(true);

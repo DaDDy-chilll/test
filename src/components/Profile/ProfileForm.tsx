@@ -39,8 +39,6 @@ const ProfileForm = ({
   setIsEdit,
   jobTypes,
   employeeNumber,
-  city,
-  countries,
   formData,
   setFormData,
 }: profileFormProps) => {
@@ -62,7 +60,6 @@ const ProfileForm = ({
     staffError,
     prefectureError,
     companyDesError,
-    photoError,
     companyAddressError,
     undertakeError,
     chairmanError,
@@ -75,6 +72,11 @@ const ProfileForm = ({
     emailError,
     resetProfileFormError,
   } = useHandleError();
+
+  /**
+   * This post hook is used to post the profile data
+   * @author PSK
+   */
   const {
     mutate,
     isSuccess,
@@ -119,6 +121,10 @@ const ProfileForm = ({
     },
   });
 
+  /**
+   * This function is used to handle the image upload
+   * @author PSK
+   */
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -127,10 +133,12 @@ const ProfileForm = ({
     }
   };
 
-  const handleCancel = () => {
-    setShowConfirmation(false);
-  };
+  const handleCancel = () => setShowConfirmation(false);
 
+  /**
+   * This function is used to format the phone number
+   * @author PSK
+   */
   const formatPhoneNumber = (value: string) => {
     if (!value) return value;
     const cleanedValue = value.replace(/\D/g, "");
@@ -145,11 +153,13 @@ const ProfileForm = ({
     }
   };
 
+  /**
+   * This function is used to handle the form submission
+   * @author PSK
+   */
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetProfileFormError();
-    // const form = e.target as HTMLFormElement;
-    // const formData = new FormData(form);
     const jobData = {
       photo: (formData.photo as string) || undefined,
       name: (formData.name as string) || undefined,
@@ -173,11 +183,6 @@ const ProfileForm = ({
       area: (formData.area as string) || undefined,
     };
 
-    // Remove undefined properties
-    // const cleanedJobData = Object.fromEntries(
-    //   Object.entries(jobData).filter(([_, value]) => value !== undefined),
-    // );
-
     mutate({
       endpoint: apiRoutes.PROFILE,
       body: jobData,
@@ -185,6 +190,10 @@ const ProfileForm = ({
     });
   };
 
+  /**
+   * This effect is used to handle the form submission
+   * @author PSK
+   */
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -202,6 +211,10 @@ const ProfileForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, profileData, dispatch, error]);
 
+  /**
+   * This effect is used to set the avatar image
+   * @author PSK
+   */
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(

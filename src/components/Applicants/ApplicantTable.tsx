@@ -97,11 +97,16 @@ const ApplicantTable = ({
   jobTypes,
   loading,
 }: ApplicantTableProps) => {
+  /**
+   * This function is used to get the job type name with Japanese from jobTypes array.
+   * @author PSK
+   * @param {number} jobTypeId Job Type ID
+   * @returns {string} Job Type Name with Japanese
+   */
   const getJobTypeJp = (jobTypeId: number) => {
     const jobType = jobTypes?.data.find((job: any) => job.id === jobTypeId);
     return jobType ? jobType.job_type_jp : "Unknown";
   };
-
 
   return (
     <div className="relative overflow-y-auto h-[calc(100vh-190px)]">

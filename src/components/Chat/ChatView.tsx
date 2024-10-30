@@ -10,50 +10,40 @@ type ChatViewProps = {
   limit: number;
 };
 
-let isEnd = false;
 const ChatView = ({
   messages,
   user,
   messagesEndRef,
   selectedChat,
-  limit,
 }: ChatViewProps) => {
   const [showGoToBottom, setShowGoToBottom] = useState(false);
-  const [showGoToTop, setShowGoToTop] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * This Effect is used to handle the scroll event of the messages.
+   * @author PSK
+   */
   useEffect(() => {
     const handleScroll = () => {
       if (messagesRef.current) {
         const { scrollTop, clientHeight, scrollHeight } = messagesRef.current;
         const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
-        const isNearTop = scrollTop <= 100;
-
-        // if(isNearTop && !isEnd ){
-        //   refetch()
-        //   if(messages.length !== limit){
-        //     isEnd = true;
-        //   }else{
-        //     isEnd = false;
-        //   }
-        // }
         setShowGoToBottom(!isNearBottom);
-        setShowGoToTop(isNearTop);
       }
     };
 
     const messagesDiv = messagesRef.current;
-    if (messagesDiv) {
-      messagesDiv.addEventListener("scroll", handleScroll);
-    }
+    if (messagesDiv) messagesDiv.addEventListener("scroll", handleScroll);
 
     return () => {
-      if (messagesDiv) {
-        messagesDiv.removeEventListener("scroll", handleScroll);
-      }
+      if (messagesDiv) messagesDiv.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
+  /**
+   * This function is used to scroll to the bottom of the messages.
+   * @author PSK
+   */
   const scrollToBottom = () => {
     messagesRef.current?.scrollTo({
       top: messagesRef.current.scrollHeight,
@@ -61,12 +51,6 @@ const ChatView = ({
     });
   };
 
-  const scrollToTop = () => {
-    messagesRef.current?.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
   return (
     <div className="overflow-y-auto px-3" ref={messagesRef}>
       {messages.map((message) => (

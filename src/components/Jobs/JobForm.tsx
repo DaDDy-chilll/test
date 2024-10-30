@@ -16,7 +16,6 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import { ConfirmationBox } from "@/components";
 import useHandleError from "@/hooks/useHandleError";
 import { JobFormErrorType } from "@/types/helperTypes";
-// import Modal from "@/components/Chat/Modal";
 
 type JobFormProps = {
   onBack?: () => void;
@@ -38,20 +37,6 @@ const annualSalary = [
   { value: "800", label: "800万円~" },
 ];
 
-// const workingTime = [
-//   { value: "7", label: "7時間" },
-//   { value: "8", label: "8時間" },
-//   { value: "9", label: "9時間" },
-//   { value: "10", label: "10時間" },
-// ];
-//
-// const annualHoliday = [
-//   { value: "120", label: "120日" },
-//   { value: "130", label: "130日" },
-//   { value: "140", label: "140日" },
-//   { value: "150", label: "150日" },
-// ];
-
 const benefits = [
   { value: "support_home", label: jp.supportHouse },
   { value: "support_home_rent", label: jp.supportHouseRent },
@@ -71,7 +56,6 @@ const JobForm = ({
     jobNameError,
     jobTypeError,
     salaryError,
-    workTimeError,
     holidayError,
     startTimeError,
     endTimeError,
@@ -81,47 +65,50 @@ const JobForm = ({
     resetJobFormError,
   } = useHandleError();
   const [showConfirmation, setShowConfirmation] = useState(false);
-  // const [showErrorModal, setShowErrorModal] = useState(false);
   const [response, setResponse] = useState<any>(null);
   const { mutate, error, isSuccess, isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
   });
 
-  // const handleCloseErrorModal = () => {
-  //   setShowErrorModal(false);
-  // };
-
+  /**
+   * This fetch hook is used to fetch the job types.
+   * @author PSK
+   */
   const { data: jobType } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
 
+  /**
+   * This fetch hook is used to fetch the city.
+   * @author PSK
+   */
   const { data: city } = useFetch({
     endpoint: apiRoutes.CITY,
     key: QueryKey.CITY,
     token: token as string,
   });
 
+  /**
+   * This converts the job types to the format required by the select component.
+   * @author PSK
+   */
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
       label: type.job_type_jp,
     })) || [];
 
-  // const countries =
-  //   city?.data.map((type: any) => ({
-  //     value: type.id.toString(),
-  //     label: type.area,
-  //   })) || [];
+  const handleCancel = () => setShowConfirmation(false);
 
-  useEffect(() => {
-    if (city && "data" in city) {
-      setResponse(city.data);
-    }
-  }, [city]);
-
+  /**
+   * This function is convert to area lists and relative city
+   * @author PSK
+   * @params city data
+   * @returns area list and relative city list
+   */
   const transformAreaData = useCallback(
     (data: any | null) => {
       if (data) {
@@ -146,6 +133,13 @@ const JobForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [response],
   );
+
+  /**
+   * This function is used to get the area list and relative city list
+   * @author PSK
+   * @params city data
+   * @returns area list and relative city list
+   */
   const { areaList, relativeArea } = useMemo(() => {
     if (city && "data" in city) {
       return (
@@ -157,6 +151,10 @@ const JobForm = ({
     } else return { areaList: [], relativeArea: {} };
   }, [city, transformAreaData]);
 
+  /**
+   * This function is used to handle the form submission
+   * @author PSK
+   */
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetJobFormError();
@@ -199,6 +197,12 @@ const JobForm = ({
     }
   };
 
+  /**
+   * This function is used to calculate the working time
+   * @author PSK
+   * @params start time and end time
+   * @returns working time like 8, 9, 10,....
+   */
   const calculateWorkingTime = (startTime: string, endTime: string) => {
     const start = new Date(`1970-01-01T${startTime}:00`);
     const end = new Date(`1970-01-01T${endTime}:00`);
@@ -206,25 +210,21 @@ const JobForm = ({
     return parseInt(((diff - 3600000) / (1000 * 60 * 60)) as unknown as string);
   };
 
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setShowConfirmation(true);
-  // };
+  /**
+   * This Effect is set city data to state
+   * @author PSK
+   */
+  useEffect(() => {
+    if (city && "data" in city) setResponse(city.data);
+  }, [city]);
 
-  // const handleConfirm = () => {
-  //   // Implement the actual form submission logic here
-  //   // ... (use the existing form submission code)
-  //   setShowConfirmation(false);
-  // };
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
-  };
-
+  /**
+   * This Effect is set error and success data to state
+   * @author PSK
+   */
   useEffect(() => {
     if (error) {
       setShowConfirmation(false);
-      // setShowErrorModal(true);
       jobFormHandleError(error?.message as JobFormErrorType);
     }
     if (isSuccess) {
@@ -246,18 +246,6 @@ const JobForm = ({
       animate="visible"
       exit="exit"
     >
-      {/* <Modal isOpen={showErrorModal} onClose={handleCloseErrorModal}>
-        <h2 className="text-xl font-bold mb-4">エラー</h2>
-        <div className="mb-4">{renderErrorMessage()}</div>
-        <div className="flex justify-end">
-          <button
-            onClick={handleCloseErrorModal}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            閉じる
-          </button>
-        </div>
-      </Modal> */}
       <div className="text-start w-full  border-b-2 border-gray-400 pb-4 mb-14">
         <p>{jp.postJobPosition}</p>
       </div>
@@ -317,7 +305,6 @@ const JobForm = ({
 
           <Select
             name="prefecture_id"
-            // disabled={(form.area.value || form.prefecture_id?.value) ? false : true}
             label={jp.prefecture}
             id={jp.prefecture}
             options={form.area.value && relativeArea[form.area.value]}
@@ -430,14 +417,6 @@ const JobForm = ({
                     {benefit.label}
                   </label>
                 </div>
-                // <div className="flex flex-row gap-x-3">
-                //   <input
-                //     type="checkbox"
-                //     id={benefit.value}
-                //     name={benefit.value}
-                //   />
-                //   <label htmlFor={benefit.value}>{benefit.label}</label>
-                // </div>
               ))}
             </div>
           </div>

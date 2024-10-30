@@ -13,7 +13,6 @@ import {
   doc,
   setDoc,
   onSnapshot,
-  limit,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import {
@@ -23,7 +22,6 @@ import {
   ChatView,
   ChatInput,
   ChatSkeleton,
-  MeetingAlert,
 } from "@/components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -36,6 +34,7 @@ import { setTitle } from "@/store";
 import { Helmet } from "react-helmet-async";
 
 let MESSAGES_LIMIT = 30;
+
 const ChatScreen = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -46,7 +45,6 @@ const ChatScreen = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isAppointmentModelOpen, setIsAppointmentModelOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  // const messageLimit = useRef<number>(MESSAGES_LIMIT)
 
   const {
     chats,
@@ -55,18 +53,33 @@ const ChatScreen = () => {
     refetching: isRefetching,
     isEnd,
   } = useChat({ id: user?.id });
+
+  /**
+   * Sets the title of the chat screen using the dispatch function.
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.chat));
   }, [dispatch]);
 
-  //Handle Chat Select
+  /**
+   * Handles the selection of a chat.
+   * @author PSK
+   * @param {Chat} chat - The selected chat.
+   * @returns {Function} Unsubscribe function to stop listening to messages.
+   */
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     const unsubscribe = fetchMessages(chat.id);
     return () => unsubscribe();
   };
 
-  //fetch Messages
+  /**
+   * Fetches messages for a given chat ID.
+   * @author PSK
+   * @param {string} chatId - The ID of the chat.
+   * @returns {Function} Unsubscribe function to stop listening to messages.
+   */
   const fetchMessages = (chatId: string) => {
     const messagesRef = collection(db, "messages");
     const q = query(
@@ -104,8 +117,10 @@ const ChatScreen = () => {
     return unsubscribe;
   };
 
-  //send message
-  // Modify the handleSendMessage function:
+  /**
+   * Sends a new message.
+   * @author PSK
+   */
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
 
@@ -128,17 +143,29 @@ const ChatScreen = () => {
         { merge: true },
       );
       setNewMessage("");
-      // Remove this line as it's no longer needed:
       fetchMessages(selectedChat.id);
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
+  /**
+   * Scrolls the chat view to the bottom.
+   * @author PSK
+   */
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
 
+  /**
+   * Scrolls to the bottom whenever messages change.
+   * @author PSK
+   */
   useEffect(() => scrollToBottom(), [messages]);
+
+  /**
+   * Selects the chat from navigation state if available.
+   * @author PSK
+   */
   useEffect(() => {
     if (navChat) handleChatSelect(navChat);
   }, [navChat]);
@@ -148,9 +175,6 @@ const ChatScreen = () => {
       <Helmet>
         <title>{jp.chat} - Japan Job</title>
       </Helmet>
-      {/* {isLoading && (
-        <Loading isLoading={isLoading} className="h-[calc(100vh-68px)]" />
-      )} */}
       <motion.main
         variants={chatVariants}
         initial="initial"

@@ -59,12 +59,6 @@ const Profile = () => {
     token: token as string,
   });
 
-  // const countries =
-  //   city?.data.map((type: any) => ({
-  //     value: type.id.toString(),
-  //     label: type.area,
-  //   })) || [];
-
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
@@ -126,9 +120,7 @@ const Profile = () => {
         budget: data.data.budget || "",
         starting: data.data.starting || "",
         staff: { label: data.data.staff || "", value: data.data.staff || "" },
-        //todo: need to change
         area: data.data.area || "",
-        //todo: need to change
         prefecture: data.data.prefecture || "",
 
         photo: data.data.photo || "",

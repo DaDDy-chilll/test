@@ -28,10 +28,6 @@ type JobListItemProps = {
 
 const JobListItem = ({ item, setShowDetails, city }: JobListItemProps) => {
   const date = moment(item.created_at).fromNow();
-  // const handleShowDetails = () => {
-  //   setShowDetails(true);
-  //   dispatch(setTitle(jp.jobDetails));
-  // };
   return (
     <div
       className="flex justify-start items-center gap-4 w-full cursor-pointer"

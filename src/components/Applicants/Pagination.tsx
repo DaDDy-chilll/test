@@ -1,19 +1,19 @@
 type PaginationProps = {
   totalPages: any;
-  // itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
 };
 
 const Pagination = ({
   totalPages,
-  // itemsPerPage,
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
-  // Calculate total pages
-
-  // Change page
+  /**
+   * This function is used to go to next or previous page or to the specific page.
+   * @author PSK
+   * @param {number} page Page number
+   */
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);

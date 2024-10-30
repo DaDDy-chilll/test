@@ -11,6 +11,11 @@ type FilterBarProps = {
   setCurrentPage: (currentPage: number) => void;
 };
 
+const defaultLocation = [
+  { label: jp.liveInMyanmar, value: 2 },
+  { label: jp.liveInJapan, value: 1 },
+];
+
 const FilterBar = ({
   className,
   filter,
@@ -21,6 +26,11 @@ const FilterBar = ({
   const maleType = useRef<boolean>(true);
   const femaleType = useRef<boolean>(true);
 
+  /**
+   * This function is used to get the gender filter value.
+   * @author PSK
+   * @returns {string} empty string, 0 or 1
+   */
   const genderChange = () => {
     if (
       (maleType.current && femaleType.current) ||
@@ -34,11 +44,6 @@ const FilterBar = ({
     }
   };
 
-  const defaultLocation = [
-    { label: jp.liveInMyanmar, value: 2 },
-    { label: jp.liveInJapan, value: 1 },
-  ];
-
   return (
     <div
       className={`bg-white justify-end text-secondaryColor px-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
@@ -50,11 +55,9 @@ const FilterBar = ({
           defaultChecked={true}
           onChange={(checked) => {
             setCurrentPage(1);
-            if (checked) {
-              maleType.current = true;
-            } else {
-              maleType.current = false;
-            }
+            if (checked) maleType.current = true;
+            else maleType.current = false;
+
             setFilter({ ...filter, gender: genderChange() });
           }}
         />
@@ -69,11 +72,8 @@ const FilterBar = ({
           defaultChecked={true}
           onChange={(checked) => {
             setCurrentPage(1);
-            if (checked) {
-              femaleType.current = true;
-            } else {
-              femaleType.current = false;
-            }
+            if (checked) femaleType.current = true;
+            else femaleType.current = false;
             setFilter({ ...filter, gender: genderChange() });
           }}
         />

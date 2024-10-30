@@ -13,6 +13,13 @@ import useHandleError from "@/hooks/useHandleError";
 import { jp } from "@/lang/jp";
 import { setForgotPassword } from "@/store";
 import { Helmet } from "react-helmet-async";
+
+/**
+ * LoginScreen component handles the login functionality and UI.
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ * @autor PSK
+ */
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +28,11 @@ const LoginScreen = () => {
     useHandleError();
   const { user, token } = useSelector((state: RootState) => state.auth);
 
+  /**
+   * Handles the form submission for login.
+   * @param {FormEvent<HTMLFormElement>} e - The form event.
+   * @autor PSK
+   */
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetAuthError();
@@ -32,6 +44,10 @@ const LoginScreen = () => {
     onLogin(loginProps);
   };
 
+  /**
+   * useEffect hook to navigate user based on authentication status.
+   * @autor PSK
+   */
   useEffect(() => {
     if (user && token) {
       if (!localStorage.getItem("isCompletedProfile")) {
@@ -42,10 +58,18 @@ const LoginScreen = () => {
     }
   }, [user, token, navigate]);
 
+  /**
+   * useEffect hook to handle authentication errors.
+   * @autor PSK
+   */
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
   }, [error, authHandleError]);
 
+  /**
+   * Handles the forgot password functionality.
+   * @autor PSK
+   */
   const handleForgotPassword = () => {
     dispatch(setForgotPassword(true));
     navigate(RouteName.FORGOT_PASSWORD);
@@ -140,11 +164,19 @@ const LoginScreen = () => {
   );
 };
 
+/**
+ * Animation variants for the header.
+ * @autor PSK
+ */
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for the form.
+ * @autor PSK
+ */
 const formVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 0.2 } },

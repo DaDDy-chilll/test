@@ -34,6 +34,11 @@ const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
 const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
 const ProfileFormScreen = lazy(() => import("@/screens/ProfileFormScreen"));
 
+/**
+ * This function is used to render the Router component with Suspense and BrowserRouter
+ * @author PSK
+ * @returns JSX.Element
+ */
 const Router = () => {
   return (
     <Suspense fallback={<Loading isLoading={true} />}>
@@ -44,6 +49,11 @@ const Router = () => {
   );
 };
 
+/**
+ * This function is used to render the animated routes with AnimatePresence
+ * @author PSK
+ * @returns JSX.Element
+ */
 const AnimatedRoutes = () => {
   const location = useLocation();
   return (

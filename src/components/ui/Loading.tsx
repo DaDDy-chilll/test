@@ -8,7 +8,18 @@ type LoadingProps = {
   isLoading?: boolean;
 };
 
+/**
+ * This component is used to display a loading spinner overlay
+ * @param {string} className - Additional class names for styling
+ * @param {boolean} isLoading - Flag to determine if loading is in progress
+ * @returns A loading spinner overlay
+ * @author PSK
+ */
 const Loading = ({ className, isLoading }: LoadingProps) => {
+  /**
+   * This useEffect hook is used to disable scrolling when loading is in progress
+   * @author PSK
+   */
   useEffect(() => {
     if (isLoading) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";

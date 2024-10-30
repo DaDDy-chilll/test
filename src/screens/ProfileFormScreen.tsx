@@ -39,7 +39,6 @@ const ProfileFormScreen = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
   const [jobTypes, setJobTypes] = useState([]);
-  const [countries, setCountries] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -86,6 +85,11 @@ const ProfileFormScreen = () => {
     resetProfileFormError,
   } = useHandleError();
 
+  /**
+   * Fetches job types data from the server
+   * @returns {void}
+   * @author PSK
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -100,18 +104,6 @@ const ProfileFormScreen = () => {
             label: type.job_type_jp,
           })),
         );
-
-        const cityResponse = await fetchServer({
-          endpoint: apiRoutes.CITY,
-          method: "GET",
-          token,
-        });
-        setCountries(
-          cityResponse.data.map((item: any) => ({
-            label: item.area,
-            value: item.id.toString(),
-          })),
-        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -120,6 +112,12 @@ const ProfileFormScreen = () => {
     fetchData();
   }, [token]);
 
+  /**
+   * Mutation for uploading an image
+   * @param {File} file - The file to be uploaded
+   * @returns {void}
+   * @author PSK
+   */
   const { mutate: uploadImage } = useMutation({
     mutationFn: (file: File) => {
       setImageLoading(true);
@@ -151,6 +149,12 @@ const ProfileFormScreen = () => {
     },
   });
 
+  /**
+   * Handles image upload event
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The change event
+   * @returns {void}
+   * @author PSK
+   */
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -159,6 +163,12 @@ const ProfileFormScreen = () => {
     }
   };
 
+  /**
+   * Formats phone number
+   * @param {string} value - The phone number to be formatted
+   * @returns {string} - The formatted phone number
+   * @author PSK
+   */
   const formatPhoneNumber = (value: string) => {
     const cleanedValue = value.replace(/\D/g, "");
     if (cleanedValue.length <= 3) {
@@ -172,6 +182,12 @@ const ProfileFormScreen = () => {
     }
   };
 
+  /**
+   * Handles form submission
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event
+   * @returns {void}
+   * @author PSK
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetProfileFormError();
@@ -218,22 +234,17 @@ const ProfileFormScreen = () => {
     } catch (error: ErrorType | any) {
       setError(error);
       setLoading(false);
-      // console.error("Error updating profile:", error);
     }
   };
-  // ... existing code ...
 
+  /**
+   * Handles error if any
+   * @returns {void}
+   * @author PSK
+   */
   useEffect(() => {
     if (error) ProfileFormHandleError(error?.message as ProfileFormErrorType);
   });
-
-  const handleSelectChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    field: string,
-  ) => {
-    const selectedOption = e.target.value;
-    setFormData({ ...formData, [field]: selectedOption });
-  };
 
   return (
     <>
@@ -351,7 +362,6 @@ const ProfileFormScreen = () => {
                 className="mt-1 block w-full bg-gray-100"
                 value={formatPhoneNumber(formData.phone_number) || ""}
                 onChange={(e) => {
-                  // const numericValue = e.target.value.replace(/[^\d+]/g, '');
                   setFormData((prevData: any) => ({
                     ...prevData,
                     phone_number: formatPhoneNumber(e.target.value),

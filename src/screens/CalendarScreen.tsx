@@ -13,7 +13,6 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { CalendarCell, EventListItem, Loading } from "@/components";
 import { jp } from "@/lang/jp";
-import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { Event } from "@/types/helperTypes";
 import { useSelector } from "react-redux";
@@ -28,8 +27,6 @@ import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const startForMonth = moment().startOf("month").format("YYYY-MM-DD");
-const endForMonth = moment().endOf("month").format("YYYY-MM-DD");
 const today = moment().format("YYYY-MM-DD");
 
 const CalendarScreen = () => {
@@ -45,6 +42,31 @@ const CalendarScreen = () => {
     date: "",
     events: null,
   });
+
+  /**
+   * This function is used to go to the next month
+   * @author PSK
+   */
+  const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+  /**
+   * This function is used to go to the previous month
+   * @author PSK
+   */
+  const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
+
+  const startingDayIndex = getDay(firstDayOfMonth);
+  const endingDayIndex = (7 - getDay(lastDayOfMonth) - 1) % 7;
+  const daysInMonth = eachDayOfInterval({
+    start: firstDayOfMonth,
+    end: lastDayOfMonth,
+  });
+
+  /**
+   * This query is used to fetch events of the month
+   * @author PSK
+   * @returns {object} The list of events of the month
+   */
   const {
     data: eventsOfMonth,
     isLoading: isEventsLoading,
@@ -53,42 +75,43 @@ const CalendarScreen = () => {
     queryKey: [QueryKey.INTERVIEW, currentDate],
     queryFn: () => {
       return fetchServer({
-        endpoint: `${apiRoutes.INTERVIEW}?start_date=${moment(currentDate).startOf("month").format("YYYY-MM-DD")}&end_date=${moment(currentDate).endOf("month").format("YYYY-MM-DD")}`,
+        endpoint: `${apiRoutes.INTERVIEW}?start_date=${moment(currentDate)
+          .startOf("month")
+          .format("YYYY-MM-DD")}&end_date=${moment(currentDate)
+          .endOf("month")
+          .format("YYYY-MM-DD")}`,
         token: token as string,
         method: "GET",
       });
     },
     enabled: !!token && !!currentDate,
   });
-  // const { data: eventsOfMonth, isLoading: isEventsLoading } = useFetch({
 
-  //   enabled: !!token && !!currentDate,
-
-  // });
-
-  useEffect(() => {
-    refetch();
-  }, [currentDate]);
-  const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
-  const goToPreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
-  const daysInMonth = eachDayOfInterval({
-    start: firstDayOfMonth,
-    end: lastDayOfMonth,
-  });
-  const startingDayIndex = getDay(firstDayOfMonth); // Adjusting the starting index
-  // const endingDayIndex =
-  //   getDay(lastDayOfMonth) === 0 ? 0 : 6 - getDay(lastDayOfMonth);
-  const endingDayIndex = (7 - getDay(lastDayOfMonth) - 1) % 7;
-
+  /**
+   * This function is used to handle cell click
+   * @author PSK
+   * @param {Event} todaysEvents - The events of the day
+   * @param {string} dateKey - The date key
+   */
   const handleCellClick = (todaysEvents: Event, dateKey: string) => {
     setSelectedDate(dateKey);
     setSelectedEvents(coverInterviews(todaysEvents));
   };
 
-  const handleEventClick = (event: Event) => {
+  /**
+   * This function is used to handle event click
+   * @author PSK
+   */
+  const handleEventClick = () => {
     navigate(RouteName.CHAT);
   };
 
+  /**
+   * This function is used to cover interviews
+   * @author PSK
+   * @param {any} data - The data to cover
+   * @returns {array} The list of covered interviews
+   */
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
     return Object.entries(data.interviews || {}).flatMap(
@@ -106,10 +129,26 @@ const CalendarScreen = () => {
     );
   }, []);
 
+  /**
+   * useEffect to set the title of the page
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.calendar));
   }, [dispatch]);
 
+  /**
+   * useEffect to refetch data when currentDate changes
+   * @author PSK
+   */
+  useEffect(() => {
+    refetch();
+  }, [currentDate, refetch]);
+
+  /**
+   * useEffect to set today's events
+   * @author PSK
+   */
   useEffect(() => {
     if (eventsOfMonth) {
       Object.entries(eventsOfMonth.data).forEach(([key, value]) => {
@@ -118,7 +157,7 @@ const CalendarScreen = () => {
         }
       });
     }
-  }, [eventsOfMonth]);
+  }, [eventsOfMonth, coverInterviews]);
 
   return (
     <>
@@ -133,7 +172,7 @@ const CalendarScreen = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full  grid grid-cols-3 gap-x-4 p-4"
+        className="w-full grid grid-cols-3 gap-x-4 p-4"
       >
         <div className="col-span-2 rounded-lg bg-[#F0F0F0] p-4 shadow-lg">
           <div className="mb-4">
@@ -192,7 +231,9 @@ const CalendarScreen = () => {
               return (
                 <div
                   key={day}
-                  className={`font-normal py-2 text-center ${day == "Sun" || day == "Sat" ? "bg-[#F6D5D5]" : "bg-white"} text-secondaryColor rounded-md select-none`}
+                  className={`font-normal py-2 text-center ${
+                    day == "Sun" || day == "Sat" ? "bg-[#F6D5D5]" : "bg-white"
+                  } text-secondaryColor rounded-md select-none`}
                 >
                   {day}
                 </div>
@@ -203,7 +244,9 @@ const CalendarScreen = () => {
               return (
                 <div
                   key={`empty-${index}`}
-                  className={`p-2 ${isWeekend ? "bg-[#E5D5D9]" : "bg-white"} rounded-md text-center`}
+                  className={`p-2 ${
+                    isWeekend ? "bg-[#E5D5D9]" : "bg-white"
+                  } rounded-md text-center`}
                 />
               );
             })}
@@ -228,7 +271,9 @@ const CalendarScreen = () => {
               return (
                 <div
                   key={`empty-trailing-${index}`}
-                  className={`p-2 ${isWeekend ? "bg-[#E5D5D9]" : "bg-white"} rounded-md text-center`}
+                  className={`p-2 ${
+                    isWeekend ? "bg-[#E5D5D9]" : "bg-white"
+                  } rounded-md text-center`}
                 />
               );
             })}
@@ -254,7 +299,7 @@ const CalendarScreen = () => {
                   <EventListItem
                     key={index}
                     event={event}
-                    onClick={() => handleEventClick(event)}
+                    onClick={handleEventClick}
                   />
                 );
               })
@@ -264,7 +309,7 @@ const CalendarScreen = () => {
                   <EventListItem
                     key={index}
                     event={event}
-                    onClick={() => handleEventClick(event)}
+                    onClick={handleEventClick}
                   />
                 );
               })

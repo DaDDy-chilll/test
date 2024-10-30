@@ -49,6 +49,11 @@ const MatchedScreend = () => {
     like: boolean | null;
   }>({ jobId: null, like: null });
 
+  /**
+   * This function builds the query string for the API request
+   * @author PSK
+   * @returns {string} The query string
+   */
   const buildQueryString = () => {
     const params = new URLSearchParams();
     params.append("liked", liked.toString());
@@ -57,6 +62,10 @@ const MatchedScreend = () => {
     return params.toString();
   };
 
+  /**
+   * This query fetches the job name type data
+   * @author PSK
+   */
   const {
     data: jobNameType,
     isLoading: jobNameTypeLoading,
@@ -78,6 +87,10 @@ const MatchedScreend = () => {
       name: item.job_title,
     })) || [];
 
+  /**
+   * This query fetches the matched data
+   * @author PSK
+   */
   const {
     data: matchedData,
     isLoading,
@@ -96,6 +109,10 @@ const MatchedScreend = () => {
     enabled: !!jobType.id && !!page && !!liked && !!limit,
   });
 
+  /**
+   * This query fetches the applicant detail
+   * @author PSK
+   */
   const { data: applicantDetail, isLoading: isDetailLoading } = useQuery({
     queryKey: [QueryKey.MATCHED_DETAIL],
     queryFn: () => {
@@ -109,11 +126,14 @@ const MatchedScreend = () => {
     enabled: !!showDetail,
   });
 
+  /**
+   * This mutation handles the like or unlike action
+   * @author PSK
+   */
   const {
     mutate: likeOrUnlikeMutate,
     isPending,
     isSuccess: likeOrUnlikeSuccess,
-    data: likeOrUnlikeData,
   } = useMutation({
     mutationFn: ({ endpoint, body }: any) => {
       return fetchServer({
@@ -131,24 +151,48 @@ const MatchedScreend = () => {
     },
   });
 
+  /**
+   * This function handles the job type selection
+   * @author PSK
+   * @param {Object} item - The selected job type
+   */
   const handleJobType = (item: { id: number; name: string }) =>
     setJobType(item);
+
+  /**
+   * This function handles showing the detail of a user
+   * @author PSK
+   * @param {number} id - The ID of the user to show details for
+   */
   const handleShowDetail = (id: number) => {
     document.body.style.overflow = "hidden";
     setShowDetail(id);
   };
 
+  /**
+   * This function handles closing the detail view
+   * @author PSK
+   */
   const handleCloseDetail = () => {
     setShowDetail(null);
     document.body.style.overflowY = "auto";
   };
 
+  /**
+   * This function handles adding more matched users
+   * @author PSK
+   */
   const handleAddMore = () => {
     if (matchedData?.data.totalUsers !== matchedUsers?.length) {
       setLimit((prev) => prev + 4);
     }
   };
 
+  /**
+   * This function adds more matched users to the state
+   * @author PSK
+   * @param {Array} data - The new matched users data
+   */
   const addMoreMatchedUsers = (data: any) => {
     setMatchedUsers((prev: any) => {
       if (jobType.id !== prevData.jobId || liked !== prevData.like) {
@@ -161,6 +205,12 @@ const MatchedScreend = () => {
     setPrevData({ jobId: jobType.id, like: liked });
   };
 
+  /**
+   * This function handles the like or unlike action
+   * @author PSK
+   * @param {Object} event - The event object
+   * @param {number} user_id - The ID of the user to like or unlike
+   */
   const likeorUnlikeHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
     user_id: number,
@@ -176,31 +226,55 @@ const MatchedScreend = () => {
     }
   };
 
+  /**
+   * This function handles canceling the confirmation
+   * @author PSK
+   */
   const handleCancelConfirmation = () => {
     setShowConfirmation(false);
     navigate(RouteName.CHAT);
   };
 
+  /**
+   * This function handles navigating to the job page
+   * @author PSK
+   */
   const handleNavigateToJob = () => {
     navigate(RouteName.JOBS);
   };
 
+  /**
+   * This useEffect sets the title of the page
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.matches));
   }, [dispatch]);
 
+  /**
+   * This useEffect sets the default job type if job name type data is successful
+   * @author PSK
+   */
   useEffect(() => {
     if (jobNameTypeSuccess && defaultJobType.length > 0) {
       setJobType(defaultJobType[0]);
     }
   }, [jobNameTypeSuccess]);
 
+  /**
+   * This useEffect adds more matched users if matched data is successful
+   * @author PSK
+   */
   useEffect(() => {
     if (matchedDataSuccess && matchedData?.data?.users) {
       addMoreMatchedUsers(matchedData.data.users);
     }
   }, [matchedDataSuccess, matchedData?.data?.users, jobType.id, liked]);
 
+  /**
+   * This useEffect refetches the matched data when job type, liked, page, or limit changes
+   * @author PSK
+   */
   useEffect(() => {
     if (jobType.id) {
       setPage(1);
@@ -209,10 +283,11 @@ const MatchedScreend = () => {
     }
   }, [jobType.id, liked, refetch]);
 
+  /**
+   * This useEffect refetches the matched data when page, limit, or likeOrUnlikeSuccess changes
+   * @author PSK
+   */
   useEffect(() => {
-    // if (likeOrUnlikeSuccess && liked) {
-    //   setShowConfirmation(true);
-    // }
     if (page > 1 || limit > 3 || likeOrUnlikeSuccess) {
       refetch();
     }
@@ -289,7 +364,11 @@ const MatchedScreend = () => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className={` ${defaultJobType.length > 5 ? "overflow-y-auto h-[11rem]" : "overflow-y-hidden"}`}
+              className={` ${
+                defaultJobType.length > 5
+                  ? "overflow-y-auto h-[11rem]"
+                  : "overflow-y-hidden"
+              }`}
             >
               {defaultJobType.length > 0 &&
                 defaultJobType.map((item: { id: number; name: string }) => (

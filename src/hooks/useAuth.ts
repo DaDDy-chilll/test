@@ -11,10 +11,22 @@ import { ErrorType } from "@/types/helperTypes";
 
 import { setName } from "@/store";
 
+/**
+ * Custom hook for authentication related operations.
+ * @returns {object} - Contains functions and states for authentication.
+ * @author PSK
+ */
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState<ErrorType | null>();
+
+  /**
+   * Mutation for handling login.
+   * @param {LoginProps} data - The login data.
+   * @returns {void}
+   * @author PSK
+   */
   const { mutate: onLogin, isPending: isLoginPending } = useMutation({
     mutationFn: (data: LoginProps) => {
       return fetchServer({
@@ -43,6 +55,12 @@ const useAuth = () => {
     },
   });
 
+  /**
+   * Mutation for handling registration.
+   * @param {RegisterProps} data - The registration data.
+   * @returns {void}
+   * @author PSK
+   */
   const { mutate: onRegister, isPending: isRegisterPending } = useMutation({
     mutationFn: (data: RegisterProps) => {
       return fetchServer({
@@ -63,6 +81,11 @@ const useAuth = () => {
     },
   });
 
+  /**
+   * Function to handle logout.
+   * @returns {void}
+   * @author PSK
+   */
   const onLogout = () => {
     localStorage.removeItem("isCompletedProfile");
     dispatch(removeToken());

@@ -9,15 +9,10 @@ const ChatInput = ({
   setNewMessage,
   handleSendMessage,
 }: ChatInputProps) => {
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNewMessage(e.target.value);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSendMessage();
-    }
-  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) =>
+    e.key === "Enter" && handleSendMessage();
 
   return (
     <div className="flex items-center gap-2 w-full h-full px-4 py-3 border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md">

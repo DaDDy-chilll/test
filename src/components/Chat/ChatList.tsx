@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { Chat } from "@/types/helperTypes";
 import { jp } from "@/lang/jp";
 import { useSelector } from "react-redux";
@@ -22,22 +22,13 @@ const ChatList: React.FC<ChatListProps> = ({
   isRefetching,
   isEnd,
 }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { notification } = useSelector((state: RootState) => state.navigation);
-
-  // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-  //   const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-  //   if (scrollTop + clientHeight >= scrollHeight - 10) {
-  //     refetch();
-  //   }
-  // };
 
   return (
     <div className="flex-1 ">
       <div
         tabIndex={0}
         className="flex flex-col h-[90vh]  p-3 overflow-y-auto border-4 border-gray-300 rounded-sm border-opacity-30 shadow-md"
-        // onScroll={handleScroll}
       >
         {chats.length === 0 ? (
           <div className="text-center text-sm text-gray-500 my-64">
@@ -67,13 +58,13 @@ const ChatList: React.FC<ChatListProps> = ({
               </div>
             )}
             {!isEnd && (
-               <div
-               className="text-center text-xs text-blue-600 underline tracking-wider mt-2 cursor-pointer"
-               onClick={refetch}
-             >
-               {jp.loadMoreChats}
-             </div>
-            ) }
+              <div
+                className="text-center text-xs text-blue-600 underline tracking-wider mt-2 cursor-pointer"
+                onClick={refetch}
+              >
+                {jp.loadMoreChats}
+              </div>
+            )}
           </>
         )}
       </div>

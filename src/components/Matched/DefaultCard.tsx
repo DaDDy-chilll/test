@@ -6,11 +6,14 @@ interface DefaultCardProps {
 }
 
 const DefaultCard = ({ hasMore, click }: DefaultCardProps) => {
+  /**
+   * This function is used to handle the card click
+   * @author PSK
+   */
   const cardClick = () => {
-    if (hasMore) {
-      click();
-    }
+    if (hasMore) click();
   };
+
   return (
     <motion.button
       onClick={cardClick}

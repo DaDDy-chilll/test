@@ -2,9 +2,8 @@ import logo from "@/assets/icons/logo.svg";
 import { useNavigate } from "react-router-dom";
 const VerifyMali = () => {
   const navigate = useNavigate();
-  const handleBackToLogin = () => {
-    navigate("/login");
-  };
+  const handleBackToLogin = () => navigate("/login");
+
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
       <div className="w-20 mb-10">

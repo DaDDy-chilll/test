@@ -10,9 +10,8 @@ type EventListItemProps = {
 const EventListItem = ({ event, onClick }: EventListItemProps) => {
   const [imageError, setImageError] = useState(false);
 
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  const handleImageError = () => setImageError(true);
+
   return (
     <div
       className={`flex items-center gap-2 border-b border-gray-400  mx-5 px-2 py-3 hover:bg-gray-300 cursor-pointer transition-all duration-100 ${onClick ? "active:scale-90" : ""}`}

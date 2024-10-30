@@ -1,8 +1,14 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-
 import { cn } from "@/lib/utils";
 
+/**
+ * This component is used to render an avatar.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the Avatar component
+ * @returns A styled Avatar component
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
@@ -18,6 +24,13 @@ const Avatar = React.forwardRef<
 ));
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
+/**
+ * This component is used to render an avatar image.
+ * @author PSK
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the AvatarImage component
+ * @returns A styled AvatarImage component
+ */
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
@@ -30,6 +43,12 @@ const AvatarImage = React.forwardRef<
 ));
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
+/**
+ * This component is used to render a fallback avatar when the image fails to load or is not provided.
+ * @param className - Additional class names for styling
+ * @param props - Additional props for the AvatarFallback component
+ * @returns A styled AvatarFallback component
+ */
 const AvatarFallback = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Fallback>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>

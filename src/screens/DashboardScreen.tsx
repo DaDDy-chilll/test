@@ -8,9 +8,6 @@ import {
 } from "@/components";
 import { jp } from "@/lang/jp";
 import { motion } from "framer-motion";
-// import Skeleton from "react-loading-skeleton";
-// import "react-loading-skeleton/dist/skeleton.css";
-// import { events } from "@/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import useChat from "@/hooks/useChat";
@@ -21,24 +18,16 @@ import { Event, Chat } from "@/types/helperTypes";
 import { useNavigate } from "react-router-dom";
 import { QueryKey } from "@/utils/queryKey";
 import { useDispatch } from "react-redux";
-import { setTitle, setNotification } from "@/store";
+import { setTitle } from "@/store";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import DefaultUser from "@/assets/icons/default_user.svg";
-import { db } from "../firebaseConfig";
 import RouteName from "@/navigations/routes";
-import { query, where, collection, onSnapshot } from "firebase/firestore";
 import { colors } from "@/constants/color";
 
 const startOfYear = moment().startOf("year").format("YYYY-MM-DD");
 const endOfYear = moment().endOf("year").format("YYYY-MM-DD");
-
 const currentDate = moment().format("YYYY-MM-DD");
-// const currentDate = "2024-10-07";
-// const currentYear = moment().format("YYYY");
-// const currentDay = moment().format("DD");
-
-// const TODAY = "2024-11-03";
 const monthNames = [
   {
     id: 1,
@@ -106,6 +95,12 @@ const DashboardScreen = () => {
     date: "",
     events: null,
   });
+
+  /**
+   * This query is used to fetch dashboard data
+   * @author PSK
+   * @returns {object} The dashboard data
+   */
   const { data: dashboardData, isLoading: isDashboardLoading } = useFetch({
     endpoint: `${
       apiRoutes.DASHBOARD
@@ -114,6 +109,11 @@ const DashboardScreen = () => {
     key: QueryKey.DASHBOARD,
   });
 
+  /**
+   * This query is used to fetch interview data
+   * @author PSK
+   * @returns {object} The interview data
+   */
   const { data: interviewData, isLoading: isInterviewLoading } = useFetch({
     endpoint: `${apiRoutes.INTERVIEW}?start_date=${startOfYear}&end_date=${endOfYear}`,
     token: token as string,
@@ -122,6 +122,10 @@ const DashboardScreen = () => {
 
   const upcomingInterviews = interviewData?.data;
 
+  /**
+   * useEffect to set the title of the page and handle scrollbar
+   * @author PSK
+   */
   useEffect(() => {
     dispatch(setTitle(jp.dashboard));
 
@@ -140,6 +144,11 @@ const DashboardScreen = () => {
     };
   }, [dispatch]);
 
+  /**
+   * This function is used to format dashboard data for the line chart
+   * @author PSK
+   * @returns {array} The formatted dashboard data
+   */
   const data = useMemo(() => {
     if (!dashboardData) return [];
 
@@ -159,11 +168,26 @@ const DashboardScreen = () => {
       );
   }, [dashboardData]);
 
+  /**
+   * This function is used to handle chat click
+   * @author PSK
+   * @param {Chat} chat - The chat object
+   */
   const handleChatClick = (chat: Chat) =>
     navigate(RouteName.CHAT, { state: chat });
 
+  /**
+   * This function is used to navigate to the chat screen
+   * @author PSK
+   */
   const handleSeeMore = () => navigate(RouteName.CHAT);
 
+  /**
+   * This function is used to cover interviews
+   * @author PSK
+   * @param {any} data - The data to cover
+   * @returns {array} The list of covered interviews
+   */
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
     return Object.entries(data.interviews || {}).flatMap(
@@ -181,6 +205,10 @@ const DashboardScreen = () => {
     );
   }, []);
 
+  /**
+   * useEffect to set today's events
+   * @author PSK
+   */
   useEffect(() => {
     if (upcomingInterviews) {
       Object.entries(upcomingInterviews).forEach(([key, value]) => {

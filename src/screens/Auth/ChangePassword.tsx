@@ -18,6 +18,12 @@ import { useDispatch } from "react-redux";
 import { setToken, setForgotPassword } from "@/store";
 import { ERROR_MESSAGE } from "@/constants/errorMessage";
 
+/**
+ * ChangePassword component allows users to change their password.
+ * @component
+ * @returns {JSX.Element} The ChangePassword component.
+ * @author PSK
+ */
 const ChangePassword: React.FC = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state: RootState) => state.auth);
@@ -29,6 +35,12 @@ const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
   const { mutate, isPending, isSuccess, error } = usePost({ token });
 
+  /**
+   * Handles the form submission for changing the password.
+   * @param {React.FormEvent} e - The form submission event.
+   * @returns {void}
+   * @author PSK
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -47,6 +59,11 @@ const ChangePassword: React.FC = () => {
     });
   };
 
+  /**
+   * useEffect hook to handle side effects after password change.
+   * @returns {void}
+   * @author PSK
+   */
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -179,11 +196,21 @@ const ChangePassword: React.FC = () => {
   );
 };
 
+/**
+ * Animation variants for the header.
+ * @type {Object}
+ * @author PSK
+ */
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for the form.
+ * @type {Object}
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 0.2 } },

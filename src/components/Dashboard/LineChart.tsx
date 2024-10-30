@@ -24,7 +24,6 @@ const LineCharts = ({ data = [] }: LineChartProps) => {
         />
         <YAxis tick={{ fontSize: 10, textAnchor: "end" }} />
         <Tooltip />
-        {/* <Legend /> */}
         <Line
           type="monotone"
           dataKey="matched"

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { MeetingAlert } from "@/components";
 import moment from "moment";
-import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -29,9 +28,13 @@ const ChatHeader = ({
   const [meetingStatus, setMeetingStatus] = useState<string>("");
   const [meetingError, setMeetingError] = useState<string | null>(null);
   const navigate = useNavigate();
-
   const timeNow = moment().format("HH:mm");
 
+  /**
+   * This function is used to build the query string for fetching the meeting data.
+   * @author PSK
+   * @returns {string} The query string for fetching the meeting data.
+   */
   const buildQueryString = () => {
     const params = new URLSearchParams();
     if (selectedChat?.jobfinder_id)
@@ -41,7 +44,12 @@ const ChatHeader = ({
       params.append("company_id", selectedChat?.company_id);
     return params.toString();
   };
-  const { data, isLoading, refetch, isSuccess, error } = useQuery({
+
+  /**
+   * This Query fetches the meeting data.
+   * @author PSK
+   */
+  const { data, isLoading, isSuccess, error } = useQuery({
     queryKey: [
       QueryKey.USER_INTERVIEW,
       selectedChat?.jobfinder_id,
@@ -57,18 +65,18 @@ const ChatHeader = ({
     },
     enabled: !!selectedChat?.jobfinder_id || !!selectedChat?.job_id,
   });
+
   const handleAppointmentModel = () => setIsAppointmentModelOpen(true);
-
-  const handleProfileDetail = () => {
+  const handleProfileDetail = () =>
     navigate(RouteName.APPLICANTS, { state: selectedChat });
-  };
-
-  const handleJobDetail = (): void => {
+  const handleJobDetail = (): void =>
     navigate(RouteName.JOBS, { state: selectedChat });
-  };
-
   const handleMeetingAlert = () => setIsMeetingAlertOpen(!isMeetingAlertOpen);
 
+  /**
+   * This Effect is used to handle the error and success of the mutation.
+   * @author PSK
+   */
   useEffect(() => {
     if (isSuccess && data?.data) {
       setMeetingError(null);
@@ -98,13 +106,12 @@ const ChatHeader = ({
         }
       } else if (meetingMoment.isBefore(dateNowMoment)) {
         setMeetingStatus(meetingMoment.fromNow());
-
         setIsMeetingEnded(true);
       } else {
         setMeetingStatus(meetingMoment.fromNow());
         setIsMeetingEnded(false);
       }
-      setIsMeetingAlertOpen(true)
+      setIsMeetingAlertOpen(true);
     }
     if (error) {
       setMeetingError(error.message);

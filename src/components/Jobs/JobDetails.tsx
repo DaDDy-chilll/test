@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
-import { useEffect } from "react";
 
 type formData = {
   name: string;

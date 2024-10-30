@@ -18,13 +18,9 @@ const UserCard = ({
   matchedData,
   likeorUnlikeHandler,
 }: UserCardProps) => {
-  // const profile = `https://api.japanjob.exbrainedu.com/v1/file/photo/${matchedData.m_basicinfos.profile_path}` || null;
-
-  const cardClick = () => {
-    handleShowDetail(matchedData.id);
-  };
   const { m_basicinfos } = matchedData;
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
+  const cardClick = () => handleShowDetail(matchedData.id);
 
   return (
     <motion.div

@@ -1,6 +1,4 @@
-// import { useMutation } from "@tanstack/react-query";
 import { FormEvent, useEffect } from "react";
-
 import { Button, Input } from "@/components";
 import logo from "@/assets/icons/logo.svg";
 import { motion } from "framer-motion";
@@ -14,6 +12,12 @@ import { RootState } from "@/store/store";
 import { jp } from "@/lang/jp";
 import useHandleError from "@/hooks/useHandleError";
 import { Helmet } from "react-helmet-async";
+
+/**
+ * RegisterScreen component handles the registration process.
+ * It uses various hooks and components to manage the registration form and its submission.
+ * @author PSK
+ */
 const RegisterScreen = () => {
   const { onRegister, isRegisterPending, error } = useAuth();
   const {
@@ -26,10 +30,19 @@ const RegisterScreen = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
+  /**
+   * useEffect hook to navigate to the dashboard if the user is already logged in.
+   * @author PSK
+   */
   useEffect(() => {
     if (user && token) navigate(RouteName.DASHBOARD);
   }, [user, token, navigate]);
 
+  /**
+   * Handles the form submission for registration.
+   * @param {FormEvent<HTMLFormElement>} e - The form event.
+   * @author PSK
+   */
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetAuthError();
@@ -42,6 +55,10 @@ const RegisterScreen = () => {
     onRegister(registerProps);
   };
 
+  /**
+   * useEffect hook to handle authentication errors.
+   * @author PSK
+   */
   useEffect(() => {
     if (error) authHandleError(error as AuthErrorType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,13 +154,22 @@ const RegisterScreen = () => {
   );
 };
 
+/**
+ * Animation variants for the header.
+ * @author PSK
+ */
 const headerVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for the form.
+ * @author PSK
+ */
 const formVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 0.2 } },
 };
+
 export default RegisterScreen;

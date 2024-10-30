@@ -1,6 +1,5 @@
 import React from "react";
 import { LOGO } from "@/assets";
-// import LOGO from "@/assets/images/LOGO.svg"
 import { Button } from "@/components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -10,16 +9,39 @@ import RouteName from "@/navigations/routes";
 import { useEffect } from "react";
 import { jp } from "@/lang/jp";
 import { Helmet } from "react-helmet-async";
+
 const textOne = "良いミャンマー人と、";
 const textTwo = "優良な日本企業のマッチングサイト";
 const textOneDuration = textOne.length * 0.1;
 
+/**
+ * InitialLanding component
+ * @component
+ * @returns {JSX.Element} The InitialLanding component
+ * @author PSK
+ */
 const InitialLanding: React.FC = () => {
   const navigate = useNavigate();
   const { user, token } = useSelector((state: RootState) => state.auth);
+
+  /**
+   * Navigate to login page
+   * @author PSK
+   */
   const login = () => navigate(RouteName.LOGIN);
+
+  /**
+   * Navigate to signup page
+   * @author PSK
+   */
   const signup = () => navigate(RouteName.REGISTER);
 
+  /**
+   * Redirect to dashboard if user is authenticated
+   * @author PSK
+   * @param {Object} user - The authenticated user
+   * @param {string} token - The authentication token
+   */
   useEffect(() => {
     if (user && token) navigate(RouteName.DASHBOARD);
   }, [user, token, navigate]);
@@ -39,7 +61,6 @@ const InitialLanding: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             <LOGO />
-            {/* <img src={LOGO} alt="LOGO" className="w-full" /> */}
           </motion.div>
           <h1 className="text-2xl my-10 font-semibold">
             <div className="mb-1">
@@ -92,12 +113,21 @@ const InitialLanding: React.FC = () => {
   );
 };
 
-//! Animation
+/**
+ * Animation variants for logo
+ * @author PSK
+ */
 const logoVariants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: { opacity: 1, scale: 1 },
 };
 
+/**
+ * Animation variants for typing effect of textOne
+ * @author PSK
+ * @param {number} index - The index of the character
+ * @returns {Object} Animation properties
+ */
 const typingOneVariants = {
   hidden: { opacity: 0 },
   visible: (index: number) => ({
@@ -109,6 +139,12 @@ const typingOneVariants = {
   }),
 };
 
+/**
+ * Animation variants for typing effect of textTwo
+ * @author PSK
+ * @param {number} index - The index of the character
+ * @returns {Object} Animation properties
+ */
 const typingTwoVariants = {
   hidden: { opacity: 0 },
   visible: (index: number) => ({
@@ -120,6 +156,10 @@ const typingTwoVariants = {
   }),
 };
 
+/**
+ * Animation variants for buttons
+ * @author PSK
+ */
 const buttonVariants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },

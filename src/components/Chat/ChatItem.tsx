@@ -11,7 +11,6 @@ interface ChatItemProps {
 const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
   const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
   const handleClick = () => onSelect(chat);
-
   return (
     <div
       className={`flex items-center gap-3 mx-2 py-2 h-16 rounded-md cursor-pointer overflow-hidden`}

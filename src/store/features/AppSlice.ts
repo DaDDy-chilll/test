@@ -3,11 +3,17 @@ import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+
 const initialState = {
   jobTypes: [],
   loading: false,
 };
 
+/**
+ * This function is used to fetch job types from the server
+ * @author PSK
+ * @returns {Promise<Array>} job types data
+ */
 export const fetchJobTypes = createAsyncThunk("app/fetchJobTypes", async () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const response = await fetchServer({
@@ -22,6 +28,12 @@ const AppSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
+    /**
+     * This reducer is used to set job types in the state
+     * @author PSK
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object containing payload
+     */
     setJobTypes: (state, action) => {
       state.jobTypes = action.payload;
     },
