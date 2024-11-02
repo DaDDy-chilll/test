@@ -17,7 +17,10 @@ const NotiItem = ({ item, onClick }: ItemProps) => {
     : DefaultUser;
 
   return (
-    <div className="flex items-center justify-between w-full my-1" onClick={onClick}>
+    <div
+      className="flex items-center justify-between w-full my-1"
+      onClick={onClick}
+    >
       <div className="flex items-center justify-start gap-3">
         <div className="rounded-full  overflow-hidden">
           <img

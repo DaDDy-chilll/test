@@ -175,4 +175,5 @@ export const jp = {
   meetingEndTime: "面接終了時間",
   meetingInProgress: "会議進行中",
   meetingEnded: "会議終了",
+  areYouSure: "送信してもよろしいですか？",
 };

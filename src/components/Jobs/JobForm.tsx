@@ -53,6 +53,7 @@ const JobForm = ({
   const { token } = useSelector((state: RootState) => state.auth);
   const {
     jobFormHandleError,
+    workTimeError,
     jobNameError,
     jobTypeError,
     salaryError,
@@ -237,6 +238,8 @@ const JobForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
 
+
+
   return (
     <motion.div
       key="form"
@@ -379,7 +382,7 @@ const JobForm = ({
               value={form.start_time}
               onChange={(e) => setForm({ ...form, start_time: e.target.value })}
               required={false}
-              error={startTimeError || ""}
+              error={startTimeError || workTimeError || ""}
             />
             <p> ~ </p>
             <Input

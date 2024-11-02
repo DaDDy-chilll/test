@@ -46,6 +46,7 @@ const ConfirmationBox: React.FC<ConfirmationBoxProps> = ({
               type="submit"
               onClick={onConfirm}
               className="px-4 py-2 bg-red-600 flex items-center justify-center text-white rounded hover:bg-primaryColor/80"
+              disabled={loading || isSuccess}
             >
               {isSuccess ? (
                 <svg

@@ -127,7 +127,6 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
-
   /**
    * This Effect is used to handle the websocket connection
    * @author PSK

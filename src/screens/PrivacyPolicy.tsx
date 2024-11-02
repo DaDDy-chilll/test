@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { QueryKey } from "@/utils/queryKey";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { jp } from "@/lang/jp";
 import { Loading } from "@/components";
 import { LOGO } from "@/assets/icons/LOGO";

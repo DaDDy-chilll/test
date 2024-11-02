@@ -301,7 +301,7 @@ const useHandleError = () => {
       }
       if (error?.working_time) {
         setWorkTimeError(
-          error?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_OPTION,
+          error?.working_time?.jp ?? ERROR_MESSAGE.PLEASE_SELECT_A_VALID_WORKING_TIME,
         );
       }
       if (error?.holiday_in_year) {
