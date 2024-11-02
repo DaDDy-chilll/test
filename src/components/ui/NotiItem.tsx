@@ -17,7 +17,7 @@ const NotiItem = ({ item, onClick }: ItemProps) => {
     : DefaultUser;
 
   return (
-    <div className="flex items-center justify-between w-full" onClick={onClick}>
+    <div className="flex items-center justify-between w-full my-1" onClick={onClick}>
       <div className="flex items-center justify-start gap-3">
         <div className="rounded-full  overflow-hidden">
           <img
@@ -27,12 +27,12 @@ const NotiItem = ({ item, onClick }: ItemProps) => {
             crossOrigin="anonymous"
           />
         </div>
-        <div>
+        <div className="w-52">
           <h3 className="text-sm font-medium">{item.name}</h3>
           <p className="text-xs text-muted-foreground">{item.message}</p>
         </div>
       </div>
-      <div>
+      <div className="text-end">
         <p className="text-xs text-muted-foreground">{item.time}</p>
       </div>
     </div>

@@ -127,6 +127,8 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
+  console.log("apiNotification", combinedNotifications);
+
   /**
    * This Effect is used to handle the websocket connection
    * @author PSK
@@ -222,7 +224,7 @@ const Header = () => {
                 <div className="w-2 h-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
               ))}
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[350px] z-50">
+          <DropdownMenuContent className="w-[400px] z-50">
             <DropdownMenuLabel>{jp.notifications}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {combinedNotifications.length > 0 ? (

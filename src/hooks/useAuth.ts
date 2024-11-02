@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useState } from "react";
 import { ErrorType } from "@/types/helperTypes";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { setName } from "@/store";
 
@@ -19,6 +20,7 @@ import { setName } from "@/store";
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [error, setError] = useState<ErrorType | null>();
 
   /**
@@ -91,6 +93,7 @@ const useAuth = () => {
     dispatch(removeToken());
     dispatch(setName(""));
     setError(null);
+    queryClient.clear();
     navigate(RouteName.INITIAL_LANDING);
   };
 
