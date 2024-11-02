@@ -127,7 +127,6 @@ const Header = () => {
     );
   }, [chatNoti, apiNotification]);
 
-  console.log("apiNotification", combinedNotifications);
 
   /**
    * This Effect is used to handle the websocket connection
