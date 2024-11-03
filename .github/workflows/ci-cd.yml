@@ -21,7 +21,6 @@ jobs:
           export PATH=$PATH:/usr/local/bin    
           cd /var/www/japan_job_client/
           rm -rf dist
-          git stash || true 
           git pull
           npm run build
           EOF
