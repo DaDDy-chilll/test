@@ -86,6 +86,7 @@ const CalendarScreen = () => {
     enabled: !!token && !!currentDate,
   });
 
+
   /**
    * This function is used to handle cell click
    * @author PSK
@@ -278,17 +279,13 @@ const CalendarScreen = () => {
           </div>
         </div>
         <div className="col-span-1 px-4 rounded-lg bg-[#F0F0F0] h-full">
-          <h2 className="text-center text-base my-6">~~{jp.meetings}</h2>
+          <h2 className="text-center text-base my-6">{jp.meetings}</h2>
           <div className="flex justify-between items-center">
             <p className="text-sm text-gray-500">
               {selectedDate && selectedEvents.length > 0
                 ? format(selectedDate, "yyyy-MM-dd")
                 : format(new Date(), "yyyy-MM-dd")}
             </p>
-            {/* <select className="bg-primaryColor text-white p-2 rounded-md text-xs">
-              <option value="all">All</option>
-              <option value="JLPT N4">JLPT N4</option>
-            </select> */}
           </div>
           <div className="overflow-y-auto my-5 h-[calc(100vh-250px)] flex flex-col gap-2">
             {selectedEvents.length > 0 ? (
