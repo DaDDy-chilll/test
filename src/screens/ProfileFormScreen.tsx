@@ -375,7 +375,7 @@ const ProfileFormScreen = () => {
                 type="number"
                 label={jp.investmentAmount}
                 className="mt-1 block w-full bg-gray-100"
-                placeholder="100000 $"
+                placeholder="¥ 100,000"
                 value={formData.budget || ""}
                 onChange={(e) =>
                   setFormData((prevData: any) => ({

@@ -238,8 +238,6 @@ const JobForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isSuccess]);
 
-
-
   return (
     <motion.div
       key="form"

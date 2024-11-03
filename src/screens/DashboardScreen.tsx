@@ -257,7 +257,7 @@ const DashboardScreen = () => {
                 </h2>
                 <div
                   ref={scrollableRef}
-                  className="overflow-y-auto h-[62vh] relative"
+                  className="overflow-y-auto h-[55vh] relative"
                   tabIndex={0}
                 >
                   {isInterviewLoading ? (

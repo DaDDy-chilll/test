@@ -121,7 +121,7 @@ const UserFormScreen = () => {
                     type="text"
                     label={jp.investmentAmount}
                     className="mt-1 block w-full"
-                    placeholder="100000 $"
+                    placeholder="¥ 100,000"
                   />
                   <Input
                     name="jobTitle"

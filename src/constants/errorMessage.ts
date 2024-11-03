@@ -20,5 +20,6 @@ export const ERROR_MESSAGE = {
   INVALID_PHONE_NUMBER: "無効な電話番号です・",
   INVALID_LINK: "無効なリンクです・",
   INVALID_AREA: "無効なエリアです・",
-  PLEASE_SELECT_A_VALID_WORKING_TIME:"勤務時間は少なくとも30分以上である必要があります"
+  PLEASE_SELECT_A_VALID_WORKING_TIME:
+    "勤務時間は少なくとも30分以上である必要があります",
 };

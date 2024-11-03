@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { jp } from "@/lang/jp";
 import defaultImage from "@/assets/icons/default_user.svg";
-import moment from "moment";
 import {
   CEO,
   Manager,
@@ -15,7 +14,6 @@ import {
   Website,
   Phone,
   CompanyAddress,
-  CompanyDescription,
 } from "@/assets";
 type formData = {
   name: string;

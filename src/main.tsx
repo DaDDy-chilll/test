@@ -7,7 +7,7 @@ import { Provider as AppProvider } from "react-redux";
 import React from "react";
 import { HelmetProvider } from "react-helmet-async";
 export const queryClient = new QueryClient();
-import { initializeAxe } from "../axeConfig";
+// import { initializeAxe } from "../axeConfig";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 

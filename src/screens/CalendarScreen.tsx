@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
 import moment from "moment";
 import {
@@ -201,7 +200,6 @@ const CalendarScreen = () => {
 
               <h2 className="text-center text-xl">
                 {moment(currentDate).format("YYYY年  MM月")}
-                {/* {format(currentDate, "MMMM yyyy")} */}
               </h2>
 
               <button
