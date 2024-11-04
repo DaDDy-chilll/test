@@ -30,6 +30,7 @@ export interface ApiRoutesType {
   PRIVACY_POLICY: string;
   NOTIFICATION: string;
   FIND_INTERVIEW: string;
+  GUIDE_VIDEO:string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -57,11 +58,12 @@ export const apiRoutes: ApiRoutesType = {
   VERIFY_OTP: "/client/auth/verify-forgot-password-otp",
   CHANGE_PASSWORD: "/client/auth/change-password",
   DASHBOARD: "/client/dashboard",
-  CALENDAR: "/client/calendar",
+CALENDAR: "/client/calendar",
   DELETE_JOB: "/client/job/delete",
   UPCOMING_INTERVIEW: "/client/interview/upcoming",
   UPLOAD_IMAGE: "/file",
   PRIVACY_POLICY: "/setting/privacy-policy",
   NOTIFICATION: "/client/auth/company-notification",
   FIND_INTERVIEW: "/client/interview/find",
+  GUIDE_VIDEO:"/setting/links"
 };

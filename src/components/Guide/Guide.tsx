@@ -1,5 +1,12 @@
+import useFetch from "@/hooks/useFetch";
+import { useSelector } from "react-redux";
+import {RootState} from "@/store/store"
+
 const Guide = () => {
+  const {token} = useSelector((state: RootState) => state.auth)
+  console.log(token)
   const videoUrl = "https://www.youtube.com/embed/6R4ioDuG2xY";
+
   return (
     <main className="w-full h-[90vh] p-4">
       <iframe

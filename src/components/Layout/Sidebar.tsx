@@ -12,7 +12,7 @@ const Sidebar = () => {
   return (
     <aside
       id="logo-sidebar"
-      className={`fixed top-0 text-white left-0 z-40 ${
+      className={`float-left top-0 text-white left-0 z-50 ${
         sideBar ? "w-64" : "w-20"
       } h-screen pt-5 transition-all duration-500 ease-in-out border-r border-gray-300 bg-gray-50 md:translate-x-0`}
       aria-label="Sidebar"
