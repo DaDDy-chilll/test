@@ -64,6 +64,7 @@ const ChatHeader = ({
       });
     },
     enabled: !!selectedChat?.jobfinder_id || !!selectedChat?.job_id,
+    retry: false
   });
 
   const handleAppointmentModel = () => setIsAppointmentModelOpen(true);
@@ -114,6 +115,7 @@ const ChatHeader = ({
       setIsMeetingAlertOpen(true);
     }
     if (error) {
+      console.log('error',error)
       setMeetingError(error.message);
       setMeetingStatus("");
     }
