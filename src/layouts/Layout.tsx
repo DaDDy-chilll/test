@@ -11,7 +11,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const sideBar = useSelector((state: RootState) => state.navigation.sideBar);
   return (
-    <>
+    <div className="flex">
       <Sidebar />
       <div
         className={`flex flex-col flex-1 ${sideBar ? "md:ml-64" : "md:ml-20"} relative transition-all duration-500 ease-in-out`}
@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Header />
         <div>{children}</div>
       </div>
-    </>
+    </div>
   );
 };
 
