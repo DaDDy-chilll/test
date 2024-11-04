@@ -230,6 +230,21 @@ const JobScreen = () => {
     }
   }, [jobDetailError]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      if (showDetails && !jobID) {
+        setShowDetails(false);
+        jobID = null;
+        window.history.pushState(null, "", window.location.pathname);
+      }else{
+        navigate(RouteName.CHAT, { state: jobID });
+      }
+    };
+    if (showDetails)  window.history.pushState(null, "", window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [showDetails]);
+
   return (
     <>
       <Helmet>

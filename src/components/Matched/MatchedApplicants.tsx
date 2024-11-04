@@ -10,9 +10,10 @@ type MatchProps = {
   className?: string;
   applicantDetail: ApplicantDetail;
   onBack?: () => void;
+  props?: any;
 };
 
-const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
+const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
   const {
@@ -27,6 +28,9 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
+
+
+
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>

@@ -35,7 +35,7 @@ const ApplicantScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const navigate = useNavigate();
-  const applicantID = location.state;
+  let applicantID = location.state;
   const { token } = useSelector((state: RootState) => state.auth);
   const [filter, setFilter] = useState<FilterType>(initialFilter);
   const isInitialRender = useRef(true);
@@ -175,6 +175,23 @@ const ApplicantScreen = () => {
       setSelectedApplicantId(null);
     }
   }, [applicantDetailError]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isDetail && !applicantID) {
+        setIsDetail(false);
+        setSelectedApplicantId(null);
+        applicantID = null;
+        window.history.pushState(null, "", window.location.pathname);
+      }else{
+        setSelectedApplicantId(null);
+        navigate(RouteName.CHAT, { state: applicantID })
+      }
+    };
+    if (isDetail)  window.history.pushState(null, "", window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [isDetail]);
 
   return (
     <>

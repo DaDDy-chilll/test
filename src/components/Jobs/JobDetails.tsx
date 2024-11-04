@@ -86,7 +86,7 @@ const JobDetails = ({
   return (
     <motion.div
       key="complete"
-      className="w-full bg-white shadow-lg rounded-lg overflow-hidden"
+      className="w-full bg-white  rounded-lg overflow-hidden"
       variants={formVariants}
       initial="hidden"
       animate="visible"
