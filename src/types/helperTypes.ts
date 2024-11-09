@@ -386,6 +386,7 @@ export type ApplicantDetail = {
     has_passport: number;
     video_path: string;
     phone: string;
+    address: string;
   };
   m_prefer_areas: [
     {
@@ -428,6 +429,7 @@ export type ApplicantDetail = {
       id: number;
       academic_end_year: number;
       academic_start_year: number;
+      academic_types_id: number;
       major: string;
       university_name: string;
     },

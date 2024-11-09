@@ -177,5 +177,6 @@ export const jp = {
   meetingEnded: "会議終了",
   areYouSure: "送信してもよろしいですか？",
   gotoRegister:"初めての企業はこちらから",
-  gotoLogin:"アカウントがお持ちでいる方はこちらから"
+  gotoLogin: "アカウントがお持ちでいる方はこちらから",
+  year: "年",
 };

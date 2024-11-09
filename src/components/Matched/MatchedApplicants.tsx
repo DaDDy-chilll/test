@@ -20,7 +20,7 @@ const MatchedApplicants = ({
 }: MatchProps) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
-  // console.log("applicantDetail", applicantDetail);
+  console.log("applicantDetail", applicantDetail);
   const {
     code,
     m_basicinfos,
@@ -33,6 +33,16 @@ const MatchedApplicants = ({
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
+
+  const groupedAreas = m_prefer_areas.reduce((acc: any, area: any) => {
+    if (!acc[area.area.area]) {
+      acc[area.area.area] = [];
+    }
+    acc[area.area.area].push(area.prefecture.name);
+    return acc;
+  }, {});
+
+  console.log("groupedAreas", groupedAreas);
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
@@ -65,36 +75,20 @@ const MatchedApplicants = ({
           </div>
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-2">
-              <svg
-                width="14"
-                height="16"
-                viewBox="0 0 16 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M2 16H5V10H11V16H14V7L8 2.5L2 7V16ZM0 18V6L8 0L16 6V18H9V12H7V18H0Z"
-                  fill="#D04040"
-                />
-              </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 text-primaryColor">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+</svg>
+
               <p className="text-sm">
-                {m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}
+                {`${m_basicinfos.address} (${m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar})`}
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <svg
-                width="14"
-                height="16"
-                viewBox="0 0 18 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 20C0.716667 20 0.479167 19.9042 0.2875 19.7125C0.0958333 19.5208 0 19.2833 0 19V14C0 13.45 0.195833 12.9792 0.5875 12.5875C0.979167 12.1958 1.45 12 2 12V8C2 7.45 2.19583 6.97917 2.5875 6.5875C2.97917 6.19583 3.45 6 4 6H8V4.55C7.7 4.35 7.45833 4.10833 7.275 3.825C7.09167 3.54167 7 3.2 7 2.8C7 2.55 7.05 2.30417 7.15 2.0625C7.25 1.82083 7.4 1.6 7.6 1.4L9 0L10.4 1.4C10.6 1.6 10.75 1.82083 10.85 2.0625C10.95 2.30417 11 2.55 11 2.8C11 3.2 10.9083 3.54167 10.725 3.825C10.5417 4.10833 10.3 4.35 10 4.55V6H14C14.55 6 15.0208 6.19583 15.4125 6.5875C15.8042 6.97917 16 7.45 16 8V12C16.55 12 17.0208 12.1958 17.4125 12.5875C17.8042 12.9792 18 13.45 18 14V19C18 19.2833 17.9042 19.5208 17.7125 19.7125C17.5208 19.9042 17.2833 20 17 20H1ZM4 12H14V8H4V12ZM2 18H16V14H2V18Z"
-                  fill="#D04040"
-                />
-              </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor " className="size-5 text-primaryColor">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+</svg>
+
               <p className="text-sm">
                 {moment(m_basicinfos.dob).format("YYYY-MM-DD")}
               </p>
@@ -102,15 +96,17 @@ const MatchedApplicants = ({
 
             <div className="flex items-center gap-2">
               <svg
-                width="14"
-                height="16"
-                viewBox="0 0 18 20"
-                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.7}
+                stroke="currentColor"
+                className="size-5 text-primaryColor "
               >
                 <path
-                  d="M2 20C1.45 20 0.979167 19.8042 0.5875 19.4125C0.195833 19.0208 0 18.55 0 18V4C0 3.45 0.195833 2.97917 0.5875 2.5875C0.979167 2.19583 1.45 2 2 2H6.2C6.43333 1.4 6.8 0.916667 7.3 0.55C7.8 0.183333 8.36667 0 9 0C9.63333 0 10.2 0.183333 10.7 0.55C11.2 0.916667 11.5667 1.4 11.8 2H16C16.55 2 17.0208 2.19583 17.4125 2.5875C17.8042 2.97917 18 3.45 18 4V18C18 18.55 17.8042 19.0208 17.4125 19.4125C17.0208 19.8042 16.55 20 16 20H2ZM9 3.25C9.21667 3.25 9.39583 3.17917 9.5375 3.0375C9.67917 2.89583 9.75 2.71667 9.75 2.5C9.75 2.28333 9.67917 2.10417 9.5375 1.9625C9.39583 1.82083 9.21667 1.75 9 1.75C8.78333 1.75 8.60417 1.82083 8.4625 1.9625C8.32083 2.10417 8.25 2.28333 8.25 2.5C8.25 2.71667 8.32083 2.89583 8.4625 3.0375C8.60417 3.17917 8.78333 3.25 9 3.25ZM2 16.85C2.9 15.9667 3.94583 15.2708 5.1375 14.7625C6.32917 14.2542 7.61667 14 9 14C10.3833 14 11.6708 14.2542 12.8625 14.7625C14.0542 15.2708 15.1 15.9667 16 16.85V4H2V16.85ZM9 12C9.96667 12 10.7917 11.6583 11.475 10.975C12.1583 10.2917 12.5 9.46667 12.5 8.5C12.5 7.53333 12.1583 6.70833 11.475 6.025C10.7917 5.34167 9.96667 5 9 5C8.03333 5 7.20833 5.34167 6.525 6.025C5.84167 6.70833 5.5 7.53333 5.5 8.5C5.5 9.46667 5.84167 10.2917 6.525 10.975C7.20833 11.6583 8.03333 12 9 12ZM4 18H14V17.75C13.3 17.1667 12.525 16.7292 11.675 16.4375C10.825 16.1458 9.93333 16 9 16C8.06667 16 7.175 16.1458 6.325 16.4375C5.475 16.7292 4.7 17.1667 4 17.75V18ZM9 10C8.58333 10 8.22917 9.85417 7.9375 9.5625C7.64583 9.27083 7.5 8.91667 7.5 8.5C7.5 8.08333 7.64583 7.72917 7.9375 7.4375C8.22917 7.14583 8.58333 7 9 7C9.41667 7 9.77083 7.14583 10.0625 7.4375C10.3542 7.72917 10.5 8.08333 10.5 8.5C10.5 8.91667 10.3542 9.27083 10.0625 9.5625C9.77083 9.85417 9.41667 10 9 10Z"
-                  fill="#D04040"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
                 />
               </svg>
 
@@ -126,9 +122,24 @@ const MatchedApplicants = ({
         {/* column left */}
         <div className="space-y-7 flex flex-col gap-y-3 ">
           <div className="w-full h-auto p-2">
-            <h1 className="text-sm font-semibold mb-3">
-              {jp.selfIntroduction}
-            </h1>
+            <div className="flex justify-start items-center mb-3 gap-x-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+                />
+              </svg>
+              <h1 className="text-sm font-semibold">{jp.selfIntroduction}</h1>
+            </div>
+
             {video_path && m_basicinfos.video_path !== null ? (
               <>
                 {isVideoLoading && <Skeleton height={200} width={"100%"} />}
@@ -225,9 +236,14 @@ const MatchedApplicants = ({
 
                   <div className="w-full">
                     <div className="flex items-start justify-between w-full">
-                      <div className=" mb-1">
-                        <h1 className="text-sm font-semibold">
+                      <div className=" mb-1 text-wrap w-52">
+                        <h1 className="text-sm font-semibold text-wrap w-full">
                           {exp.job_name}
+                          <span className="text-wrap">
+                            {" "}
+                            • ({exp.job_type}) •{" "}
+                          </span>
+                          <span className="text-green-500">{`  ${Number(exp.end_year) - Number(exp.start_year)} ${jp.year}`}</span>
                         </h1>
                       </div>
                       <p className="text-sm font-semibold">
@@ -236,7 +252,7 @@ const MatchedApplicants = ({
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-light">{exp.description}</p>
+                      <p className="text-xs font-medium">{exp.description}</p>
                     </div>
                   </div>
                 </div>
@@ -270,9 +286,9 @@ const MatchedApplicants = ({
                 m_education.map((edu, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between gap-x-3 px-5"
+                    className="flex items-start justify-between gap-x-3 px-5"
                   >
-                    <div className="flex items-center justify-between gap-x-3">
+                    <div className="flex items-start justify-between gap-x-3">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -289,17 +305,25 @@ const MatchedApplicants = ({
                       </svg>
 
                       <div>
-                        <h1 className="text-sm font-semibold">{edu.major}</h1>
-                        <p className="text-xs text-gray-500">
-                          {edu.university_name}
+                        <span className="flex justify-start items-center gap-x-1 ">
+                          <h1 className="text-sm font-semibold ">
+                            {edu.university_name}
+                          </h1>
+                          <p className="text-sm font-semibold">
+                            ( {edu.academic_start_year}{" "}
+                            {edu.academic_end_year
+                              ? `- ${edu.academic_end_year}`
+                              : ""}
+                            )
+                          </p>
+                        </span>
+                        <p className="text-xs text-green-500 font-semibold mt-1">
+                          {edu.major}
                         </p>
                       </div>
                     </div>
-                    <p className="text-sm ">
-                      {edu.academic_start_year}{" "}
-                      {edu.academic_end_year
-                        ? `- ${edu.academic_end_year}`
-                        : ""}
+                    <p className="text-sm font-semibold  text-wrap text-end">
+                      {edu.academic_types_id}
                     </p>
                   </div>
                 ))
@@ -314,7 +338,24 @@ const MatchedApplicants = ({
         {/* column right */}
         <div className="p-2 space-y-8  px-4">
           <div className="w-full  space-y-2 ">
-            <h1 className="font-sm font-semibold">{jp.acceptView}</h1>
+            <div className="flex justify-start items-center gap-x-1 ">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+
+              <h1 className="font-sm font-semibold">{jp.acceptView}</h1>
+            </div>
 
             <div className="space-y-1">
               <div className="grid grid-cols-2 px-5">
@@ -322,7 +363,7 @@ const MatchedApplicants = ({
                   <p className="text-sm">・{jp.salary}</p>
                 </div>
 
-                <p className="text-sm text-start px-2">
+                <p className="text-sm text-start px-2 text-green-500">
                   ¥ {m_prefer_other.start_salary}万 ~ ¥{" "}
                   {m_prefer_other.end_salary}万
                 </p>
@@ -343,7 +384,9 @@ const MatchedApplicants = ({
                   <p className="text-sm">・{jp.dormitory}</p>
                 </div>
 
-                <p className="text-sm text-start px-2">
+                <p
+                  className={`text-sm text-start px-2 ${m_prefer_other.support_home === 1 ? "text-green-500" : "text-red-500"}`}
+                >
                   {m_prefer_other.support_home === 1
                     ? jp.required
                     : jp.notRequired}
@@ -355,7 +398,9 @@ const MatchedApplicants = ({
                   <p className="text-sm">・{jp.rent}</p>
                 </div>
 
-                <p className="text-sm text-start px-2">
+                <p
+                  className={`text-sm text-start px-2 ${m_prefer_other.support_home_rent === 1 ? "text-green-500" : "text-red-500"}`}
+                >
                   {m_prefer_other.support_home_rent === 1
                     ? jp.required
                     : jp.notRequired}
@@ -367,8 +412,25 @@ const MatchedApplicants = ({
           <div className="flex flex-col gap-y-3 mt-8">
             {m_preferred_jobs.length > 0 && (
               <>
-                <h1 className="font-semibold text-sm ">{jp.preferredJobs}</h1>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex justify-start items-center gap-x-1 ">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+
+                  <h1 className="font-semibold text-sm ">{jp.preferredJobs}</h1>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 px-8">
                   {m_preferred_jobs.map((jobType, index) => (
                     <p
                       key={index}
@@ -382,6 +444,45 @@ const MatchedApplicants = ({
             )}
 
             {m_prefer_areas.length > 0 && (
+              <>
+                <div className="flex justify-start items-center gap-x-1 ">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+
+                  <h1 className="font-semibold text-sm ">{`${jp.area} / ${jp.preferredCities}`}</h1>
+                </div>
+
+                {Object.entries(groupedAreas).map(([region, prefectures]) => (
+                  <div key={region} className="px-5">
+                    <h2 className="font-semibold text-sm mb-1 text-primaryColor">{`・${region}`}</h2>
+                    <div className="flex flex-wrap items-center gap-2 ml-4">
+                      {(prefectures as string[]).map((prefecture, index) => (
+                        <p
+                          key={index}
+                          className="bg-primaryColor text-white text-xs p-1 rounded-md"
+                        >
+                          {prefecture}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {/* {m_prefer_areas.length > 0 && (
               <>
                 <h1 className="font-semibold text-sm ">{jp.preferredCities}</h1>
                 <div className="flex flex-wrap items-center gap-2">
@@ -417,7 +518,7 @@ const MatchedApplicants = ({
                   ))}
                 </div>
               </>
-            )}
+            )} */}
           </div>
         </div>
       </div>
