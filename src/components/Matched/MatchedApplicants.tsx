@@ -13,9 +13,14 @@ type MatchProps = {
   props?: any;
 };
 
-const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => {
+const MatchedApplicants = ({
+  className,
+  applicantDetail,
+  props,
+}: MatchProps) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
+  // console.log("applicantDetail", applicantDetail);
   const {
     code,
     m_basicinfos,
@@ -28,9 +33,6 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
-
-
-
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
@@ -151,8 +153,24 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
           </div>
 
           <div className="p-2">
-            <h1 className="font-semibold text-sm mb-3">{jp.language}</h1>
-            <div className="flex items-center gap-x-3">
+            <div className="flex justify-start items-center mb-3 gap-x-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-5 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+                />
+              </svg>
+              <h1 className="font-semibold text-sm">{jp.language}</h1>
+            </div>
+            <div className="items-center flex-col justify-start gap-x-3 pl-3">
               {m_language_exams.length > 0 ? (
                 m_language_exams.map((language, index) => (
                   <p key={index} className="text-sm">
@@ -170,55 +188,23 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
 
         <div className=" p-3 flex flex-col gap-y-3 ">
           <div>
-            <h1 className=" font-sm font-semibold mb-3 ">{jp.education}</h1>
-            <div className="flex flex-col gap-y-3">
-              {m_education.length > 0 ? (
-                m_education.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between gap-x-3 px-5"
-                  >
-                    <div className="flex items-center justify-between gap-x-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-6 text-primaryColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-                        />
-                      </svg>
-
-                      <div>
-                        <h1 className="text-sm font-semibold">{edu.major}</h1>
-                        <p className="text-xs text-gray-500">
-                          {edu.university_name}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-sm ">
-                      {edu.academic_start_year}{" "}
-                      {edu.academic_end_year
-                        ? `- ${edu.academic_end_year}`
-                        : ""}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm font-normal text-center text-gray-500">
-                  {jp.notFoundEducation}
-                </p>
-              )}
+            <div className="flex justify-start items-center mb-3 gap-x-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
+                />
+              </svg>
+              <h1 className=" font-sm font-semibold">{jp.workExperience}</h1>
             </div>
-          </div>
-
-          <div>
-            <h1 className=" font-sm font-semibold mb-3">{jp.workExperience}</h1>
             {m_job_experiences.length > 0 ? (
               m_job_experiences.map((exp, index) => (
                 <div key={index} className="flex items-start gap-x-2 my-4 px-5">
@@ -228,7 +214,7 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="size-6 text-primaryColor"
+                    className="size-5 text-primaryColor"
                   >
                     <path
                       strokeLinecap="round"
@@ -260,6 +246,69 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
                 {jp.notFoundJobExprenced}
               </p>
             )}
+          </div>
+          <div>
+            <div className="flex justify-start items-center mb-3 gap-x-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                />
+              </svg>
+              <h1 className=" font-sm font-semibold">{jp.education}</h1>
+            </div>
+            <div className="flex flex-col gap-y-3">
+              {m_education.length > 0 ? (
+                m_education.map((edu, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-x-3 px-5"
+                  >
+                    <div className="flex items-center justify-between gap-x-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5 text-primaryColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
+                        />
+                      </svg>
+
+                      <div>
+                        <h1 className="text-sm font-semibold">{edu.major}</h1>
+                        <p className="text-xs text-gray-500">
+                          {edu.university_name}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-sm ">
+                      {edu.academic_start_year}{" "}
+                      {edu.academic_end_year
+                        ? `- ${edu.academic_end_year}`
+                        : ""}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm font-normal text-center text-gray-500">
+                  {jp.notFoundEducation}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         {/* column right */}
@@ -328,6 +377,28 @@ const MatchedApplicants = ({ className, applicantDetail,props }: MatchProps) => 
                       {jobType.m_job_types.job_type_jp}
                     </p>
                   ))}
+                </div>
+              </>
+            )}
+
+            {m_prefer_areas.length > 0 && (
+              <>
+                <h1 className="font-semibold text-sm ">{jp.preferredCities}</h1>
+                <div className="flex flex-wrap items-center gap-2">
+                  {m_prefer_areas
+                    .filter(
+                      (value, index, self) =>
+                        index ===
+                        self.findIndex((t) => t.area.area === value.area.area)
+                    )
+                    .map((area, index) => (
+                      <p
+                        key={index}
+                        className="bg-primaryColor text-white text-xs p-1 rounded-md"
+                      >
+                        {area.area.area}
+                      </p>
+                    ))}
                 </div>
               </>
             )}

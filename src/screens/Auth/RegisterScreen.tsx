@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
 import { RegisterProps, AuthErrorType } from "@/types/helperTypes";
 import { BeatLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -146,6 +146,9 @@ const RegisterScreen = () => {
                   </Button>
                 </div>
               </motion.form>
+              <div className="w-full text-center mt-3">
+               <NavLink to={RouteName.LOGIN} className='text-sm text-secondaryColor underline tracking-wider hover:text-gray-300 transition-all duration-75'>{jp.gotoLogin}</NavLink>
+               </div>
             </div>
           </div>
         </div>

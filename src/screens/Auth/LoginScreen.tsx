@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { LoginProps, AuthErrorType } from "@/types/helperTypes";
 import useAuth from "@/hooks/useAuth";
 import { BeatLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,NavLink } from "react-router-dom";
 import RouteName from "@/navigations/routes";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
@@ -43,6 +43,7 @@ const LoginScreen = () => {
     };
     onLogin(loginProps);
   };
+
 
   /**
    * useEffect hook to navigate user based on authentication status.
@@ -155,6 +156,9 @@ const LoginScreen = () => {
                     </Button>
                   </div>
                 </motion.form>
+               <div className="w-full text-center mt-3">
+               <NavLink to={RouteName.REGISTER} className='text-sm text-secondaryColor underline tracking-wider hover:text-gray-300 transition-all duration-75'>{jp.gotoRegister}</NavLink>
+               </div>
               </main>
             </div>
           </div>

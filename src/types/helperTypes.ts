@@ -393,6 +393,9 @@ export type ApplicantDetail = {
         area_id: number;
         name: string;
       };
+      area:{
+        area:string;
+      };
     },
   ];
   m_preferred_jobs: [

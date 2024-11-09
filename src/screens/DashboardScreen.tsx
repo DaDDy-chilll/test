@@ -121,6 +121,8 @@ const DashboardScreen = () => {
   });
 
   const upcomingInterviews = interviewData?.data;
+  //todo: Remove this when recieve chat id
+  // console.log('upcomingInterviews',upcomingInterviews)
 
   /**
    * useEffect to set the title of the page and handle scrollbar

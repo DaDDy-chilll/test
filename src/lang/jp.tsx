@@ -176,4 +176,6 @@ export const jp = {
   meetingInProgress: "会議進行中",
   meetingEnded: "会議終了",
   areYouSure: "送信してもよろしいですか？",
+  gotoRegister:"初めての企業はこちらから",
+  gotoLogin:"アカウントがお持ちでいる方はこちらから"
 };
