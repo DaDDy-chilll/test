@@ -414,6 +414,7 @@ export type ApplicantDetail = {
     working_time: number;
     support_home: number;
     support_home_rent: number;
+    overtime: number;
   };
   m_language_exams: [
     {

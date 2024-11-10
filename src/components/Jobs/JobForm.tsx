@@ -40,6 +40,7 @@ const annualSalary = [
 const benefits = [
   { value: "support_home", label: jp.supportHouse },
   { value: "support_home_rent", label: jp.supportHouseRent },
+  {value:'over_time',label:jp.overTime}
 ];
 
 const JobForm = ({
@@ -168,11 +169,7 @@ const JobForm = ({
       area_id: Number(formData.get("area") as string) || undefined,
       prefecture_id:
         Number(formData.get("prefecture_id") as string) || undefined,
-      working_time:
-        calculateWorkingTime(
-          formData.get("start_time") as string,
-          formData.get("end_time") as string,
-        ) || undefined,
+      working_time: undefined,
       annual_salary:
         Number(formData.get("annual_salary") as string) || undefined,
       start_time: formData.get("start_time") as string,
@@ -181,7 +178,9 @@ const JobForm = ({
         Number(formData.get("holiday_in_year") as string) || undefined,
       support_home: (formData.get("support_home") as string) ? 1 : 0,
       support_home_rent: (formData.get("support_home_rent") as string) ? 1 : 0,
+      overtime: (formData.get("over_time") as string) ? 1 : 0,
     };
+
 
     if (isEdit) {
       mutate({

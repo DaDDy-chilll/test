@@ -43,8 +43,6 @@ const MatchedApplicants = ({
     return acc;
   }, {});
 
-  console.log("applicantDetail", applicantDetail);
-  // console.log("groupedAreas", groupedAreas);
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
@@ -454,11 +452,11 @@ const MatchedApplicants = ({
 
               <div className="grid grid-cols-2 px-5">
                 <div className="flex items-center gap-x-3 text-xs">
-                  <p className="text-sm">・{jp.hourRate}</p>
+                  <p className="text-sm">・{jp.overTime}</p>
                 </div>
 
-                <p className="text-sm text-start px-2 font-semibold">
-                  {m_prefer_other.working_time || 0} 時
+                <p className={`text-sm text-start px-2 font-semibold ${m_prefer_other.overtime === 1 ? "text-green-500" : "text-red-500"}`}>
+                  {m_prefer_other.overtime === 1 ? jp.required : jp.notRequired}
                 </p>
               </div>
 

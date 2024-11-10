@@ -57,14 +57,15 @@ export const fetchServer = async ({
     if (axios.isAxiosError(error)) {
       if (error.response) {
         const { data, status } = error.response;
+        console.log("error", data);
         if (data.status == 400 || status == 400) {
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {
-          localStorage.removeItem("persist:root");
+          localStorage.clear();
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
-          console.log("server error", data);
-          // window.location.href = RouteName.SERVER_ERROR;
+          // console.log("server error", data);
+          window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };
         }

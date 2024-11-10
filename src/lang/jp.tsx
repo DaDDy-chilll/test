@@ -47,7 +47,6 @@ export const jp = {
   jobDescription: "仕事内容",
   annualSalary: "年収",
   annualHoliday: "年間休日",
-  overTime: "時間とともに",
   benefits: "サポート",
   jobName: "仕事",
   jobType: "仕事の種類",
@@ -184,4 +183,5 @@ export const jp = {
   pass:"合格",
   fail:"不合格",
   noFoundTest:"特定のテストが見つかりません",
+  overTime:"残業",
 };
