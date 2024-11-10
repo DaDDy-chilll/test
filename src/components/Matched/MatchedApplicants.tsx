@@ -30,6 +30,7 @@ const MatchedApplicants = ({
     m_prefer_areas,
     m_preferred_jobs,
     m_prefer_other,
+    m_tokutei_exams
   } = applicantDetail;
   const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
   const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
@@ -165,10 +166,10 @@ const MatchedApplicants = ({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 mt-10">
+      <div className="grid grid-cols-[2fr_3fr_2fr] mt-10">
         {/* column left */}
-        <div className="space-y-7 flex flex-col gap-y-3 ">
-          <div className="w-full h-auto p-2">
+        <div className="space-y-5 flex flex-col gap-y-3 ">
+          <div className=" px-2">
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +211,44 @@ const MatchedApplicants = ({
             )}
           </div>
 
-          <div className="p-2">
+          <div className="px-2">
+            <div className="flex justify-start items-center mb-3 gap-x-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-5 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+                />
+              </svg>
+              <h1 className="font-semibold text-sm">{jp.test}</h1>
+            </div>
+            <div className="items-center flex-col justify-start gap-y- pl-7">
+              {m_tokutei_exams.length > 0 ? (
+                m_tokutei_exams.map((exam, index) => (
+                  <p key={index} className="text-sm mb-1">
+                    {exam.m_exams.name_jp} - {" "}
+                    <span className={`${exam.result === 1 ? "text-green-500" : "text-red-500"}`}>
+                      {exam.result === 1 ? jp.pass : jp.fail}
+                    </span>
+                  </p>
+                ))
+              ) : (
+                <p className="text-xs text-center text-gray-500">
+                  {jp.notFoundLanguage}
+                </p>
+              )}
+            </div>
+          </div>
+
+
+          <div className="px-2">
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +266,7 @@ const MatchedApplicants = ({
               </svg>
               <h1 className="font-semibold text-sm">{jp.language}</h1>
             </div>
-            <div className="items-center flex-col justify-start gap-x-3 pl-3">
+            <div className="items-center flex-col justify-start gap-x-3 pl-7">
               {m_language_exams.length > 0 ? (
                 m_language_exams.map((language, index) => (
                   <p key={index} className="text-sm">
@@ -244,7 +282,8 @@ const MatchedApplicants = ({
           </div>
         </div>
 
-        <div className=" p-3 flex flex-col gap-y-3 ">
+         {/* column Center */}      
+        <div className=" px-10 flex flex-col gap-y-3 ">
           <div>
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
@@ -328,7 +367,6 @@ const MatchedApplicants = ({
               </svg>
               <h1 className=" font-sm font-semibold">{jp.education}</h1>
             </div>
-            <div className="flex flex-col gap-y-3">
               {m_education.length > 0 ? (
                 m_education.map((edu, index) => (
                   <div key={index} className="flex items-start gap-x-2 my-4 px-5">
@@ -377,11 +415,11 @@ const MatchedApplicants = ({
                   {jp.notFoundEducation}
                 </p>
               )}
-            </div>
           </div>
         </div>
+
         {/* column right */}
-        <div className="p-2 space-y-5  px-4">
+        <div className="space-y-5 ">
           <div className="w-full  space-y-2 ">
             <div className="flex justify-start items-center gap-x-1 text-yellow-400">
               <svg
@@ -475,7 +513,7 @@ const MatchedApplicants = ({
 
                   <h1 className="font-semibold text-sm ">{jp.preferredJobs}</h1>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 px-8">
+                <div className="flex flex-wrap items-center gap-2 pl-8">
                   {m_preferred_jobs.map((jobType, index) => (
                     <p
                       key={index}
@@ -510,11 +548,11 @@ const MatchedApplicants = ({
                     />
                   </svg>
 
-                  <h1 className="font-semibold text-sm ">{`${jp.area} / ${jp.preferredCities}`}</h1>
+                  <h1 className="font-semibold text-sm ">{`${jp.desiredArea} / ${jp.preferredCities}`}</h1>
                 </div>
 
                 {Object.entries(groupedAreas).map(([region, prefectures]) => (
-                  <div key={region} className="px-5">
+                  <div key={region} className="pl-5">
                     <h2 className="font-semibold text-sm mb-2 text-primaryColor">{`・${region}`}</h2>
                     <div className="flex flex-wrap items-center gap-2 ml-4">
                       {(prefectures as string[]).map((prefecture, index) => (

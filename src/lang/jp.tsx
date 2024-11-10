@@ -179,4 +179,8 @@ export const jp = {
   gotoRegister:"初めての企業はこちらから",
   gotoLogin: "アカウントがお持ちでいる方はこちらから",
   year: "年",
+  test:"特定試験",
+  desiredArea:"希望地域",
+  pass:"合格",
+  fail:"不合格",
 };
