@@ -42,7 +42,8 @@ const MatchedApplicants = ({
     return acc;
   }, {});
 
-  console.log("groupedAreas", groupedAreas);
+  console.log("applicantDetail", applicantDetail);
+  // console.log("groupedAreas", groupedAreas);
 
   return (
     <div className={`bg-gray-100 py-5 px-6 shadow-md relative ${className}`}>
@@ -57,27 +58,62 @@ const MatchedApplicants = ({
         />
         <div className="flex flex-col gap-y-4">
           <div className="flex items-center justify-start">
-            <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
-            {code && (
+
+            {m_basicinfos.name && (
               <>
+                <h1 className="font-semibold text-lg">{m_basicinfos.name}</h1>
                 <span className="text-xl text-gray-500">・</span>
-                <h1 className="text-normal">{code}</h1>
               </>
             )}
-            <span className="text-xl text-gray-500">・</span>
+
+            {m_basicinfos.jp_name && (
+              <>
+                <h1 className="font-semibold text-lg">
+                  {m_basicinfos.jp_name}
+                </h1>
+                <span className="text-xl text-gray-500">・</span>
+              </>
+            )}
+            {m_basicinfos.mm_name && (
+              <>
+                <h1 className="font-semibold text-lg">
+                  {m_basicinfos.mm_name}
+                </h1>
+                <span className="text-xl text-gray-500">・</span>
+              </>
+            )}
+
             <div className="flex items-center gap-2">
               {m_basicinfos.gender === 0 ? (
                 <p className="text-sm">{jp.male}</p>
               ) : (
                 <p className="text-sm">{jp.female}</p>
               )}
+
+              {code && (
+                <>
+                  <span className="text-xl text-gray-500">・</span>
+                  <h1 className="text-normal">({code})</h1>
+                </>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 text-primaryColor">
-  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-</svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-5 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                />
+              </svg>
 
               <p className="text-sm">
                 {`${m_basicinfos.address} (${m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar})`}
@@ -85,9 +121,20 @@ const MatchedApplicants = ({
             </div>
 
             <div className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor " className="size-5 text-primaryColor">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-</svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor "
+                className="size-5 text-primaryColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                />
+              </svg>
 
               <p className="text-sm">
                 {moment(m_basicinfos.dob).format("YYYY-MM-DD")}
@@ -241,7 +288,7 @@ const MatchedApplicants = ({
                           {exp.job_name}
                           <span className="text-wrap">
                             {" "}
-                            • ({exp.job_type}) •{" "}
+                            • ({exp.m_job_types.job_type_jp}) •{" "}
                           </span>
                           <span className="text-green-500">{`  ${Number(exp.end_year) - Number(exp.start_year)} ${jp.year}`}</span>
                         </h1>
@@ -284,12 +331,8 @@ const MatchedApplicants = ({
             <div className="flex flex-col gap-y-3">
               {m_education.length > 0 ? (
                 m_education.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start justify-between gap-x-3 px-5"
-                  >
-                    <div className="flex items-start justify-between gap-x-3">
-                      <svg
+                  <div key={index} className="flex items-start gap-x-2 my-4 px-5">
+                  <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -304,28 +347,30 @@ const MatchedApplicants = ({
                         />
                       </svg>
 
-                      <div>
-                        <span className="flex justify-start items-center gap-x-1 ">
-                          <h1 className="text-sm font-semibold ">
-                            {edu.university_name}
-                          </h1>
-                          <p className="text-sm font-semibold">
-                            ( {edu.academic_start_year}{" "}
+                  <div className="w-full">
+                    <div className="flex items-start justify-between w-full">
+                      <div className=" mb-1 text-wrap w-52">
+                        <h1 className="text-sm font-semibold text-wrap w-full">
+                        {edu.university_name}
+                          <span className="text-wrap">
+                            {" "}
+                            •  ( {edu.academic_start_year}{" "}
                             {edu.academic_end_year
                               ? `- ${edu.academic_end_year}`
                               : ""}
                             )
-                          </p>
-                        </span>
-                        <p className="text-xs text-green-500 font-semibold mt-1">
-                          {edu.major}
-                        </p>
+                          </span>
+                        </h1>
                       </div>
+                      <p className="text-sm font-semibold">
+                      {edu.m_acdemic_types.name_jp}
+                      </p>
                     </div>
-                    <p className="text-sm font-semibold  text-wrap text-end">
-                      {edu.academic_types_id}
-                    </p>
+                    <div>
+                      <p className="text-xs font-medium">{edu.major}</p>
+                    </div>
                   </div>
+                </div>
                 ))
               ) : (
                 <p className="text-sm font-normal text-center text-gray-500">
@@ -336,9 +381,9 @@ const MatchedApplicants = ({
           </div>
         </div>
         {/* column right */}
-        <div className="p-2 space-y-8  px-4">
+        <div className="p-2 space-y-5  px-4">
           <div className="w-full  space-y-2 ">
-            <div className="flex justify-start items-center gap-x-1 ">
+            <div className="flex justify-start items-center gap-x-1 text-yellow-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -409,10 +454,10 @@ const MatchedApplicants = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-3 mt-8">
+          <div className="flex flex-col gap-y-3 ">
             {m_preferred_jobs.length > 0 && (
               <>
-                <div className="flex justify-start items-center gap-x-1 ">
+                <div className="flex justify-start items-center gap-x-1 text-yellow-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -443,9 +488,13 @@ const MatchedApplicants = ({
               </>
             )}
 
-            {m_prefer_areas.length > 0 && (
+           
+          </div>
+
+          <div className="flex flex-col gap-y-3 ">
+          {m_prefer_areas.length > 0 && (
               <>
-                <div className="flex justify-start items-center gap-x-1 ">
+                <div className="flex justify-start items-center gap-x-1 text-yellow-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -466,7 +515,7 @@ const MatchedApplicants = ({
 
                 {Object.entries(groupedAreas).map(([region, prefectures]) => (
                   <div key={region} className="px-5">
-                    <h2 className="font-semibold text-sm mb-1 text-primaryColor">{`・${region}`}</h2>
+                    <h2 className="font-semibold text-sm mb-2 text-primaryColor">{`・${region}`}</h2>
                     <div className="flex flex-wrap items-center gap-2 ml-4">
                       {(prefectures as string[]).map((prefecture, index) => (
                         <p
@@ -481,44 +530,6 @@ const MatchedApplicants = ({
                 ))}
               </>
             )}
-
-            {/* {m_prefer_areas.length > 0 && (
-              <>
-                <h1 className="font-semibold text-sm ">{jp.preferredCities}</h1>
-                <div className="flex flex-wrap items-center gap-2">
-                  {m_prefer_areas
-                    .filter(
-                      (value, index, self) =>
-                        index ===
-                        self.findIndex((t) => t.area.area === value.area.area)
-                    )
-                    .map((area, index) => (
-                      <p
-                        key={index}
-                        className="bg-primaryColor text-white text-xs p-1 rounded-md"
-                      >
-                        {area.area.area}
-                      </p>
-                    ))}
-                </div>
-              </>
-            )}
-
-            {m_prefer_areas.length > 0 && (
-              <>
-                <h1 className="font-semibold text-sm ">{jp.preferredCities}</h1>
-                <div className="flex flex-wrap items-center gap-2">
-                  {m_prefer_areas.map((area, index) => (
-                    <p
-                      key={index}
-                      className="bg-primaryColor text-white text-xs p-1 rounded-md"
-                    >
-                      {area.prefecture.name}
-                    </p>
-                  ))}
-                </div>
-              </>
-            )} */}
           </div>
         </div>
       </div>

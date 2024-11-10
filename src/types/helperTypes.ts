@@ -380,6 +380,8 @@ export type ApplicantDetail = {
   m_basicinfos: {
     profile_path: string;
     name: string;
+jp_name:string;
+mm_name:string;
     live_in_japan: number;
     dob: string;
     gender: number;
@@ -432,6 +434,9 @@ export type ApplicantDetail = {
       academic_types_id: number;
       major: string;
       university_name: string;
+      m_acdemic_types:{
+        name_jp:string;
+      }
     },
   ];
   m_job_experiences: [
@@ -442,6 +447,17 @@ export type ApplicantDetail = {
       description: string;
       start_year: string;
       end_year: string;
+      m_job_types:{
+        job_type_jp:string;
+      }
     },
   ];
+  m_tokutei_exams:[
+    {
+      m_exams:{
+        name_jp:string;
+      }
+    }
+  ]
+
 };

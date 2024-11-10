@@ -157,7 +157,7 @@ const LoginScreen = () => {
                   </div>
                 </motion.form>
                <div className="w-full text-center mt-3">
-               <NavLink to={RouteName.REGISTER} className='text-sm text-secondaryColor underline tracking-wider hover:text-gray-300 transition-all duration-75'>{jp.gotoRegister}</NavLink>
+               <NavLink to={RouteName.REGISTER} className='text-sm text-gray-500 underline tracking-wider hover:text-secondaryColor transition-all duration-75'>{jp.gotoRegister}</NavLink>
                </div>
               </main>
             </div>

@@ -147,7 +147,7 @@ const RegisterScreen = () => {
                 </div>
               </motion.form>
               <div className="w-full text-center mt-3">
-               <NavLink to={RouteName.LOGIN} className='text-sm text-secondaryColor underline tracking-wider hover:text-gray-300 transition-all duration-75'>{jp.gotoLogin}</NavLink>
+               <NavLink to={RouteName.LOGIN} className='text-sm text-gray-500 underline tracking-wider hover:text-secondaryColor transition-all duration-75'>{jp.gotoLogin}</NavLink>
                </div>
             </div>
           </div>
