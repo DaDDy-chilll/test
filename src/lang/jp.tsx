@@ -183,4 +183,5 @@ export const jp = {
   desiredArea:"希望地域",
   pass:"合格",
   fail:"不合格",
+  noFoundTest:"特定のテストが見つかりません",
 };

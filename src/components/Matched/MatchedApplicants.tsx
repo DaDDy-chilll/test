@@ -234,14 +234,14 @@ const MatchedApplicants = ({
                 m_tokutei_exams.map((exam, index) => (
                   <p key={index} className="text-sm mb-1">
                     {exam.m_exams.name_jp} - {" "}
-                    <span className={`${exam.result === 1 ? "text-green-500" : "text-red-500"}`}>
+                    <span className={`${exam.result === 1 ? "text-green-500" : "text-red-500"} font-semibold`}>
                       {exam.result === 1 ? jp.pass : jp.fail}
                     </span>
                   </p>
                 ))
               ) : (
                 <p className="text-xs text-center text-gray-500">
-                  {jp.notFoundLanguage}
+                  {jp.noFoundTest}
                 </p>
               )}
             </div>
@@ -270,7 +270,7 @@ const MatchedApplicants = ({
               {m_language_exams.length > 0 ? (
                 m_language_exams.map((language, index) => (
                   <p key={index} className="text-sm">
-                    {language.m_exams.name_jp} - {language.m_exam_levels.level}
+                    {language.m_exams.name_jp} - <span className="font-semibold">{language.m_exam_levels.level}</span>
                   </p>
                 ))
               ) : (
@@ -446,7 +446,7 @@ const MatchedApplicants = ({
                   <p className="text-sm">・{jp.salary}</p>
                 </div>
 
-                <p className="text-sm text-start px-2 text-green-500">
+                <p className="text-sm text-start px-2 font-semibold text-green-500">
                   ¥ {m_prefer_other.start_salary}万 ~ ¥{" "}
                   {m_prefer_other.end_salary}万
                 </p>
@@ -457,7 +457,7 @@ const MatchedApplicants = ({
                   <p className="text-sm">・{jp.hourRate}</p>
                 </div>
 
-                <p className="text-sm text-start px-2">
+                <p className="text-sm text-start px-2 font-semibold">
                   {m_prefer_other.working_time || 0} 時
                 </p>
               </div>
@@ -468,7 +468,7 @@ const MatchedApplicants = ({
                 </div>
 
                 <p
-                  className={`text-sm text-start px-2 ${m_prefer_other.support_home === 1 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-sm text-start px-2 font-semibold ${m_prefer_other.support_home === 1 ? "text-green-500" : "text-red-500"}`}
                 >
                   {m_prefer_other.support_home === 1
                     ? jp.required
@@ -482,7 +482,7 @@ const MatchedApplicants = ({
                 </div>
 
                 <p
-                  className={`text-sm text-start px-2 ${m_prefer_other.support_home_rent === 1 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-sm text-start px-2 font-semibold ${m_prefer_other.support_home_rent === 1 ? "text-green-500" : "text-red-500"}`}
                 >
                   {m_prefer_other.support_home_rent === 1
                     ? jp.required
