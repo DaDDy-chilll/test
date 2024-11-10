@@ -405,7 +405,7 @@ const MatchedApplicants = ({
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium">{edu.major}</p>
+                      <p className="text-xs font-medium text-green-500">{edu.major}</p>
                     </div>
                   </div>
                 </div>
