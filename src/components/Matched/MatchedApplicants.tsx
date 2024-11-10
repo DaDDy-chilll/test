@@ -419,7 +419,7 @@ const MatchedApplicants = ({
         {/* column right */}
         <div className="space-y-5 ">
           <div className="w-full  space-y-2 ">
-            <div className="flex justify-start items-center gap-x-1 text-yellow-400">
+            <div className="flex justify-start items-center gap-x-1 text-yellow-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -493,7 +493,7 @@ const MatchedApplicants = ({
           <div className="flex flex-col gap-y-3 ">
             {m_preferred_jobs.length > 0 && (
               <>
-                <div className="flex justify-start items-center gap-x-1 text-yellow-400">
+                <div className="flex justify-start items-center gap-x-1 text-yellow-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -530,7 +530,7 @@ const MatchedApplicants = ({
           <div className="flex flex-col gap-y-3 ">
           {m_prefer_areas.length > 0 && (
               <>
-                <div className="flex justify-start items-center gap-x-1 text-yellow-400">
+                <div className="flex justify-start items-center gap-x-1 text-yellow-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
