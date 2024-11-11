@@ -383,7 +383,7 @@ const MatchedScreend = () => {
           </DropdownMenu>
         </div>
         <AnimatePresence>
-          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-120px)] overflow-y-auto auto-rows-[350px]">
+          <div className="grid grid-cols-4 gap-2 p-2 h-[calc(100vh-130px)] overflow-y-auto auto-rows-[350px]">
             {isLoading ? (
               <>
                 <CardSkeleton />

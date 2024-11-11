@@ -45,21 +45,21 @@ const UserCard = ({
           <div className="flex flex-col gap-y-6 h-full justify-center">
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.age}:</p>
-              <p>{moment(m_basicinfos.dob).fromNow().split(" ")[0]}</p>
+              <p className="font-semibold">{moment(m_basicinfos.dob).fromNow().split(" ")[0]} {jp.year}</p>
             </span>
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.gender}:</p>
-              <p>{m_basicinfos.gender === 0 ? jp.male : jp.female}</p>
+              <p className="font-semibold">{m_basicinfos.gender === 0 ? jp.male : jp.female}</p>
             </span>
           </div>
           <div className="flex flex-col gap-y-6 h-full justify-center">
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.location}:</p>
-              <p>{m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}</p>
+              <p className="font-semibold">{m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar}</p>
             </span>
             <span className="flex gap-2 text-normal font-medium text-gray-700">
               <p>{jp.passport}:</p>
-              <p>{m_basicinfos.has_passport === 1 ? jp.yes : jp.no}</p>
+              <p className={`font-semibold ${m_basicinfos.has_passport === 1 ? 'text-green-500':'text-red-500'}`}>{m_basicinfos.has_passport === 1 ? jp.yes : jp.no}</p>
             </span>
           </div>
         </div>

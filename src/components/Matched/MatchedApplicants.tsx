@@ -158,7 +158,7 @@ const MatchedApplicants = ({
 
               <p className="text-sm">
                 {jp.passport} {" : "}{" "}
-                {m_basicinfos.has_passport === 1 ? "有" : "無"}
+                {m_basicinfos.has_passport === 1 ? jp.yes : jp.no}
               </p>
             </div>
           </div>
@@ -209,7 +209,7 @@ const MatchedApplicants = ({
             )}
           </div>
 
-          <div className="px-2">
+          <div className="pl-2">
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +227,7 @@ const MatchedApplicants = ({
               </svg>
               <h1 className="font-semibold text-sm">{jp.test}</h1>
             </div>
-            <div className="items-center flex-col justify-start gap-y- pl-7">
+            <div className="items-center flex-col justify-start gap-y- pl-6">
               {m_tokutei_exams.length > 0 ? (
                 m_tokutei_exams.map((exam, index) => (
                   <p key={index} className="text-sm mb-1">
@@ -246,7 +246,7 @@ const MatchedApplicants = ({
           </div>
 
 
-          <div className="px-2">
+          <div className="pl-2">
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -264,7 +264,7 @@ const MatchedApplicants = ({
               </svg>
               <h1 className="font-semibold text-sm">{jp.language}</h1>
             </div>
-            <div className="items-center flex-col justify-start gap-x-3 pl-7">
+            <div className="items-center flex-col justify-start gap-x-3 pl-6">
               {m_language_exams.length > 0 ? (
                 m_language_exams.map((language, index) => (
                   <p key={index} className="text-sm">
@@ -281,7 +281,7 @@ const MatchedApplicants = ({
         </div>
 
          {/* column Center */}      
-        <div className=" px-10 flex flex-col gap-y-3 ">
+        <div className=" px-7 flex flex-col gap-y-3 ">
           <div>
             <div className="flex justify-start items-center mb-3 gap-x-1">
               <svg
@@ -320,7 +320,7 @@ const MatchedApplicants = ({
 
                   <div className="w-full">
                     <div className="flex items-start justify-between w-full">
-                      <div className=" mb-1 text-wrap w-52">
+                      <div className=" mb-1 text-wrap  max-w-60">
                         <h1 className="text-sm font-semibold text-wrap w-full">
                           {exp.job_name}
                           <span className="text-wrap">
