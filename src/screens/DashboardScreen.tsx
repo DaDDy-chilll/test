@@ -122,8 +122,7 @@ const DashboardScreen = () => {
   });
 
   const upcomingInterviews = interviewData?.data;
-  //todo: Remove this when recieve chat id
-  console.log('upcomingInterviews',upcomingInterviews)
+
 
   /**
    * useEffect to set the title of the page and handle scrollbar
@@ -186,10 +185,10 @@ const DashboardScreen = () => {
   const handleSeeMore = () => navigate(RouteName.CHAT);
 
   /**
-   * This function is used to cover interviews
+   * This function is used to convert interviews
    * @author PSK
-   * @param {any} data - The data to cover
-   * @returns {array} The list of covered interviews
+   * @param {any} data - The data to convert
+   * @returns {array} The list of converted interviews
    */
   const coverInterviews = useCallback((data: any) => {
     if (!data) return [];
@@ -202,6 +201,7 @@ const DashboardScreen = () => {
             start_time: interview.start_time,
             end_time: interview.end_time,
             job_title: interview.job_title,
+            chat_id: interview.chat_id,
           };
         });
       },

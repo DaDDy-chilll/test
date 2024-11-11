@@ -57,7 +57,6 @@ export const fetchServer = async ({
     if (axios.isAxiosError(error)) {
       if (error.response) {
         const { data, status } = error.response;
-        console.log("error", data);
         if (data.status == 400 || status == 400) {
           throw { error: true, message: data.message, status };
         } else if (data.status == 401 || status == 401) {

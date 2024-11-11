@@ -54,6 +54,7 @@ const ChatScreen = () => {
     isEnd,
   } = useChat({ id: user?.id });
 
+
   /**
    * Sets the title of the chat screen using the dispatch function.
    * @author PSK
@@ -167,8 +168,9 @@ const ChatScreen = () => {
    * @author PSK
    */
   useEffect(() => {
-    if (navChat) handleChatSelect(navChat);
-  }, [navChat]);
+    const chat = chats.find((chat) => chat.id === navChat?.id);
+    if (chat) handleChatSelect(chat);
+  }, [navChat,!isLoading]);
 
   return (
     <>

@@ -280,10 +280,11 @@ export type FilterType = {
 
 export type Event = {
   name: string;
-  user_photo: any;
-  start_time: any;
-  end_time: any;
-  job_title: any;
+  user_photo: string;
+  start_time: string;
+  end_time: string;
+  job_title: string;
+  chat_id: string;
 };
 
 export interface Chat {

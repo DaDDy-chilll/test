@@ -16,11 +16,9 @@ type MatchProps = {
 const MatchedApplicants = ({
   className,
   applicantDetail,
-  props,
 }: MatchProps) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   if (!applicantDetail) return null;
-  console.log("applicantDetail", applicantDetail);
   const {
     code,
     m_basicinfos,

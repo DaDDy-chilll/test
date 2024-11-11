@@ -123,6 +123,7 @@ const CalendarScreen = () => {
             start_time: interview.start_time,
             end_time: interview.end_time,
             job_title: interview.job_title,
+            chat_id: interview.chat_id,
           };
         });
       },
