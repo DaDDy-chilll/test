@@ -176,6 +176,7 @@ const ApplicantScreen = () => {
     }
   }, [applicantDetailError]);
 
+    //Windows Back Arrow handler
   useEffect(() => {
     const handlePopState = () => {
       if (isDetail && !applicantID) {

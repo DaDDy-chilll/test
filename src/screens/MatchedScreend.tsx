@@ -293,6 +293,21 @@ const MatchedScreend = () => {
     }
   }, [page, limit, likeOrUnlikeSuccess, refetch]);
 
+
+
+  //Windows Back Arrow handler
+  useEffect(() => {
+    const handlePopState = () => {
+      if (showDetail) {
+        setShowDetail(null);
+        window.history.pushState(null, "", window.location.pathname);
+      }
+    };
+    if (showDetail)  window.history.pushState(null, "", window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [showDetail]);
+
   return (
     <>
       <Helmet>
