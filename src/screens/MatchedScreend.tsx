@@ -144,9 +144,7 @@ const MatchedScreend = () => {
       });
     },
     onSuccess: () => {
-      if (liked) {
-        setShowConfirmation(true);
-      }
+  
       queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
     },
   });
@@ -222,7 +220,10 @@ const MatchedScreend = () => {
         endpoint: likeOrUnlike === "like" ? apiRoutes.LIKE : apiRoutes.UNLIKE,
         body: { user_id: user_id, jobs_id: jobType.id },
       });
-      queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
+
+      if (liked && likeOrUnlike === "like") {
+        setShowConfirmation(true);
+      }
     }
   };
 
@@ -313,9 +314,9 @@ const MatchedScreend = () => {
       <Helmet>
         <title>{jp.matches} - Japan Job</title>
       </Helmet>
-      {(isPending || jobNameTypeLoading) && (
+      {( jobNameTypeLoading) && (
         <Loading
-          isLoading={isPending || jobNameTypeLoading}
+          isLoading={ jobNameTypeLoading}
           className="h-[calc(100vh-68px)]"
         />
       )}
@@ -324,6 +325,8 @@ const MatchedScreend = () => {
           message={jp.goToChat}
           onConfirm={handleCancelConfirmation}
           onCancel={() => setShowConfirmation(false)}
+          loading={isPending}
+
         />
       )}
       <motion.main
