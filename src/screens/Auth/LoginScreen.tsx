@@ -142,7 +142,7 @@ const LoginScreen = () => {
                     <Button
                       type="submit"
                       disabled={false}
-                      className="w-full medium font-medium bg-red-500"
+                      className="w-full medium font-medium"
                     >
                       {isLoginPending ? (
                         <BeatLoader
