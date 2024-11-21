@@ -144,7 +144,6 @@ const MatchedScreend = () => {
       });
     },
     onSuccess: () => {
-  
       queryClient.invalidateQueries({ queryKey: [QueryKey.MATCHED] });
     },
   });

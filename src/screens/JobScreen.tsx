@@ -39,6 +39,7 @@ const defaultForm = {
   job_des: "",
   support_home: "",
   support_home_rent: "",
+  over_time: "",
 };
 
 /**
@@ -211,6 +212,7 @@ const JobScreen = () => {
         job_des: jobDetail?.data.job_des,
         support_home: jobDetail?.data.support_home,
         support_home_rent: jobDetail?.data.support_home_rent,
+        over_time: jobDetail?.data.overtime,
       });
     }
   }, [jobDetail]);

@@ -17,7 +17,8 @@ import { RootState } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { setToken, setForgotPassword } from "@/store";
 import { ERROR_MESSAGE } from "@/constants/errorMessage";
-
+import useHandleError from "@/hooks/useHandleError";
+import { AuthErrorType } from "@/types/helperTypes";
 /**
  * ChangePassword component allows users to change their password.
  * @component
@@ -34,7 +35,7 @@ const ChangePassword: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { mutate, isPending, isSuccess, error } = usePost({ token });
-
+  const { authHandleError,passwordError,resetAuthError } = useHandleError();
   /**
    * Handles the form submission for changing the password.
    * @param {React.FormEvent} e - The form submission event.
@@ -43,6 +44,8 @@ const ChangePassword: React.FC = () => {
    */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    resetAuthError();
+    setErrorMessage("");
     const formData = new FormData(e.target as HTMLFormElement);
     const confirm_password = formData.get("confirm_password") as string;
     const password = formData.get("password") as string;
@@ -73,10 +76,12 @@ const ChangePassword: React.FC = () => {
       }, 500);
     }
     if (error) {
-      // console.log(error);
+      authHandleError(error.message as AuthErrorType);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, error]);
+
+  console.log(passwordError);
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">
@@ -117,6 +122,7 @@ const ChangePassword: React.FC = () => {
                 }
                 className="mt-1 block w-full"
                 required={true}
+                error={passwordError ?? ""}
               />
               <button
                 type="button"

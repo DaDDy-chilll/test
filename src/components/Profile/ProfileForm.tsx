@@ -101,8 +101,7 @@ const ProfileForm = ({
     },
     onSuccess: (data) => {
       setAvatarImage(
-        "https://api.japanjob.exbrainedu.com/v1/file/photo/" +
-          data.data.filename,
+        `${import.meta.env.VITE_SERVER_URL}/file/photo/` + data.data.filename
       );
       setFormData((prevData: any) => ({
         ...prevData,
@@ -113,7 +112,7 @@ const ProfileForm = ({
     onError: (error) => {
       setAlertMessage(error.message);
       setShowAlert(true);
-      console.error("Error uploading image:", error);
+      // console.error("Error uploading image:", error);
       setImageLoading(false);
     },
     onSettled: () => {
@@ -218,7 +217,7 @@ const ProfileForm = ({
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(
-        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo,
+        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo
       );
     }
   }, [formData.photo]);

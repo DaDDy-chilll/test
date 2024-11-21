@@ -105,7 +105,7 @@ const ProfileFormScreen = () => {
           })),
         );
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -133,7 +133,7 @@ const ProfileFormScreen = () => {
     },
     onSuccess: (data) => {
       setAvatarImage(
-        "https://api.japanjob.exbrainedu.com/v1/file/photo/" +
+        `${import.meta.env.VITE_SERVER_URL}/file/photo/` +
           data.data.filename,
       );
       setFormData((prevData) => ({ ...prevData, photo: data.data.filename }));
@@ -141,7 +141,7 @@ const ProfileFormScreen = () => {
     onError: (error) => {
       setAlertMessage(error.message);
       setShowAlert(true);
-      console.error("Error uploading image:", error);
+      // console.error("Error uploading image:", error);
       setImageLoading(false);
     },
     onSettled: () => {
@@ -193,6 +193,7 @@ const ProfileFormScreen = () => {
     resetProfileFormError();
     try {
       const jobData = {
+        photo: (formData.photo as string) || undefined,
         name: formData.name || undefined,
         industry_type_id: Number(formData.industry_type_id.value) || undefined,
         budget: Number(formData.budget) || undefined,
@@ -214,6 +215,7 @@ const ProfileFormScreen = () => {
         area: (formData.area as string) || undefined,
       };
 
+
       setLoading(true);
       const response = await fetchServer({
         endpoint: apiRoutes.PROFILE,
@@ -229,7 +231,7 @@ const ProfileFormScreen = () => {
         dispatch(setName(response.data.name));
         navigate(RouteName.DASHBOARD);
       } else {
-        console.error("Failed to update profile:", response.message);
+        // console.error("Failed to update profile:", response.message);
       }
     } catch (error: ErrorType | any) {
       setError(error);
