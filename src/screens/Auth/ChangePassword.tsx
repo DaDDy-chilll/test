@@ -35,7 +35,7 @@ const ChangePassword: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { mutate, isPending, isSuccess, error } = usePost({ token });
-  const { authHandleError,passwordError,resetAuthError } = useHandleError();
+  const { authHandleError, passwordError, resetAuthError } = useHandleError();
   /**
    * Handles the form submission for changing the password.
    * @param {React.FormEvent} e - The form submission event.
@@ -43,23 +43,32 @@ const ChangePassword: React.FC = () => {
    * @author PSK
    */
   const handleSubmit = (e: React.FormEvent) => {
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     e.preventDefault();
     resetAuthError();
     setErrorMessage("");
     const formData = new FormData(e.target as HTMLFormElement);
     const confirm_password = formData.get("confirm_password") as string;
     const password = formData.get("password") as string;
-    if (password !== confirm_password) {
+
+    if (!passwordPattern.test(password)) {
+      authHandleError({
+        password: { jp: ERROR_MESSAGE.STRONG_PASSWORD },
+      } as AuthErrorType);
+      return;
+    } else if (password !== confirm_password) {
       setErrorMessage(ERROR_MESSAGE.PASSWORDS_DO_NOT_MATCH);
       return;
+    } else {
+      mutate({
+        endpoint: apiRoutes.CHANGE_PASSWORD,
+        body: {
+          confirm_password,
+          password,
+        },
+      });
     }
-    mutate({
-      endpoint: apiRoutes.CHANGE_PASSWORD,
-      body: {
-        confirm_password,
-        password,
-      },
-    });
   };
 
   /**
@@ -81,7 +90,7 @@ const ChangePassword: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, error]);
 
-  console.log(passwordError);
+
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-200">

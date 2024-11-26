@@ -5,6 +5,7 @@ export const ERROR_MESSAGE = {
   PASSWORDS_DO_NOT_MATCH: "パスワードが一致しません・",
   INVALID_EMAIL: "無効なメールアドレスです・",
   INVALID_PASSWORD: "無効なパスワードです・",
+  STRONG_PASSWORD: "パスワードは少なくとも8文字、大文字、小文字、数字、特殊文字を含む必要があります・",
   ALL_FIELDS_REQUIRED: "すべての項目を入力してください・",
   PLEASE_SELECT_A_VALID_OPTION: "有効なオプションを選択してください・",
   INVALID_PHOTO: "無効な写真です・",
