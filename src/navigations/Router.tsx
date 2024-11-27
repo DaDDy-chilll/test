@@ -6,6 +6,7 @@ import AuthProtectRoute from "./AuthProtectRoute";
 import ShareLayout from "@/lib/ShareLayout";
 import { AnimatePresence } from "framer-motion";
 import AuthShareLayout from "@/layouts/AuthShareLayout";
+
 import {
   InitialLanding,
   LoginScreen,
@@ -33,6 +34,7 @@ const JobScreen = lazy(() => import("@/screens/JobScreen"));
 const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
 const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
 const ProfileFormScreen = lazy(() => import("@/screens/ProfileFormScreen"));
+const DownloadApk = lazy(() => import("@/screens/DownloadApk"));
 
 /**
  * This function is used to render the Router component with Suspense and BrowserRouter
@@ -64,6 +66,8 @@ const AnimatedRoutes = () => {
         {/* auth route */}
         <Route path={Routenames.REGISTER} Component={RegisterScreen} />
         <Route path={Routenames.LOGIN} Component={LoginScreen} />
+        {/* Download apk route */}
+        <Route path={Routenames.DOWNLOAD_APK} Component={DownloadApk} />
 
         {/* Auth Protected routes */}
         <Route

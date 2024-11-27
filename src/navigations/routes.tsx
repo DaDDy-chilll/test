@@ -24,6 +24,7 @@ enum RouteName {
   SERVER_ERROR = "/server_error",
   NETWORK_ERROR = "/network_error",
   PRIVACY_POLICY = "/privacy_policy",
+  DOWNLOAD_APK = "/download",
 }
 
 export default RouteName;

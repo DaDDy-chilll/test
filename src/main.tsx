@@ -12,7 +12,7 @@ export const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 const renderApp = () => (
-  <React.StrictMode>
+
     <AppProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
@@ -20,7 +20,7 @@ const renderApp = () => (
         </HelmetProvider>
       </QueryClientProvider>
     </AppProvider>
-  </React.StrictMode>
+
 );
 root.render(renderApp());
 // if (import.meta.env.VITE_ENV !== "production") {
