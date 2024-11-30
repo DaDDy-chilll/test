@@ -12,10 +12,9 @@ import { RootState } from "@/store/store";
 import Modal from "./Modal";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import useHandleError from "@/hooks/useHandleError";
-import { AuthErrorType } from "@/types/helperTypes";
 import { QueryKey } from "@/utils/queryKey";
 import { useQueryClient } from "@tanstack/react-query";
+import { ERROR_MESSAGE } from "@/constants/errorMessage";
 
 type AppointmentModelProps = {
   setIsAppointmentModelOpen: (isOpen: boolean) => void;
@@ -58,23 +57,42 @@ const defaultDirectInterview = {
   url: "",
 };
 
+interface APIError {
+  message: {
+    email?: {
+      jp: string;
+    };
+    jp: string;
+  };
+}
+
 const defaultAdminInterview = {
   meetingType: meetingTypeOptions[1].value,
   option_one: {
-    date: moment().format("YYYY-MM-DD"),
-    start_time: "10:00",
-    end_time: "11:00",
+    date: "",
+    start_time: "",
+    end_time: "",
   },
   option_two: {
-    date: moment().add(1, "days").format("YYYY-MM-DD"),
-    start_time: "10:00",
-    end_time: "11:00",
+    date: "",
+    start_time: "",
+    end_time: "",
   },
   option_three: {
-    date: moment().add(2, "days").format("YYYY-MM-DD"),
-    start_time: "10:00",
-    end_time: "11:00",
+    date: "",
+    start_time: "",
+    end_time: "",
   },
+};
+
+const checkAdminInterviewInitialState: {
+  option_one: boolean | string;
+  option_two: boolean | string;
+  option_three: boolean | string;
+} = {
+  option_one: "",
+  option_two: "",
+  option_three: "",
 };
 
 const AppointmentModel = ({
@@ -84,12 +102,19 @@ const AppointmentModel = ({
 }: AppointmentModelProps) => {
   const queryClient = useQueryClient();
   const { token } = useSelector((state: RootState) => state.auth);
-  const { authHandleError, emailError, resetAuthError } = useHandleError();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [interview, setInterview] = useState(defaultDirectInterview);
   const [adminInterview, setAdminInterview] = useState(defaultAdminInterview);
   const [alertMessage, setAlertMessage] = useState<string>("");
-  const handleCloseModel = () => setIsAppointmentModelOpen(false);
+  const [checkAdminInterviewState, setCheckAdminInterviewState] = useState(
+    checkAdminInterviewInitialState
+  );
+  const [currentOption, setCurrentOption] = useState<string>("");
+  const handleCloseModel = () => {
+    resetState();
+    setIsAppointmentModelOpen(false);
+  };
+
   const [meetingType, setMeetingType] = useState<{
     label: string;
     value: string;
@@ -103,7 +128,6 @@ const AppointmentModel = ({
   const {
     mutate: postMeeting,
     isPending,
-    error,
     isSuccess,
   } = useMutation({
     mutationFn: (data: MeetingData) => {
@@ -115,18 +139,76 @@ const AppointmentModel = ({
       });
     },
     onSuccess: () => {
+      setCheckAdminInterviewState(checkAdminInterviewInitialState);
+      setCurrentOption("");
       queryClient.invalidateQueries({
         queryKey: [QueryKey.USER_INTERVIEW],
       });
     },
+    onError(error: APIError) {
+      setAlertMessage(
+        error.message?.email?.jp || ERROR_MESSAGE.INTERVIEW_DATE_INVALID
+      );
+      setShowConfirmModal(false);
+      setShowAlert(true);
+    },
   });
 
   /**
-   * This function is used to confirm the meeting data.
+   * This Mutation is used to post the meeting data.
    * @author PSK
    */
-  const handleConfirmRewrite = () => {
-    if (meetingType.value === "admin") {
+  const { mutate: checkInterviewDate, isPending: checkInterviewDatePending } =
+    useMutation({
+      mutationFn: ({
+        date,
+        start_time,
+        end_time,
+      }: {
+        date: string;
+        start_time: string;
+        end_time: string;
+      }) => {
+        return fetchServer({
+          endpoint: `${apiRoutes.CHECK_INTERVIEW}`,
+          method: "POST",
+          token: token,
+          body: { date, start_time, end_time, user_id: userId },
+        });
+      },
+      onSuccess: (data) => {
+        if (data.status === 200) {
+          setCheckAdminInterviewState({
+            ...checkAdminInterviewState,
+            [currentOption]: true,
+          });
+        }
+      },
+      onError(error: APIError) {
+        setCheckAdminInterviewState({
+          ...checkAdminInterviewState,
+          [currentOption]: false,
+        });
+        setAlertMessage(
+          error.message?.jp || ERROR_MESSAGE.INTERVIEW_DATE_INVALID
+        );
+        setShowConfirmModal(false);
+        setShowAlert(true);
+      },
+    });
+  const handleCancel = () => setShowConfirmModal(false);
+
+  /**
+   * This function is used to add admin interview.
+   * @author PSK
+   */
+  const handleAddAdminInterview = () => {
+    if (
+      checkAdminInterviewState.option_one &&
+      checkAdminInterviewState.option_two &&
+      checkAdminInterviewState.option_three
+    ) {
+    
       const meetingData: MeetingData = {
         user_id: userId,
         job_id: jobId,
@@ -144,45 +226,162 @@ const AppointmentModel = ({
       };
       postMeeting(meetingData);
     } else {
-      if (interview.url === "") {
-        setAlertMessage("Zoom又は Meet リンクを入力してください");
-        setShowConfirmModal(false);
-        setShowAlert(true);
-        return;
-      } else {
-        const meetingData: MeetingData = {
-          user_id: userId,
-          job_id: jobId,
-          direct: {
-            date: interview.date,
-            start_time: interview.start_time,
-            end_time: interview.end_time,
-            zoom_link: interview.url,
-          },
-        };
-        postMeeting(meetingData);
-      }
+      setAlertMessage(ERROR_MESSAGE.NEED_ALL_VALID_DATE);
+      setShowConfirmModal(false);
+      setShowAlert(true);
     }
   };
-  const handleCancel = () => setShowConfirmModal(false);
+
+  const checkInterviewOptionOne = () => {
+    if (
+      adminInterview.option_one.date === "" ||
+      adminInterview.option_one.start_time === "" ||
+      adminInterview.option_one.end_time === ""
+    )
+      return;
+    if (
+      moment(adminInterview.option_one.date).isBefore(moment().startOf("day"))
+    ) {
+      setAlertMessage(ERROR_MESSAGE.FIRST_DATE_ERROR);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+      return;
+    }
+    setCurrentOption("option_one");
+    checkInterviewDate({
+      date: adminInterview.option_one.date,
+      start_time: adminInterview.option_one.start_time,
+      end_time: adminInterview.option_one.end_time,
+    });
+  };
+
+  const checkInterviewOptionTwo = () => {
+    if (
+      adminInterview.option_two.date === "" ||
+      adminInterview.option_two.start_time === "" ||
+      adminInterview.option_two.end_time === ""
+    )
+      return;
+    if (
+      moment(adminInterview.option_two.date).isBefore(moment().startOf("day"))
+    ) {
+      setAlertMessage(ERROR_MESSAGE.SECOND_DATE_ERROR);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+      return;
+    }
+    setCurrentOption("option_two");
+    checkInterviewDate({
+      date: adminInterview.option_two.date,
+      start_time: adminInterview.option_two.start_time,
+      end_time: adminInterview.option_two.end_time,
+    });
+  };
+
+  const checkInterviewOptionThree = () => {
+    if (
+      adminInterview.option_three.date === "" ||
+      adminInterview.option_three.start_time === "" ||
+      adminInterview.option_three.end_time === ""
+    )
+      return;
+    if (
+      moment(adminInterview.option_three.date).isBefore(moment().startOf("day"))
+    ) {
+      setAlertMessage(ERROR_MESSAGE.THIRD_DATE_ERROR);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+      return;
+    }
+    setCurrentOption("option_three");
+    checkInterviewDate({
+      date: adminInterview.option_three.date,
+      start_time: adminInterview.option_three.start_time,
+      end_time: adminInterview.option_three.end_time,
+    });
+  };
+
+  /**
+   * This function is used to add direct interview.
+   * @author PSK
+   */
+  const handleAddDirectInterview = () => {
+    if (interview.url === "") {
+      setAlertMessage(ERROR_MESSAGE.NEED_ZOOM_LINK);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+      return;
+    } else if (moment(interview.date).isBefore(moment().startOf("day"))) {
+      setAlertMessage(ERROR_MESSAGE.INTERVIEW_DATE_INVALID);
+      setShowConfirmModal(false);
+      setShowAlert(true);
+      return;
+    } else {
+      const meetingData: MeetingData = {
+        user_id: userId,
+        job_id: jobId,
+        direct: {
+          date: interview.date,
+          start_time: interview.start_time,
+          end_time: interview.end_time,
+          zoom_link: interview.url,
+        },
+      };
+      postMeeting(meetingData);
+    }
+  };
+
+
+  const resetState = () => {
+    setShowConfirmModal(false);
+    setCheckAdminInterviewState(checkAdminInterviewInitialState);
+    setCurrentOption("");
+    setAlertMessage("");
+    setAdminInterview(defaultAdminInterview);
+    setInterview(defaultDirectInterview)
+  }
+
+  useEffect(() => {
+    if (meetingType.value === "admin") {
+      checkInterviewOptionOne();
+    }
+  }, [
+    adminInterview.option_one.date,
+    adminInterview.option_one.start_time,
+    adminInterview.option_one.end_time,
+  ]);
+
+  useEffect(() => {
+    if (meetingType.value === "admin") {
+      checkInterviewOptionTwo();
+    }
+  }, [
+    adminInterview.option_two.date,
+    adminInterview.option_two.start_time,
+    adminInterview.option_two.end_time,
+  ]);
+
+  useEffect(() => {
+    if (meetingType.value === "admin") {
+      checkInterviewOptionThree();
+    }
+  }, [
+    adminInterview.option_three.date,
+    adminInterview.option_three.start_time,
+    adminInterview.option_three.end_time,
+  ]);
 
   /**
    * This Effect is used to handle the error and success of the mutation.
    * @author PSK
    */
   useEffect(() => {
-    if (error) {
-      authHandleError(error?.message as AuthErrorType);
-      setShowConfirmModal(false);
-      setShowAlert(true);
-    }
-
     if (isSuccess) {
       setTimeout(() => setShowConfirmModal(false), 500);
       setIsAppointmentModelOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isSuccess]);
+  }, [isSuccess]);
 
   return (
     <>
@@ -220,6 +419,7 @@ const AppointmentModel = ({
               options={meetingTypeOptions}
               value={meetingType}
               onChange={(e) => {
+                resetState();
                 setMeetingType({
                   label: e.target.labels as unknown as string,
                   value: e.target.value,
@@ -343,7 +543,9 @@ const AppointmentModel = ({
               >
                 {/*! Option One */}
                 <div>
-                  <h1 className="text-normal font-bold text-secondaryColor">
+                  <h1
+                    className={`text-normal font-bold  ${checkAdminInterviewState.option_one === "" ? "text-secondaryColor" : checkAdminInterviewState.option_one ? "text-green-500" : "text-red-500"}`}
+                  >
                     第1希望時間
                   </h1>
                   <div className="flex items-center justify-between mt-2">
@@ -440,7 +642,9 @@ const AppointmentModel = ({
 
                 {/*! Option Two */}
                 <div>
-                  <h1 className="text-normal font-bold text-secondaryColor">
+                  <h1
+                    className={`text-normal font-bold  ${checkAdminInterviewState.option_two === "" ? "text-secondaryColor" : checkAdminInterviewState.option_two ? "text-green-500" : "text-red-500"}`}
+                  >
                     第2希望時間
                   </h1>
                   <div className="flex items-center justify-between mt-2">
@@ -537,7 +741,9 @@ const AppointmentModel = ({
 
                 {/* Option Three */}
                 <div>
-                  <h1 className="text-normal font-bold text-secondaryColor">
+                  <h1
+                    className={`text-normal font-bold  ${checkAdminInterviewState.option_three === "" ? "text-secondaryColor" : checkAdminInterviewState.option_three ? "text-green-500" : "text-red-500"}`}
+                  >
                     第3希望時間
                   </h1>
                   <div className="flex items-center justify-between mt-2">
@@ -678,7 +884,7 @@ const AppointmentModel = ({
               />
             </svg>
 
-            {jp.makeAppointment}
+            {checkInterviewDatePending ? "Loading..." : jp.makeAppointment}
           </Button>
         </div>
       </motion.div>
@@ -690,7 +896,11 @@ const AppointmentModel = ({
               message="送信してもよろしいですか？"
               onCancel={handleCancel}
               loading={isPending}
-              onConfirm={handleConfirmRewrite}
+              onConfirm={
+                meetingType.value === "admin"
+                  ? handleAddAdminInterview
+                  : handleAddDirectInterview
+              }
               isSuccess={isSuccess}
             />
           </div>
@@ -699,12 +909,11 @@ const AppointmentModel = ({
 
       <Modal isOpen={showAlert} onClose={() => setShowAlert(false)}>
         <div className="p-6">
-          <p className="mb-4">{alertMessage || emailError}</p>
+          <p className="mb-4">{alertMessage}</p>
           <div className="flex justify-end">
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={() => {
-                resetAuthError();
                 setShowAlert(false);
                 setAlertMessage("");
               }}

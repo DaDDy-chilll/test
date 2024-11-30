@@ -23,12 +23,12 @@ import moment from "moment";
 import Skeleton from "react-loading-skeleton";
 import { Modal } from "@/components";
 
-const employeeNumber = [
-  { value: "100", label: "100" },
-  { value: "200", label: "200" },
-  { value: "300", label: "300" },
-  { value: "400", label: "400" },
-];
+// const employeeNumber = [
+//   { value: "100", label: "100" },
+//   { value: "200", label: "200" },
+//   { value: "300", label: "300" },
+//   { value: "400", label: "400" },
+// ];
 
 const ProfileFormScreen = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const ProfileFormScreen = () => {
     industry_type_id: { label: "", value: "" },
     budget: "",
     starting: "",
-    staff: { label: "", value: "" },
+    staff: "",
     area: "",
     prefecture: "",
     photo: "",
@@ -101,7 +101,7 @@ const ProfileFormScreen = () => {
         setJobTypes(
           jobTypesResponse.data.map((type: any) => ({
             value: type.id.toString(),
-            label: type.job_type_jp,
+            label: type.name,
           })),
         );
       } catch (error) {
@@ -200,7 +200,7 @@ const ProfileFormScreen = () => {
         starting: formData.starting
           ? moment(formData.starting).format("YYYY-MM-DD")
           : undefined,
-        staff: Number(formData.staff.value) || undefined,
+        staff: Number(formData.staff) || undefined,
         prefecture: (formData.prefecture as string) || undefined,
         company_des: (formData.company_des as string) || undefined,
         address: (formData.company_address as string) || undefined,
@@ -437,22 +437,23 @@ const ProfileFormScreen = () => {
                 error={undertakeError || ""}
                 required={false}
               />
-              <Select
-                name="staff"
-                label={jp.employeeNumber}
-                id={jp.employeeNumber}
-                options={employeeNumber}
-                className=""
-                defaultOption={jp.chooseEmployee}
-                value={formData.staff || ""}
-                onChange={(e) =>
-                  setFormData((prevData: any) => ({
-                    ...prevData,
-                    staff: { label: e.target.labels, value: e.target.value },
-                  }))
-                }
-                error={staffError || ""}
-              />
+
+
+<Input
+              name="staff"
+              type="number"
+              label={jp.employeeNumber}
+              className="mt-1 block w-full bg-gray-100"
+              value={formData.staff}
+              onChange={(e) =>
+                setFormData((prevData: any) => ({
+                  ...prevData,
+                  staff: e.target.value,
+                }))
+              }
+              error={staffError || ""}
+              required={false}
+            />
               <Input
                 name="area"
                 type="text"

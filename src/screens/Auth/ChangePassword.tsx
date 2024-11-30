@@ -43,20 +43,18 @@ const ChangePassword: React.FC = () => {
    * @author PSK
    */
   const handleSubmit = (e: React.FormEvent) => {
-    const passwordPattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    e.preventDefault();
     resetAuthError();
     setErrorMessage("");
+    const passwordPattern =
+     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+    e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const confirm_password = formData.get("confirm_password") as string;
     const password = formData.get("password") as string;
-
     if (!passwordPattern.test(password)) {
       authHandleError({
         password: { jp: ERROR_MESSAGE.STRONG_PASSWORD },
       } as AuthErrorType);
-      return;
     } else if (password !== confirm_password) {
       setErrorMessage(ERROR_MESSAGE.PASSWORDS_DO_NOT_MATCH);
       return;

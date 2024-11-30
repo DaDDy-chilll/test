@@ -31,6 +31,7 @@ export interface ApiRoutesType {
   NOTIFICATION: string;
   FIND_INTERVIEW: string;
   GUIDE_VIDEO:string;
+  CHECK_INTERVIEW:string;
 }
 
 export const apiRoutes: ApiRoutesType = {
@@ -41,7 +42,7 @@ export const apiRoutes: ApiRoutesType = {
   APPLICANTS_DETAILS: "/client/users/details",
   JOBS: "/client/job",
   EVENTS: "/client/events",
-  JOB_TYPES: "/auth/occupations",
+  JOB_TYPES: "/client/auth/industry-type",
   TOKUTEI_EXAM: "/auth/tokutei-exam",
   LANGUAGE: "/auth/language-exam",
   CITY: "/auth/areas",
@@ -65,5 +66,6 @@ CALENDAR: "/client/calendar",
   PRIVACY_POLICY: "/setting/privacy-policy",
   NOTIFICATION: "/client/auth/company-notification",
   FIND_INTERVIEW: "/client/interview/find",
-  GUIDE_VIDEO:"/setting/links"
+  GUIDE_VIDEO:"/setting/links",
+  CHECK_INTERVIEW:"/client/interview/check-user-interview"
 };

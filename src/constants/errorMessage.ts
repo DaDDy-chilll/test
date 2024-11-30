@@ -23,4 +23,10 @@ export const ERROR_MESSAGE = {
   INVALID_AREA: "無効なエリアです・",
   PLEASE_SELECT_A_VALID_WORKING_TIME:
     "勤務時間は少なくとも30分以上である必要があります",
+  INTERVIEW_DATE_INVALID: "面接日は本日以降の日付を選択してください",
+  FIRST_DATE_ERROR: "最初の日付は本日以降の日付を選択してください",
+  SECOND_DATE_ERROR: "2番目の日付は本日以降の日付を選択してください",
+  THIRD_DATE_ERROR: "3番目の日付は本日以降の日付を選択してください",
+  NEED_ZOOM_LINK: "Zoom又は Meet リンクを入力してください",
+  NEED_ALL_VALID_DATE: "有効な日付を入力してください",
 };

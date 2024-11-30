@@ -184,4 +184,6 @@ export const jp = {
   fail:"不合格",
   noFoundTest:"特定のテストが見つかりません",
   overTime:"残業",
+  jobCannotDelete:"求人は削除できません",
+  loading:"読み込み中"
 };

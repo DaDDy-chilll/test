@@ -73,6 +73,8 @@ const ProfileForm = ({
     resetProfileFormError,
   } = useHandleError();
 
+  console.log('jobTypes',jobTypes)
+
   /**
    * This post hook is used to post the profile data
    * @author PSK
@@ -167,7 +169,7 @@ const ProfileForm = ({
       starting: formData.starting
         ? moment(formData.starting).format("YYYY-MM-DD")
         : undefined,
-      staff: Number(formData.staff.value) || undefined,
+      staff: Number(formData.staff) || undefined,
       prefecture: (formData.prefecture as string) || undefined,
       company_des: (formData.company_des as string) || undefined,
       address: (formData.company_address as string) || undefined,
@@ -189,6 +191,7 @@ const ProfileForm = ({
     });
   };
 
+  
   /**
    * This effect is used to handle the form submission
    * @author PSK
@@ -410,21 +413,20 @@ const ProfileForm = ({
               error={undertakeError || ""}
               required={false}
             />
-            <Select
+            <Input
               name="staff"
+              type="number"
               label={jp.employeeNumber}
-              id={jp.employeeNumber}
-              options={employeeNumber}
-              className=""
-              defaultOption={jp.chooseEmployee}
+              className="mt-1 block w-full bg-gray-100"
               value={formData.staff}
               onChange={(e) =>
                 setFormData((prevData: any) => ({
                   ...prevData,
-                  staff: { label: e.target.labels, value: e.target.value },
+                  staff: e.target.value,
                 }))
               }
               error={staffError || ""}
+              required={false}
             />
             <Input
               name="area"

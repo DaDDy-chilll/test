@@ -100,7 +100,7 @@ const JobForm = ({
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
-      label: type.job_type_jp,
+      label: type.name,
     })) || [];
 
   const handleCancel = () => setShowConfirmation(false);
