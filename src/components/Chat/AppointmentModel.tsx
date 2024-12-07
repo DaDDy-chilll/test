@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Select, InterviewDatePicker, ConfirmationBox } from "@/components";
+import { InterviewDatePicker, ConfirmationBox } from "@/components";
 import TimeSelect from "../ui/SelectTime";
 import { Button } from "../ui/button";
 import { jp } from "@/lang/jp";
@@ -332,6 +332,26 @@ const AppointmentModel = ({
   };
 
 
+  /**
+   * This function is used to add direct interview.
+   * @author PSK
+   */
+  const handleChangeMeetingType = (type:string) => {
+    resetState();
+    if(type === 'direct'){
+      setMeetingType({
+        label:meetingTypeOptions[0].label,
+        value: meetingTypeOptions[0].value,
+      });
+    }else{
+      setMeetingType({
+        label:meetingTypeOptions[1].label,
+        value: meetingTypeOptions[1].value,
+      });
+    }
+  }
+
+
   const resetState = () => {
     setShowConfirmModal(false);
     setCheckAdminInterviewState(checkAdminInterviewInitialState);
@@ -412,22 +432,27 @@ const AppointmentModel = ({
             <p className="text-sm font-semibold">{jp.calendar}</p>
           </div>
 
-          <div className="flex items-center  gap-5 pl-3 mt-3">
-            <div className="w-[20px] h-[18px] bg-gray-300 rounded-full"></div>
-            <Select
-              label=""
-              options={meetingTypeOptions}
-              value={meetingType}
-              onChange={(e) => {
-                resetState();
-                setMeetingType({
-                  label: e.target.labels as unknown as string,
-                  value: e.target.value,
-                });
-              }}
-              defaultOption={meetingType.label}
-              className="border-none  mb-0 tracking-wider font-semibold"
-            />
+          <div className="flex gap-4">
+            <button
+              className={`p-2 text-sm ${
+                meetingType.value === 'direct'
+                  ? "border-b border-primaryColor text-primaryColor"
+                  : "text-gray-400"
+              }`}
+              onClick={() => handleChangeMeetingType(meetingTypeOptions[0].value)}
+            >
+              {meetingTypeOptions[0].label}
+            </button>
+            <button
+              className={`p-2 text-sm ${
+                 meetingType.value === 'admin'
+                  ? "border-b border-primaryColor text-primaryColor"
+                  : "text-gray-400"
+              }`}
+              onClick={() => handleChangeMeetingType(meetingTypeOptions[1].value)}
+            >
+              {meetingTypeOptions[1].label}
+            </button>
           </div>
 
           <AnimatePresence mode="wait">
