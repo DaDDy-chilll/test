@@ -7,7 +7,9 @@ const DownloadApk: React.FC = () => {
       // First APK download
       console.log("First APK download");
       const link = document.createElement("a");
+
       link.href = "/public/japan-job.apk";
+
       link.download = "japan-job.apk";
       document.body.appendChild(link);
       link.click();
