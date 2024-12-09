@@ -115,7 +115,7 @@ const FilterBar = ({
           jobTypes.data.length > 0 &&
           jobTypes.data.map((jobType: any) => (
             <option key={jobType.id} value={jobType.id}>
-              {jobType.job_type_jp}
+              {jobType.name}
             </option>
           ))}
       </select>

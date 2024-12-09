@@ -94,6 +94,7 @@ const JobScreen = () => {
   });
 
   const jobs = useMemo(() => data?.data || [], [data]);
+  
 
   const filteredJobs = useMemo(() => {
     if (jobs.length === 0) return [];

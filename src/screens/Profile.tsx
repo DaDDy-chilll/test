@@ -21,7 +21,7 @@ const defaultFormData = {
   industry_type_id: { label: "", value: "" },
   budget: "",
   starting: "",
-  staff: { label: "", value: "" },
+  staff: "",
   area: "",
   prefecture: "",
   photo: "",
@@ -47,11 +47,12 @@ const Profile = () => {
     key: QueryKey.PROFILE,
     token: token as string,
   });
-  const { data: jobType, isLoading: isJobTypesLoading } = useFetch({
+  const { data: jobType, isLoading: isJobTypesLoading,error:jobTypeError } = useFetch({
     endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
+
 
   const { data: city, isLoading: isCityLoading } = useFetch({
     endpoint: apiRoutes.CITY,
@@ -62,7 +63,7 @@ const Profile = () => {
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
-      label: type.job_type_jp,
+      label: type.name,
     })) || [];
 
   useEffect(() => {
@@ -119,7 +120,7 @@ const Profile = () => {
         },
         budget: data.data.budget || "",
         starting: data.data.starting || "",
-        staff: { label: data.data.staff || "", value: data.data.staff || "" },
+        staff: data.data.staff || "",
         area: data.data.area || "",
         prefecture: data.data.prefecture || "",
 

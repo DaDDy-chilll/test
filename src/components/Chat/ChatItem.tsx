@@ -1,6 +1,7 @@
 import React from "react";
 import { Chat } from "@/types/helperTypes";
 import DefaultUser from "@/assets/icons/default_user.svg";
+import moment from "moment";
 interface ChatItemProps {
   chat: Chat;
   onSelect: (chat: Chat) => void;
@@ -45,9 +46,12 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
           </div>
           <div className="flex flex-col items-end justify-center gap-2">
             <p className="text-xs text-gray-400">
-              {chat.last_message_timestamp
-                .toDate()
-                .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {moment(chat.last_message_timestamp.toDate()).calendar(null, {
+                sameDay: 'hh:mm A',
+                lastDay: '[Yesterday] hh:mm A',
+                lastWeek: 'MM/DD hh:mm A',
+                sameElse: 'YYYY/MM/DD hh:mm A'
+              })}
             </p>
             {unreadCount > 0 && (
               <div className=" rounded-full bg-primaryColor h-2 w-2"></div>

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { jp } from "@/lang/jp";
 import moment from "moment";
 import { ConfirmationBox } from "@/components";
@@ -16,6 +17,14 @@ type formData = {
   website: string;
   address: string;
 };
+
+interface APIError {
+  message: {
+    email: {
+      jp: string;
+    };
+  };
+}
 
 type Props = {
   formData?: formData;
@@ -46,6 +55,7 @@ const JobDetails = ({
   setIsAdd,
 }: Props) => {
   const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
   const {
     mutate: deleteJob,
     isPending: loading,
@@ -67,6 +77,10 @@ const JobDetails = ({
       }, 500);
       queryClient.invalidateQueries({ queryKey: [QueryKey.JOBS] });
     },
+    onError: (error: APIError) => {
+      setShowConfirmation(false);
+      setError(error.message.email.jp || jp.jobCannotDelete )
+    }
   });
 
   const clickBackEvent = () => backHandler && backHandler(false);
@@ -77,6 +91,7 @@ const JobDetails = ({
   };
   const handleCancel = () => {
     setShowConfirmation(false);
+    setError(null)
   };
 
   const handleDelete = () => {
@@ -191,6 +206,10 @@ const JobDetails = ({
             />
           </div>
         </div>
+      )}
+
+{error && (
+        <ConfirmationBox message={error} onConfirm={() => setError(null)} />
       )}
     </motion.div>
   );

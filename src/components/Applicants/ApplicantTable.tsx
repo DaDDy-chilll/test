@@ -105,7 +105,8 @@ const ApplicantTable = ({
    */
   const getJobTypeJp = (jobTypeId: number) => {
     const jobType = jobTypes?.data.find((job: any) => job.id === jobTypeId);
-    return jobType ? jobType.job_type_jp : "Unknown";
+    return jobType ? jobType.name : jp.noJobsFound;
+    
   };
 
   return (

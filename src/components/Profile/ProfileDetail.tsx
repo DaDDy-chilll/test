@@ -14,6 +14,7 @@ import {
   Website,
   Phone,
   CompanyAddress,
+  CompanyCalendar
 } from "@/assets";
 type formData = {
   name: string;
@@ -112,11 +113,11 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             label: jp.companyAddress,
             value: data?.address || "",
           },
-          // {
-          //   icon: <CompanyDescription className="size-7" />,
-          //   label: jp.companyDescription,
-          //   value: data?.company_des || "",
-          // },
+          {
+            icon: <CompanyCalendar className="size-7" />,
+            label: jp.establishment,
+            value: data?.starting || "",
+          },
         ].map((item, index) => (
           <div
             key={index}

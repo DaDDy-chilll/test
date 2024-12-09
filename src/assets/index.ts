@@ -7,6 +7,7 @@ import Message from "./icons/Message";
 import Work from "./icons/Work";
 import { LOGO } from "./icons/LOGO";
 import CEO from "./icons/CEO"; //
+
 import {
   Manager,
   JobType,
@@ -20,6 +21,7 @@ import {
   Phone,
   CompanyAddress,
   CompanyDescription,
+  CompanyCalendar
 } from "./icons/ProfileDetailIcons";
 export {
   DashboardIcon,
@@ -43,4 +45,5 @@ export {
   Phone,
   CompanyAddress,
   CompanyDescription,
+  CompanyCalendar
 };
