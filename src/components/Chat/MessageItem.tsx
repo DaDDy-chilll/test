@@ -17,7 +17,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
   selectedChat,
 }) => {
   const isCurrentUser = Number(`2${currentUser.id}`) === message.sender_id;
-  const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${selectedChat.jobfinder_profile_image}`;
+  const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${selectedChat.jobfinder_profile_image}`;
 
   return (
     <div

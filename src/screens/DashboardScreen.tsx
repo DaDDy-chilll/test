@@ -374,7 +374,7 @@ const DashboardScreen = () => {
               </div>
             ) : chats.length > 0 ? (
               chats.slice(0, 10).map((chat, index) => {
-                const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${chat.jobfinder_profile_image}`;
+                const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${chat.jobfinder_profile_image}`;
 
                 return (
                   <div

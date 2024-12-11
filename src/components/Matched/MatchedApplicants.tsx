@@ -36,8 +36,8 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     m_prefer_other,
     m_tokutei_exams,
   } = applicantDetail;
-  const profile_path = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
-  const video_path = `https://api.japanjob.exbrainedu.com/v1/file/video/${m_basicinfos.video_path}`;
+  const profile_path = `${import.meta.env.VITE_SERVER_URL}/file/photo/${m_basicinfos.profile_path}`;
+  const video_path = `${import.meta.env.VITE_SERVER_URL}/file/video/${m_basicinfos.video_path}`;
 
   const groupedAreas = m_prefer_areas.reduce((acc: any, area: any) => {
     if (!acc[area.area.area]) {

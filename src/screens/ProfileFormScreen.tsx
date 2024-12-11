@@ -12,7 +12,7 @@ import Select from "@/components/ui/Select";
 import DatePicker from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/icons/logo.svg";
-import defaultImage from "@/assets/images/default.png";
+import defaultImage from "@/assets/icons/default_user.svg";
 import { useMutation } from "@tanstack/react-query";
 import { setVerified, setName } from "@/store";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,7 @@ import { Modal } from "@/components";
 const ProfileFormScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token, verified } = useSelector((state: RootState) => state.auth);
+  const { token, verified,user } = useSelector((state: RootState) => state.auth);
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -54,7 +54,7 @@ const ProfileFormScreen = () => {
     company_des: "",
     manager: "",
     company_address: "",
-    secondary_email: "",
+    secondary_email: user?.email ?? "",
     phone_number: "",
     ceo: "",
     yt_url: "",
@@ -84,6 +84,7 @@ const ProfileFormScreen = () => {
     emailError,
     resetProfileFormError,
   } = useHandleError();
+
 
   /**
    * Fetches job types data from the server

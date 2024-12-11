@@ -73,7 +73,6 @@ const ProfileForm = ({
     resetProfileFormError,
   } = useHandleError();
 
-  console.log('jobTypes',jobTypes)
 
   /**
    * This post hook is used to post the profile data
@@ -220,7 +219,7 @@ const ProfileForm = ({
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(
-        "https://api.japanjob.exbrainedu.com/v1/file/photo/" + formData.photo
+        `${import.meta.env.VITE_SERVER_URL}/file/photo/` + formData.photo
       );
     }
   }, [formData.photo]);

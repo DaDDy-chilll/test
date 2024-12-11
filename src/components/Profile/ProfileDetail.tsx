@@ -50,7 +50,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             className="w-full h-full object-cover"
             src={
               data.photo
-                ? `https://api.japanjob.exbrainedu.com/v1/file/photo/${data.photo}`
+                ? `${import.meta.env.VITE_SERVER_URL}/file/photo/${data.photo}`
                 : defaultImage
             }
             crossOrigin="anonymous"

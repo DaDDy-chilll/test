@@ -159,7 +159,7 @@ const ApplicantTable = ({
                   <img
                     src={
                       applicant.m_basicinfos.profile_path
-                        ? `https://api.japanjob.exbrainedu.com/v1/file/photo/${applicant.m_basicinfos.profile_path}`
+                        ? `${import.meta.env.VITE_SERVER_URL}/file/photo/${applicant.m_basicinfos.profile_path}`
                         : DefaultUser
                     }
                     alt="profile"

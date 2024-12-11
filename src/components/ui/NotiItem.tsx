@@ -13,7 +13,7 @@ const NotiItem = ({ item, onClick }: ItemProps) => {
   const profileImage = item.image
     ? item.image.startsWith("http")
       ? item.image
-      : `https://api.japanjob.exbrainedu.com/v1/file/photo/${item.image}`
+      : `${import.meta.env.VITE_SERVER_URL}/file/photo/${item.image}`
     : DefaultUser;
 
   return (

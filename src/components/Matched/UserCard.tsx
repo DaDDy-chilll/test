@@ -19,7 +19,7 @@ const UserCard = ({
   likeorUnlikeHandler,
 }: UserCardProps) => {
   const { m_basicinfos } = matchedData;
-  const profileImage = `https://api.japanjob.exbrainedu.com/v1/file/photo/${m_basicinfos.profile_path}`;
+  const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${m_basicinfos.profile_path}`;
   const cardClick = () => handleShowDetail(matchedData.id);
 
   return (
