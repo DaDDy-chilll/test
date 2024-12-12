@@ -1,5 +1,4 @@
 import ApplicantScreen from "./ApplicantScreen";
-import UserFormScreen from "./UserFormScreen";
 import InitialLanding from "./InitialLanding";
 import JobScreen from "./JobScreen";
 import LoginScreen from "./Auth/LoginScreen";
@@ -11,7 +10,6 @@ import Otp from "./Auth/Otp";
 import PrivacyPolicy from "./PrivacyPolicy";
 export {
   ApplicantScreen,
-  UserFormScreen,
   InitialLanding,
   JobScreen,
   LoginScreen,

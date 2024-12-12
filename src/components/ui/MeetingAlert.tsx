@@ -14,7 +14,7 @@ const MeetingAlert = ({
 }: MeetingAlertProps) => {
   return (
     <div
-      className={`${isMeetingEnded ? "bg-gray-500 text-gray-300" : "bg-primaryColor text-white hover:bg-primaryColor/90"} w-60  text-sm rounded-md shadow-md p-3 cursor-pointer `}
+      className={`${isMeetingEnded ? "bg-gray-500 text-gray-300" : "bg-primaryColor text-white hover:bg-primaryColor/90"} w-60  text-sm rounded-md shadow-md px-3 py-2 cursor-pointer `}
       onClick={onclick}
     >
       <span className="flex justify-between">
@@ -28,6 +28,15 @@ const MeetingAlert = ({
       <span className="flex justify-between">
         <p>{jp.meetingEndTime}</p>
         <p>{moment(meetingData?.end_time, "HH:mm").format("LT")}</p>
+      </span>
+      <span className="flex justify-start mt-1">
+        <a
+          href={meetingData?.zoom_link}
+          className="text-sm underline"
+          target="_blank"
+        >
+          {meetingData?.zoom_link || ""}
+        </a>
       </span>
     </div>
   );

@@ -82,7 +82,7 @@ export const jp = {
   supportHouse: "寮完備",
   supportHouseRent: "家賃補助",
   noChatFound: "チャットが見つかりませんでした",
-  area: "エリア",
+  area: "勤務地",
   city: "都道府県",
   liveInJapan: "日本在住",
   liveInMyanmar: "ミャンマー在住",

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { InterviewDatePicker, ConfirmationBox } from "@/components";
 import TimeSelect from "../ui/SelectTime";

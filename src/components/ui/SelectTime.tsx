@@ -15,7 +15,7 @@ type TimeSelectProps = {
  * @returns {JSX.Element} The rendered component
  */
 const TimeSelect = ({ onTimeSelect, dropStyle, time }: TimeSelectProps) => {
-  const [selectedTime, setSelectedTime] = useState(time || "09:00");
+  const [selectedTime, setSelectedTime] = useState(time || "10:00");
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -25,8 +25,10 @@ const TimeSelect = ({ onTimeSelect, dropStyle, time }: TimeSelectProps) => {
    */
   const generateTimes = () => {
     const times = [];
-    for (let hour = 1; hour < 24; hour++) {
+    for (let hour = 10; hour <= 17; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
+        // Skip times after 17:00
+        if (hour === 17 && minute > 0) continue;
         times.push(
           `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`,
         );

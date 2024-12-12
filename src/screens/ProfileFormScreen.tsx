@@ -172,15 +172,8 @@ const ProfileFormScreen = () => {
    */
   const formatPhoneNumber = (value: string) => {
     const cleanedValue = value.replace(/\D/g, "");
-    if (cleanedValue.length <= 3) {
-      return cleanedValue;
-    } else if (cleanedValue.length <= 7) {
-      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3)}`;
-    } else if (cleanedValue.length <= 11) {
-      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3, 7)} ${cleanedValue.slice(7, 11)}`;
-    } else {
-      return `${cleanedValue.slice(0, 3)} ${cleanedValue.slice(3, 7)} ${cleanedValue.slice(7, 11)} ${cleanedValue.slice(11, 15)}`;
-    }
+    if (!cleanedValue) return "";
+    return cleanedValue;
   };
 
   /**
@@ -363,7 +356,7 @@ const ProfileFormScreen = () => {
                 placeholder="08x xxxx xxxx"
                 label={jp.phoneNumber}
                 className="mt-1 block w-full bg-gray-100"
-                value={formatPhoneNumber(formData.phone_number) || ""}
+                value={formData.phone_number || ""}
                 onChange={(e) => {
                   setFormData((prevData: any) => ({
                     ...prevData,

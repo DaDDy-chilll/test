@@ -67,6 +67,8 @@ const ChatHeader = ({
     retry: false
   });
 
+  
+
   const handleAppointmentModel = () => setIsAppointmentModelOpen(true);
   const handleProfileDetail = () =>
     navigate(RouteName.APPLICANTS, { state: selectedChat });

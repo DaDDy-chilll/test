@@ -32,7 +32,6 @@ const MatchedScreend = lazy(() => import("@/screens/MatchedScreend"));
 const ChatScreen = lazy(() => import("@/screens/ChatScreen"));
 const JobScreen = lazy(() => import("@/screens/JobScreen"));
 const CalendarScreen = lazy(() => import("@/screens/CalendarScreen"));
-const UserFormScreen = lazy(() => import("@/screens/UserFormScreen"));
 const ProfileFormScreen = lazy(() => import("@/screens/ProfileFormScreen"));
 const DownloadApk = lazy(() => import("@/screens/DownloadApk"));
 
@@ -86,8 +85,6 @@ const AnimatedRoutes = () => {
           <Route path={Routenames.PROFILE_FORM} Component={ProfileFormScreen} />
           {/* Change password route */}
           <Route path={Routenames.CHANGE_PASSWORD} Component={ChangePassword} />
-          {/* User form route */}
-          <Route path={Routenames.USER_FORM} Component={UserFormScreen} />
         </Route>
 
         {/* Services Protected routes */}
