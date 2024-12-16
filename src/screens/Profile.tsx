@@ -48,11 +48,10 @@ const Profile = () => {
     token: token as string,
   });
   const { data: jobType, isLoading: isJobTypesLoading,error:jobTypeError } = useFetch({
-    endpoint: apiRoutes.JOB_TYPES,
+    endpoint: apiRoutes.INDUSTRY_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
-
 
   const { data: city, isLoading: isCityLoading } = useFetch({
     endpoint: apiRoutes.CITY,

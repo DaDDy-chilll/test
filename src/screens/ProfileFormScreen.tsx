@@ -95,7 +95,7 @@ const ProfileFormScreen = () => {
     const fetchData = async () => {
       try {
         const jobTypesResponse = await fetchServer({
-          endpoint: apiRoutes.JOB_TYPES,
+          endpoint: apiRoutes.INDUSTRY_TYPES,
           method: "GET",
           token,
         });

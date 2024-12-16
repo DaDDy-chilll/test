@@ -83,6 +83,8 @@ const JobForm = ({
     token: token as string,
   });
 
+  console.log(jobType);
+
   /**
    * This fetch hook is used to fetch the city.
    * @author PSK
@@ -100,7 +102,7 @@ const JobForm = ({
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
-      label: type.name,
+      label: type.job_type_jp,
     })) || [];
 
   const handleCancel = () => setShowConfirmation(false);
