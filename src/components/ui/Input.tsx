@@ -23,7 +23,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   className,
   placeholder = "",
-  required = true,
+  required = false,
   min,
   max,
 }) => {
@@ -50,6 +50,7 @@ const Input: React.FC<InputProps> = ({
         )}
       >
         {label}
+        {required && <span className="text-red-500">*</span>}
       </label>
       {error && <p className="text-red-500 text-xs italic">{error}</p>}
     </div>

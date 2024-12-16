@@ -311,7 +311,7 @@ const ProfileFormScreen = () => {
                   }))
                 }
                 error={companyNameError || ""}
-                required={false}
+                required={true}
               />
 
               <Select
@@ -332,6 +332,7 @@ const ProfileFormScreen = () => {
                   }));
                 }}
                 error={industryTypeError || ""}
+                required={true}
               />
               <Input
                 name="secondary_email"
@@ -380,7 +381,7 @@ const ProfileFormScreen = () => {
                   }))
                 }
                 error={budgetStringError || ""}
-                required={false}
+                required={true}
               />
               <Input
                 name="company_address"
@@ -399,7 +400,7 @@ const ProfileFormScreen = () => {
                   }))
                 }
                 error={companyAddressError || ""}
-                required={false}
+                required={true}
               />
               <Input
                 name="ceo"
@@ -446,7 +447,7 @@ const ProfileFormScreen = () => {
                 }))
               }
               error={staffError || ""}
-              required={false}
+              required={true}
             />
               <Input
                 name="area"
@@ -476,6 +477,7 @@ const ProfileFormScreen = () => {
                   }))
                 }
                 error={startingError || ""}
+                required={true}
               />
               <Input
                 name="prefecture"
@@ -571,7 +573,7 @@ const ProfileFormScreen = () => {
                     }))
                   }
                   error={companyDesError || ""}
-                  required={false}
+                  required={true}
                 />
               </span>
             </div>

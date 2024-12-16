@@ -21,6 +21,7 @@ interface SelectProps {
   disabled?: boolean;
   defaultValue?: string | undefined;
   error?: string;
+  required?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -36,6 +37,7 @@ const Select: React.FC<SelectProps> = ({
   disabled = false,
   defaultValue = undefined,
   error = "",
+  required = false,
 }) => {
   return (
     <div
@@ -52,6 +54,7 @@ const Select: React.FC<SelectProps> = ({
         )}
       >
         {label}
+        {required && <span className="text-red-500">*</span>}
       </label>
       <select
         id={id}

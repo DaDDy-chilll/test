@@ -98,6 +98,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         )}
       >
         {label}
+        {required && <span className="text-red-500">*</span>}
       </label>
       {error && <p className="text-red-500 text-xs italic">{error}</p>}
     </div>
