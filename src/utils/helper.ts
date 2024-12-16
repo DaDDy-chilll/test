@@ -63,7 +63,6 @@ export const fetchServer = async ({
           localStorage.clear();
           window.location.href = RouteName.LOGIN;
         } else if (data.status == 500 || status == 500) {
-          // console.log("server error", data);
           window.location.href = RouteName.SERVER_ERROR;
         } else {
           throw { error: true, message: data.message, status };

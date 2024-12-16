@@ -32,10 +32,10 @@ const MeetingAlert = ({
       <span className="flex justify-start mt-1">
         <a
           href={meetingData?.zoom_link}
-          className="text-sm underline"
+          className="text-sm underline text-blue-500"
           target="_blank"
         >
-          {meetingData?.zoom_link || ""}
+          zoomリンク
         </a>
       </span>
     </div>

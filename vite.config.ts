@@ -18,6 +18,6 @@ export default defineConfig({
     global: "window",
   },
   build: {
-    chunkSizeWarningLimit: 10000,
+    chunkSizeWarningLimit: 500,
   },
 });

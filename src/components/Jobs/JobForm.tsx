@@ -83,7 +83,6 @@ const JobForm = ({
     token: token as string,
   });
 
-  console.log(jobType);
 
   /**
    * This fetch hook is used to fetch the city.

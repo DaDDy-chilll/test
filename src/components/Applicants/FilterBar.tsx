@@ -44,7 +44,6 @@ const FilterBar = ({
     }
   };
 
-  console.log(jobTypes);
   return (
     <div
       className={`bg-white justify-end text-secondaryColor px-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
