@@ -1,6 +1,6 @@
 import { setTitle } from "./features/NavigationSlice";
 import { setToken, removeToken, setVerified } from "./features/AuthSlice";
-import { setJobTypes } from "./features/AppSlice";
+import { setJobTypes, setImgUrl } from "./features/AppSlice";
 import { fetchJobTypes } from "./features/AppSlice";
 import { setName, setNotification } from "./features/NavigationSlice";
 import { setForgotPassword } from "./features/AuthSlice";
@@ -14,4 +14,5 @@ export {
   setForgotPassword,
   setVerified,
   setNotification,
+  setImgUrl,
 };

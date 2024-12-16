@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import DefaultProfile from "@/assets/icons/default_user.svg";
 import moment from "moment";
 import { jp } from "@/lang/jp";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
 type UserCardProps = {
   handleShowDetail: (id: number) => void;
   matchedData: any;
@@ -18,8 +21,9 @@ const UserCard = ({
   matchedData,
   likeorUnlikeHandler,
 }: UserCardProps) => {
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const { m_basicinfos } = matchedData;
-  const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${m_basicinfos.profile_path}`;
+  const profileImage = `${imgUrl}photo/${m_basicinfos.profile_path}`;
   const cardClick = () => handleShowDetail(matchedData.id);
 
   return (

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchServer } from "@/utils/helper";
 import { apiRoutes } from "@/utils/apiRoutes";
-import { RootState } from "../store";
+import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 
 const initialState = {
   jobTypes: [],
   loading: false,
+  imgUrl: "",
 };
 
 /**
@@ -37,6 +38,9 @@ const AppSlice = createSlice({
     setJobTypes: (state, action) => {
       state.jobTypes = action.payload;
     },
+    setImgUrl: (state, action) => {
+      state.imgUrl = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchJobTypes.pending, (state) => {
@@ -52,5 +56,5 @@ const AppSlice = createSlice({
   },
 });
 
-export const { setJobTypes } = AppSlice.actions;
+export const { setJobTypes, setImgUrl } = AppSlice.actions;
 export default AppSlice.reducer;

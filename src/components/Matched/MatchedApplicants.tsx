@@ -5,6 +5,8 @@ import moment from "moment";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import NoVideo from "@/assets/images/no-video.svg";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 type MatchProps = {
   className?: string;
@@ -22,6 +24,7 @@ const showMoreState = {
 };
 
 const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [showMore, setShowMore] = useState<any>(showMoreState);
   if (!applicantDetail) return null;
@@ -36,8 +39,8 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
     m_prefer_other,
     m_tokutei_exams,
   } = applicantDetail;
-  const profile_path = `${import.meta.env.VITE_SERVER_URL}/file/photo/${m_basicinfos.profile_path}`;
-  const video_path = `${import.meta.env.VITE_SERVER_URL}/file/video/${m_basicinfos.video_path}`;
+  const profile_path = `${imgUrl}photo/${m_basicinfos.profile_path}`;
+  const video_path = `${imgUrl}video/${m_basicinfos.video_path}`;
 
   const groupedAreas = m_prefer_areas.reduce((acc: any, area: any) => {
     if (!acc[area.area.area]) {

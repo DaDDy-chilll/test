@@ -45,6 +45,7 @@ const ProfileForm = ({
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const token = useSelector((state: RootState) => state.auth.token);
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [isUploading, setIsUploading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -102,7 +103,7 @@ const ProfileForm = ({
     },
     onSuccess: (data) => {
       setAvatarImage(
-        `${import.meta.env.VITE_SERVER_URL}/file/photo/` + data.data.filename
+        `${imgUrl}photo/` + data.data.filename
       );
       setFormData((prevData: any) => ({
         ...prevData,
@@ -211,7 +212,7 @@ const ProfileForm = ({
   useEffect(() => {
     if (formData.photo) {
       setAvatarImage(
-        `${import.meta.env.VITE_SERVER_URL}/file/photo/` + formData.photo
+        `${imgUrl}photo/` + formData.photo
       );
     }
   }, [formData.photo]);

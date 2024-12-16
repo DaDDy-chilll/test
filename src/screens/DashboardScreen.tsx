@@ -85,6 +85,7 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { notification } = useSelector((state: RootState) => state.navigation);
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const { chats, isLoading: isChatLoading } = useChat({
     id: user?.id,
     limit: 11,
@@ -374,7 +375,7 @@ const DashboardScreen = () => {
               </div>
             ) : chats.length > 0 ? (
               chats.slice(0, 10).map((chat, index) => {
-                const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${chat.jobfinder_profile_image}`;
+                const profileImage = `${imgUrl}photo/${chat.jobfinder_profile_image}`;
 
                 return (
                   <div

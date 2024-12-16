@@ -2,6 +2,8 @@ import React from "react";
 import { Chat } from "@/types/helperTypes";
 import DefaultUser from "@/assets/icons/default_user.svg";
 import moment from "moment";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 interface ChatItemProps {
   chat: Chat;
   onSelect: (chat: Chat) => void;
@@ -10,7 +12,8 @@ interface ChatItemProps {
 }
 
 const ChatItem: React.FC<ChatItemProps> = ({ chat, onSelect, unreadCount }) => {
-  const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${chat.jobfinder_profile_image}`;
+  const { imgUrl } = useSelector((state: RootState) => state.app);
+  const profileImage = `${imgUrl}photo/${chat.jobfinder_profile_image}`;
   const handleClick = () => onSelect(chat);
   return (
     <div

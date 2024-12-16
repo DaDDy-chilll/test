@@ -2,7 +2,8 @@ import React from "react";
 import { Message, Chat } from "@/types/helperTypes";
 import moment from "moment";
 import DefaultUser from "@/assets/icons/default_user.svg";
-
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 interface MessageItemProps {
   message: Message;
   currentUser: { id: number | string | null };
@@ -16,8 +17,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
   messagesEndRef,
   selectedChat,
 }) => {
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const isCurrentUser = Number(`2${currentUser.id}`) === message.sender_id;
-  const profileImage = `${import.meta.env.VITE_SERVER_URL}/file/photo/${selectedChat.jobfinder_profile_image}`;
+  const profileImage = `${imgUrl}photo/${selectedChat.jobfinder_profile_image}`;
 
   return (
     <div

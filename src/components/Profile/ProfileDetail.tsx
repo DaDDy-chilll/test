@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { jp } from "@/lang/jp";
 import defaultImage from "@/assets/icons/default_user.svg";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 import {
   CEO,
   Manager,
@@ -33,6 +35,7 @@ type Props = {
 };
 
 const ProfileDetail = ({ editHandler, data }: Props) => {
+    const { imgUrl } = useSelector((state: RootState) => state.app);
   const clickEditEvent = () => editHandler && editHandler(true);
 
   return (
@@ -50,7 +53,7 @@ const ProfileDetail = ({ editHandler, data }: Props) => {
             className="w-full h-full object-cover"
             src={
               data.photo
-                ? `${import.meta.env.VITE_SERVER_URL}/file/photo/${data.photo}`
+                ? `${imgUrl}photo/${data.photo}`
                 : defaultImage
             }
             crossOrigin="anonymous"

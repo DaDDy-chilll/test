@@ -34,6 +34,7 @@ const ProfileFormScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token, verified,user } = useSelector((state: RootState) => state.auth);
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const [avatarImage, setAvatarImage] = useState(defaultImage);
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -134,7 +135,7 @@ const ProfileFormScreen = () => {
     },
     onSuccess: (data) => {
       setAvatarImage(
-        `${import.meta.env.VITE_SERVER_URL}/file/photo/` +
+        `${imgUrl}photo/` +
           data.data.filename,
       );
       setFormData((prevData) => ({ ...prevData, photo: data.data.filename }));

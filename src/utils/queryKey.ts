@@ -19,4 +19,5 @@ export enum QueryKey {
   NOTIFICATION = "notification",
   USER_INTERVIEW = "userInterview",
   GUIDE_VIDEO = "guideVideo",
+  SETTING="setting"
 }

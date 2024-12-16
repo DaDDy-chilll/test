@@ -1,4 +1,8 @@
 import DefaultUser from "@/assets/icons/default_user.svg";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
+
 type ItemProps = {
   item: {
     image: string;
@@ -10,10 +14,11 @@ type ItemProps = {
 };
 
 const NotiItem = ({ item, onClick }: ItemProps) => {
+  const { imgUrl } = useSelector((state: RootState) => state.app);
   const profileImage = item.image
     ? item.image.startsWith("http")
       ? item.image
-      : `${import.meta.env.VITE_SERVER_URL}/file/photo/${item.image}`
+      : `${imgUrl}photo/${item.image}`
     : DefaultUser;
 
   return (

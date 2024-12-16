@@ -69,5 +69,5 @@ CALENDAR: "/client/calendar",
   NOTIFICATION: "/client/auth/company-notification",
   FIND_INTERVIEW: "/client/interview/find",
   GUIDE_VIDEO:"/setting/links",
-  CHECK_INTERVIEW:"/client/interview/check-user-interview"
+  CHECK_INTERVIEW:"/client/interview/check-user-interview",
 };

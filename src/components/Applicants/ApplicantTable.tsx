@@ -2,6 +2,9 @@ import { jp } from "../../lang/jp";
 import eyeOpenWhite from "../../assets/icons/eye-open-white.svg";
 import DefaultUser from "@/assets/icons/default_user.svg";
 import { TableRowSkeleton } from "@/components";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
 type Applicant = {
   id: string;
   profileImage: string;
@@ -97,6 +100,8 @@ const ApplicantTable = ({
   jobTypes,
   loading,
 }: ApplicantTableProps) => {
+  const { imgUrl } = useSelector((state: RootState) => state.app);
+
   /**
    * This function is used to get the job type name with Japanese from jobTypes array.
    * @author PSK
@@ -159,7 +164,7 @@ const ApplicantTable = ({
                   <img
                     src={
                       applicant.m_basicinfos.profile_path
-                        ? `${import.meta.env.VITE_SERVER_URL}/file/photo/${applicant.m_basicinfos.profile_path}`
+                        ? `${imgUrl}photo/${applicant.m_basicinfos.profile_path}`
                         : DefaultUser
                     }
                     alt="profile"
