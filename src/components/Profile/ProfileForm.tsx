@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import DatePicker from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
-import defaultImage from "@/assets/images/default.png";
+import defaultImage from "@/assets/icons/default_user.svg";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { jp } from "@/lang/jp";
