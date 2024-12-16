@@ -44,6 +44,7 @@ const FilterBar = ({
     }
   };
 
+  console.log(jobTypes);
   return (
     <div
       className={`bg-white justify-end text-secondaryColor px-4 flex flex-col sm:flex-row sm:items-center gap-4 ${className}`}
@@ -115,7 +116,7 @@ const FilterBar = ({
           jobTypes.data.length > 0 &&
           jobTypes.data.map((jobType: any) => (
             <option key={jobType.id} value={jobType.id}>
-              {jobType.name}
+              {jobType.job_type_jp}
             </option>
           ))}
       </select>
