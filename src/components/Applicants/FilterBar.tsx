@@ -14,6 +14,7 @@ type FilterBarProps = {
 const defaultLocation = [
   { label: jp.liveInMyanmar, value: 2 },
   { label: jp.liveInJapan, value: 1 },
+  { label: jp.other, value: 3 },
 ];
 
 const FilterBar = ({

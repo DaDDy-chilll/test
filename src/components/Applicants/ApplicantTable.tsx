@@ -230,7 +230,9 @@ const ApplicantTable = ({
                 <td className="py-2 text-xs text-start text-gray-500">
                   {applicant.m_basicinfos.live_in_japan === 1
                     ? jp.japan
-                    : jp.myanmar}
+                    : applicant.m_basicinfos.live_in_japan === 0
+                    ? jp.myanmar
+                    : jp.other}
                 </td>
 
                 {/* education column */}

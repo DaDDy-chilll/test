@@ -135,7 +135,7 @@ const MatchedApplicants = ({ className, applicantDetail }: MatchProps) => {
               </svg>
 
               <p className="text-sm">
-                {`${m_basicinfos.address} (${m_basicinfos.live_in_japan === 1 ? jp.japan : jp.myanmar})`}
+                {`${m_basicinfos.address} (${m_basicinfos.live_in_japan === 1 ? jp.japan : m_basicinfos.live_in_japan === 2 ? jp.myanmar : jp.other})`}
               </p>
             </div>
 
