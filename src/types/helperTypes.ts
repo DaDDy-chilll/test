@@ -463,3 +463,13 @@ export type ApplicantDetail = {
     },
   ];
 };
+
+
+export type ErrorResponse = {
+  message: {
+    email?: {
+      jp: string;
+    };
+    [key: string]: any;
+  };
+};

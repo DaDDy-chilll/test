@@ -2,7 +2,6 @@ import DefaultUser from "@/assets/icons/default_user.svg";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 
-
 type ItemProps = {
   item: {
     image: string;
@@ -15,11 +14,23 @@ type ItemProps = {
 
 const NotiItem = ({ item, onClick }: ItemProps) => {
   const { imgUrl } = useSelector((state: RootState) => state.app);
-  const profileImage = item.image
-    ? item.image.startsWith("http")
-      ? item.image
-      : `${imgUrl}photo/${item.image}`
-    : DefaultUser;
+  let profileImage;
+
+  if (item.image) {
+    if (item.image.startsWith("http")) {
+      const imageArray = item.image.split("/");
+      const imageName = imageArray[imageArray.length - 1];
+      if (imageName) {
+        profileImage = item.image;
+      } else {
+        profileImage = DefaultUser;
+      }
+    } else {
+      profileImage = `${imgUrl}photo/${item.image}`;
+    }
+  } else {
+    profileImage = DefaultUser;
+  }
 
   return (
     <div

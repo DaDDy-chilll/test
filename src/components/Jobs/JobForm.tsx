@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import {Modal} from "@/components"
 import { jp } from "@/lang/jp";
 import { useState, useCallback, useMemo } from "react";
 import ReactQuill from "react-quill";
@@ -68,6 +69,8 @@ const JobForm = ({
   } = useHandleError();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [response, setResponse] = useState<any>(null);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const { mutate, error, isSuccess, isPending } = usePost({
     token,
     queryKey: QueryKey.JOBS,
@@ -227,6 +230,10 @@ const JobForm = ({
     if (error) {
       setShowConfirmation(false);
       jobFormHandleError(error?.message as JobFormErrorType);
+      if((error?.message as any)?.email?.jp) {
+        setShowAlert(true);
+        setAlertMessage((error?.message as any)?.email?.jp);
+      }
     }
     if (isSuccess) {
       setTimeout(() => {
@@ -508,6 +515,23 @@ const JobForm = ({
           </div>
         )}
       </form>
+
+      <Modal isOpen={showAlert} onClose={() => setShowAlert(false)}>
+        <div className="p-6">
+          <p className="mb-4">{alertMessage}</p>
+          <div className="flex justify-end">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                setShowAlert(false);
+                setAlertMessage("");
+              }}
+            >
+              {jp.confirm}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </motion.div>
   );
 };
