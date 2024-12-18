@@ -35,7 +35,7 @@ const MeetingAlert = ({
           className="text-sm underline text-white"
           target="_blank"
         >
-          zoomリンク
+          面接リンク
         </a>
       </span>
     </div>
