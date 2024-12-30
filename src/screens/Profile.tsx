@@ -47,8 +47,8 @@ const Profile = () => {
     key: QueryKey.PROFILE,
     token: token as string,
   });
-  const { data: jobType, isLoading: isJobTypesLoading,error:jobTypeError } = useFetch({
-    endpoint: apiRoutes.INDUSTRY_TYPES,
+  const { data: jobType, isLoading: isJobTypesLoading } = useFetch({
+    endpoint: apiRoutes.JOB_TYPES,
     key: QueryKey.JOB_TYPES,
     token: token as string,
   });
@@ -62,7 +62,7 @@ const Profile = () => {
   const jobTypes =
     jobType?.data.map((type: any) => ({
       value: type.id.toString(),
-      label: type.name,
+      label: type.job_type_jp,
     })) || [];
 
   useEffect(() => {

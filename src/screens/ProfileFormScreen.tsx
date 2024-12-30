@@ -96,14 +96,14 @@ const ProfileFormScreen = () => {
     const fetchData = async () => {
       try {
         const jobTypesResponse = await fetchServer({
-          endpoint: apiRoutes.INDUSTRY_TYPES,
+          endpoint: apiRoutes.JOB_TYPES,
           method: "GET",
           token,
         });
         setJobTypes(
           jobTypesResponse.data.map((type: any) => ({
             value: type.id.toString(),
-            label: type.name,
+            label: type.job_type_jp,
           })),
         );
       } catch (error) {
